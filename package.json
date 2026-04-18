@@ -10,6 +10,7 @@
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",
+    "convex:gen": "convex codegen",
     "check": "pnpm lint && pnpm typecheck && prettier --check ."
   },
   "dependencies": {
