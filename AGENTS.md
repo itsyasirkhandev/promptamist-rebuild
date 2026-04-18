@@ -2,6 +2,11 @@ Project guidelines:
 
 - use pnpm for the package manager
 - when installing new packages, use 'pnpm add' instead of manually editing the package.json file
+
+- when defining convex actions, queries, and mutations that are exposed to the client use the authed setup in `src/convex/authed`
+
+- when defining convex actions, queries, and mutations that are called from the backend use the private setup in `src/convex/private`
+
 - use modern react and nextjs patterns and primitives
 - avoid 'as any' at all costs, try to infer types from functions as much as possible
 - use tailwindcss for styling whenever possible, only resort to custom css if needed
