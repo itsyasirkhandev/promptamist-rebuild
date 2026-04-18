@@ -1,3 +1,16 @@
+Project guidelines:
+
+- use pnpm for the package manager
+- when installing new packages, use 'pnpm add' instead of manually editing the package.json file
+- use modern react and nextjs patterns and primitives
+- avoid 'as any' at all costs, try to infer types from functions as much as possible
+- use tailwindcss for styling whenever possible, only resort to custom css if needed
+- I am on windows so use powershell 5 for commands
+- run 'pnpm lint' to check for linting errors, 'pnpm format', and 'pnpm typecheck' to check for errors after making changes
+
+
+
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
