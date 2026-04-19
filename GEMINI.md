@@ -11,7 +11,7 @@ Project guidelines:
 - avoid 'as any' at all costs, try to infer types from functions as much as possible
 - use tailwindcss for styling whenever possible, only resort to custom css if needed
 - I am on windows so use powershell 5 for commands
-- run 'pnpm lint' to check for linting errors, 'pnpm format', and 'pnpm typecheck' to check for errors after making changes
+- run 'pnpm lint' to check for linting errors and fix the linting errors and if the errore is fixable with --fix command then fix it, 'pnpm format' if files are not formated then only format the files that are not formated, and 'pnpm typecheck' to check for errors after making changes
 
 <!-- BEGIN:nextjs-agent-rules -->
 

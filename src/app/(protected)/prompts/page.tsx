@@ -40,8 +40,9 @@ export default function PromptsPage() {
         <Alert variant="destructive">
           <AlertTitle>Profile Not Found</AlertTitle>
           <AlertDescription>
-            Your account is still syncing from Clerk, or the webhook didn&apos;t fire.
-            Please try signing out and signing back in, or wait a moment and refresh.
+            Your account is still syncing from Clerk, or the webhook didn&apos;t
+            fire. Please try signing out and signing back in, or wait a moment
+            and refresh.
           </AlertDescription>
         </Alert>
       ) : (

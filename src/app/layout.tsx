@@ -31,22 +31,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html
-        lang="en"
-        className={cn(
-          'h-full',
-          'antialiased',
-          geistSans.variable,
-          geistMono.variable,
-          'font-sans',
-          ibmPlexSans.variable,
-        )}
-      >
-        <body className="flex min-h-full flex-col">
+    <html
+      lang="en"
+      className={cn(
+        'h-full',
+        'antialiased',
+        geistSans.variable,
+        geistMono.variable,
+        'font-sans',
+        ibmPlexSans.variable,
+      )}
+    >
+      <body className="flex min-h-full flex-col">
+        <ClerkProvider>
           <ConvexClientProvider>{children}</ConvexClientProvider>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }
