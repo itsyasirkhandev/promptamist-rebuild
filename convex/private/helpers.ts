@@ -5,11 +5,18 @@ import {
   customMutation,
   customQuery,
 } from 'convex-helpers/server/customFunctions';
-import { action, mutation, query } from '../_generated/server';
+import {
+  action,
+  mutation,
+  query,
+  QueryCtx,
+  MutationCtx,
+  ActionCtx,
+} from '../_generated/server';
 
 const apiKeyGuard = customCtxAndArgs({
   args: { apiKey: v.string() },
-  input: async (ctx, { apiKey }) => {
+  input: async (ctx: QueryCtx | MutationCtx | ActionCtx, { apiKey }) => {
     if (apiKey !== process.env.CONVEX_PRIVATE_BRIDGE_KEY) {
       throw new Error('Invalid API key');
     }
