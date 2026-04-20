@@ -127,6 +127,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
   const addTag = () => {
     if (tagInput.trim() && !tags?.includes(tagInput.trim())) {
       setValue('tags', [...(tags || []), tagInput.trim()]);
+      toast.success(`Tag "${tagInput.trim()}" added`);
       setTagInput('');
     }
   };
@@ -136,6 +137,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
       'tags',
       tags.filter((t) => t !== tagToRemove),
     );
+    toast.info(`Tag "${tagToRemove}" removed`);
   };
 
   const removeVariable = (index: number) => {
@@ -151,6 +153,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
 
     // Remove from variables list
     remove(index);
+    toast.info(`Variable {{${variable.name}}} removed`);
   };
 
   const handleEditVariable = (updatedVar: VariableFormValues) => {
@@ -163,6 +166,8 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
       ...variables[editingVariable.index],
       ...updatedVar,
     });
+
+    toast.success(`Variable {{${updatedVar.name}}} updated`);
 
     // If name changed, update content placeholders
     if (oldName !== newName) {
@@ -178,7 +183,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
 
   if (!unwrappedParams || prompt === undefined) {
     return (
-      <div className="space-y-8 py-8 px-4 lg:px-8">
+      <div className="space-y-8 px-4 py-8 lg:px-8">
         <Skeleton className="h-10 w-[300px]" />
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-6 md:col-span-2">
@@ -191,7 +196,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
   }
 
   return (
-    <div className="space-y-8 py-8 px-4 lg:px-8">
+    <div className="space-y-8 px-4 py-8 lg:px-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Edit Prompt</h1>
@@ -199,7 +204,11 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
             Modify your prompt or template settings.
           </p>
         </div>
-        <Button variant="ghost" onClick={() => router.back()} className="hidden gap-2 md:flex">
+        <Button
+          variant="ghost"
+          onClick={() => router.back()}
+          className="hidden gap-2 md:flex"
+        >
           <Icon icon="lucide:arrow-left" width={18} />
           Back
         </Button>
@@ -339,7 +348,6 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
               </CardContent>
             </Card>
           )}
-
 
           <div className="pt-4">
             <Button

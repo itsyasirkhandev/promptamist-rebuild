@@ -113,6 +113,7 @@ export default function CreatePromptPage() {
   const addTag = () => {
     if (tagInput.trim() && !tags.includes(tagInput.trim())) {
       setValue('tags', [...tags, tagInput.trim()]);
+      toast.success(`Tag "${tagInput.trim()}" added`);
       setTagInput('');
     }
   };
@@ -122,6 +123,7 @@ export default function CreatePromptPage() {
       'tags',
       tags.filter((t) => t !== tagToRemove),
     );
+    toast.info(`Tag "${tagToRemove}" removed`);
   };
 
   const removeVariable = (index: number) => {
@@ -137,6 +139,7 @@ export default function CreatePromptPage() {
 
     // Remove from variables list
     remove(index);
+    toast.info(`Variable {{${variable.name}}} removed`);
   };
 
   const handleEditVariable = (updatedVar: VariableFormValues) => {
@@ -150,6 +153,8 @@ export default function CreatePromptPage() {
       ...updatedVar,
     });
 
+    toast.success(`Variable {{${updatedVar.name}}} updated`);
+
     // If name changed, update content placeholders
     if (oldName !== newName) {
       const updatedContent = content.replace(
@@ -162,9 +167,8 @@ export default function CreatePromptPage() {
     setEditingVariable(null);
   };
 
-
   return (
-    <div className="space-y-8 py-8 px-4 lg:px-8">
+    <div className="space-y-8 px-4 py-8 lg:px-8">
       <div className="space-y-4">
         <Breadcrumb>
           <BreadcrumbList>
@@ -186,7 +190,11 @@ export default function CreatePromptPage() {
               Author static prompts or dynamic templates.
             </p>
           </div>
-          <Button variant="ghost" onClick={() => router.back()} className="hidden gap-2 md:flex">
+          <Button
+            variant="ghost"
+            onClick={() => router.back()}
+            className="hidden gap-2 md:flex"
+          >
             <Icon icon="lucide:arrow-left" width={18} />
             Back
           </Button>
@@ -332,8 +340,6 @@ export default function CreatePromptPage() {
               </CardContent>
             </Card>
           )}
-
-
 
           <div className="pt-4">
             <Button

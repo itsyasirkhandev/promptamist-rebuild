@@ -7,6 +7,7 @@ import ConvexClientProvider from '@/components/ConvexClientProvider';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { cn } from '@/lib/utils';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { Toaster } from '@/components/ui/sonner';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -63,6 +64,7 @@ export default function RootLayout({
           <ConvexClientProvider>
             <TooltipProvider>
               <AppLayout>{children}</AppLayout>
+              <Toaster />
             </TooltipProvider>
           </ConvexClientProvider>
         </ClerkProvider>

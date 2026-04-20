@@ -80,7 +80,7 @@ export default function UseTemplatePage({ params }: PageProps) {
 
   if (!unwrappedParams || prompt === undefined) {
     return (
-      <div className="space-y-8 py-8 px-4 lg:px-8">
+      <div className="space-y-8 px-4 py-8 lg:px-8">
         <Skeleton className="h-10 w-[300px]" />
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
           <Skeleton className="h-[500px]" />
@@ -92,7 +92,7 @@ export default function UseTemplatePage({ params }: PageProps) {
 
   if (prompt === null) {
     return (
-      <div className="py-8 px-4 lg:px-8 text-center">
+      <div className="px-4 py-8 text-center lg:px-8">
         <h1 className="text-2xl font-bold">Prompt not found</h1>
         <Button onClick={() => router.push('/prompts')} className="mt-4">
           Back to Dashboard
@@ -135,7 +135,9 @@ export default function UseTemplatePage({ params }: PageProps) {
         {/* Left Side: Inputs - Desktop */}
         <div className="bg-background flex flex-col border-r lg:h-full">
           <header className="space-y-1 border-b p-4 lg:p-6">
-            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Variables</h2>
+            <h2 className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
+              Variables
+            </h2>
             <p className="text-muted-foreground text-sm">
               Fill in the variables below to generate your prompt.
             </p>
@@ -212,7 +214,7 @@ export default function UseTemplatePage({ params }: PageProps) {
 
         {/* Right Side: Live Preview - Desktop */}
         <div className="bg-secondary/10 flex h-full flex-col">
-          <header className="bg-background/50 flex items-center justify-between border-b p-4 lg:p-6 backdrop-blur-sm">
+          <header className="bg-background/50 flex items-center justify-between border-b p-4 backdrop-blur-sm lg:p-6">
             <h2 className="flex items-center gap-2 font-semibold">
               <Icon icon="lucide:eye" width={18} />
               Live Preview
@@ -254,13 +256,16 @@ export default function UseTemplatePage({ params }: PageProps) {
       {/* Mobile Optimized Tabs Flow */}
       <div className="flex flex-1 flex-col overflow-hidden lg:hidden">
         <Tabs defaultValue="fill" className="flex h-full flex-col">
-          <div className="border-b bg-background px-4">
+          <div className="bg-background border-b px-4">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="fill">Fill Variables</TabsTrigger>
               <TabsTrigger value="preview">Preview</TabsTrigger>
             </TabsList>
           </div>
-          <TabsContent value="fill" className="flex-1 overflow-y-auto data-[state=active]:flex flex-col p-4 m-0">
+          <TabsContent
+            value="fill"
+            className="m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
+          >
             <div className="space-y-6">
               {prompt.variables.length === 0 ? (
                 <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
@@ -322,7 +327,10 @@ export default function UseTemplatePage({ params }: PageProps) {
               )}
             </div>
           </TabsContent>
-          <TabsContent value="preview" className="flex-1 overflow-y-auto data-[state=active]:flex flex-col p-4 m-0 bg-secondary/10">
+          <TabsContent
+            value="preview"
+            className="bg-secondary/10 m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
+          >
             <div className="space-y-4">
               <Button
                 onClick={copyToClipboard}

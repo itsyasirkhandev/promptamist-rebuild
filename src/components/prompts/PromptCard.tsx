@@ -57,7 +57,9 @@ export function PromptCard({ prompt }: PromptCardProps) {
       <Card className="hover:border-primary/50 flex h-full flex-col transition-colors @md:shadow-md">
         <CardHeader className="pb-3 @md:pb-4">
           <div className="flex items-start justify-between gap-2">
-            <CardTitle className="line-clamp-2 text-lg @md:text-xl">{prompt.title}</CardTitle>
+            <CardTitle className="line-clamp-2 text-lg @md:text-xl">
+              {prompt.title}
+            </CardTitle>
             {prompt.isTemplate ? (
               <Badge
                 variant="default"
@@ -66,7 +68,10 @@ export function PromptCard({ prompt }: PromptCardProps) {
                 Template
               </Badge>
             ) : (
-              <Badge variant="outline" className="shrink-0 @max-md:px-1 @max-md:text-[10px]">
+              <Badge
+                variant="outline"
+                className="shrink-0 @max-md:px-1 @max-md:text-[10px]"
+              >
                 Static
               </Badge>
             )}
@@ -116,7 +121,13 @@ export function PromptCard({ prompt }: PromptCardProps) {
           )}
 
           <div className="flex gap-2">
-            <Button variant="outline" size="icon" asChild title="Edit" className="h-10 w-10 @md:h-11 @md:w-11">
+            <Button
+              variant="outline"
+              size="icon"
+              asChild
+              title="Edit"
+              className="h-10 w-10 @md:h-11 @md:w-11"
+            >
               <Link href={`/prompts/${prompt._id}/edit`}>
                 <Icon icon="lucide:edit" width={18} />
               </Link>
@@ -127,7 +138,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
                 <Button
                   variant="outline"
                   size="icon"
-                  className="h-10 w-10 hover:text-destructive @md:h-11 @md:w-11"
+                  className="hover:text-destructive h-10 w-10 @md:h-11 @md:w-11"
                   title="Delete"
                 >
                   <Icon icon="lucide:trash-2" width={18} />
@@ -158,4 +169,3 @@ export function PromptCard({ prompt }: PromptCardProps) {
     </div>
   );
 }
-

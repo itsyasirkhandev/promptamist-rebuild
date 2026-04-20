@@ -4,8 +4,9 @@ import * as React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@iconify/react';
-import { cn } from '@/lib/utils';
-import { NAVIGATION_ITEMS } from '@/lib/navigation';
+
+import {
+ NAVIGATION_ITEMS } from '@/lib/navigation';
 import { UserButton } from '@clerk/nextjs';
 import {
   Sidebar as SidebarUI,
@@ -31,12 +32,12 @@ export function Sidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
                   <Icon icon="lucide:sparkles" className="size-4" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none group-data-[collapsible=icon]:hidden">
                   <span className="font-semibold">Promptamist</span>
-                  <span className="text-xs text-muted-foreground">v0.1.0</span>
+                  <span className="text-muted-foreground text-xs">v0.1.0</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -83,8 +84,10 @@ export function Sidebar() {
                 }}
               />
               <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden">
-                <span className="text-sm font-semibold truncate">Account</span>
-                <span className="text-xs text-muted-foreground truncate">Manage profile</span>
+                <span className="truncate text-sm font-semibold">Account</span>
+                <span className="text-muted-foreground truncate text-xs">
+                  Manage profile
+                </span>
               </div>
             </div>
           </SidebarMenuItem>

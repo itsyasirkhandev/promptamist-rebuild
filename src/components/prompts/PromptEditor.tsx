@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import { Icon } from '@iconify/react';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { VariableConfigModal } from './VariableConfigModal';
 import { cn } from '@/lib/utils';
@@ -137,6 +138,7 @@ export function PromptEditor({
     };
 
     onVariablesChange([...variables, newVar]);
+    toast.success(`Variable {{${newVar.name}}} added`);
 
     if (savedRange && editorRef.current) {
       const selection = window.getSelection();
@@ -189,7 +191,7 @@ export function PromptEditor({
         ref={editorRef}
         className={cn(
           'prompt-editor border-input bg-background ring-offset-background focus-visible:ring-ring min-h-[300px] w-full rounded-md border px-3 py-2 text-base focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 @md:text-sm',
-          'overflow-auto break-words whitespace-pre-wrap overscroll-none',
+          'overflow-auto overscroll-none break-words whitespace-pre-wrap',
         )}
         contentEditable
         onInput={handleInput}
@@ -205,7 +207,7 @@ export function PromptEditor({
             size="lg"
             variant="default"
             onClick={openVariableModal}
-            className="h-12 gap-2 rounded-full px-6 shadow-2xl animate-in fade-in zoom-in slide-in-from-bottom-4 duration-200"
+            className="animate-in fade-in zoom-in slide-in-from-bottom-4 h-12 gap-2 rounded-full px-6 shadow-2xl duration-200"
           >
             <Icon icon="lucide:variable" width={20} />
             Convert to Variable

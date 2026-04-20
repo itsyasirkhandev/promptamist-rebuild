@@ -146,3 +146,21 @@
     @apply font-sans;
   }
 }
+
+@layer components {
+  .cn-toast {
+    @apply !bg-popover !text-popover-foreground !border-border !flex !min-w-[320px] !items-center !gap-3 !rounded-lg !p-4 !font-sans !shadow-lg;
+  }
+
+  .cn-toast [data-icon] {
+    @apply !text-primary !shrink-0;
+  }
+
+  .cn-toast [data-title] {
+    @apply !text-sm !font-semibold;
+  }
+
+  .cn-toast [data-description] {
+    @apply !text-muted-foreground !mt-1 !text-xs;
+  }
+}

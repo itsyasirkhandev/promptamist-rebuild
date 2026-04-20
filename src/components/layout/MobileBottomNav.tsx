@@ -14,7 +14,7 @@ export function MobileBottomNav({ className }: { className?: string }) {
     <nav
       className={cn(
         'bg-background border-border border-t lg:hidden',
-        'fixed bottom-0 left-0 right-0 z-50 flex h-16 items-center justify-around px-4 pb-safe',
+        'pb-safe fixed right-0 bottom-0 left-0 z-50 flex h-16 items-center justify-around px-4',
         className,
       )}
     >

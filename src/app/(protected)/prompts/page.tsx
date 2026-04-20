@@ -28,7 +28,9 @@ export default function PromptsPage() {
   const prompts = useQuery(api.authed.prompts.getPrompts);
   const [search, setSearch] = React.useState('');
   const [selectedTag, setSelectedTag] = React.useState<string | null>(null);
-  const [activeTab, setActiveTab] = React.useState<'all' | 'templates' | 'static'>('all');
+  const [activeTab, setActiveTab] = React.useState<
+    'all' | 'templates' | 'static'
+  >('all');
 
   const allTags = React.useMemo(() => {
     if (!prompts) return [];
@@ -46,16 +48,16 @@ export default function PromptsPage() {
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.content.toLowerCase().includes(search.toLowerCase());
       const matchesTag = !selectedTag || p.tags.includes(selectedTag);
-      const matchesTab = 
-        activeTab === 'all' || 
-        (activeTab === 'templates' && p.isTemplate) || 
+      const matchesTab =
+        activeTab === 'all' ||
+        (activeTab === 'templates' && p.isTemplate) ||
         (activeTab === 'static' && !p.isTemplate);
       return matchesSearch && matchesTag && matchesTab;
     });
   }, [prompts, search, selectedTag, activeTab]);
 
   return (
-    <div className="space-y-8 py-8 px-4 lg:px-8">
+    <div className="space-y-8 px-4 py-8 lg:px-8">
       <div className="space-y-4">
         <Breadcrumb>
           <BreadcrumbList>
@@ -90,107 +92,113 @@ export default function PromptsPage() {
         </header>
       </div>
 
-        {user === undefined || prompts === undefined ? (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {[1, 2, 3, 4].map((i) => (
-              <div key={i} className="space-y-3">
-                <Skeleton className="h-[250px] w-full rounded-lg" />
-              </div>
-            ))}
-          </div>
-        ) : user === null ? (
-          <Alert variant="destructive">
-            <AlertTitle>Profile Not Found</AlertTitle>
-            <AlertDescription>
-              Your account is still syncing from Clerk. Please wait a moment and
-              refresh.
-            </AlertDescription>
-          </Alert>
-        ) : (
-          <div className="space-y-6">
-            <div className="flex flex-col gap-4">
-              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
-                <TabsList className="grid w-full max-w-[400px] grid-cols-3">
-                  <TabsTrigger value="all">All</TabsTrigger>
-                  <TabsTrigger value="templates">Templates</TabsTrigger>
-                  <TabsTrigger value="static">Static</TabsTrigger>
-                </TabsList>
-              </Tabs>
-              
-              <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-                <div className="relative flex-grow w-full md:w-auto">
-                  <Icon
-                    icon="lucide:search"
-                    className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
-                    width={18}
-                  />
-                  <Input
-                    placeholder="Search prompts..."
-                    className="pl-10"
-                    value={search}
-                    onChange={(e) => setSearch(e.target.value)}
-                  />
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {allTags.length > 0 && (
-                    <>
-                      <Badge
-                        variant={selectedTag === null ? 'default' : 'outline'}
-                        className="cursor-pointer"
-                        onClick={() => setSelectedTag(null)}
-                      >
-                        All Tags
-                      </Badge>
-                      {allTags.map((tag) => (
-                        <Badge
-                          key={tag}
-                          variant={selectedTag === tag ? 'default' : 'outline'}
-                          className="cursor-pointer"
-                          onClick={() =>
-                            setSelectedTag(tag === selectedTag ? null : tag)
-                          }
-                        >
-                          {tag}
-                        </Badge>
-                      ))}
-                    </>
-                  )}
-                </div>
-              </div>
+      {user === undefined || prompts === undefined ? (
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="space-y-3">
+              <Skeleton className="h-[250px] w-full rounded-lg" />
             </div>
+          ))}
+        </div>
+      ) : user === null ? (
+        <Alert variant="destructive">
+          <AlertTitle>Profile Not Found</AlertTitle>
+          <AlertDescription>
+            Your account is still syncing from Clerk. Please wait a moment and
+            refresh.
+          </AlertDescription>
+        </Alert>
+      ) : (
+        <div className="space-y-6">
+          <div className="flex flex-col gap-4">
+            <Tabs
+              value={activeTab}
+              onValueChange={(v) =>
+                setActiveTab(v as 'all' | 'templates' | 'static')
+              }
+              className="w-full"
+            >
+              <TabsList className="grid w-full max-w-[400px] grid-cols-3">
+                <TabsTrigger value="all">All</TabsTrigger>
+                <TabsTrigger value="templates">Templates</TabsTrigger>
+                <TabsTrigger value="static">Static</TabsTrigger>
+              </TabsList>
+            </Tabs>
 
-            {filteredPrompts.length === 0 ? (
-              <div className="space-y-4 rounded-xl border-2 border-dashed py-20 text-center">
-                <div className="bg-secondary/50 mx-auto flex h-16 w-16 items-center justify-center rounded-full">
-                  <Icon
-                    icon="lucide:file-text"
-                    width={32}
-                    className="text-muted-foreground"
-                  />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium">No prompts found</h3>
-                  <p className="text-muted-foreground mx-auto max-w-xs">
-                    {search || selectedTag || activeTab !== 'all'
-                      ? 'No prompts match your current filters. Try adjusting them.'
-                      : "You haven't created any prompts yet. Start building your library!"}
-                  </p>
-                </div>
-                {!search && !selectedTag && activeTab === 'all' && (
-                  <Button asChild>
-                    <Link href="/prompts/create">Create New Prompt</Link>
-                  </Button>
+            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
+              <div className="relative w-full flex-grow md:w-auto">
+                <Icon
+                  icon="lucide:search"
+                  className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+                  width={18}
+                />
+                <Input
+                  placeholder="Search prompts..."
+                  className="pl-10"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {allTags.length > 0 && (
+                  <>
+                    <Badge
+                      variant={selectedTag === null ? 'default' : 'outline'}
+                      className="cursor-pointer"
+                      onClick={() => setSelectedTag(null)}
+                    >
+                      All Tags
+                    </Badge>
+                    {allTags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant={selectedTag === tag ? 'default' : 'outline'}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          setSelectedTag(tag === selectedTag ? null : tag)
+                        }
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </>
                 )}
               </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                {filteredPrompts.map((prompt) => (
-                  <PromptCard key={prompt._id} prompt={prompt} />
-                ))}
-              </div>
-            )}
+            </div>
           </div>
-        )}
-      </div>
+
+          {filteredPrompts.length === 0 ? (
+            <div className="space-y-4 rounded-xl border-2 border-dashed py-20 text-center">
+              <div className="bg-secondary/50 mx-auto flex h-16 w-16 items-center justify-center rounded-full">
+                <Icon
+                  icon="lucide:file-text"
+                  width={32}
+                  className="text-muted-foreground"
+                />
+              </div>
+              <div>
+                <h3 className="text-lg font-medium">No prompts found</h3>
+                <p className="text-muted-foreground mx-auto max-w-xs">
+                  {search || selectedTag || activeTab !== 'all'
+                    ? 'No prompts match your current filters. Try adjusting them.'
+                    : "You haven't created any prompts yet. Start building your library!"}
+                </p>
+              </div>
+              {!search && !selectedTag && activeTab === 'all' && (
+                <Button asChild>
+                  <Link href="/prompts/create">Create New Prompt</Link>
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {filteredPrompts.map((prompt) => (
+                <PromptCard key={prompt._id} prompt={prompt} />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
   );
 }

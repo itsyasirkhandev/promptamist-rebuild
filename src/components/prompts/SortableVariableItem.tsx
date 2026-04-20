@@ -41,8 +41,10 @@ export function SortableVariableItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`@container bg-secondary/30 group flex items-center justify-between rounded-md p-2 transition-shadow ${
-        isDragging ? 'opacity-50 ring-2 ring-primary ring-offset-1 shadow-lg' : ''
+      className={`bg-secondary/30 group @container flex items-center justify-between rounded-md p-2 transition-shadow ${
+        isDragging
+          ? 'ring-primary opacity-50 shadow-lg ring-2 ring-offset-1'
+          : ''
       }`}
     >
       <div className="flex items-center gap-2 overflow-hidden">
@@ -50,7 +52,7 @@ export function SortableVariableItem({
           type="button"
           {...attributes}
           {...listeners}
-          className="text-muted-foreground hover:text-primary cursor-grab active:cursor-grabbing h-10 w-10 flex items-center justify-center transition-colors @md:h-8 @md:w-8"
+          className="text-muted-foreground hover:text-primary flex h-10 w-10 cursor-grab items-center justify-center transition-colors active:cursor-grabbing @md:h-8 @md:w-8"
           title="Drag to reorder"
         >
           <Icon icon="lucide:grip-vertical" width={20} className="@md:w-4" />
@@ -68,14 +70,14 @@ export function SortableVariableItem({
         <button
           type="button"
           onClick={onEdit}
-          className="text-muted-foreground hover:text-primary h-10 w-10 flex items-center justify-center transition-colors @md:h-8 @md:w-8"
+          className="text-muted-foreground hover:text-primary flex h-10 w-10 items-center justify-center transition-colors @md:h-8 @md:w-8"
         >
           <Icon icon="lucide:edit" width={18} className="@md:w-4" />
         </button>
         <button
           type="button"
           onClick={onRemove}
-          className="text-muted-foreground hover:text-destructive h-10 w-10 flex items-center justify-center transition-colors @md:h-8 @md:w-8"
+          className="text-muted-foreground hover:text-destructive flex h-10 w-10 items-center justify-center transition-colors @md:h-8 @md:w-8"
         >
           <Icon icon="lucide:trash-2" width={18} className="@md:w-4" />
         </button>

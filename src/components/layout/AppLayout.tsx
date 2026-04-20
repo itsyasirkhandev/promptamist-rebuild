@@ -7,23 +7,30 @@ import { Authenticated, Unauthenticated } from 'convex/react';
 import { UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { SidebarProvider, SidebarTrigger, SidebarInset } from '@/components/ui/sidebar';
+import {
+  SidebarProvider,
+  SidebarTrigger,
+  SidebarInset,
+} from '@/components/ui/sidebar';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full bg-background">
+      <div className="bg-background flex min-h-screen w-full">
         <Authenticated>
           <Sidebar />
         </Authenticated>
 
         <SidebarInset className="flex flex-1 flex-col">
-          <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b bg-background/80 px-4 backdrop-blur">
+          <header className="bg-background/80 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 backdrop-blur">
             <div className="flex items-center gap-4">
               <Authenticated>
                 <SidebarTrigger className="hidden lg:flex" />
               </Authenticated>
-              <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
+              <Link
+                href="/"
+                className="flex items-center gap-2 font-bold tracking-tight"
+              >
                 <span className="text-xl">Promptamist</span>
               </Link>
             </div>
@@ -40,9 +47,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </header>
 
-          <main className="flex-1 pb-20 lg:pb-0">
-            {children}
-          </main>
+          <main className="flex-1 pb-20 lg:pb-0">{children}</main>
 
           <Authenticated>
             <MobileBottomNav />
