@@ -39,6 +39,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
+import { handleError } from '@/lib/error-handler';
 
 const promptFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -105,8 +106,7 @@ export default function CreatePromptPage() {
       toast.success('Prompt created successfully');
       router.push('/prompts');
     } catch (error) {
-      console.error(error);
-      toast.error('Failed to create prompt');
+      handleError(error);
     }
   };
 

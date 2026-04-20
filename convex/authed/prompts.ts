@@ -1,17 +1,8 @@
 import { v } from 'convex/values';
-import { authedMutation, authedQuery } from './helpers';
-import { QueryCtx, MutationCtx } from '../_generated/server';
-
-const getUserId = async (ctx: QueryCtx | MutationCtx, clerkId: string) => {
-  const user = await ctx.db
-    .query('users')
-    .withIndex('by_clerkId', (q) => q.eq('clerkId', clerkId))
-    .first();
-  if (!user) {
-    throw new Error('User not found');
-  }
-  return user._id;
-};
+import { authedMutation, authedQuery, getUserId } from './helpers';
+import { Effect } from 'effect';
+import { NotFound } from '../errors';
+import { runEffect } from '../effect';
 
 export const createPrompt = authedMutation({
   args: {
@@ -35,35 +26,51 @@ export const createPrompt = authedMutation({
     ),
   },
   handler: async (ctx, args) => {
-    const userId = await getUserId(ctx, ctx.identity.subject);
-    return await ctx.db.insert('prompts', {
-      userId,
-      ...args,
-    });
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        return yield* Effect.promise(() =>
+          ctx.db.insert('prompts', {
+            userId,
+            ...args,
+          }),
+        );
+      }),
+    );
   },
 });
 
 export const getPrompts = authedQuery({
   args: {},
   handler: async (ctx) => {
-    const userId = await getUserId(ctx, ctx.identity.subject);
-    return await ctx.db
-      .query('prompts')
-      .withIndex('by_userId', (q) => q.eq('userId', userId))
-      .order('desc')
-      .collect();
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        return yield* Effect.promise(() =>
+          ctx.db
+            .query('prompts')
+            .withIndex('by_userId', (q) => q.eq('userId', userId))
+            .order('desc')
+            .collect(),
+        );
+      }),
+    );
   },
 });
 
 export const getPromptById = authedQuery({
   args: { id: v.id('prompts') },
   handler: async (ctx, args) => {
-    const userId = await getUserId(ctx, ctx.identity.subject);
-    const prompt = await ctx.db.get(args.id);
-    if (!prompt || prompt.userId !== userId) {
-      throw new Error('Prompt not found');
-    }
-    return prompt;
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        const prompt = yield* Effect.promise(() => ctx.db.get(args.id));
+        if (!prompt || prompt.userId !== userId) {
+          yield* new NotFound({ message: 'Prompt not found' });
+        }
+        return prompt!;
+      }),
+    );
   },
 });
 
@@ -90,24 +97,32 @@ export const updatePrompt = authedMutation({
     ),
   },
   handler: async (ctx, args) => {
-    const userId = await getUserId(ctx, ctx.identity.subject);
-    const prompt = await ctx.db.get(args.id);
-    if (!prompt || prompt.userId !== userId) {
-      throw new Error('Prompt not found');
-    }
-    const { id, ...updates } = args;
-    await ctx.db.patch(id, updates);
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        const prompt = yield* Effect.promise(() => ctx.db.get(args.id));
+        if (!prompt || prompt.userId !== userId) {
+          yield* new NotFound({ message: 'Prompt not found' });
+        }
+        const { id, ...updates } = args;
+        yield* Effect.promise(() => ctx.db.patch(id, updates));
+      }),
+    );
   },
 });
 
 export const deletePrompt = authedMutation({
   args: { id: v.id('prompts') },
   handler: async (ctx, args) => {
-    const userId = await getUserId(ctx, ctx.identity.subject);
-    const prompt = await ctx.db.get(args.id);
-    if (!prompt || prompt.userId !== userId) {
-      throw new Error('Prompt not found');
-    }
-    await ctx.db.delete(args.id);
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        const prompt = yield* Effect.promise(() => ctx.db.get(args.id));
+        if (!prompt || prompt.userId !== userId) {
+          yield* new NotFound({ message: 'Prompt not found' });
+        }
+        yield* Effect.promise(() => ctx.db.delete(args.id));
+      }),
+    );
   },
 });

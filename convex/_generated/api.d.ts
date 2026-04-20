@@ -10,6 +10,8 @@
 
 import type * as authed_helpers from "../authed/helpers.js";
 import type * as authed_prompts from "../authed/prompts.js";
+import type * as effect from "../effect.js";
+import type * as errors from "../errors.js";
 import type * as http from "../http.js";
 import type * as private_helpers from "../private/helpers.js";
 import type * as users from "../users.js";
@@ -23,6 +25,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   "authed/helpers": typeof authed_helpers;
   "authed/prompts": typeof authed_prompts;
+  effect: typeof effect;
+  errors: typeof errors;
   http: typeof http;
   "private/helpers": typeof private_helpers;
   users: typeof users;

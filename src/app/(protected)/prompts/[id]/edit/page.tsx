@@ -26,6 +26,7 @@ import {
   VariableFormValues,
 } from '@/components/prompts/VariableConfigModal';
 import { VariableList } from '@/components/prompts/VariableList';
+import { handleError } from '@/lib/error-handler';
 
 const promptFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -119,8 +120,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
       toast.success('Prompt updated successfully');
       router.push('/prompts');
     } catch (error) {
-      console.error(error);
-      toast.error('Failed to update prompt');
+      handleError(error);
     }
   };
 

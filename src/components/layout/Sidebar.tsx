@@ -5,8 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Icon } from '@iconify/react';
 
-import {
- NAVIGATION_ITEMS } from '@/lib/navigation';
+import { NAVIGATION_ITEMS } from '@/lib/navigation';
 import { UserButton } from '@clerk/nextjs';
 import {
   Sidebar as SidebarUI,

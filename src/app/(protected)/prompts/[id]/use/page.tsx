@@ -46,20 +46,14 @@ type PromptVariable = {
 
 export default function UseTemplatePage({ params }: PageProps) {
   const router = useRouter();
-  const [unwrappedParams, setUnwrappedParams] = React.useState<{
-    id: string;
-  } | null>(null);
-
-  React.useEffect(() => {
-    params.then(setUnwrappedParams);
-  }, [params]);
+  const { id } = React.use(params);
 
   const prompt = useQuery(
     api.authed.prompts.getPromptById,
-    unwrappedParams ? { id: unwrappedParams.id as Id<'prompts'> } : 'skip',
+    { id: id as Id<'prompts'> },
   );
 
-  const { register, watch, setValue } = useForm<Record<string, string>>();
+  const { watch, setValue } = useForm<Record<string, string>>();
   const formValues = watch();
 
   const interpolatedContent = React.useMemo(() => {
@@ -78,7 +72,7 @@ export default function UseTemplatePage({ params }: PageProps) {
     toast.success('Copied final prompt to clipboard');
   };
 
-  if (!unwrappedParams || prompt === undefined) {
+  if (prompt === undefined) {
     return (
       <div className="space-y-8 px-4 py-8 lg:px-8">
         <Skeleton className="h-10 w-[300px]" />
@@ -100,6 +94,69 @@ export default function UseTemplatePage({ params }: PageProps) {
       </div>
     );
   }
+
+  const renderVariableInput = (v: PromptVariable) => (
+    <div key={v.id} className="space-y-2">
+      <Label className="text-sm font-semibold">{v.name}</Label>
+
+      {v.type === 'text' && (
+        <Input
+          value={formValues[v.name] || ''}
+          onChange={(e) => setValue(v.name, e.target.value)}
+          placeholder={`Enter ${v.name.toLowerCase()}...`}
+        />
+      )}
+
+      {v.type === 'number' && (
+        <Input
+          type="number"
+          value={formValues[v.name] || ''}
+          onChange={(e) => setValue(v.name, e.target.value)}
+          placeholder="0"
+        />
+      )}
+
+      {v.type === 'textarea' && (
+        <Textarea
+          value={formValues[v.name] || ''}
+          onChange={(e) => setValue(v.name, e.target.value)}
+          placeholder={`Enter ${v.name.toLowerCase()}...`}
+          className="min-h-[100px]"
+        />
+      )}
+
+      {v.type === 'choices' && (
+        <Select
+          value={formValues[v.name] || ''}
+          onValueChange={(val) => setValue(v.name, val)}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Select an option..." />
+          </SelectTrigger>
+          <SelectContent>
+            {v.options?.map((opt: string) => (
+              <SelectItem key={opt} value={opt}>
+                {opt}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
+
+      {v.type === 'list' && (
+        <div className="space-y-2">
+          <p className="text-muted-foreground text-[10px] italic">
+            Comma separated values
+          </p>
+          <Input
+            value={formValues[v.name] || ''}
+            onChange={(e) => setValue(v.name, e.target.value)}
+            placeholder="item1, item2, item3"
+          />
+        </div>
+      )}
+    </div>
+  );
 
   return (
     <div className="flex h-full flex-col lg:h-screen lg:overflow-hidden">
@@ -152,61 +209,7 @@ export default function UseTemplatePage({ params }: PageProps) {
                   </p>
                 </div>
               ) : (
-                (prompt.variables as PromptVariable[]).map((v) => (
-                  <div key={v.id} className="space-y-2">
-                    <Label className="text-sm font-semibold">{v.name}</Label>
-
-                    {v.type === 'text' && (
-                      <Input
-                        {...register(v.name)}
-                        placeholder={`Enter ${v.name.toLowerCase()}...`}
-                      />
-                    )}
-
-                    {v.type === 'number' && (
-                      <Input
-                        type="number"
-                        {...register(v.name)}
-                        placeholder="0"
-                      />
-                    )}
-
-                    {v.type === 'textarea' && (
-                      <Textarea
-                        {...register(v.name)}
-                        placeholder={`Enter ${v.name.toLowerCase()}...`}
-                        className="min-h-[100px]"
-                      />
-                    )}
-
-                    {v.type === 'choices' && (
-                      <Select onValueChange={(val) => setValue(v.name, val)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select an option..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {v.options?.map((opt: string) => (
-                            <SelectItem key={opt} value={opt}>
-                              {opt}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-
-                    {v.type === 'list' && (
-                      <div className="space-y-2">
-                        <p className="text-muted-foreground text-[10px] italic">
-                          Comma separated values
-                        </p>
-                        <Input
-                          {...register(v.name)}
-                          placeholder="item1, item2, item3"
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))
+                (prompt.variables as PromptVariable[]).map(renderVariableInput)
               )}
             </div>
           </div>
@@ -274,56 +277,7 @@ export default function UseTemplatePage({ params }: PageProps) {
                   </p>
                 </div>
               ) : (
-                (prompt.variables as PromptVariable[]).map((v) => (
-                  <div key={v.id} className="space-y-2">
-                    <Label className="text-sm font-semibold">{v.name}</Label>
-                    {v.type === 'text' && (
-                      <Input
-                        {...register(v.name)}
-                        placeholder={`Enter ${v.name.toLowerCase()}...`}
-                      />
-                    )}
-                    {v.type === 'number' && (
-                      <Input
-                        type="number"
-                        {...register(v.name)}
-                        placeholder="0"
-                      />
-                    )}
-                    {v.type === 'textarea' && (
-                      <Textarea
-                        {...register(v.name)}
-                        placeholder={`Enter ${v.name.toLowerCase()}...`}
-                        className="min-h-[100px]"
-                      />
-                    )}
-                    {v.type === 'choices' && (
-                      <Select onValueChange={(val) => setValue(v.name, val)}>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select an option..." />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {v.options?.map((opt: string) => (
-                            <SelectItem key={opt} value={opt}>
-                              {opt}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    )}
-                    {v.type === 'list' && (
-                      <div className="space-y-2">
-                        <p className="text-muted-foreground text-[10px] italic">
-                          Comma separated values
-                        </p>
-                        <Input
-                          {...register(v.name)}
-                          placeholder="item1, item2, item3"
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))
+                (prompt.variables as PromptVariable[]).map(renderVariableInput)
               )}
             </div>
           </TabsContent>

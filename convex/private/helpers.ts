@@ -1,4 +1,4 @@
-import { v } from 'convex/values';
+import { v, ConvexError } from 'convex/values';
 import {
   customAction,
   customCtxAndArgs,
@@ -13,12 +13,20 @@ import {
   MutationCtx,
   ActionCtx,
 } from '../_generated/server';
+import { Unauthorized } from '../errors';
+import { Schema } from 'effect';
 
 const apiKeyGuard = customCtxAndArgs({
   args: { apiKey: v.string() },
   input: async (ctx: QueryCtx | MutationCtx | ActionCtx, { apiKey }) => {
     if (apiKey !== process.env.CONVEX_PRIVATE_BRIDGE_KEY) {
-      throw new Error('Invalid API key');
+      throw new ConvexError(
+        Schema.encodeSync(Unauthorized)(
+          new Unauthorized({
+            message: 'Invalid API key',
+          }),
+        ),
+      );
     }
     return { ctx, args: {} };
   },
