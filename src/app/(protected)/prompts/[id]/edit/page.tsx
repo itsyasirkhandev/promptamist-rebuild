@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useQuery, useMutation } from 'convex/react';
@@ -25,6 +25,7 @@ import {
   VariableConfigModal,
   VariableFormValues,
 } from '@/components/prompts/VariableConfigModal';
+import { VariableList } from '@/components/prompts/VariableList';
 
 const promptFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -75,9 +76,21 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
     setValue,
     watch,
     reset,
+    control,
     formState: { isSubmitting, errors },
   } = useForm<PromptFormValues>({
     resolver: zodResolver(promptFormSchema),
+  });
+
+  const {
+    fields: variables,
+    append,
+    remove,
+    move,
+    update,
+  } = useFieldArray({
+    control,
+    name: 'variables',
   });
 
   React.useEffect(() => {
@@ -93,7 +106,6 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
   }, [prompt, reset]);
 
   const content = watch('content');
-  const variables = watch('variables');
   const isTemplate = watch('isTemplate');
   const tags = watch('tags');
 
@@ -126,31 +138,31 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
     );
   };
 
-  const removeVariable = (varId: string) => {
-    const variable = variables.find((v) => v.id === varId);
+  const removeVariable = (index: number) => {
+    const variable = variables[index];
     if (!variable) return;
-    const updatedVariables = variables.filter((v) => v.id !== varId);
-    setValue('variables', updatedVariables);
 
-    // Also remove from content
+    // Remove from content
     const updatedContent = content.replace(
       new RegExp(`{{${variable.name}}}`, 'g'),
       '',
     );
     setValue('content', updatedContent);
+
+    // Remove from variables list
+    remove(index);
   };
 
   const handleEditVariable = (updatedVar: VariableFormValues) => {
     if (editingVariable === null) return;
 
-    const updatedVariables = [...variables];
-    const oldName = updatedVariables[editingVariable.index].name;
+    const oldName = variables[editingVariable.index].name;
     const newName = updatedVar.name;
 
-    updatedVariables[editingVariable.index] = {
-      ...updatedVariables[editingVariable.index],
+    update(editingVariable.index, {
+      ...variables[editingVariable.index],
       ...updatedVar,
-    };
+    });
 
     // If name changed, update content placeholders
     if (oldName !== newName) {
@@ -161,7 +173,6 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
       setValue('content', updatedContent);
     }
 
-    setValue('variables', updatedVariables);
     setEditingVariable(null);
   };
 
@@ -222,8 +233,16 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
               <PromptEditor
                 content={content || ''}
                 onChange={(val) => setValue('content', val)}
-                variables={variables || []}
-                onVariablesChange={(vars) => setValue('variables', vars)}
+                variables={variables}
+                onVariablesChange={(vars) => {
+                  // If we added a new variable, use append
+                  if (vars.length > variables.length) {
+                    const newVar = vars[vars.length - 1];
+                    append(newVar);
+                  } else {
+                    setValue('variables', vars);
+                  }
+                }}
                 isTemplate={isTemplate || false}
               />
               {errors.content && (
@@ -308,50 +327,19 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
               </CardHeader>
               <CardContent className="p-0">
                 <ScrollArea className="h-[250px]">
-                  <div className="space-y-3 p-4">
-                    {(variables?.length === 0 || !variables) && (
-                      <p className="text-muted-foreground py-4 text-center text-xs italic">
-                        No variables defined yet.
-                      </p>
-                    )}
-                    {variables?.map((v, index) => (
-                      <div
-                        key={v.id}
-                        className="bg-secondary/30 group flex items-start justify-between rounded-md p-2"
-                      >
-                        <div className="space-y-1">
-                          <p className="text-primary font-mono text-sm font-bold">
-                            {v.name}
-                          </p>
-                          <p className="text-muted-foreground text-[10px] tracking-wider uppercase">
-                            {v.type}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
-                          <button
-                            type="button"
-                            onClick={() =>
-                              setEditingVariable({ id: v.id, index })
-                            }
-                            className="text-muted-foreground hover:text-primary p-1 transition-colors"
-                          >
-                            <Icon icon="lucide:edit" width={14} />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => removeVariable(v.id)}
-                            className="text-muted-foreground hover:text-destructive p-1 transition-colors"
-                          >
-                            <Icon icon="lucide:trash-2" width={14} />
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  <VariableList
+                    variables={variables}
+                    onReorder={(oldIndex, newIndex) => move(oldIndex, newIndex)}
+                    onEdit={(index) =>
+                      setEditingVariable({ id: variables[index].id, index })
+                    }
+                    onRemove={(index) => removeVariable(index)}
+                  />
                 </ScrollArea>
               </CardContent>
             </Card>
           )}
+
 
           <div className="pt-4">
             <Button
