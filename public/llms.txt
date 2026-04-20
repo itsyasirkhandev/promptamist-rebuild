@@ -1,0 +1,24 @@
+# Promptamist
+
+AI-Powered Prompt Management. Organize, test, and optimize your AI prompts with our intelligent platform built for power users.
+
+## Key Features
+
+- **Prompt Organization**: Manage all your AI prompts in one place.
+- **Variable Support**: Create dynamic prompts with easy-to-use variables.
+- **Testing & Optimization**: Refine your prompts for better results.
+- **Secure Storage**: Your prompts are safely stored and accessible anywhere.
+
+## Public URLs
+
+- https://repromptamist.vercel.app - Landing page
+- https://repromptamist.vercel.app/sign-in - Access your account
+- https://repromptamist.vercel.app/sign-up - Create a new account
+
+## Technical Stack
+
+- Next.js
+- Convex (Backend)
+- Clerk (Authentication)
+- Tailwind CSS
+- Shadcn UI

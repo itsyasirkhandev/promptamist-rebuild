@@ -7,6 +7,7 @@ import { Icon } from '@iconify/react';
 
 import { NAVIGATION_ITEMS } from '@/lib/navigation';
 import { UserButton } from '@clerk/nextjs';
+import { Logo } from '@/components/Logo';
 import {
   Sidebar as SidebarUI,
   SidebarContent,
@@ -31,11 +32,13 @@ export function Sidebar() {
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
               <Link href="/">
-                <div className="bg-primary text-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
-                  <Icon icon="lucide:sparkles" className="size-4" />
+                <div className="flex aspect-square size-8 items-center justify-center rounded-lg">
+                  <Logo className="size-8" />
                 </div>
                 <div className="flex flex-col gap-0.5 leading-none group-data-[collapsible=icon]:hidden">
-                  <span className="font-semibold">Promptamist</span>
+                  <span className="text-primary font-semibold">
+                    Promptamist
+                  </span>
                   <span className="text-muted-foreground text-xs">v0.1.0</span>
                 </div>
               </Link>

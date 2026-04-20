@@ -1,5 +1,12 @@
 import { SignUp } from '@clerk/nextjs';
 import { clerkAppearance } from '@/lib/clerk-appearance';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Sign Up',
+  description:
+    'Create a Promptamist account and start organizing your AI prompts today.',
+};
 
 export default function SignUpPage() {
   return (

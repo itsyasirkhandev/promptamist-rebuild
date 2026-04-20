@@ -14,6 +14,8 @@ import {
 } from '@/components/ui/sidebar';
 import { ThemeToggle } from '@/components/ThemeToggle';
 
+import { Logo } from '@/components/Logo';
+
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
@@ -32,6 +34,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 href="/"
                 className="flex items-center gap-2 font-bold tracking-tight"
               >
+                <Logo className="text-primary h-8 w-8" />
                 <span className="text-xl">Promptamist</span>
               </Link>
             </div>
