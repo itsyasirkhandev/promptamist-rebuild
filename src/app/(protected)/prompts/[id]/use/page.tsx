@@ -48,10 +48,9 @@ export default function UseTemplatePage({ params }: PageProps) {
   const router = useRouter();
   const { id } = React.use(params);
 
-  const prompt = useQuery(
-    api.authed.prompts.getPromptById,
-    { id: id as Id<'prompts'> },
-  );
+  const prompt = useQuery(api.authed.prompts.getPromptById, {
+    id: id as Id<'prompts'>,
+  });
 
   const { watch, setValue } = useForm<Record<string, string>>();
   const formValues = watch();

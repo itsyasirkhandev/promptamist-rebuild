@@ -8,6 +8,8 @@ import { AppLayout } from '@/components/layout/AppLayout';
 import { cn } from '@/lib/utils';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/components/ThemeProvider';
+import { clerkAppearance } from '@/lib/clerk-appearance';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -37,6 +39,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={cn(
         'h-full',
         'antialiased',
@@ -47,27 +50,26 @@ export default function RootLayout({
       )}
     >
       <body className="flex min-h-full flex-col">
-        <ClerkProvider
-          appearance={{
-            baseTheme: shadcn,
-            cssLayerName: 'clerk',
-            variables: {
-              colorBackground: '#ffffff',
-            },
-            elements: {
-              card: 'bg-background shadow-lg border border-border',
-              navbar: 'bg-background',
-              pageScrollBox: 'bg-background',
-            },
-          }}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
         >
-          <ConvexClientProvider>
-            <TooltipProvider>
-              <AppLayout>{children}</AppLayout>
-              <Toaster />
-            </TooltipProvider>
-          </ConvexClientProvider>
-        </ClerkProvider>
+          <ClerkProvider
+            appearance={{
+              ...clerkAppearance,
+              baseTheme: shadcn,
+            }}
+          >
+            <ConvexClientProvider>
+              <TooltipProvider>
+                <AppLayout>{children}</AppLayout>
+                <Toaster />
+              </TooltipProvider>
+            </ConvexClientProvider>
+          </ClerkProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -7,7 +7,7 @@ export const clerkAppearance: Appearance = {
     colorInputBackground: 'var(--background)',
     colorInputText: 'var(--foreground)',
     colorTextOnPrimaryBackground: 'var(--primary-foreground)',
-    fontFamily: 'var(--font-geist-sans), sans-serif',
+    fontFamily: 'var(--font-sans), sans-serif',
   },
   elements: {
     formButtonPrimary:

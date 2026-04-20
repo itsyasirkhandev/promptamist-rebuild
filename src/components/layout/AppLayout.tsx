@@ -12,6 +12,7 @@ import {
   SidebarTrigger,
   SidebarInset,
 } from '@/components/ui/sidebar';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -36,6 +37,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
 
             <div className="flex items-center gap-4">
+              <ThemeToggle />
               <Authenticated>
                 <UserButton />
               </Authenticated>
