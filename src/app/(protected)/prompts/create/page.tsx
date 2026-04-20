@@ -9,6 +9,7 @@ import { useMutation } from 'convex/react';
 import { api } from '../../../../../convex/_generated/api';
 import { Icon } from '@iconify/react';
 import { toast } from 'sonner';
+import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,6 +31,14 @@ import {
   VariableFormValues,
 } from '@/components/prompts/VariableConfigModal';
 import { VariableList } from '@/components/prompts/VariableList';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
 
 const promptFormSchema = z.object({
   title: z.string().min(1, 'Title is required'),
@@ -155,18 +164,33 @@ export default function CreatePromptPage() {
 
 
   return (
-    <div className="container mx-auto max-w-5xl space-y-8 py-10">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Create New Prompt</h1>
-          <p className="text-muted-foreground">
-            Author static prompts or dynamic templates.
-          </p>
+    <div className="space-y-8 py-8 px-4 lg:px-8">
+      <div className="space-y-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/prompts">Prompts</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Create New</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-bold">Create New Prompt</h1>
+            <p className="text-muted-foreground">
+              Author static prompts or dynamic templates.
+            </p>
+          </div>
+          <Button variant="ghost" onClick={() => router.back()} className="hidden gap-2 md:flex">
+            <Icon icon="lucide:arrow-left" width={18} />
+            Back
+          </Button>
         </div>
-        <Button variant="ghost" onClick={() => router.back()} className="gap-2">
-          <Icon icon="lucide:arrow-left" width={18} />
-          Back
-        </Button>
       </div>
 
       <form

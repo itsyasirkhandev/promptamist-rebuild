@@ -3,7 +3,9 @@ import { Geist, Geist_Mono, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import ConvexClientProvider from '@/components/ConvexClientProvider';
+import { AppLayout } from '@/components/layout/AppLayout';
 import { cn } from '@/lib/utils';
+import { TooltipProvider } from '@/components/ui/tooltip';
 
 const ibmPlexSans = IBM_Plex_Sans({
   subsets: ['latin'],
@@ -44,7 +46,11 @@ export default function RootLayout({
     >
       <body className="flex min-h-full flex-col">
         <ClerkProvider>
-          <ConvexClientProvider>{children}</ConvexClientProvider>
+          <ConvexClientProvider>
+            <TooltipProvider>
+              <AppLayout>{children}</AppLayout>
+            </TooltipProvider>
+          </ConvexClientProvider>
         </ClerkProvider>
       </body>
     </html>

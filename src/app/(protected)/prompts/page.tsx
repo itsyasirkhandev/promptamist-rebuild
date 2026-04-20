@@ -4,7 +4,6 @@ import * as React from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { Doc } from '../../../../convex/_generated/dataModel';
-import { UserButton } from '@clerk/nextjs';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
@@ -14,12 +13,22 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { PromptCard } from '@/components/prompts/PromptCard';
 import { Badge } from '@/components/ui/badge';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function PromptsPage() {
   const user = useQuery(api.users.getCurrentUser);
   const prompts = useQuery(api.authed.prompts.getPrompts);
   const [search, setSearch] = React.useState('');
   const [selectedTag, setSelectedTag] = React.useState<string | null>(null);
+  const [activeTab, setActiveTab] = React.useState<'all' | 'templates' | 'static'>('all');
 
   const allTags = React.useMemo(() => {
     if (!prompts) return [];
@@ -37,13 +46,30 @@ export default function PromptsPage() {
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.content.toLowerCase().includes(search.toLowerCase());
       const matchesTag = !selectedTag || p.tags.includes(selectedTag);
-      return matchesSearch && matchesTag;
+      const matchesTab = 
+        activeTab === 'all' || 
+        (activeTab === 'templates' && p.isTemplate) || 
+        (activeTab === 'static' && !p.isTemplate);
+      return matchesSearch && matchesTag && matchesTab;
     });
-  }, [prompts, search, selectedTag]);
+  }, [prompts, search, selectedTag, activeTab]);
 
   return (
-    <div className="bg-background min-h-screen">
-      <div className="container mx-auto space-y-8 py-8">
+    <div className="space-y-8 py-8 px-4 lg:px-8">
+      <div className="space-y-4">
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/">Home</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Prompts</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <header className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">
@@ -60,15 +86,15 @@ export default function PromptsPage() {
                 New Prompt
               </Link>
             </Button>
-            <UserButton />
           </div>
         </header>
+      </div>
 
         {user === undefined || prompts === undefined ? (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {[1, 2, 3, 4].map((i) => (
               <div key={i} className="space-y-3">
-                <Skeleton className="h-[200px] w-full rounded-lg" />
+                <Skeleton className="h-[250px] w-full rounded-lg" />
               </div>
             ))}
           </div>
@@ -82,44 +108,54 @@ export default function PromptsPage() {
           </Alert>
         ) : (
           <div className="space-y-6">
-            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-              <div className="relative flex-grow">
-                <Icon
-                  icon="lucide:search"
-                  className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
-                  width={18}
-                />
-                <Input
-                  placeholder="Search prompts..."
-                  className="pl-10"
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </div>
-              <div className="flex flex-wrap gap-2">
-                {allTags.length > 0 && (
-                  <>
-                    <Badge
-                      variant={selectedTag === null ? 'default' : 'outline'}
-                      className="cursor-pointer"
-                      onClick={() => setSelectedTag(null)}
-                    >
-                      All
-                    </Badge>
-                    {allTags.map((tag) => (
+            <div className="flex flex-col gap-4">
+              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)} className="w-full">
+                <TabsList className="grid w-full max-w-[400px] grid-cols-3">
+                  <TabsTrigger value="all">All</TabsTrigger>
+                  <TabsTrigger value="templates">Templates</TabsTrigger>
+                  <TabsTrigger value="static">Static</TabsTrigger>
+                </TabsList>
+              </Tabs>
+              
+              <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
+                <div className="relative flex-grow w-full md:w-auto">
+                  <Icon
+                    icon="lucide:search"
+                    className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
+                    width={18}
+                  />
+                  <Input
+                    placeholder="Search prompts..."
+                    className="pl-10"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {allTags.length > 0 && (
+                    <>
                       <Badge
-                        key={tag}
-                        variant={selectedTag === tag ? 'default' : 'outline'}
+                        variant={selectedTag === null ? 'default' : 'outline'}
                         className="cursor-pointer"
-                        onClick={() =>
-                          setSelectedTag(tag === selectedTag ? null : tag)
-                        }
+                        onClick={() => setSelectedTag(null)}
                       >
-                        {tag}
+                        All Tags
                       </Badge>
-                    ))}
-                  </>
-                )}
+                      {allTags.map((tag) => (
+                        <Badge
+                          key={tag}
+                          variant={selectedTag === tag ? 'default' : 'outline'}
+                          className="cursor-pointer"
+                          onClick={() =>
+                            setSelectedTag(tag === selectedTag ? null : tag)
+                          }
+                        >
+                          {tag}
+                        </Badge>
+                      ))}
+                    </>
+                  )}
+                </div>
               </div>
             </div>
 
@@ -135,19 +171,19 @@ export default function PromptsPage() {
                 <div>
                   <h3 className="text-lg font-medium">No prompts found</h3>
                   <p className="text-muted-foreground mx-auto max-w-xs">
-                    {search || selectedTag
+                    {search || selectedTag || activeTab !== 'all'
                       ? 'No prompts match your current filters. Try adjusting them.'
                       : "You haven't created any prompts yet. Start building your library!"}
                   </p>
                 </div>
-                {!search && !selectedTag && (
+                {!search && !selectedTag && activeTab === 'all' && (
                   <Button asChild>
                     <Link href="/prompts/create">Create New Prompt</Link>
                   </Button>
                 )}
               </div>
             ) : (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                 {filteredPrompts.map((prompt) => (
                   <PromptCard key={prompt._id} prompt={prompt} />
                 ))}
@@ -156,6 +192,5 @@ export default function PromptsPage() {
           </div>
         )}
       </div>
-    </div>
   );
 }

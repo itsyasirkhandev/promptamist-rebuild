@@ -178,7 +178,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
 
   if (!unwrappedParams || prompt === undefined) {
     return (
-      <div className="container mx-auto max-w-5xl space-y-8 py-10">
+      <div className="space-y-8 py-8 px-4 lg:px-8">
         <Skeleton className="h-10 w-[300px]" />
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           <div className="space-y-6 md:col-span-2">
@@ -191,7 +191,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
   }
 
   return (
-    <div className="container mx-auto max-w-5xl space-y-8 py-10">
+    <div className="space-y-8 py-8 px-4 lg:px-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold">Edit Prompt</h1>
@@ -199,7 +199,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
             Modify your prompt or template settings.
           </p>
         </div>
-        <Button variant="ghost" onClick={() => router.back()} className="gap-2">
+        <Button variant="ghost" onClick={() => router.back()} className="hidden gap-2 md:flex">
           <Icon icon="lucide:arrow-left" width={18} />
           Back
         </Button>

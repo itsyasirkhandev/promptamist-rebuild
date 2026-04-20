@@ -165,7 +165,7 @@ export function PromptEditor({
   };
 
   return (
-    <div className="relative space-y-2">
+    <div className="@container relative space-y-2">
       <div className="mb-2 flex items-center justify-between">
         <span className="text-muted-foreground text-sm font-medium">
           Prompt Content
@@ -177,7 +177,7 @@ export function PromptEditor({
             variant="outline"
             disabled={!selectedText}
             onClick={openVariableModal}
-            className="h-8 gap-2"
+            className="hidden h-8 gap-2 @md:flex"
           >
             <Icon icon="lucide:variable" width={16} />
             Convert to Variable
@@ -188,8 +188,8 @@ export function PromptEditor({
       <div
         ref={editorRef}
         className={cn(
-          'prompt-editor border-input bg-background ring-offset-background focus-visible:ring-ring min-h-[300px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
-          'overflow-auto break-words whitespace-pre-wrap',
+          'prompt-editor border-input bg-background ring-offset-background focus-visible:ring-ring min-h-[300px] w-full rounded-md border px-3 py-2 text-base focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 @md:text-sm',
+          'overflow-auto break-words whitespace-pre-wrap overscroll-none',
         )}
         contentEditable
         onInput={handleInput}
@@ -197,6 +197,21 @@ export function PromptEditor({
         onKeyUp={handleSelection}
         onFocus={handleSelection}
       />
+
+      {isTemplate && selectedText && (
+        <div className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 @md:hidden">
+          <Button
+            type="button"
+            size="lg"
+            variant="default"
+            onClick={openVariableModal}
+            className="h-12 gap-2 rounded-full px-6 shadow-2xl animate-in fade-in zoom-in slide-in-from-bottom-4 duration-200"
+          >
+            <Icon icon="lucide:variable" width={20} />
+            Convert to Variable
+          </Button>
+        </div>
+      )}
 
       <VariableConfigModal
         isOpen={isModalOpen}

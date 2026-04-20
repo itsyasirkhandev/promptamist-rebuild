@@ -41,8 +41,8 @@ export function SortableVariableItem({
     <div
       ref={setNodeRef}
       style={style}
-      className={`bg-secondary/30 group flex items-center justify-between rounded-md p-2 ${
-        isDragging ? 'opacity-50 ring-2 ring-primary ring-offset-1' : ''
+      className={`@container bg-secondary/30 group flex items-center justify-between rounded-md p-2 transition-shadow ${
+        isDragging ? 'opacity-50 ring-2 ring-primary ring-offset-1 shadow-lg' : ''
       }`}
     >
       <div className="flex items-center gap-2 overflow-hidden">
@@ -50,10 +50,10 @@ export function SortableVariableItem({
           type="button"
           {...attributes}
           {...listeners}
-          className="text-muted-foreground hover:text-primary cursor-grab active:cursor-grabbing p-1 transition-colors"
+          className="text-muted-foreground hover:text-primary cursor-grab active:cursor-grabbing h-10 w-10 flex items-center justify-center transition-colors @md:h-8 @md:w-8"
           title="Drag to reorder"
         >
-          <Icon icon="lucide:grip-vertical" width={16} />
+          <Icon icon="lucide:grip-vertical" width={20} className="@md:w-4" />
         </button>
         <div className="space-y-0.5 overflow-hidden">
           <p className="text-primary truncate font-mono text-sm font-bold">
@@ -64,20 +64,20 @@ export function SortableVariableItem({
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-1 opacity-0 transition-opacity group-hover:opacity-100">
+      <div className="flex items-center gap-1 opacity-100 transition-opacity @md:opacity-0 @md:group-hover:opacity-100">
         <button
           type="button"
           onClick={onEdit}
-          className="text-muted-foreground hover:text-primary p-1 transition-colors"
+          className="text-muted-foreground hover:text-primary h-10 w-10 flex items-center justify-center transition-colors @md:h-8 @md:w-8"
         >
-          <Icon icon="lucide:edit" width={14} />
+          <Icon icon="lucide:edit" width={18} className="@md:w-4" />
         </button>
         <button
           type="button"
           onClick={onRemove}
-          className="text-muted-foreground hover:text-destructive p-1 transition-colors"
+          className="text-muted-foreground hover:text-destructive h-10 w-10 flex items-center justify-center transition-colors @md:h-8 @md:w-8"
         >
-          <Icon icon="lucide:trash-2" width={14} />
+          <Icon icon="lucide:trash-2" width={18} className="@md:w-4" />
         </button>
       </div>
     </div>
