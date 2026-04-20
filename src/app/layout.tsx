@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
+import { shadcn } from '@clerk/themes';
 import ConvexClientProvider from '@/components/ConvexClientProvider';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { cn } from '@/lib/utils';
@@ -45,7 +46,20 @@ export default function RootLayout({
       )}
     >
       <body className="flex min-h-full flex-col">
-        <ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            baseTheme: shadcn,
+            cssLayerName: 'clerk',
+            variables: {
+              colorBackground: '#ffffff',
+            },
+            elements: {
+              card: 'bg-background shadow-lg border border-border',
+              navbar: 'bg-background',
+              pageScrollBox: 'bg-background',
+            },
+          }}
+        >
           <ConvexClientProvider>
             <TooltipProvider>
               <AppLayout>{children}</AppLayout>
