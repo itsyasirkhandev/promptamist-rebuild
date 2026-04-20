@@ -19,4 +19,28 @@ export default defineSchema({
   })
     .index('by_clerkId', ['clerkId'])
     .index('by_email', ['email']),
+
+  prompts: defineTable({
+    userId: v.id('users'),
+    title: v.string(),
+    content: v.string(),
+    tags: v.array(v.string()),
+    isTemplate: v.boolean(),
+    variables: v.array(
+      v.object({
+        id: v.string(), // Client-side UUID
+        name: v.string(),
+        type: v.union(
+          v.literal('text'),
+          v.literal('number'),
+          v.literal('textarea'),
+          v.literal('choices'),
+          v.literal('list'),
+        ),
+        options: v.optional(v.array(v.string())),
+      }),
+    ),
+  })
+    .index('by_userId', ['userId'])
+    .index('by_userId_and_title', ['userId', 'title']),
 });
