@@ -32,10 +32,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               </Authenticated>
               <Link
                 href="/"
-                className="flex items-center gap-2 font-bold tracking-tight"
+                className="flex items-center gap-2 font-semibold tracking-tight"
               >
                 <Logo className="text-primary h-8 w-8" />
-                <span className="text-xl">Promptamist</span>
+                <span className="text-2xl">Promptamist</span>
               </Link>
             </div>
 

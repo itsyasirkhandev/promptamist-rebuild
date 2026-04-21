@@ -42,7 +42,7 @@ export class AuthErrorBoundary extends Component<Props, State> {
                 />
               </svg>
             </div>
-            <h2 className="text-foreground mb-2 text-xl font-semibold">
+            <h2 className="text-foreground mb-2 text-2xl font-semibold">
               Authentication Error
             </h2>
             <p className="text-muted-foreground mb-4 max-w-md">

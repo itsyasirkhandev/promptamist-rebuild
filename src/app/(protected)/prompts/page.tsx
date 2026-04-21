@@ -74,7 +74,7 @@ export default function PromptsPage() {
         </Breadcrumb>
         <header className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight">
+            <h1 className="text-4xl font-semibold tracking-tight">
               Prompts Dashboard
             </h1>
             <p className="text-muted-foreground">
@@ -177,7 +177,7 @@ export default function PromptsPage() {
                 />
               </div>
               <div>
-                <h3 className="text-lg font-medium">No prompts found</h3>
+                <h3 className="text-base font-semibold">No prompts found</h3>
                 <p className="text-muted-foreground mx-auto max-w-xs">
                   {search || selectedTag || activeTab !== 'all'
                     ? 'No prompts match your current filters. Try adjusting them.'

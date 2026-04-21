@@ -150,10 +150,10 @@ export function VariableConfigModal({
               placeholder="e.g. Tone, Language, Count"
             />
             {errors.name && (
-              <p className="text-destructive text-xs">{errors.name.message}</p>
+              <p className="text-destructive text-sm">{errors.name.message}</p>
             )}
             {isNameInvalid && (
-              <p className="text-destructive text-xs">
+              <p className="text-destructive text-sm">
                 A field with this name already exists
               </p>
             )}
@@ -206,7 +206,7 @@ export function VariableConfigModal({
               </div>
               <div className="bg-secondary/30 flex min-h-[40px] flex-wrap gap-2 rounded-md p-2">
                 {options.length === 0 && (
-                  <span className="text-muted-foreground text-xs italic">
+                  <span className="text-muted-foreground text-sm italic">
                     No options added yet
                   </span>
                 )}
@@ -228,7 +228,7 @@ export function VariableConfigModal({
                 ))}
               </div>
               {selectedType === 'choices' && options.length < 1 && (
-                <p className="text-xs text-amber-500">
+                <p className="text-sm text-amber-500">
                   Add at least 1 option for single select
                 </p>
               )}

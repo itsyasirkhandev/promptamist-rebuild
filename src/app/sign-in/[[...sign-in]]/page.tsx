@@ -19,7 +19,7 @@ export default function SignInPage() {
           <h1
             id="signin-title"
             tabIndex={-1}
-            className="text-foreground text-3xl font-bold tracking-tight"
+            className="text-foreground text-4xl font-semibold tracking-tight"
           >
             Welcome back
           </h1>

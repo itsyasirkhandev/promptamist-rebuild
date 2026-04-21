@@ -39,7 +39,7 @@ export function Sidebar() {
                   <span className="text-primary font-semibold">
                     Promptamist
                   </span>
-                  <span className="text-muted-foreground text-xs">v0.1.0</span>
+                  <span className="text-muted-foreground text-sm">v0.1.0</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -87,7 +87,7 @@ export function Sidebar() {
               />
               <div className="flex flex-col truncate group-data-[collapsible=icon]:hidden">
                 <span className="truncate text-sm font-semibold">Account</span>
-                <span className="text-muted-foreground truncate text-xs">
+                <span className="text-muted-foreground truncate text-sm">
                   Manage profile
                 </span>
               </div>

@@ -30,7 +30,7 @@ export function MobileBottomNav({ className }: { className?: string }) {
             )}
           >
             <Icon icon={item.icon} className="h-6 w-6" />
-            <span className="text-[10px] font-medium tracking-tight">
+            <span className="text-[10px] font-semibold tracking-tight">
               {item.title}
             </span>
           </Link>

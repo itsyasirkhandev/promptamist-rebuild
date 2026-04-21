@@ -57,7 +57,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
       <Card className="hover:border-primary/50 flex h-full flex-col transition-colors @md:shadow-md">
         <CardHeader className="pb-3 @md:pb-4">
           <div className="flex items-start justify-between gap-2">
-            <CardTitle className="line-clamp-2 text-lg @md:text-xl">
+            <CardTitle className="line-clamp-2 text-base @md:text-2xl">
               {prompt.title}
             </CardTitle>
             {prompt.isTemplate ? (
@@ -76,7 +76,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
               </Badge>
             )}
           </div>
-          <CardDescription className="flex items-center gap-2 text-xs @md:text-sm">
+          <CardDescription className="flex items-center gap-2 text-sm @md:text-sm">
             <Icon icon="lucide:clock" width={14} />
             {new Date(prompt._creationTime).toLocaleDateString()}
           </CardDescription>
@@ -91,7 +91,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
               <Badge
                 key={tag}
                 variant="secondary"
-                className="px-1.5 py-0 text-[10px] @md:text-xs"
+                className="px-2 py-0 text-[10px] @md:text-sm"
               >
                 {tag}
               </Badge>

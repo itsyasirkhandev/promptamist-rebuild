@@ -58,7 +58,7 @@ export function SortableVariableItem({
           <Icon icon="lucide:grip-vertical" width={20} className="@md:w-4" />
         </button>
         <div className="space-y-0.5 overflow-hidden">
-          <p className="text-primary truncate font-mono text-sm font-bold">
+          <p className="text-primary truncate font-mono text-sm font-semibold">
             {variable.name}
           </p>
           <p className="text-muted-foreground text-[10px] tracking-wider uppercase">

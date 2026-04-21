@@ -169,7 +169,7 @@ export function PromptEditor({
   return (
     <div className="@container relative space-y-2">
       <div className="mb-2 flex items-center justify-between">
-        <span className="text-muted-foreground text-sm font-medium">
+        <span className="text-muted-foreground text-sm font-semibold">
           Prompt Content
         </span>
         {isTemplate && (

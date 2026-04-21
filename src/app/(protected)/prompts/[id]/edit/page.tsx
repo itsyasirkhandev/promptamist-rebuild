@@ -199,7 +199,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
     <div className="space-y-8 px-4 py-8 lg:px-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold">Edit Prompt</h1>
+          <h1 className="text-4xl font-semibold">Edit Prompt</h1>
           <p className="text-muted-foreground">
             Modify your prompt or template settings.
           </p>
@@ -230,10 +230,10 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
                   id="title"
                   {...register('title')}
                   placeholder="e.g. Blog Post Generator"
-                  className="text-lg font-medium"
+                  className="text-base font-semibold"
                 />
                 {errors.title && (
-                  <p className="text-destructive text-xs">
+                  <p className="text-destructive text-sm">
                     {errors.title.message}
                   </p>
                 )}
@@ -255,7 +255,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
                 isTemplate={isTemplate || false}
               />
               {errors.content && (
-                <p className="text-destructive text-xs">
+                <p className="text-destructive text-sm">
                   {errors.content.message}
                 </p>
               )}
@@ -272,7 +272,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
               <div className="flex items-center justify-between space-x-2">
                 <div className="space-y-0.5">
                   <Label>Templating Mode</Label>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-muted-foreground text-sm">
                     Enable dynamic variables
                   </p>
                 </div>
@@ -352,7 +352,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
           <div className="pt-4">
             <Button
               type="submit"
-              className="h-12 w-full text-lg"
+              className="h-12 w-full text-base"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

@@ -86,7 +86,7 @@ export default function UseTemplatePage({ params }: PageProps) {
   if (prompt === null) {
     return (
       <div className="px-4 py-8 text-center lg:px-8">
-        <h1 className="text-2xl font-bold">Prompt not found</h1>
+        <h1 className="text-2xl font-semibold">Prompt not found</h1>
         <Button onClick={() => router.push('/prompts')} className="mt-4">
           Back to Dashboard
         </Button>
@@ -183,7 +183,7 @@ export default function UseTemplatePage({ params }: PageProps) {
           >
             <Icon icon="lucide:arrow-left" width={18} />
           </Button>
-          <h1 className="truncate text-xl font-bold">{prompt.title}</h1>
+          <h1 className="truncate text-2xl font-semibold">{prompt.title}</h1>
         </div>
       </div>
 
@@ -233,7 +233,7 @@ export default function UseTemplatePage({ params }: PageProps) {
 
           <ScrollArea className="flex-grow">
             <div className="mx-auto max-w-2xl p-8">
-              <div className="bg-background selection:bg-primary/20 min-h-[400px] rounded-xl border p-8 font-serif text-lg leading-relaxed break-words whitespace-pre-wrap shadow-sm">
+              <div className="bg-background selection:bg-primary/20 min-h-[400px] rounded-xl border p-8 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
                 {interpolatedContent
                   .split(/({{[^}]+}})/g)
                   .map((part: string, i: number) => {
@@ -293,7 +293,7 @@ export default function UseTemplatePage({ params }: PageProps) {
                 <Icon icon="lucide:copy" width={18} />
                 Copy Final Prompt
               </Button>
-              <div className="bg-background selection:bg-primary/20 min-h-[300px] rounded-xl border p-6 font-serif text-lg leading-relaxed break-words whitespace-pre-wrap shadow-sm">
+              <div className="bg-background selection:bg-primary/20 min-h-[300px] rounded-xl border p-6 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
                 {interpolatedContent
                   .split(/({{[^}]+}})/g)
                   .map((part: string, i: number) => {

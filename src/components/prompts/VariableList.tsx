@@ -66,7 +66,7 @@ export function VariableList({
 
   if (variables.length === 0) {
     return (
-      <p className="text-muted-foreground py-4 text-center text-xs italic">
+      <p className="text-muted-foreground py-4 text-center text-sm italic">
         No variables defined yet.
       </p>
     );

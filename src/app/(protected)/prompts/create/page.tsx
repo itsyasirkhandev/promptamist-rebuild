@@ -185,7 +185,7 @@ export default function CreatePromptPage() {
         </Breadcrumb>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold">Create New Prompt</h1>
+            <h1 className="text-4xl font-semibold">Create New Prompt</h1>
             <p className="text-muted-foreground">
               Author static prompts or dynamic templates.
             </p>
@@ -222,10 +222,10 @@ export default function CreatePromptPage() {
                   id="title"
                   {...register('title')}
                   placeholder="e.g. Blog Post Generator"
-                  className="text-lg font-medium"
+                  className="text-base font-semibold"
                 />
                 {errors.title && (
-                  <p className="text-destructive text-xs">
+                  <p className="text-destructive text-sm">
                     {errors.title.message}
                   </p>
                 )}
@@ -247,7 +247,7 @@ export default function CreatePromptPage() {
                 isTemplate={isTemplate}
               />
               {errors.content && (
-                <p className="text-destructive text-xs">
+                <p className="text-destructive text-sm">
                   {errors.content.message}
                 </p>
               )}
@@ -264,7 +264,7 @@ export default function CreatePromptPage() {
               <div className="flex items-center justify-between space-x-2">
                 <div className="space-y-0.5">
                   <Label>Templating Mode</Label>
-                  <p className="text-muted-foreground text-xs">
+                  <p className="text-muted-foreground text-sm">
                     Enable dynamic variables
                   </p>
                 </div>
@@ -344,7 +344,7 @@ export default function CreatePromptPage() {
           <div className="pt-4">
             <Button
               type="submit"
-              className="h-12 w-full text-lg"
+              className="h-12 w-full text-base"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

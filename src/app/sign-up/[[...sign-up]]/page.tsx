@@ -20,7 +20,7 @@ export default function SignUpPage() {
           <h1
             id="signup-title"
             tabIndex={-1}
-            className="text-foreground text-3xl font-bold tracking-tight"
+            className="text-foreground text-4xl font-semibold tracking-tight"
           >
             Create an account
           </h1>

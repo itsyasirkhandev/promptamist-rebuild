@@ -15,7 +15,7 @@ export function HomeClient() {
 
       <Authenticated>
         <section className="py-20 text-center">
-          <h1 className="mb-4 text-4xl font-bold">
+          <h1 className="mb-4 text-4xl font-semibold">
             Welcome back to Promptamist!
           </h1>
           <p className="text-muted-foreground mb-8">
@@ -29,10 +29,10 @@ export function HomeClient() {
 
       <Unauthenticated>
         <section className="py-20 text-center">
-          <h1 className="mb-6 text-5xl font-bold">
+          <h1 className="mb-6 text-4xl font-semibold">
             AI-Powered Prompt Management
           </h1>
-          <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-xl">
+          <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-2xl">
             Organize, test, and optimize your AI prompts with our intelligent
             platform built for power users.
           </p>

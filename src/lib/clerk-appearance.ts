@@ -17,8 +17,9 @@ export const clerkAppearance: Appearance = {
     headerTitle: 'text-foreground font-semibold',
     headerSubtitle: 'text-muted-foreground text-sm',
     socialButtonsBlockButton: 'border-input hover:bg-accent',
-    footerActionLink: 'text-primary hover:text-primary/80 text-sm font-medium',
-    formFieldLabel: 'text-foreground text-sm font-medium',
+    footerActionLink:
+      'text-primary hover:text-primary/80 text-sm font-semibold',
+    formFieldLabel: 'text-foreground text-sm font-semibold',
     formResendCodeLink: 'text-primary hover:text-primary/80 text-sm',
     alertBox: 'border-destructive bg-destructive/10 text-destructive',
   },
