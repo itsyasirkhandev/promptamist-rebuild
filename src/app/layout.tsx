@@ -1,5 +1,10 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, IBM_Plex_Sans, Noto_Sans, Playfair_Display } from 'next/font/google';
+import {
+  Geist,
+  Geist_Mono,
+  Noto_Sans,
+  Playfair_Display,
+} from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { shadcn } from '@clerk/themes';
@@ -11,9 +16,12 @@ import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { clerkAppearance } from '@/lib/clerk-appearance';
 
-const playfairDisplayHeading = Playfair_Display({subsets:['latin'],variable:'--font-heading'});
+const playfairDisplayHeading = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-heading',
+});
 
-const notoSans = Noto_Sans({subsets:['latin'],variable:'--font-sans'});
+const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -73,12 +81,14 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-              'h-full',
-              'antialiased',
-              geistSans.variable,
-              geistMono.variable,
-              'font-sans',
-            , "font-sans", notoSans.variable, playfairDisplayHeading.variable)}
+        'h-full',
+        'antialiased',
+        geistSans.variable,
+        geistMono.variable,
+        'font-sans',
+        notoSans.variable,
+        playfairDisplayHeading.variable,
+      )}
     >
       <body className="flex min-h-full flex-col">
         <ThemeProvider
