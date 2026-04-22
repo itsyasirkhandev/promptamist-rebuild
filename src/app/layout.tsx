@@ -34,6 +34,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://repromptamist.vercel.app'),
   title: {
     default: 'Promptamist | AI-Powered Prompt Management',
     template: '%s | Promptamist',
