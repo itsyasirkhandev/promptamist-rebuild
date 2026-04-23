@@ -7,7 +7,7 @@ export const getPromptBySlug = query({
     const prompt = await ctx.db
       .query('prompts')
       .withIndex('by_publicSlug', (q) => q.eq('publicSlug', args.slug))
-      .first();
+      .unique();
 
     if (!prompt) {
       return null;

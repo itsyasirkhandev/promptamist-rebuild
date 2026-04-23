@@ -1,7 +1,7 @@
 import { v } from 'convex/values';
 import { authedMutation, authedQuery, getUserId } from './helpers';
 import { Effect } from 'effect';
-import { NotFound } from '../errors';
+import { NotFound, ValidationError } from '../errors';
 import { runEffect } from '../effect';
 
 export const createPrompt = authedMutation({
@@ -30,6 +30,17 @@ export const createPrompt = authedMutation({
   handler: async (ctx, args) => {
     return await runEffect(
       Effect.gen(function* () {
+        if (args.title.length > 300) {
+          yield* new ValidationError({
+            message: 'Title must be less than 300 characters',
+          });
+        }
+        if (args.content.length > 50000) {
+          yield* new ValidationError({
+            message: 'Content must be less than 50000 characters',
+          });
+        }
+
         const userId = yield* getUserId(ctx, ctx.identity.subject);
 
         let publicSlug: string | undefined = undefined;
@@ -38,8 +49,31 @@ export const createPrompt = authedMutation({
             .toLowerCase()
             .replace(/[^a-z0-9]+/g, '-')
             .replace(/(^-|-$)/g, '');
-          const randomSuffix = Math.random().toString(36).substring(2, 8);
-          publicSlug = `${baseSlug}-${randomSuffix}`;
+
+          // Try to find a unique slug
+          let attempts = 0;
+          while (attempts < 5) {
+            const randomSuffix = Math.random().toString(36).substring(2, 8);
+            const candidate = `${baseSlug}-${randomSuffix}`;
+            const existing = yield* Effect.promise(() =>
+              ctx.db
+                .query('prompts')
+                .withIndex('by_publicSlug', (q) =>
+                  q.eq('publicSlug', candidate),
+                )
+                .unique(),
+            );
+            if (!existing) {
+              publicSlug = candidate;
+              break;
+            }
+            attempts++;
+          }
+
+          if (!publicSlug) {
+            // Fallback if somehow we hit 5 collisions (very unlikely)
+            publicSlug = `${baseSlug}-${Date.now().toString(36)}`;
+          }
         }
 
         return yield* Effect.promise(() =>
@@ -65,7 +99,7 @@ export const getPrompts = authedQuery({
             .query('prompts')
             .withIndex('by_userId', (q) => q.eq('userId', userId))
             .order('desc')
-            .collect(),
+            .take(100),
         );
       }),
     );
@@ -115,6 +149,16 @@ export const updatePrompt = authedMutation({
   handler: async (ctx, args) => {
     return await runEffect(
       Effect.gen(function* () {
+        if (args.title.length > 300) {
+          yield* new ValidationError({
+            message: 'Title must be less than 300 characters',
+          });
+        }
+        if (args.content.length > 50000) {
+          yield* new ValidationError({
+            message: 'Content must be less than 50000 characters',
+          });
+        }
         const userId = yield* getUserId(ctx, ctx.identity.subject);
         const prompt = yield* Effect.promise(() => ctx.db.get(args.id));
         if (!prompt || prompt.userId !== userId) {
@@ -126,14 +170,35 @@ export const updatePrompt = authedMutation({
 
         let publicSlug = prompt!.publicSlug;
         if (updates.isPublic && !prompt!.isPublic) {
-          // Transitioned to public, generate a slug if it doesn't have one
+          // Transitioned to public, generate a unique slug if it doesn't have one
           if (!publicSlug) {
             const baseSlug = updates.title
               .toLowerCase()
               .replace(/[^a-z0-9]+/g, '-')
               .replace(/(^-|-$)/g, '');
-            const randomSuffix = Math.random().toString(36).substring(2, 8);
-            publicSlug = `${baseSlug}-${randomSuffix}`;
+
+            let attempts = 0;
+            while (attempts < 5) {
+              const randomSuffix = Math.random().toString(36).substring(2, 8);
+              const candidate = `${baseSlug}-${randomSuffix}`;
+              const existing = yield* Effect.promise(() =>
+                ctx.db
+                  .query('prompts')
+                  .withIndex('by_publicSlug', (q) =>
+                    q.eq('publicSlug', candidate),
+                  )
+                  .unique(),
+              );
+              if (!existing) {
+                publicSlug = candidate;
+                break;
+              }
+              attempts++;
+            }
+
+            if (!publicSlug) {
+              publicSlug = `${baseSlug}-${Date.now().toString(36)}`;
+            }
           }
         } else if (!updates.isPublic && prompt!.isPublic) {
           // Transitioned to private, we keep the slug so that if made public again, it has the same URL.

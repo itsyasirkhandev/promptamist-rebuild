@@ -40,10 +40,17 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { handleError } from '@/lib/error-handler';
+import { cn } from '@/lib/utils';
 
 const promptFormSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  content: z.string().min(1, 'Content is required'),
+  title: z
+    .string()
+    .min(1, 'Title is required')
+    .max(300, 'Title must be less than 300 characters'),
+  content: z
+    .string()
+    .min(1, 'Content is required')
+    .max(50000, 'Content must be less than 50000 characters'),
   tags: z.array(z.string()),
   isTemplate: z.boolean(),
   isPublic: z.boolean().optional(),
@@ -98,6 +105,7 @@ export default function CreatePromptPage() {
     name: 'variables',
   });
 
+  const title = useWatch({ control, name: 'title' });
   const content = useWatch({ control, name: 'content' });
   const isTemplate = useWatch({ control, name: 'isTemplate' });
   const isPublic = useWatch({ control, name: 'isPublic' });
@@ -220,7 +228,19 @@ export default function CreatePromptPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="space-y-2">
-                <Label htmlFor="title">Prompt Title</Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="title">Prompt Title</Label>
+                  <span
+                    className={cn(
+                      'text-[10px] font-medium tracking-wider uppercase',
+                      (title?.length || 0) > 300
+                        ? 'text-destructive'
+                        : 'text-muted-foreground',
+                    )}
+                  >
+                    {title?.length || 0} / 300
+                  </span>
+                </div>
                 <Input
                   id="title"
                   {...register('title')}
@@ -234,21 +254,35 @@ export default function CreatePromptPage() {
                 )}
               </div>
 
-              <PromptEditor
-                content={content}
-                onChange={(val) => setValue('content', val)}
-                variables={variables}
-                onVariablesChange={(vars) => {
-                  // If we added a new variable, use append
-                  if (vars.length > variables.length) {
-                    const newVar = vars[vars.length - 1];
-                    append(newVar);
-                  } else {
-                    setValue('variables', vars);
-                  }
-                }}
-                isTemplate={isTemplate}
-              />
+              <div className="space-y-2">
+                <PromptEditor
+                  content={content}
+                  onChange={(val) => setValue('content', val)}
+                  variables={variables}
+                  onVariablesChange={(vars) => {
+                    // If we added a new variable, use append
+                    if (vars.length > variables.length) {
+                      const newVar = vars[vars.length - 1];
+                      append(newVar);
+                    } else {
+                      setValue('variables', vars);
+                    }
+                  }}
+                  isTemplate={isTemplate}
+                />
+                <div className="flex justify-end">
+                  <span
+                    className={cn(
+                      'text-[10px] font-medium tracking-wider uppercase',
+                      (content?.length || 0) > 50000
+                        ? 'text-destructive'
+                        : 'text-muted-foreground',
+                    )}
+                  >
+                    {content?.length || 0} / 50000
+                  </span>
+                </div>
+              </div>
               {errors.content && (
                 <p className="text-destructive text-sm">
                   {errors.content.message}

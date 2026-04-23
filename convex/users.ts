@@ -15,7 +15,7 @@ export const getCurrentUser = authedQuery({
             .withIndex('by_clerkId', (q) =>
               q.eq('clerkId', ctx.identity.subject),
             )
-            .first(),
+            .unique(),
         );
       }),
     );
@@ -33,7 +33,7 @@ export const upsertFromClerk = internalMutation({
     const existingUser = await ctx.db
       .query('users')
       .withIndex('by_clerkId', (q) => q.eq('clerkId', args.clerkId))
-      .first();
+      .unique();
 
     if (existingUser) {
       const id = existingUser._id;

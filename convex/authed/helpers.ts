@@ -20,7 +20,7 @@ export const getUserId = (ctx: QueryCtx | MutationCtx, clerkId: string) =>
       ctx.db
         .query('users')
         .withIndex('by_clerkId', (q) => q.eq('clerkId', clerkId))
-        .first(),
+        .unique(),
     );
     if (!user) {
       yield* new NotFound({ message: 'User not found' });
