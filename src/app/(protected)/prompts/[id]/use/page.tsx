@@ -109,7 +109,14 @@ export default function UseTemplatePage({ params }: PageProps) {
 
   const renderVariableInput = (v: PromptVariable) => (
     <div key={v.id} className="space-y-2">
-      <Label className="text-sm font-semibold">{v.name}</Label>
+      <div className="flex items-center justify-between">
+        <Label className="text-sm font-semibold">{v.name}</Label>
+        {v.defaultValue && (
+          <span className="text-muted-foreground text-[10px] italic">
+            (default: {v.defaultValue})
+          </span>
+        )}
+      </div>
 
       {v.type === 'text' && (
         <Input
@@ -157,9 +164,6 @@ export default function UseTemplatePage({ params }: PageProps) {
 
       {v.type === 'list' && (
         <div className="space-y-2">
-          <p className="text-muted-foreground text-[10px] italic">
-            Comma separated values
-          </p>
           <Input
             value={formValues[v.name] || ''}
             onChange={(e) => setValue(v.name, e.target.value)}

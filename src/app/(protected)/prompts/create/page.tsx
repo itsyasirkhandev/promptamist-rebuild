@@ -53,6 +53,7 @@ const promptFormSchema = z.object({
       name: z.string(),
       type: z.enum(['text', 'number', 'textarea', 'choices', 'list']),
       options: z.array(z.string()).optional(),
+      defaultValue: z.string().optional(),
     }),
   ),
 });

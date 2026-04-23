@@ -156,9 +156,16 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
           <CardContent className="grid gap-6 sm:grid-cols-2">
             {(prompt.variables as Variable[]).map((variable) => (
               <div key={variable.id} className="space-y-2">
-                <Label htmlFor={variable.id} className="font-semibold">
-                  {variable.name}
-                </Label>
+                <div className="flex items-center justify-between">
+                  <Label htmlFor={variable.id} className="font-semibold">
+                    {variable.name}
+                  </Label>
+                  {variable.defaultValue && (
+                    <span className="text-muted-foreground text-[10px] italic">
+                      (default: {variable.defaultValue})
+                    </span>
+                  )}
+                </div>
                 {variable.type === 'text' && (
                   <Input
                     id={variable.id}
