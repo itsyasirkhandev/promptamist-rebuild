@@ -40,7 +40,10 @@ export default defineSchema({
         options: v.optional(v.array(v.string())),
       }),
     ),
+    isPublic: v.optional(v.boolean()),
+    publicSlug: v.optional(v.string()),
   })
     .index('by_userId', ['userId'])
-    .index('by_userId_and_title', ['userId', 'title']),
+    .index('by_userId_and_title', ['userId', 'title'])
+    .index('by_publicSlug', ['publicSlug']),
 });

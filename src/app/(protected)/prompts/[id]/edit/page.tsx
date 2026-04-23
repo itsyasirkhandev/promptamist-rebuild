@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useQuery, useMutation } from 'convex/react';
@@ -33,6 +33,7 @@ const promptFormSchema = z.object({
   content: z.string().min(1, 'Content is required'),
   tags: z.array(z.string()),
   isTemplate: z.boolean(),
+  isPublic: z.boolean().optional(),
   variables: z.array(
     z.object({
       id: z.string(),
@@ -75,7 +76,6 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
     register,
     handleSubmit,
     setValue,
-    watch,
     reset,
     control,
     formState: { isSubmitting, errors },
@@ -101,14 +101,16 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
         content: prompt.content,
         tags: prompt.tags,
         isTemplate: prompt.isTemplate,
+        isPublic: prompt.isPublic ?? false,
         variables: prompt.variables as PromptFormValues['variables'],
       });
     }
   }, [prompt, reset]);
 
-  const content = watch('content');
-  const isTemplate = watch('isTemplate');
-  const tags = watch('tags');
+  const content = useWatch({ control, name: 'content' });
+  const isTemplate = useWatch({ control, name: 'isTemplate' });
+  const isPublic = useWatch({ control, name: 'isPublic' });
+  const tags = useWatch({ control, name: 'tags' }) as string[];
 
   const onSubmit = async (data: PromptFormValues) => {
     if (!unwrappedParams) return;
@@ -281,6 +283,44 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
                   onCheckedChange={(val) => setValue('isTemplate', val)}
                 />
               </div>
+
+              <div className="flex items-center justify-between space-x-2">
+                <div className="space-y-0.5">
+                  <Label>Make Public</Label>
+                  <p className="text-muted-foreground text-sm">
+                    Anyone with the link can access this prompt
+                  </p>
+                </div>
+                <Switch
+                  checked={!!isPublic}
+                  onCheckedChange={(val) => setValue('isPublic', val)}
+                />
+              </div>
+
+              {isPublic && prompt?.publicSlug && (
+                <div className="bg-muted flex items-center space-x-2 rounded-md p-2">
+                  <Input
+                    readOnly
+                    value={`${typeof window !== 'undefined' ? window.location.origin : ''}/p/${prompt.publicSlug}`}
+                    className="h-8 bg-transparent"
+                  />
+                  <Button
+                    type="button"
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                      if (typeof window !== 'undefined') {
+                        navigator.clipboard.writeText(
+                          `${window.location.origin}/p/${prompt.publicSlug}`,
+                        );
+                        toast.success('Link copied to clipboard');
+                      }
+                    }}
+                  >
+                    Copy
+                  </Button>
+                </div>
+              )}
 
               <Separator />
 

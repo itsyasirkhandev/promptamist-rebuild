@@ -10,6 +10,7 @@ export const createPrompt = authedMutation({
     content: v.string(),
     tags: v.array(v.string()),
     isTemplate: v.boolean(),
+    isPublic: v.optional(v.boolean()),
     variables: v.array(
       v.object({
         id: v.string(),
@@ -29,10 +30,22 @@ export const createPrompt = authedMutation({
     return await runEffect(
       Effect.gen(function* () {
         const userId = yield* getUserId(ctx, ctx.identity.subject);
+
+        let publicSlug: string | undefined = undefined;
+        if (args.isPublic) {
+          const baseSlug = args.title
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)/g, '');
+          const randomSuffix = Math.random().toString(36).substring(2, 8);
+          publicSlug = `${baseSlug}-${randomSuffix}`;
+        }
+
         return yield* Effect.promise(() =>
           ctx.db.insert('prompts', {
             userId,
             ...args,
+            publicSlug,
           }),
         );
       }),
@@ -81,6 +94,7 @@ export const updatePrompt = authedMutation({
     content: v.string(),
     tags: v.array(v.string()),
     isTemplate: v.boolean(),
+    isPublic: v.optional(v.boolean()),
     variables: v.array(
       v.object({
         id: v.string(),
@@ -103,9 +117,31 @@ export const updatePrompt = authedMutation({
         const prompt = yield* Effect.promise(() => ctx.db.get(args.id));
         if (!prompt || prompt.userId !== userId) {
           yield* new NotFound({ message: 'Prompt not found' });
+          return;
         }
+
         const { id, ...updates } = args;
-        yield* Effect.promise(() => ctx.db.patch(id, updates));
+
+        let publicSlug = prompt!.publicSlug;
+        if (updates.isPublic && !prompt!.isPublic) {
+          // Transitioned to public, generate a slug if it doesn't have one
+          if (!publicSlug) {
+            const baseSlug = updates.title
+              .toLowerCase()
+              .replace(/[^a-z0-9]+/g, '-')
+              .replace(/(^-|-$)/g, '');
+            const randomSuffix = Math.random().toString(36).substring(2, 8);
+            publicSlug = `${baseSlug}-${randomSuffix}`;
+          }
+        } else if (!updates.isPublic && prompt!.isPublic) {
+          // Transitioned to private, we keep the slug so that if made public again, it has the same URL.
+          // You could optionally remove it, but keeping it is usually better for link stability if accidentally toggled.
+          // However, the spec says "when unauthenticated user access it... it will throw unauthorized". So just leaving publicSlug is fine.
+        }
+
+        yield* Effect.promise(() =>
+          ctx.db.patch(id, { ...updates, publicSlug }),
+        );
       }),
     );
   },

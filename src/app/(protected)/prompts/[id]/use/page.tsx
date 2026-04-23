@@ -6,7 +6,7 @@ import { api } from '../../../../../../convex/_generated/api';
 import { Id } from '../../../../../../convex/_generated/dataModel';
 import { useRouter } from 'next/navigation';
 import { Icon } from '@iconify/react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
@@ -52,8 +52,8 @@ export default function UseTemplatePage({ params }: PageProps) {
     id: id as Id<'prompts'>,
   });
 
-  const { watch, setValue } = useForm<Record<string, string>>();
-  const formValues = watch();
+  const { setValue, control } = useForm<Record<string, string>>();
+  const formValues = useWatch({ control });
 
   const interpolatedContent = React.useMemo(() => {
     if (!prompt) return '';

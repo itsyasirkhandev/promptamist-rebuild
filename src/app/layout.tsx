@@ -2,8 +2,7 @@ import type { Metadata } from 'next';
 import {
   Geist,
   Geist_Mono,
-  Noto_Sans,
-  Playfair_Display,
+  Inter,
 } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
@@ -16,12 +15,9 @@ import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { clerkAppearance } from '@/lib/clerk-appearance';
 
-const playfairDisplayHeading = Playfair_Display({
-  subsets: ['latin'],
-  variable: '--font-heading',
-});
+const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
-const notoSans = Noto_Sans({ subsets: ['latin'], variable: '--font-sans' });
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -87,8 +83,8 @@ export default function RootLayout({
         geistSans.variable,
         geistMono.variable,
         'font-sans',
-        notoSans.variable,
-        playfairDisplayHeading.variable,
+        inter.variable,
+        geistHeading.variable,
       )}
     >
       <body className="flex min-h-full flex-col">
