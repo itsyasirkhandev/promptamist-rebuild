@@ -82,7 +82,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="flex-grow pb-3 @md:pb-4">
+        <CardContent className="grow pb-3 @md:pb-4">
           <p className="text-muted-foreground line-clamp-3 text-sm whitespace-pre-wrap @md:line-clamp-4">
             {prompt.content}
           </p>
@@ -101,7 +101,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
 
         <CardFooter className="flex flex-wrap gap-2 border-t pt-3 @md:pt-4">
           {prompt.isTemplate ? (
-            <Button asChild className="h-10 flex-grow gap-2 @md:h-11">
+            <Button asChild className="h-10 grow gap-2 @md:h-11">
               <Link href={`/prompts/${prompt._id}/use`}>
                 <Icon icon="lucide:play" width={16} />
                 <span className="hidden @xs:inline">Use Template</span>
@@ -112,7 +112,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
             <Button
               variant="secondary"
               onClick={copyToClipboard}
-              className="h-10 flex-grow gap-2 @md:h-11"
+              className="h-10 grow gap-2 @md:h-11"
             >
               <Icon icon="lucide:copy" width={16} />
               <span className="hidden @xs:inline">Copy Prompt</span>
@@ -121,6 +121,21 @@ export function PromptCard({ prompt }: PromptCardProps) {
           )}
 
           <div className="flex gap-2">
+            {prompt.isPublic && prompt.publicSlug && (
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => {
+                  const url = `${window.location.origin}/p/${prompt.publicSlug}`;
+                  navigator.clipboard.writeText(url);
+                  toast.success('Share link copied to clipboard');
+                }}
+                title="Copy Share Link"
+                className="h-10 w-10 @md:h-11 @md:w-11"
+              >
+                <Icon icon="lucide:link" width={18} />
+              </Button>
+            )}
             <Button
               variant="outline"
               size="icon"

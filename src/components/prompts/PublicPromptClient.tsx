@@ -68,9 +68,9 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
   if (prompt === undefined) {
     return (
       <div className="mx-auto max-w-3xl space-y-8 p-4 pt-12">
-        <Skeleton className="h-10 w-[250px]" />
+        <Skeleton className="h-10 w-62.5" />
         <Skeleton className="h-20 w-full" />
-        <Skeleton className="h-[300px] w-full" />
+        <Skeleton className="h-75 w-full" />
       </div>
     );
   }
@@ -95,7 +95,21 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-4 py-12">
       <div className="space-y-2">
-        <h1 className="text-3xl font-bold">{prompt.title}</h1>
+        <div className="flex items-start justify-between gap-4">
+          <h1 className="text-3xl font-bold">{prompt.title}</h1>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              toast.success('Share link copied to clipboard!');
+            }}
+            className="gap-2 shrink-0"
+          >
+            <Icon icon="lucide:link" width={16} />
+            <span className="hidden sm:inline">Copy Link</span>
+          </Button>
+        </div>
         {prompt.tags && prompt.tags.length > 0 && (
           <div className="flex flex-wrap gap-2 pt-2">
             {prompt.tags.map((tag: string) => (
@@ -150,7 +164,7 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
                       handleVariableChange(variable.name, e.target.value)
                     }
                     placeholder={`Enter ${variable.name}...`}
-                    className="min-h-[100px]"
+                    className="min-h-25"
                   />
                 )}
                 {variable.type === 'choices' && variable.options && (
