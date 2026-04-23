@@ -29,7 +29,7 @@ const variableSchema = z.object({
   name: z
     .string()
     .min(1, 'Name is required')
-    .regex(/^[a-zA-Z0-9_]+$/, 'Only letters, numbers and underscores'),
+    .regex(/^[a-zA-Z0-9_ ]+$/, 'Only letters, numbers, underscores and spaces'),
   type: z.enum(['text', 'number', 'textarea', 'choices', 'list']),
   options: z.array(z.string()).optional(),
   defaultValue: z.string().optional(),
@@ -66,7 +66,7 @@ export function VariableConfigModal({
   } = useForm<VariableFormValues>({
     resolver: zodResolver(variableSchema),
     defaultValues: initialData || {
-      name: initialValue?.replace(/[^a-zA-Z0-9_]/g, '') || '',
+      name: initialValue?.replace(/[^a-zA-Z0-9_ ]/g, '') || '',
       type: 'text',
       options: [],
       defaultValue: '',
@@ -84,7 +84,7 @@ export function VariableConfigModal({
         reset(initialData);
       } else {
         reset({
-          name: initialValue?.replace(/[^a-zA-Z0-9_]/g, '') || '',
+          name: initialValue?.replace(/[^a-zA-Z0-9_ ]/g, '') || '',
           type: 'text',
           options: [],
           defaultValue: '',
