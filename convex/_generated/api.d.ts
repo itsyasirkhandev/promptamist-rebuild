@@ -14,6 +14,7 @@ import type * as effect from "../effect.js";
 import type * as errors from "../errors.js";
 import type * as http from "../http.js";
 import type * as private_helpers from "../private/helpers.js";
+import type * as publicPrompts from "../publicPrompts.js";
 import type * as users from "../users.js";
 
 import type {
@@ -29,6 +30,7 @@ declare const fullApi: ApiFromModules<{
   errors: typeof errors;
   http: typeof http;
   "private/helpers": typeof private_helpers;
+  publicPrompts: typeof publicPrompts;
   users: typeof users;
 }>;
 

@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useMutation } from 'convex/react';
@@ -46,6 +46,7 @@ const promptFormSchema = z.object({
   content: z.string().min(1, 'Content is required'),
   tags: z.array(z.string()),
   isTemplate: z.boolean(),
+  isPublic: z.boolean().optional(),
   variables: z.array(
     z.object({
       id: z.string(),
@@ -71,7 +72,6 @@ export default function CreatePromptPage() {
     register,
     handleSubmit,
     setValue,
-    watch,
     control,
     formState: { isSubmitting, errors },
   } = useForm<PromptFormValues>({
@@ -81,6 +81,7 @@ export default function CreatePromptPage() {
       content: '',
       tags: [],
       isTemplate: false,
+      isPublic: false,
       variables: [],
     },
   });
@@ -96,9 +97,10 @@ export default function CreatePromptPage() {
     name: 'variables',
   });
 
-  const content = watch('content');
-  const isTemplate = watch('isTemplate');
-  const tags = watch('tags');
+  const content = useWatch({ control, name: 'content' });
+  const isTemplate = useWatch({ control, name: 'isTemplate' });
+  const isPublic = useWatch({ control, name: 'isPublic' });
+  const tags = useWatch({ control, name: 'tags' }) as string[];
 
   const onSubmit = async (data: PromptFormValues) => {
     try {
@@ -271,6 +273,19 @@ export default function CreatePromptPage() {
                 <Switch
                   checked={isTemplate}
                   onCheckedChange={(val) => setValue('isTemplate', val)}
+                />
+              </div>
+
+              <div className="flex items-center justify-between space-x-2">
+                <div className="space-y-0.5">
+                  <Label>Make Public</Label>
+                  <p className="text-muted-foreground text-sm">
+                    Anyone with the link can access this prompt
+                  </p>
+                </div>
+                <Switch
+                  checked={!!isPublic}
+                  onCheckedChange={(val) => setValue('isPublic', val)}
                 />
               </div>
 

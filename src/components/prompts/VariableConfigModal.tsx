@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Icon } from '@iconify/react';
@@ -52,15 +52,14 @@ export function VariableConfigModal({
   initialData,
   existingVariables = [],
 }: VariableConfigModalProps) {
-  const [options, setOptions] = React.useState<string[]>([]);
   const [newOption, setNewOption] = React.useState('');
 
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     reset,
+    control,
     formState: { errors },
   } = useForm<VariableFormValues>({
     resolver: zodResolver(variableSchema),
@@ -71,21 +70,20 @@ export function VariableConfigModal({
     },
   });
 
-  const selectedType = watch('type');
-  const currentName = watch('name');
+  const selectedType = useWatch({ control, name: 'type' });
+  const currentName = useWatch({ control, name: 'name' });
+  const options = useWatch({ control, name: 'options' }) || [];
 
   React.useEffect(() => {
     if (isOpen) {
       if (initialData) {
         reset(initialData);
-        setOptions(initialData.options || []);
       } else {
         reset({
           name: initialValue?.replace(/[^a-zA-Z0-9_]/g, '') || '',
           type: 'text',
           options: [],
         });
-        setOptions([]);
       }
     }
   }, [isOpen, initialValue, initialData, reset]);
@@ -93,7 +91,6 @@ export function VariableConfigModal({
   const addOption = () => {
     if (newOption.trim()) {
       const updatedOptions = [...options, newOption.trim()];
-      setOptions(updatedOptions);
       setValue('options', updatedOptions);
       setNewOption('');
     }
@@ -101,7 +98,6 @@ export function VariableConfigModal({
 
   const removeOption = (index: number) => {
     const updatedOptions = options.filter((_, i) => i !== index);
-    setOptions(updatedOptions);
     setValue('options', updatedOptions);
   };
 
@@ -123,9 +119,9 @@ export function VariableConfigModal({
   };
 
   const isNameInvalid = !initialData
-    ? existingVariables.includes(currentName)
+    ? existingVariables.includes(currentName || '')
     : currentName !== initialData.name &&
-      existingVariables.includes(currentName);
+      existingVariables.includes(currentName || '');
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
