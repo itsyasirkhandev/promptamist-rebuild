@@ -19,6 +19,7 @@ export const getPromptBySlug = query({
 
     // It shouldn't contain sensitive user details other than what's in the prompt.
     return {
+      _creationTime: prompt._creationTime,
       title: prompt.title,
       content: prompt.content,
       tags: prompt.tags,

@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { usePathname } from 'next/navigation';
 import { Sidebar } from './Sidebar';
 import { MobileBottomNav } from './MobileBottomNav';
 import { Authenticated, Unauthenticated } from 'convex/react';
@@ -17,6 +18,34 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import { Logo } from '@/components/Logo';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isPublicPromptPage = pathname?.startsWith('/p/');
+
+  if (isPublicPromptPage) {
+    return (
+      <div className="bg-background flex min-h-screen w-full flex-col">
+        <header className="bg-background/80 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 backdrop-blur">
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-semibold tracking-tight"
+          >
+            <Logo className="text-primary h-8 w-8" />
+            <span className="text-2xl">Promptamist</span>
+          </Link>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Unauthenticated>
+              <Button size="sm" asChild>
+                <Link href="/sign-in">Sign In</Link>
+              </Button>
+            </Unauthenticated>
+          </div>
+        </header>
+        <main className="flex-1">{children}</main>
+      </div>
+    );
+  }
+
   return (
     <SidebarProvider>
       <div className="bg-background flex min-h-screen w-full">

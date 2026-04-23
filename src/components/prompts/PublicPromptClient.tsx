@@ -80,7 +80,7 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
       <div className="mx-auto max-w-xl p-4 pt-20 text-center">
         <Card>
           <CardHeader>
-            <CardTitle className="text-2xl text-destructive">
+            <CardTitle className="text-destructive text-2xl">
               Prompt Not Found
             </CardTitle>
             <CardDescription>
@@ -94,9 +94,16 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
 
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-4 py-12">
-      <div className="space-y-2">
+      <div className="space-y-4">
         <div className="flex items-start justify-between gap-4">
-          <h1 className="text-3xl font-bold">{prompt.title}</h1>
+          <div className="space-y-1">
+            <h1 className="text-3xl font-bold">{prompt.title}</h1>
+            <p className="text-muted-foreground flex items-center gap-1.5 text-sm">
+              <Icon icon="lucide:clock" width={14} />
+              Last updated:{' '}
+              {new Date(prompt._creationTime).toLocaleDateString()}
+            </p>
+          </div>
           <Button
             variant="outline"
             size="sm"
@@ -104,7 +111,7 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
               navigator.clipboard.writeText(window.location.href);
               toast.success('Share link copied to clipboard!');
             }}
-            className="gap-2 shrink-0"
+            className="shrink-0 gap-2"
           >
             <Icon icon="lucide:link" width={16} />
             <span className="hidden sm:inline">Copy Link</span>
@@ -115,7 +122,7 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
             {prompt.tags.map((tag: string) => (
               <span
                 key={tag}
-                className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground"
+                className="bg-secondary text-secondary-foreground rounded-full px-2.5 py-0.5 text-xs"
               >
                 {tag}
               </span>
@@ -211,8 +218,8 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
           </Button>
         </CardHeader>
         <CardContent>
-          <div className="relative rounded-md bg-muted p-4">
-            <pre className="whitespace-pre-wrap text-sm font-medium">
+          <div className="bg-muted relative rounded-md p-4">
+            <pre className="text-sm font-medium whitespace-pre-wrap">
               {generatedPrompt}
             </pre>
           </div>
