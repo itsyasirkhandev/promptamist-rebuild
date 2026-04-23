@@ -60,21 +60,31 @@ export function PromptCard({ prompt }: PromptCardProps) {
             <CardTitle className="line-clamp-2 text-base @md:text-2xl">
               {prompt.title}
             </CardTitle>
-            {prompt.isTemplate ? (
-              <Badge
-                variant="default"
-                className="shrink-0 bg-blue-500 hover:bg-blue-600 @max-md:px-1 @max-md:text-[10px]"
-              >
-                Template
-              </Badge>
-            ) : (
-              <Badge
-                variant="outline"
-                className="shrink-0 @max-md:px-1 @max-md:text-[10px]"
-              >
-                Static
-              </Badge>
-            )}
+            <div className="flex shrink-0 flex-wrap justify-end gap-1">
+              {prompt.isPublic && (
+                <Badge
+                  variant="secondary"
+                  className="bg-green-500/10 text-green-600 hover:bg-green-500/20 @max-md:px-1 @max-md:text-[10px]"
+                >
+                  Public
+                </Badge>
+              )}
+              {prompt.isTemplate ? (
+                <Badge
+                  variant="default"
+                  className="bg-blue-500 hover:bg-blue-600 @max-md:px-1 @max-md:text-[10px]"
+                >
+                  Template
+                </Badge>
+              ) : (
+                <Badge
+                  variant="outline"
+                  className="@max-md:px-1 @max-md:text-[10px]"
+                >
+                  Static
+                </Badge>
+              )}
+            </div>
           </div>
           <CardDescription className="flex items-center gap-2 text-sm @md:text-sm">
             <Icon icon="lucide:clock" width={14} />
