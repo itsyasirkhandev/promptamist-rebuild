@@ -22,6 +22,7 @@ interface Variable {
   id: string;
   name: string;
   type: string;
+  defaultValue?: string;
 }
 
 interface VariableListProps {

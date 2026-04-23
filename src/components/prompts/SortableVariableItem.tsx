@@ -9,6 +9,7 @@ interface Variable {
   id: string;
   name: string;
   type: string;
+  defaultValue?: string;
 }
 
 interface SortableVariableItemProps {
@@ -61,9 +62,16 @@ export function SortableVariableItem({
           <p className="text-primary truncate font-mono text-sm font-semibold">
             {variable.name}
           </p>
-          <p className="text-muted-foreground text-[10px] tracking-wider uppercase">
-            {variable.type}
-          </p>
+          <div className="flex items-center gap-2">
+            <p className="text-muted-foreground text-[10px] tracking-wider uppercase">
+              {variable.type}
+            </p>
+            {variable.defaultValue && (
+              <span className="bg-primary/10 text-primary rounded px-1.5 py-0.5 text-[10px] leading-none font-medium">
+                Default
+              </span>
+            )}
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-1 opacity-100 transition-opacity @md:opacity-0 @md:group-hover:opacity-100">

@@ -12,6 +12,7 @@ interface Variable {
   name: string;
   type: 'text' | 'number' | 'textarea' | 'choices' | 'list';
   options?: string[];
+  defaultValue?: string;
 }
 
 interface PromptEditorProps {
@@ -129,12 +130,14 @@ export function PromptEditor({
     name: string;
     type: Variable['type'];
     options?: string[];
+    defaultValue?: string;
   }) => {
     const newVar: Variable = {
       id: crypto.randomUUID(),
       name: data.name,
       type: data.type,
       options: data.options,
+      defaultValue: data.defaultValue,
     };
 
     onVariablesChange([...variables, newVar]);

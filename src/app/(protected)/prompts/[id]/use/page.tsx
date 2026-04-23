@@ -42,6 +42,7 @@ type PromptVariable = {
   name: string;
   type: 'text' | 'number' | 'textarea' | 'choices' | 'list';
   options?: string[];
+  defaultValue?: string;
 };
 
 export default function UseTemplatePage({ params }: PageProps) {
@@ -52,8 +53,20 @@ export default function UseTemplatePage({ params }: PageProps) {
     id: id as Id<'prompts'>,
   });
 
-  const { setValue, control } = useForm<Record<string, string>>();
+  const { setValue, control, reset } = useForm<Record<string, string>>();
   const formValues = useWatch({ control });
+
+  React.useEffect(() => {
+    if (prompt?.variables) {
+      const defaults: Record<string, string> = {};
+      (prompt.variables as PromptVariable[]).forEach((v) => {
+        if (v.defaultValue) {
+          defaults[v.name] = v.defaultValue;
+        }
+      });
+      reset(defaults);
+    }
+  }, [prompt, reset]);
 
   const interpolatedContent = React.useMemo(() => {
     if (!prompt) return '';

@@ -31,6 +31,7 @@ interface Variable {
   name: string;
   type: 'text' | 'number' | 'textarea' | 'choices' | 'list';
   options?: string[];
+  defaultValue?: string;
 }
 
 interface PublicPromptClientProps {
@@ -43,6 +44,22 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
   const [variableValues, setVariableValues] = React.useState<
     Record<string, string>
   >({});
+  const [initializedPromptId, setInitializedPromptId] = React.useState<
+    string | null
+  >(null);
+
+  if (prompt && prompt._id !== initializedPromptId) {
+    setInitializedPromptId(prompt._id);
+    const defaults: Record<string, string> = {};
+    if (prompt.variables) {
+      (prompt.variables as Variable[]).forEach((v) => {
+        if (v.defaultValue) {
+          defaults[v.name] = v.defaultValue;
+        }
+      });
+    }
+    setVariableValues(defaults);
+  }
 
   const generatedPrompt = React.useMemo(() => {
     if (!prompt) return '';

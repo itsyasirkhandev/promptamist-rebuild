@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -31,6 +32,7 @@ const variableSchema = z.object({
     .regex(/^[a-zA-Z0-9_]+$/, 'Only letters, numbers and underscores'),
   type: z.enum(['text', 'number', 'textarea', 'choices', 'list']),
   options: z.array(z.string()).optional(),
+  defaultValue: z.string().optional(),
 });
 
 export type VariableFormValues = z.infer<typeof variableSchema>;
@@ -67,12 +69,14 @@ export function VariableConfigModal({
       name: initialValue?.replace(/[^a-zA-Z0-9_]/g, '') || '',
       type: 'text',
       options: [],
+      defaultValue: '',
     },
   });
 
   const selectedType = useWatch({ control, name: 'type' });
   const currentName = useWatch({ control, name: 'name' });
   const options = useWatch({ control, name: 'options' }) || [];
+  const currentDefaultValue = useWatch({ control, name: 'defaultValue' });
 
   React.useEffect(() => {
     if (isOpen) {
@@ -83,6 +87,7 @@ export function VariableConfigModal({
           name: initialValue?.replace(/[^a-zA-Z0-9_]/g, '') || '',
           type: 'text',
           options: [],
+          defaultValue: '',
         });
       }
     }
@@ -230,6 +235,46 @@ export function VariableConfigModal({
               )}
             </div>
           )}
+
+          <div className="space-y-2">
+            <Label htmlFor="defaultValue">Default Value (Optional)</Label>
+            {selectedType === 'textarea' ? (
+              <Textarea
+                id="defaultValue"
+                {...register('defaultValue')}
+                placeholder="Default text..."
+              />
+            ) : selectedType === 'choices' ? (
+              <Select
+                onValueChange={(value) => setValue('defaultValue', value)}
+                value={currentDefaultValue || ''}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select default option" />
+                </SelectTrigger>
+                <SelectContent>
+                  {options.map((opt, i) => (
+                    <SelectItem key={`${opt}-${i}`} value={opt}>
+                      {opt}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            ) : selectedType === 'list' ? (
+              <Input
+                id="defaultValue"
+                {...register('defaultValue')}
+                placeholder="Comma separated defaults..."
+              />
+            ) : (
+              <Input
+                id="defaultValue"
+                {...register('defaultValue')}
+                type={selectedType === 'number' ? 'number' : 'text'}
+                placeholder="Default value..."
+              />
+            )}
+          </div>
 
           <DialogFooter className="pt-4">
             <Button type="button" variant="ghost" onClick={onClose}>

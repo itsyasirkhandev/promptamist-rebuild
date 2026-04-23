@@ -38,6 +38,7 @@ export default defineSchema({
           v.literal('list'),
         ),
         options: v.optional(v.array(v.string())),
+        defaultValue: v.optional(v.string()),
       }),
     ),
     isPublic: v.optional(v.boolean()),
