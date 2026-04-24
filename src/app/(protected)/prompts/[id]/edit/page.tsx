@@ -60,22 +60,15 @@ interface EditPromptPageProps {
 
 export default function EditPromptPage({ params }: EditPromptPageProps) {
   const router = useRouter();
-  const [unwrappedParams, setUnwrappedParams] = React.useState<{
-    id: string;
-  } | null>(null);
+  const { id } = React.use(params);
   const [editingVariable, setEditingVariable] = React.useState<{
     id: string;
     index: number;
   } | null>(null);
 
-  React.useEffect(() => {
-    params.then(setUnwrappedParams);
-  }, [params]);
-
-  const prompt = useQuery(
-    api.authed.prompts.getPromptById,
-    unwrappedParams ? { id: unwrappedParams.id as Id<'prompts'> } : 'skip',
-  );
+  const prompt = useQuery(api.authed.prompts.getPromptById, {
+    id: id as Id<'prompts'>,
+  });
 
   const updatePrompt = useMutation(api.authed.prompts.updatePrompt);
   const [tagInput, setTagInput] = React.useState('');
@@ -122,10 +115,10 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
   const tags = useWatch({ control, name: 'tags' }) as string[];
 
   const onSubmit = async (data: PromptFormValues) => {
-    if (!unwrappedParams) return;
+    if (!id) return;
     try {
       await updatePrompt({
-        id: unwrappedParams.id as Id<'prompts'>,
+        id: id as Id<'prompts'>,
         ...data,
       });
       toast.success('Prompt updated successfully');
@@ -192,7 +185,7 @@ export default function EditPromptPage({ params }: EditPromptPageProps) {
     setEditingVariable(null);
   };
 
-  if (!unwrappedParams || prompt === undefined) {
+  if (!id || prompt === undefined) {
     return (
       <div className="space-y-8 px-4 py-8 lg:px-8">
         <Skeleton className="h-10 w-[300px]" />

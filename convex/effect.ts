@@ -17,12 +17,13 @@ export const runEffect = async <A, E>(effect: Effect.Effect<A, E, never>) => {
         '_tag' in error &&
         'constructor' in error
       ) {
-        // Use the instance's constructor as the schema if it looks like a TaggedErrorClass
-        const ctor = error.constructor as unknown as Schema.Encoder<
+        // In Effect v4, TaggedErrorClass constructors are themselves Schemas
+        const schema = error.constructor as unknown as Schema.Codec<
+          unknown,
           unknown,
           never
         >;
-        const plainError = Schema.encodeSync(ctor)(error);
+        const plainError = Schema.encodeSync(schema)(error);
         throw new ConvexError(plainError as Value);
       }
     }
@@ -31,7 +32,7 @@ export const runEffect = async <A, E>(effect: Effect.Effect<A, E, never>) => {
     const message = Cause.pretty(exit.cause);
     console.error('Effect defect:', message);
     throw new ConvexError(
-      Schema.encodeSync(InternalError as Schema.Encoder<unknown, never>)(
+      Schema.encodeSync(InternalError)(
         new InternalError({
           message: 'An unexpected error occurred',
         }),
