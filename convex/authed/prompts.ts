@@ -229,3 +229,33 @@ export const deletePrompt = authedMutation({
     );
   },
 });
+
+export const getPromptStats = authedQuery({
+  args: {},
+  handler: async (ctx) => {
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+
+        const prompts = yield* Effect.promise(() =>
+          ctx.db
+            .query('prompts')
+            .withIndex('by_userId', (q) => q.eq('userId', userId))
+            .take(1000),
+        );
+
+        let total = 0;
+        let templates = 0;
+        let publicCount = 0;
+
+        for (const prompt of prompts) {
+          total++;
+          if (prompt.isTemplate) templates++;
+          if (prompt.isPublic) publicCount++;
+        }
+
+        return { total, templates, public: publicCount };
+      }),
+    );
+  },
+});

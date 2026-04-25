@@ -1,3 +1,74 @@
+# Design Plan: Dashboard Statistics on Authenticated Home Page
+
+This document outlines the technical approach to implementing the dashboard statistics on the authenticated home page as described in `spec.md`.
+
+## 1. Architecture & Tech Stack
+
+- **Frontend:** React (Next.js App Router, Client Component), Tailwind CSS, shadcn/ui (`Card` component), Lucide React (icons).
+- **Backend:** Convex.
+- **State/Data Fetching:** `useQuery` from `convex/react`.
+
+## 2. Data Flow
+
+1. User logs in and visits the home page (`/`).
+2. The `HomeClient.tsx` component is rendered inside the `<Authenticated>` block.
+3. A Convex query (`api.authed.prompts.getPromptStats`) is called via `useQuery`.
+4. While data is loading (`stats === undefined`), skeleton loaders are displayed.
+5. Once the query resolves, the data is injected into three statistical cards (Total Prompts, Total Templates, Public Prompts).
+
+## 3. Backend Implementation (Convex)
+
+**File to modify:** `convex/authed/prompts.ts`
+
+According to the Convex AI guidelines, we should avoid `.collect().length` for large-scale counting. However, for the MVP scale and based on the spec, we will fetch the user's prompts in memory up to a reasonable limit and count them, returning an aggregated object.
+
+```typescript
+import { authedQuery, getUserId } from './helpers';
+import { Effect } from 'effect';
+import { runEffect } from '../effect';
+
+export const getPromptStats = authedQuery({
+  args: {},
+  handler: async (ctx) => {
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+
+        // For MVP, we fetch up to a safe maximum number of prompts.
+        // For production scale with thousands of prompts, a denormalized
+        // counters table updated via mutations is recommended by Convex guidelines.
+        const prompts = yield* Effect.promise(() =>
+          ctx.db
+            .query('prompts')
+            .withIndex('by_userId', (q) => q.eq('userId', userId))
+            .take(1000),
+        );
+
+        let total = 0;
+        let templates = 0;
+        let publicCount = 0;
+
+        for (const prompt of prompts) {
+          total++;
+          if (prompt.isTemplate) templates++;
+          if (prompt.isPublic) publicCount++;
+        }
+
+        return { total, templates, public: publicCount };
+      }),
+    );
+  },
+});
+```
+
+## 4. Frontend Implementation
+
+**File to modify:** `src/components/HomeClient.tsx`
+
+We will update the `<Authenticated>` section to include a dashboard-style grid of stats.
+We'll utilize shadcn/ui components (`Card`, `CardHeader`, `CardTitle`, `CardContent`, and `Skeleton`) to style the cards.
+
+```tsx
 'use client';
 
 import {
@@ -68,7 +139,7 @@ function DashboardStats() {
 
   if (stats === undefined) {
     return (
-      <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-3">
         <Skeleton className="h-[120px] w-full rounded-xl" />
         <Skeleton className="h-[120px] w-full rounded-xl" />
         <Skeleton className="h-[120px] w-full rounded-xl" />
@@ -118,3 +189,11 @@ function DashboardStats() {
     </div>
   );
 }
+```
+
+## 5. Error Handling and Edge Cases
+
+- **0 Prompts:** The query will return `{ total: 0, templates: 0, public: 0 }`. The UI will display `0` securely, fulfilling the requirement.
+- **Unauthenticated Users:** Due to `authedQuery` throwing when unauthorized, and the UI being wrapped in `<Authenticated>`, unauthenticated users will never execute the query or see the stats.
+- **Scalability constraints:** To prevent query timeout, `.take(1000)` limits the data pulled into memory. For true enterprise scale later, a counter mechanism inside `convex/schema.ts` and updated via `createPrompt`/`deletePrompt`/`updatePrompt` actions should be introduced as strongly advised in the Convex AI guidelines.
+- **Loading State:** Skeletons mimic the layout grid structure, preventing layout shift once the actual data is injected.
