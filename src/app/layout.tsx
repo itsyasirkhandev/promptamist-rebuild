@@ -28,11 +28,11 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL('https://repromptamist.vercel.app'),
   title: {
-    default: 'Promptamist | AI-Powered Prompt Management',
+    default: 'Organize & Test Your AI Prompts | Promptamist',
     template: '%s | Promptamist',
   },
   description:
-    'Organize, test, and optimize your AI prompts with Promptamist. The intelligent platform built for AI power users to streamline their workflow.',
+    'Stop losing your best AI prompts in endless chat logs. We built Promptamist so you can easily organize, test, and find the exact prompt you need.',
   keywords: [
     'AI prompts',
     'prompt engineering',
@@ -48,15 +48,15 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://repromptamist.vercel.app',
     siteName: 'Promptamist',
-    title: 'Promptamist | AI-Powered Prompt Management',
+    title: 'Organize & Test Your AI Prompts | Promptamist',
     description:
-      'Organize, test, and optimize your AI prompts with Promptamist. The intelligent platform built for AI power users.',
+      'Stop losing your best AI prompts in endless chat logs. We built Promptamist so you can easily organize, test, and find the exact prompt you need.',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Promptamist | AI-Powered Prompt Management',
+    title: 'Organize & Test Your AI Prompts | Promptamist',
     description:
-      'Organize, test, and optimize your AI prompts with Promptamist.',
+      'Stop losing your best AI prompts in endless chat logs. We built Promptamist so you can easily organize, test, and find the exact prompt you need.',
   },
   robots: {
     index: true,
