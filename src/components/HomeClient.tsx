@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { api } from '../../convex/_generated/api';
 import { FileText, LayoutTemplate, Globe } from 'lucide-react';
+import { Icon } from '@iconify/react';
 
 export function HomeClient() {
   return (
@@ -31,9 +32,22 @@ export function HomeClient() {
             <p className="text-muted-foreground mb-8">
               Here is an overview of your prompt repository.
             </p>
-            <Button size="lg" asChild>
-              <Link href="/prompts">Go to Prompts →</Link>
-            </Button>
+            <div className="flex justify-center gap-4">
+              <Button size="lg" asChild>
+                <Link href="/prompts">Go to Prompts →</Link>
+              </Button>
+              <Button size="lg" variant="outline" asChild>
+                <a
+                  href="https://github.com/itsyasirkhandev/promptamist-rebuild"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2"
+                >
+                  <Icon icon="mdi:github" className="h-5 w-5" />
+                  GitHub Repository
+                </a>
+              </Button>
+            </div>
           </section>
 
           <DashboardStats />
