@@ -11,8 +11,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { api } from '../../convex/_generated/api';
-import { FileText, LayoutTemplate, Globe } from 'lucide-react';
 import { Icon } from '@iconify/react';
+import { formatRelativeTime } from '@/lib/utils';
+
+import { useState } from 'react';
 
 export function HomeClient() {
   return (
@@ -78,14 +80,17 @@ export function HomeClient() {
 }
 
 function DashboardStats() {
-  const stats = useQuery(api.authed.prompts.getPromptStats);
+  const [oneWeekAgo] = useState(() => Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const stats = useQuery(api.authed.prompts.getPromptStats, { oneWeekAgo });
 
   if (stats === undefined) {
     return (
-      <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-3">
+      <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Skeleton className="h-[120px] w-full rounded-xl" />
         <Skeleton className="h-[120px] w-full rounded-xl" />
         <Skeleton className="h-[120px] w-full rounded-xl" />
+        <Skeleton className="h-[120px] w-full rounded-xl" />
+        <Skeleton className="col-span-1 h-[60px] w-full rounded-xl md:col-span-2 lg:col-span-4" />
       </div>
     );
   }
@@ -98,35 +103,76 @@ function DashboardStats() {
     );
   }
 
+  const hasNoActivity = stats.total === 0;
+
   return (
-    <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-3">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Prompts</CardTitle>
-          <FileText className="text-muted-foreground h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{stats.total}</div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Template Prompts
-          </CardTitle>
-          <LayoutTemplate className="text-muted-foreground h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{stats.templates}</div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Public Prompts</CardTitle>
-          <Globe className="text-muted-foreground h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{stats.public}</div>
+    <div className="mx-auto max-w-5xl space-y-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Prompts</CardTitle>
+            <Icon
+              icon="lucide:file-text"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.total}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Template Prompts
+            </CardTitle>
+            <Icon
+              icon="lucide:layout-template"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.templates}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Public Prompts
+            </CardTitle>
+            <Icon
+              icon="lucide:globe"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.public}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">New This Week</CardTitle>
+            <Icon
+              icon="lucide:calendar-plus"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.newThisWeek}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="bg-muted/50">
+        <CardContent className="flex items-center gap-2 py-4">
+          <Icon icon="lucide:clock" className="text-muted-foreground h-5 w-5" />
+          <span className="text-muted-foreground text-sm font-medium">
+            {hasNoActivity || !stats.lastActivityAt
+              ? 'No activity yet.'
+              : `Last prompt created ${formatRelativeTime(stats.lastActivityAt)}.`}
+          </span>
         </CardContent>
       </Card>
     </div>

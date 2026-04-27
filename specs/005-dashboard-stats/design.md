@@ -1,32 +1,31 @@
-# Design Plan: Dashboard Statistics on Authenticated Home Page
+# Technical Design: Dashboard Statistics
 
-This document outlines the technical approach to implementing the dashboard statistics on the authenticated home page as described in `spec.md`.
+## 1. Objective
 
-## 1. Architecture & Tech Stack
+Implement an expanded dashboard statistics section on the authenticated home screen. The goal is to provide users with a quick overview of their prompt repository, including total prompts, template counts, public prompts, recent activity counts (new this week), and a human-readable timestamp of their most recent activity.
 
-- **Frontend:** React (Next.js App Router, Client Component), Tailwind CSS, shadcn/ui (`Card` component), Lucide React (icons).
-- **Backend:** Convex.
-- **State/Data Fetching:** `useQuery` from `convex/react`.
+## 2. Tech Stack & Libraries
 
-## 2. Data Flow
+- **Frontend:** React (Next.js App Router), TailwindCSS, Shadcn UI
+- **Backend:** Convex (Serverless Database & Functions)
+- **Utilities:** Built-in JavaScript `Intl.RelativeTimeFormat` (for relative time formatting), `@iconify/react` (for icons)
+- **Package Manager:** `pnpm`
 
-1. User logs in and visits the home page (`/`).
-2. The `HomeClient.tsx` component is rendered inside the `<Authenticated>` block.
-3. A Convex query (`api.authed.prompts.getPromptStats`) is called via `useQuery`.
-4. While data is loading (`stats === undefined`), skeleton loaders are displayed.
-5. Once the query resolves, the data is injected into three statistical cards (Total Prompts, Total Templates, Public Prompts).
+## 3. Architecture & Data Flow
 
-## 3. Backend Implementation (Convex)
+1. **User lands on Home Page:** `HomeClient` loads, wrapped in `<Authenticated>`.
+2. **Data Fetching:** The `DashboardStats` component uses Convex `useQuery(api.authed.prompts.getPromptStats)`.
+3. **Backend Processing:** Convex query fetches up to 1000 prompts for the user, iterates through them, calculating:
+   - `total`, `templates`, `public`
+   - `newThisWeek` (by checking if `_creationTime` >= 7 days ago)
+   - `lastActivityAt` (by finding the max `_creationTime`)
+4. **Rendering:** Frontend renders the metrics in responsive Shadcn `Card` components, formatting `lastActivityAt` using a custom utility based on `Intl.RelativeTimeFormat`. Icons are rendered via `@iconify/react`.
 
-**File to modify:** `convex/authed/prompts.ts`
+## 4. Backend Design (`convex/authed/prompts.ts`)
 
-According to the Convex AI guidelines, we should avoid `.collect().length` for large-scale counting. However, for the MVP scale and based on the spec, we will fetch the user's prompts in memory up to a reasonable limit and count them, returning an aggregated object.
+The existing `getPromptStats` query will be updated to calculate the new metrics.
 
 ```typescript
-import { authedQuery, getUserId } from './helpers';
-import { Effect } from 'effect';
-import { runEffect } from '../effect';
-
 export const getPromptStats = authedQuery({
   args: {},
   handler: async (ctx) => {
@@ -34,9 +33,7 @@ export const getPromptStats = authedQuery({
       Effect.gen(function* () {
         const userId = yield* getUserId(ctx, ctx.identity.subject);
 
-        // For MVP, we fetch up to a safe maximum number of prompts.
-        // For production scale with thousands of prompts, a denormalized
-        // counters table updated via mutations is recommended by Convex guidelines.
+        // Fetch up to 1000 user prompts
         const prompts = yield* Effect.promise(() =>
           ctx.db
             .query('prompts')
@@ -47,102 +44,106 @@ export const getPromptStats = authedQuery({
         let total = 0;
         let templates = 0;
         let publicCount = 0;
+        let newThisWeek = 0;
+        let lastActivityAt: number | null = null;
+
+        const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
         for (const prompt of prompts) {
           total++;
           if (prompt.isTemplate) templates++;
           if (prompt.isPublic) publicCount++;
+
+          if (prompt._creationTime >= oneWeekAgo) {
+            newThisWeek++;
+          }
+
+          if (!lastActivityAt || prompt._creationTime > lastActivityAt) {
+            lastActivityAt = prompt._creationTime;
+          }
         }
 
-        return { total, templates, public: publicCount };
+        return {
+          total,
+          templates,
+          public: publicCount,
+          newThisWeek,
+          lastActivityAt,
+        };
       }),
     );
   },
 });
 ```
 
-## 4. Frontend Implementation
+## 5. Frontend Design
 
-**File to modify:** `src/components/HomeClient.tsx`
+### 5.1. Install dependencies
 
-We will update the `<Authenticated>` section to include a dashboard-style grid of stats.
-We'll utilize shadcn/ui components (`Card`, `CardHeader`, `CardTitle`, `CardContent`, and `Skeleton`) to style the cards.
+Need to add `@iconify/react` for icons. (No library needed for dates, using built-in JS).
+
+```bash
+pnpm add @iconify/react
+```
+
+### 5.2. Date Formatting Utility (`src/lib/utils.ts`)
+
+Add a helper function to format dates relative to now using `Intl.RelativeTimeFormat`.
+
+```typescript
+export function formatRelativeTime(
+  date: Date | number | string,
+  locale: string = 'en',
+): string {
+  const timeMs = new Date(date).getTime();
+  const deltaSeconds = Math.round((timeMs - Date.now()) / 1000);
+
+  const cutoffs = [
+    { unit: 'year', amount: 31536000 },
+    { unit: 'month', amount: 2592000 },
+    { unit: 'week', amount: 604800 },
+    { unit: 'day', amount: 86400 },
+    { unit: 'hour', amount: 3600 },
+    { unit: 'minute', amount: 60 },
+    { unit: 'second', amount: 1 },
+  ] as const;
+
+  if (Math.abs(deltaSeconds) < 30) {
+    return 'just now';
+  }
+
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+
+  for (const cutoff of cutoffs) {
+    if (Math.abs(deltaSeconds) >= cutoff.amount || cutoff.unit === 'second') {
+      const value = Math.round(deltaSeconds / cutoff.amount);
+      return rtf.format(value, cutoff.unit);
+    }
+  }
+  return '';
+}
+```
+
+### 5.3. UI Component Update (`src/components/HomeClient.tsx`)
+
+The `DashboardStats` component will be updated to display the additional statistics using `@iconify/react`.
 
 ```tsx
-'use client';
+import { Icon } from '@iconify/react';
+import { formatRelativeTime } from '@/lib/utils'; // adjust import path as needed
 
-import {
-  Authenticated,
-  Unauthenticated,
-  AuthLoading,
-  useQuery,
-} from 'convex/react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { api } from '../../convex/_generated/api';
-import { FileText, LayoutTemplate, Globe } from 'lucide-react';
-
-export function HomeClient() {
-  return (
-    <main>
-      <AuthLoading>
-        <div className="flex justify-center py-20">
-          <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
-        </div>
-      </AuthLoading>
-
-      <Authenticated>
-        <div className="container mx-auto px-4 py-10 md:px-6">
-          <section className="mb-10 text-center">
-            <h1 className="mb-4 text-4xl font-semibold">
-              Welcome back to Promptamist!
-            </h1>
-            <p className="text-muted-foreground mb-8">
-              Here is an overview of your prompt repository.
-            </p>
-            <Button size="lg" asChild>
-              <Link href="/prompts">Go to Prompts →</Link>
-            </Button>
-          </section>
-
-          <DashboardStats />
-        </div>
-      </Authenticated>
-
-      <Unauthenticated>
-        <section className="py-20 text-center">
-          <h1 className="mb-6 text-4xl font-semibold">
-            AI-Powered Prompt Management
-          </h1>
-          <p className="text-muted-foreground mx-auto mb-8 max-w-2xl text-2xl">
-            Organize, test, and optimize your AI prompts with our intelligent
-            platform built for power users.
-          </p>
-          <div className="flex justify-center gap-4">
-            <Button size="lg" asChild>
-              <Link href="/sign-up">Start Free Trial</Link>
-            </Button>
-            <Button size="lg" variant="outline" asChild>
-              <Link href="/sign-in">Sign In</Link>
-            </Button>
-          </div>
-        </section>
-      </Unauthenticated>
-    </main>
-  );
-}
-
+// ... inside HomeClient.tsx, update DashboardStats ...
 function DashboardStats() {
   const stats = useQuery(api.authed.prompts.getPromptStats);
 
   if (stats === undefined) {
     return (
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Skeleton className="h-[120px] w-full rounded-xl" />
         <Skeleton className="h-[120px] w-full rounded-xl" />
         <Skeleton className="h-[120px] w-full rounded-xl" />
+        <Skeleton className="h-[120px] w-full rounded-xl" />
+        <Skeleton className="col-span-1 h-[60px] w-full rounded-xl md:col-span-2 lg:col-span-4" />
       </div>
     );
   }
@@ -155,35 +156,76 @@ function DashboardStats() {
     );
   }
 
+  const hasNoActivity = stats.total === 0;
+
   return (
-    <div className="mx-auto grid max-w-5xl gap-4 md:grid-cols-3">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Total Prompts</CardTitle>
-          <FileText className="text-muted-foreground h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{stats.total}</div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Template Prompts
-          </CardTitle>
-          <LayoutTemplate className="text-muted-foreground h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{stats.templates}</div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Public Prompts</CardTitle>
-          <Globe className="text-muted-foreground h-4 w-4" />
-        </CardHeader>
-        <CardContent>
-          <div className="text-3xl font-bold">{stats.public}</div>
+    <div className="mx-auto max-w-5xl space-y-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Prompts</CardTitle>
+            <Icon
+              icon="lucide:file-text"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.total}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Template Prompts
+            </CardTitle>
+            <Icon
+              icon="lucide:layout-template"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.templates}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Public Prompts
+            </CardTitle>
+            <Icon
+              icon="lucide:globe"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.public}</div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">New This Week</CardTitle>
+            <Icon
+              icon="lucide:calendar-plus"
+              className="text-muted-foreground h-4 w-4"
+            />
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold">{stats.newThisWeek}</div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <Card className="bg-muted/50">
+        <CardContent className="flex items-center gap-2 py-4">
+          <Icon icon="lucide:clock" className="text-muted-foreground h-5 w-5" />
+          <span className="text-muted-foreground text-sm font-medium">
+            {hasNoActivity || !stats.lastActivityAt
+              ? 'No activity yet.'
+              : `Last prompt created ${formatRelativeTime(stats.lastActivityAt)}.`}
+          </span>
         </CardContent>
       </Card>
     </div>
@@ -191,9 +233,16 @@ function DashboardStats() {
 }
 ```
 
-## 5. Error Handling and Edge Cases
+## 6. Edge Cases & Constraints
 
-- **0 Prompts:** The query will return `{ total: 0, templates: 0, public: 0 }`. The UI will display `0` securely, fulfilling the requirement.
-- **Unauthenticated Users:** Due to `authedQuery` throwing when unauthorized, and the UI being wrapped in `<Authenticated>`, unauthenticated users will never execute the query or see the stats.
-- **Scalability constraints:** To prevent query timeout, `.take(1000)` limits the data pulled into memory. For true enterprise scale later, a counter mechanism inside `convex/schema.ts` and updated via `createPrompt`/`deletePrompt`/`updatePrompt` actions should be introduced as strongly advised in the Convex AI guidelines.
-- **Loading State:** Skeletons mimic the layout grid structure, preventing layout shift once the actual data is injected.
+- **0 Prompts:** Handled via `hasNoActivity` check. Resulting display will show "No activity yet" instead of an incorrect timestamp.
+- **Performance:** Processing 1000 records sequentially on the backend is fast enough. The `O(n)` logic prevents multiple queries for different stats, minimizing read costs.
+- **Styling constraints:** Ensure classes use standard Tailwind tokens (e.g. `bg-muted/50`, `text-muted-foreground`) to adhere to dark mode capabilities supported by shadcn/ui.
+
+## 7. Execution Plan
+
+1. **Dependencies:** Install `@iconify/react` via `pnpm add @iconify/react`.
+2. **Backend Update:** In `convex/authed/prompts.ts`, update `getPromptStats` returning `newThisWeek` and `lastActivityAt`.
+3. **Frontend Update (Utils):** In `src/lib/utils.ts`, add the `formatRelativeTime` utility function.
+4. **Frontend Update (UI):** In `src/components/HomeClient.tsx`, import `<Icon />` from `@iconify/react` and `formatRelativeTime` from `@/lib/utils`, replacing the `lucide-react` icons with `Icon` components.
+5. **Validation:** Run `pnpm lint`, `pnpm typecheck`, `pnpm format` ensuring there are no errors.

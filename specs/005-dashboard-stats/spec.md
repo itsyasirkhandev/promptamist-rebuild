@@ -2,15 +2,17 @@
 
 ## 1. Problem Statement
 
-Currently, when users log in and land on the authenticated home screen, they see a blank or generic starting point. There is no immediate visibility into the overall scale and composition of the prompts they have created over time.
+Currently, when users log in and land on the authenticated home screen, they see a generic starting point. There is no immediate visibility into the overall scale, composition, and recent activity of their created prompts.
 
 This makes it difficult for users to:
 
 - Quickly understand how many prompts they have stored.
 - Differentiate how many of those prompts are templates versus regular prompts.
 - See how many of their prompts are shared publicly.
+- Know how active they have been recently (new prompts this week).
+- Quickly see when their last activity (prompt creation) occurred.
 
-**Solution:** Introduce a "Dashboard Statistics" section on the authenticated home screen (`HomeClient.tsx`) that retrieves and displays these three key metrics to give users a quick overview of their prompt repository.
+**Solution:** Introduce a comprehensive "Dashboard Statistics" section on the authenticated home screen that retrieves and displays key metrics and recent activity to give users a quick overview of their prompt repository.
 
 ## 2. Functional Requirements
 
@@ -20,69 +22,80 @@ The system should:
 - Display the **Total number of prompts** the user owns.
 - Display the **Total number of template prompts** (`isTemplate: true`).
 - Display the **Total number of public prompts** (`isPublic: true`).
+- Display **New Prompts This Week**, showing the count of prompts created within the last 7 days.
+- Display **Most Recent Activity**, showing a human-readable relative time of when the last prompt was created (e.g., "Last prompt created 2 days ago.").
 - Fetch this data securely from the Convex backend based on the authenticated user.
-- Reflect changes dynamically (e.g., if a user navigates away, creates a prompt, and comes back, or if real-time subscriptions update the count).
+- Reflect changes dynamically (e.g., if a user navigates away, creates a prompt, and comes back, or via real-time subscriptions).
 - Use modern React, Next.js, and TailwindCSS patterns for the UI component.
 
 ## 3. Inputs and Outputs: System Behavior
 
-### User Action (Input)
+**USER ACTION (INPUT)**
+When a user successfully authenticates and navigates to the application's root home page (`/`), loading the `HomeClient.tsx` component.
 
-- A user successfully authenticates and navigates to the application's root home page (`/`), loading the `HomeClient.tsx` component.
+**EXPECTED SYSTEM BEHAVIOR**
 
-### Expected System Behavior
-
-- The system calls a new Convex query (e.g., `getPromptStats`) for the currently authenticated user.
-- The UI shows a loading state (e.g., skeleton loaders or a spinner) while the statistics are being fetched.
-- Once fetched, the UI renders three statistic cards/indicators:
+- The system calls a Convex query (e.g., `getPromptStats`) for the currently authenticated user.
+- The UI shows a loading state (e.g., skeleton loaders) while statistics are being fetched.
+- Once fetched, the UI renders the statistics cards:
   - Total Prompts
   - Total Templates
   - Public Prompts
-- If the user has 0 prompts, the stats should still display `0` correctly.
+  - New Prompts This Week
+  - Most Recent Activity text (e.g., in a footer or as a separate card/label).
+- If the user has 0 prompts, the stats should correctly display `0`, and recent activity should state "No activity yet".
 
 ## 4. Technical Details & Implementation
 
 ### Convex Backend Update
 
 - **File:** `convex/authed/prompts.ts` (or equivalent file for authed prompt queries).
-- **New Query:** `getPromptStats`
+- **New/Updated Query:** `getPromptStats`
   - Needs to filter the `prompts` table by the current authenticated user (`userId`).
-  - Should calculate the counts. Since Convex queries can run JavaScript, it can either use `.collect()` and calculate lengths in memory (if prompt count is relatively small), or use a more optimized approach if necessary, though `.filter()` and `.collect().length` is standard for standard use cases.
-  - Return shape: `{ total: number, templates: number, public: number }`
+  - Calculate total counts (Total, Templates, Public).
+  - Calculate "New Prompts This Week" by comparing the prompt's creation time (`_creationTime`) against a timestamp representing exactly 7 days ago.
+  - Find the most recent prompt by ordering by `_creationTime` descending and taking the first one to determine the "Most Recent Activity" timestamp.
+  - Return shape: `{ total: number, templates: number, public: number, newThisWeek: number, lastActivityAt: number | null }`
 
 ### Client Update
 
 - **File:** `src/components/HomeClient.tsx`
-- **Hook:** Use `useQuery(api.authed.prompts.getPromptStats)`
-- **UI:** Integrate Shadcn UI components (e.g., `Card`, `CardHeader`, `CardTitle`, `CardContent`) to display the metrics in a clean, responsive grid layout.
+- **Dependencies:** Use `date-fns` (or similar utility) to format the `lastActivityAt` timestamp into a relative string (e.g., `formatDistanceToNow`).
+- **Hook:** Use `useQuery(api.authed.prompts.getPromptStats)`.
+- **UI:** Integrate Shadcn UI components (`Card`, `CardHeader`, `CardTitle`, `CardContent`) to display the metrics in a clean, responsive grid layout (e.g., 2x2 or 4 columns on desktop).
 
 ## 5. Constraints
 
 - The query must execute quickly and be strictly limited to the authenticated user's own data to ensure privacy and security.
-- The UI should be responsive and look good on both mobile and desktop screens (e.g., a 1-column layout on mobile, 3-column layout on desktop).
+- The UI should be responsive and look good on both mobile and desktop screens (e.g., 1-column layout on mobile, multi-column layout on desktop).
+- The relative time for recent activity should be easily understandable.
 - Must adhere to the project's design guidelines, including TailwindCSS for styling and avoiding custom CSS.
 
 ## 6. Edge Cases and Error Handling
 
-- **No Prompts Exist:**
-  - Behavior: Display `0` for all statistics.
-- **Unauthenticated User:**
+- **No Prompts Exist**
+  - Behavior: Display `0` for all statistics and "No activity yet" for the most recent activity.
+- **Unauthenticated User**
   - Behavior: The `HomeClient` is only rendered for authenticated users. The query will fail or return `null`/error if accessed without authentication, which is handled by the Convex authed setup.
-- **Query Fails to Load:**
-  - Behavior: Display an error state or a generic "Unable to load stats" message within the card area, rather than crashing the entire home page.
-- **Large Number of Prompts:**
-  - Behavior: Ensure the query does not timeout. If `.collect()` becomes a bottleneck for users with thousands of prompts, consider creating a dedicated aggregation structure in Convex, though basic counting is likely sufficient for MVP.
+- **Query Fails to Load**
+  - Behavior: Display an error state or a generic "Unable to load stats. Please try again." message within the card area, rather than crashing the entire home page.
+- **Large Number of Prompts**
+  - Behavior: Ensure the query does not timeout or cause performance issues.
 
 ## 7. Acceptance Criteria
 
 This feature is considered complete if:
 
-- A new Convex query `getPromptStats` successfully returns the three required counts for the logged-in user.
-- The `HomeClient` component displays these three numbers accurately.
+- A Convex query `getPromptStats` successfully returns the counts (Total, Templates, Public, New This Week) and the `lastActivityAt` timestamp for the logged-in user.
+- The `HomeClient` component displays these statistics accurately.
+- The "Most Recent Activity" shows a human-readable relative string (e.g., "Last prompt created 2 days ago.").
 - The layout is responsive and styled using TailwindCSS.
-- Creating a new prompt, toggling a prompt's public state, or setting a prompt as a template instantly updates the respective statistics on the dashboard.
-- Loading states (skeletons) are displayed while the data is fetching.
+- Creating a new prompt instantly updates "New Prompts This Week" and "Most Recent Activity" stats.
+- Toggling a prompt's public state or template status updates respective statistics instantly.
+- Loading states (skeletons) are displayed while data is fetching.
+- Empty states and errors are handled smoothly.
 
 ## 8. Out of Scope
 
 - Detailed charts or graphs showing prompt creation over time.
+- Tracking activity other than prompt creation (e.g., prompt execution or edits).
