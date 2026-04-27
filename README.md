@@ -2,7 +2,7 @@
 
 You struggle to manage, share, and test your LLM prompts. They get lost in random notes or long chat histories. When you lose a great prompt, you waste hours trying to recreate it. You cannot easily share your best work with others, and testing new ideas feels slow and messy.
 
-We built Promptamist to solve this. We give you one place to write, test, and share your prompts with exact precision. 
+We built Promptamist to solve this. We give you one place to write, test, and share your prompts with exact precision.
 
 ## Manage Your Prompts Like a Pro
 
@@ -30,12 +30,14 @@ We built Promptamist to solve this. We give you one place to write, test, and sh
 ### Set Up Your Workspace
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/itsyasirkhandev/promptamist-rebuild.git
    cd promptamist
    ```
 
 2. **Install the dependencies:**
+
    ```bash
    pnpm install
    ```
@@ -52,6 +54,7 @@ We built Promptamist to solve this. We give you one place to write, test, and sh
 ### Launch Your App
 
 1. **Start the backend server:**
+
    ```bash
    npx convex dev
    ```

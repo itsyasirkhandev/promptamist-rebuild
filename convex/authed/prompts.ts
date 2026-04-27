@@ -231,8 +231,8 @@ export const deletePrompt = authedMutation({
 });
 
 export const getPromptStats = authedQuery({
-  args: {},
-  handler: async (ctx) => {
+  args: { oneWeekAgo: v.number() },
+  handler: async (ctx, args) => {
     return await runEffect(
       Effect.gen(function* () {
         const userId = yield* getUserId(ctx, ctx.identity.subject);
@@ -247,14 +247,30 @@ export const getPromptStats = authedQuery({
         let total = 0;
         let templates = 0;
         let publicCount = 0;
+        let newThisWeek = 0;
+        let lastActivityAt: number | null = null;
 
         for (const prompt of prompts) {
           total++;
           if (prompt.isTemplate) templates++;
           if (prompt.isPublic) publicCount++;
+
+          if (prompt._creationTime >= args.oneWeekAgo) {
+            newThisWeek++;
+          }
+
+          if (!lastActivityAt || prompt._creationTime > lastActivityAt) {
+            lastActivityAt = prompt._creationTime;
+          }
         }
 
-        return { total, templates, public: publicCount };
+        return {
+          total,
+          templates,
+          public: publicCount,
+          newThisWeek,
+          lastActivityAt,
+        };
       }),
     );
   },
