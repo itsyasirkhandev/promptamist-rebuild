@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { Doc } from '../../../../convex/_generated/dataModel';
-import { useParams } from 'next/navigation';
+import { useParams, useSearchParams } from 'next/navigation';
 import { PromptUseSidebar } from './PromptUseSidebar';
 import { PromptUseMobileSwitcher } from './PromptUseMobileSwitcher';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -15,7 +15,9 @@ interface PromptUseLayoutProps {
 
 export function PromptUseLayout({ children }: PromptUseLayoutProps) {
   const params = useParams();
+  const searchParams = useSearchParams();
   const activeId = params.id as string;
+  const isFocusedMode = searchParams.get('mode') === 'focused';
 
   const prompts = useQuery(api.authed.prompts.getPrompts);
 
@@ -25,13 +27,21 @@ export function PromptUseLayout({ children }: PromptUseLayoutProps) {
   if (prompts === undefined) {
     return (
       <div className="flex h-full">
-        <Skeleton className="hidden h-full w-64 lg:block" />
+        {!isFocusedMode && (
+          <Skeleton className="hidden h-full w-64 lg:block" />
+        )}
         <div className="flex-1 p-4">
-          <Skeleton className="mb-4 h-10 w-full lg:hidden" />
+          {!isFocusedMode && (
+            <Skeleton className="mb-4 h-10 w-full lg:hidden" />
+          )}
           <Skeleton className="h-full w-full" />
         </div>
       </div>
     );
+  }
+
+  if (isFocusedMode) {
+    return <div className="h-full overflow-hidden">{children}</div>;
   }
 
   return (
