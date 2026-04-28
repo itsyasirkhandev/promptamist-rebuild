@@ -32,7 +32,6 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { PromptUseLayout } from '@/components/prompts/use/PromptUseLayout';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -87,11 +86,56 @@ export default function UseTemplatePage({ params }: PageProps) {
 
   if (prompt === undefined) {
     return (
-      <div className="space-y-8 px-4 py-8 lg:px-8">
-        <Skeleton className="h-10 w-[300px]" />
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-          <Skeleton className="h-[500px]" />
-          <Skeleton className="h-[500px]" />
+      <div className="flex h-full flex-col">
+        <div className="bg-background border-b px-4 py-3 lg:px-6">
+          <Skeleton className="mb-4 h-6 w-32" />
+          <div className="flex items-center gap-2">
+            <Skeleton className="h-8 w-8 rounded-md" />
+            <Skeleton className="h-8 w-64" />
+          </div>
+        </div>
+        <div className="hidden flex-1 grid-cols-1 overflow-hidden lg:grid lg:grid-cols-2">
+          <div className="bg-background flex h-full flex-col border-r">
+            <header className="shrink-0 space-y-2 border-b p-4 lg:p-6">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-48" />
+            </header>
+            <div className="flex-1 space-y-6 p-4 lg:p-6">
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            </div>
+          </div>
+          <div className="bg-secondary/10 flex h-full flex-col">
+            <header className="bg-background/50 flex shrink-0 items-center justify-between border-b p-4 backdrop-blur-sm lg:p-6">
+              <Skeleton className="h-6 w-32" />
+              <Skeleton className="h-9 w-36" />
+            </header>
+            <div className="flex-1 p-8">
+              <Skeleton className="h-[400px] w-full rounded-xl" />
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-1 flex-col overflow-hidden lg:hidden">
+          <div className="space-y-6 p-4">
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+            <div className="space-y-2">
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -176,168 +220,162 @@ export default function UseTemplatePage({ params }: PageProps) {
   );
 
   return (
-    <PromptUseLayout activeId={id}>
-      <div className="flex h-full flex-col">
-        {/* Breadcrumb & Title */}
-        <div className="bg-background border-b px-4 py-3 lg:px-6">
-          <Breadcrumb className="mb-2">
-            <BreadcrumbList>
-              <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                  <Link href="/prompts">Prompts</Link>
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Use Template</BreadcrumbPage>
-              </BreadcrumbItem>
-            </BreadcrumbList>
-          </Breadcrumb>
-          <div className="flex items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => router.back()}
-              className="h-8 w-8"
-            >
-              <Icon icon="lucide:arrow-left" width={18} />
-            </Button>
-            <h1 className="truncate text-2xl font-semibold">{prompt.title}</h1>
-          </div>
-        </div>
-
-        <div className="hidden flex-1 grid-cols-1 overflow-hidden lg:grid lg:grid-cols-2">
-          {/* Left Side: Inputs - Desktop */}
-          <div className="bg-background flex h-full flex-col border-r">
-            <header className="shrink-0 space-y-1 border-b p-4 lg:p-6">
-              <h2 className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
-                Variables
-              </h2>
-              <p className="text-muted-foreground text-sm">
-                Fill in the variables below to generate your prompt.
-              </p>
-            </header>
-
-            <ScrollArea className="flex-1">
-              <div className="space-y-6 p-4 lg:p-6">
-                {prompt.variables.length === 0 ? (
-                  <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
-                    <p className="text-muted-foreground text-sm">
-                      This prompt has no dynamic variables.
-                    </p>
-                  </div>
-                ) : (
-                  (prompt.variables as PromptVariable[]).map(
-                    renderVariableInput,
-                  )
-                )}
-              </div>
-            </ScrollArea>
-          </div>
-
-          {/* Right Side: Live Preview - Desktop */}
-          <div className="bg-secondary/10 flex h-full flex-col">
-            <header className="bg-background/50 flex shrink-0 items-center justify-between border-b p-4 backdrop-blur-sm lg:p-6">
-              <h2 className="flex items-center gap-2 font-semibold">
-                <Icon icon="lucide:eye" width={18} />
-                Live Preview
-              </h2>
-              <Button
-                onClick={copyToClipboard}
-                size="sm"
-                className="gap-2 shadow-lg"
-              >
-                <Icon icon="lucide:copy" width={16} />
-                Copy Final Prompt
-              </Button>
-            </header>
-
-            <ScrollArea className="flex-1">
-              <div className="mx-auto max-w-2xl p-8">
-                <div className="bg-background selection:bg-primary/20 min-h-[400px] rounded-xl border p-8 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
-                  {interpolatedContent
-                    .split(/({{[^}]+}})/g)
-                    .map((part: string, i: number) => {
-                      if (part.startsWith('{{') && part.endsWith('}}')) {
-                        return (
-                          <span
-                            key={i}
-                            className="text-primary bg-primary/5 animate-pulse rounded px-1 font-mono"
-                          >
-                            {part}
-                          </span>
-                        );
-                      }
-                      return <span key={i}>{part}</span>;
-                    })}
-                </div>
-              </div>
-            </ScrollArea>
-          </div>
-        </div>
-
-        {/* Mobile Optimized Tabs Flow */}
-        <div className="flex flex-1 flex-col overflow-hidden lg:hidden">
-          <Tabs defaultValue="fill" className="flex h-full flex-col">
-            <div className="bg-background shrink-0 border-b px-4">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="fill">Fill Variables</TabsTrigger>
-                <TabsTrigger value="preview">Preview</TabsTrigger>
-              </TabsList>
-            </div>
-            <TabsContent
-              value="fill"
-              className="m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
-            >
-              <div className="space-y-6">
-                {prompt.variables.length === 0 ? (
-                  <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
-                    <p className="text-muted-foreground text-sm">
-                      This prompt has no dynamic variables.
-                    </p>
-                  </div>
-                ) : (
-                  (prompt.variables as PromptVariable[]).map(
-                    renderVariableInput,
-                  )
-                )}
-              </div>
-            </TabsContent>
-            <TabsContent
-              value="preview"
-              className="bg-secondary/10 m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
-            >
-              <div className="space-y-4">
-                <Button
-                  onClick={copyToClipboard}
-                  size="lg"
-                  className="w-full gap-2 shadow-lg"
-                >
-                  <Icon icon="lucide:copy" width={18} />
-                  Copy Final Prompt
-                </Button>
-                <div className="bg-background selection:bg-primary/20 min-h-[300px] rounded-xl border p-6 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
-                  {interpolatedContent
-                    .split(/({{[^}]+}})/g)
-                    .map((part: string, i: number) => {
-                      if (part.startsWith('{{') && part.endsWith('}}')) {
-                        return (
-                          <span
-                            key={i}
-                            className="text-primary bg-primary/5 animate-pulse rounded px-1 font-mono"
-                          >
-                            {part}
-                          </span>
-                        );
-                      }
-                      return <span key={i}>{part}</span>;
-                    })}
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
+    <div className="flex h-full flex-col">
+      {/* Breadcrumb & Title */}
+      <div className="bg-background border-b px-4 py-3 lg:px-6">
+        <Breadcrumb className="mb-2">
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild>
+                <Link href="/prompts">Prompts</Link>
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>Use Template</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.back()}
+            className="h-8 w-8"
+          >
+            <Icon icon="lucide:arrow-left" width={18} />
+          </Button>
+          <h1 className="truncate text-2xl font-semibold">{prompt.title}</h1>
         </div>
       </div>
-    </PromptUseLayout>
+
+      <div className="hidden flex-1 grid-cols-1 overflow-hidden lg:grid lg:grid-cols-2">
+        {/* Left Side: Inputs - Desktop */}
+        <div className="bg-background flex h-full flex-col border-r">
+          <header className="shrink-0 space-y-1 border-b p-4 lg:p-6">
+            <h2 className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
+              Variables
+            </h2>
+            <p className="text-muted-foreground text-sm">
+              Fill in the variables below to generate your prompt.
+            </p>
+          </header>
+
+          <ScrollArea className="flex-1">
+            <div className="space-y-6 p-4 lg:p-6">
+              {prompt.variables.length === 0 ? (
+                <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
+                  <p className="text-muted-foreground text-sm">
+                    This prompt has no dynamic variables.
+                  </p>
+                </div>
+              ) : (
+                (prompt.variables as PromptVariable[]).map(renderVariableInput)
+              )}
+            </div>
+          </ScrollArea>
+        </div>
+
+        {/* Right Side: Live Preview - Desktop */}
+        <div className="bg-secondary/10 flex h-full flex-col">
+          <header className="bg-background/50 flex shrink-0 items-center justify-between border-b p-4 backdrop-blur-sm lg:p-6">
+            <h2 className="flex items-center gap-2 font-semibold">
+              <Icon icon="lucide:eye" width={18} />
+              Live Preview
+            </h2>
+            <Button
+              onClick={copyToClipboard}
+              size="sm"
+              className="gap-2 shadow-lg"
+            >
+              <Icon icon="lucide:copy" width={16} />
+              Copy Final Prompt
+            </Button>
+          </header>
+
+          <ScrollArea className="flex-1">
+            <div className="mx-auto max-w-2xl p-8">
+              <div className="bg-background selection:bg-primary/20 min-h-[400px] rounded-xl border p-8 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
+                {interpolatedContent
+                  .split(/({{[^}]+}})/g)
+                  .map((part: string, i: number) => {
+                    if (part.startsWith('{{') && part.endsWith('}}')) {
+                      return (
+                        <span
+                          key={i}
+                          className="text-primary bg-primary/5 animate-pulse rounded px-1 font-mono"
+                        >
+                          {part}
+                        </span>
+                      );
+                    }
+                    return <span key={i}>{part}</span>;
+                  })}
+              </div>
+            </div>
+          </ScrollArea>
+        </div>
+      </div>
+
+      {/* Mobile Optimized Tabs Flow */}
+      <div className="flex flex-1 flex-col overflow-hidden lg:hidden">
+        <Tabs defaultValue="fill" className="flex h-full flex-col">
+          <div className="bg-background shrink-0 border-b px-4">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="fill">Fill Variables</TabsTrigger>
+              <TabsTrigger value="preview">Preview</TabsTrigger>
+            </TabsList>
+          </div>
+          <TabsContent
+            value="fill"
+            className="m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
+          >
+            <div className="space-y-6">
+              {prompt.variables.length === 0 ? (
+                <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
+                  <p className="text-muted-foreground text-sm">
+                    This prompt has no dynamic variables.
+                  </p>
+                </div>
+              ) : (
+                (prompt.variables as PromptVariable[]).map(renderVariableInput)
+              )}
+            </div>
+          </TabsContent>
+          <TabsContent
+            value="preview"
+            className="bg-secondary/10 m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
+          >
+            <div className="space-y-4">
+              <Button
+                onClick={copyToClipboard}
+                size="lg"
+                className="w-full gap-2 shadow-lg"
+              >
+                <Icon icon="lucide:copy" width={18} />
+                Copy Final Prompt
+              </Button>
+              <div className="bg-background selection:bg-primary/20 min-h-[300px] rounded-xl border p-6 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
+                {interpolatedContent
+                  .split(/({{[^}]+}})/g)
+                  .map((part: string, i: number) => {
+                    if (part.startsWith('{{') && part.endsWith('}}')) {
+                      return (
+                        <span
+                          key={i}
+                          className="text-primary bg-primary/5 animate-pulse rounded px-1 font-mono"
+                        >
+                          {part}
+                        </span>
+                      );
+                    }
+                    return <span key={i}>{part}</span>;
+                  })}
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
   );
 }

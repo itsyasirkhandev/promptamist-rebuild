@@ -3,7 +3,9 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
-import { Doc } from '../../../../convex/_generated/dataModel';
+import { useConvex } from 'convex/react';
+import { api } from '../../../../convex/_generated/api';
+import { Doc, Id } from '../../../../convex/_generated/dataModel';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -15,6 +17,15 @@ interface PromptUseSidebarProps {
 
 export function PromptUseSidebar({ prompts, activeId }: PromptUseSidebarProps) {
   const [search, setSearch] = React.useState('');
+  const convex = useConvex();
+
+  const handlePrefetch = (id: Id<'prompts'>) => {
+    try {
+      convex.query(api.authed.prompts.getPromptById, { id });
+    } catch {
+      // Ignore prefetch errors
+    }
+  };
 
   const filteredPrompts = prompts.filter((p) =>
     p.title.toLowerCase().includes(search.toLowerCase()),
@@ -43,6 +54,8 @@ export function PromptUseSidebar({ prompts, activeId }: PromptUseSidebarProps) {
             <Link
               key={p._id}
               href={`/prompts/${p._id}/use`}
+              onMouseEnter={() => handlePrefetch(p._id)}
+              onFocus={() => handlePrefetch(p._id)}
               className={cn(
                 'flex items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors',
                 p._id === activeId
