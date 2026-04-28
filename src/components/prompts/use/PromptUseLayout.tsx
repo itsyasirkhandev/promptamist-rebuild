@@ -4,16 +4,19 @@ import * as React from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { Doc } from '../../../../convex/_generated/dataModel';
+import { useParams } from 'next/navigation';
 import { PromptUseSidebar } from './PromptUseSidebar';
 import { PromptUseMobileSwitcher } from './PromptUseMobileSwitcher';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface PromptUseLayoutProps {
-  activeId: string;
   children: React.ReactNode;
 }
 
-export function PromptUseLayout({ activeId, children }: PromptUseLayoutProps) {
+export function PromptUseLayout({ children }: PromptUseLayoutProps) {
+  const params = useParams();
+  const activeId = params.id as string;
+
   const prompts = useQuery(api.authed.prompts.getPrompts);
 
   const templatePrompts =
