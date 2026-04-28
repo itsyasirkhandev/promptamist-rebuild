@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { PromptUseLayout } from '@/components/prompts/use/PromptUseLayout';
 
 export default function UseTemplateLayout({
@@ -5,5 +6,9 @@ export default function UseTemplateLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <PromptUseLayout>{children}</PromptUseLayout>;
+  return (
+    <Suspense fallback={<div className="h-full w-full" />}>
+      <PromptUseLayout>{children}</PromptUseLayout>
+    </Suspense>
+  );
 }

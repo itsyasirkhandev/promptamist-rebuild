@@ -112,7 +112,7 @@ export function PromptCard({ prompt }: PromptCardProps) {
         <CardFooter className="flex flex-wrap gap-2 border-t pt-3 @md:pt-4">
           {prompt.isTemplate ? (
             <Button asChild className="h-10 grow gap-2 @md:h-11">
-              <Link href={`/prompts/${prompt._id}/use`}>
+              <Link href={`/prompts/${prompt._id}/use?mode=focused`}>
                 <Icon icon="lucide:play" width={16} />
                 <span className="hidden @xs:inline">Use Template</span>
                 <span className="@xs:hidden">Use</span>

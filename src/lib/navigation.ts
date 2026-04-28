@@ -18,6 +18,12 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     requireAuth: true,
   },
   {
+    title: 'Workspace',
+    href: '/use',
+    icon: 'lucide:monitor-play',
+    requireAuth: true,
+  },
+  {
     title: 'Create Prompt',
     href: '/prompts/create',
     icon: 'lucide:plus-circle',
