@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { interpolateVariables } from '@/lib/variables';
+import { interpolateVariables, getVariableColorConfig } from '@/lib/variables';
 import {
   Card,
   CardContent,
@@ -150,81 +150,90 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
             <CardTitle>Fill in the details</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-6 sm:grid-cols-2">
-            {(prompt.variables as Variable[]).map((variable) => (
-              <div key={variable.id} className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label htmlFor={variable.id} className="font-semibold">
-                    {variable.name}
-                  </Label>
-                  {variable.defaultValue && (
-                    <span className="text-muted-foreground text-[10px] italic">
-                      (default: {variable.defaultValue})
-                    </span>
+            {(prompt.variables as Variable[]).map((variable) => {
+              const colors = getVariableColorConfig(variable.type);
+
+              return (
+                <div key={variable.id} className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor={variable.id} className="font-semibold">
+                      {variable.name}
+                    </Label>
+                    {variable.defaultValue && (
+                      <span className="text-muted-foreground text-[10px] italic">
+                        (default: {variable.defaultValue})
+                      </span>
+                    )}
+                  </div>
+                  {variable.type === 'text' && (
+                    <Input
+                      id={variable.id}
+                      value={variableValues[variable.name] || ''}
+                      onChange={(e) =>
+                        handleVariableChange(variable.name, e.target.value)
+                      }
+                      placeholder={`Enter ${variable.name}...`}
+                      className={colors.input}
+                    />
+                  )}
+                  {variable.type === 'number' && (
+                    <Input
+                      id={variable.id}
+                      type="number"
+                      value={variableValues[variable.name] || ''}
+                      onChange={(e) =>
+                        handleVariableChange(variable.name, e.target.value)
+                      }
+                      placeholder={`Enter ${variable.name}...`}
+                      className={colors.input}
+                    />
+                  )}
+                  {variable.type === 'textarea' && (
+                    <Textarea
+                      id={variable.id}
+                      value={variableValues[variable.name] || ''}
+                      onChange={(e) =>
+                        handleVariableChange(variable.name, e.target.value)
+                      }
+                      placeholder={`Enter ${variable.name}...`}
+                      className={`min-h-25 ${colors.input}`}
+                    />
+                  )}
+                  {variable.type === 'choices' && variable.options && (
+                    <Select
+                      value={variableValues[variable.name] || ''}
+                      onValueChange={(val) =>
+                        handleVariableChange(variable.name, val)
+                      }
+                    >
+                      <SelectTrigger id={variable.id} className={colors.input}>
+                        <SelectValue
+                          placeholder={`Select ${variable.name}...`}
+                        />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {variable.options.map((opt: string) => (
+                          <SelectItem key={opt} value={opt}>
+                            {opt}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                  {variable.type === 'list' && (
+                    <Input
+                      id={variable.id}
+                      value={variableValues[variable.name] || ''}
+                      onChange={(e) =>
+                        handleVariableChange(variable.name, e.target.value)
+                      }
+                      placeholder="Comma separated values..."
+                      className={colors.input}
+                    />
                   )}
                 </div>
-                {variable.type === 'text' && (
-                  <Input
-                    id={variable.id}
-                    value={variableValues[variable.name] || ''}
-                    onChange={(e) =>
-                      handleVariableChange(variable.name, e.target.value)
-                    }
-                    placeholder={`Enter ${variable.name}...`}
-                  />
-                )}
-                {variable.type === 'number' && (
-                  <Input
-                    id={variable.id}
-                    type="number"
-                    value={variableValues[variable.name] || ''}
-                    onChange={(e) =>
-                      handleVariableChange(variable.name, e.target.value)
-                    }
-                    placeholder={`Enter ${variable.name}...`}
-                  />
-                )}
-                {variable.type === 'textarea' && (
-                  <Textarea
-                    id={variable.id}
-                    value={variableValues[variable.name] || ''}
-                    onChange={(e) =>
-                      handleVariableChange(variable.name, e.target.value)
-                    }
-                    placeholder={`Enter ${variable.name}...`}
-                    className="min-h-25"
-                  />
-                )}
-                {variable.type === 'choices' && variable.options && (
-                  <Select
-                    value={variableValues[variable.name] || ''}
-                    onValueChange={(val) =>
-                      handleVariableChange(variable.name, val)
-                    }
-                  >
-                    <SelectTrigger id={variable.id}>
-                      <SelectValue placeholder={`Select ${variable.name}...`} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {variable.options.map((opt: string) => (
-                        <SelectItem key={opt} value={opt}>
-                          {opt}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                )}
-                {variable.type === 'list' && (
-                  <Input
-                    id={variable.id}
-                    value={variableValues[variable.name] || ''}
-                    onChange={(e) =>
-                      handleVariableChange(variable.name, e.target.value)
-                    }
-                    placeholder="Comma separated values..."
-                  />
-                )}
-              </div>
-            ))}
+              );
+            })}
           </CardContent>
         </Card>
       )}
