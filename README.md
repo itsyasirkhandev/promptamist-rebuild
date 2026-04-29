@@ -1,4 +1,5 @@
-# 🚀 Promptamist
+# Promptamist
+<img width="1269" height="907" alt="image" src="https://github.com/user-attachments/assets/db96c269-2427-4d69-b719-be36d317525e" />
 
 **Prompt Engineering as Code.** A professional, high-fidelity platform for managing, versioning, and sharing dynamic AI prompts with real-time synchronization.
 
@@ -14,7 +15,7 @@
 
 ## 🏗️ Project Overview
 
-Promptamist is a sophisticated prompt management system built for developers and prompt engineers who need more than just a text file. It treats prompts as dynamic assets, providing a type-safe, real-time environment for building complex LLM interactions.
+Promptamist is a  prompt management system built for developers and prompt engineers who need more than just a text file. It treats prompts as dynamic assets, providing a type-safe, real-time environment for building complex LLM interactions.
 
 ### Why Promptamist?
 
