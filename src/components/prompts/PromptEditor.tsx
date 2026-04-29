@@ -6,7 +6,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { VariableConfigModal } from './VariableConfigModal';
 import { cn } from '@/lib/utils';
-import { VARIABLE_REGEX } from '@/lib/variables';
+import { VARIABLE_REGEX, getVariableColorConfig } from '@/lib/variables';
 
 interface Variable {
   id: string;
@@ -42,7 +42,11 @@ export function PromptEditor({
       return rawContent.replace(VARIABLE_REGEX, (match, name) => {
         const variable = variables.find((v) => v.name === name);
         if (variable) {
-          return `<span class="bg-primary/20 text-primary rounded px-1 font-mono select-all" data-variable-id="${variable.id}" contenteditable="false">${match}</span>`;
+          const colors = getVariableColorConfig(variable.type);
+          return `<span class="${cn(
+            'rounded px-1 font-mono select-all',
+            colors.badge,
+          )}" data-variable-id="${variable.id}" contenteditable="false">${match}</span>`;
         }
         return match;
       });

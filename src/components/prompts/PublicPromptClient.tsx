@@ -248,9 +248,34 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
         </CardHeader>
         <CardContent>
           <div className="bg-muted relative rounded-md p-4">
-            <pre className="text-sm font-medium whitespace-pre-wrap">
-              {generatedPrompt}
-            </pre>
+            <div className="text-sm font-medium whitespace-pre-wrap">
+              {generatedPrompt
+                .split(/({{[^}]+}})/g)
+                .map((part: string, i: number) => {
+                  if (part.startsWith('{{') && part.endsWith('}}')) {
+                    const varName = part.slice(2, -2);
+                    const variable = (prompt.variables as Variable[]).find(
+                      (v) => v.name === varName,
+                    );
+                    const colors = getVariableColorConfig(
+                      variable?.type || 'text',
+                    );
+
+                    return (
+                      <span
+                        key={i}
+                        className={cn(
+                          'animate-pulse rounded px-1 font-mono',
+                          colors.badge,
+                        )}
+                      >
+                        {part}
+                      </span>
+                    );
+                  }
+                  return <span key={i}>{part}</span>;
+                })}
+            </div>
           </div>
         </CardContent>
       </Card>

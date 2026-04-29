@@ -33,6 +33,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { cn } from '@/lib/utils';
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -119,7 +120,7 @@ export default function UseTemplatePage({ params }: PageProps) {
               <Skeleton className="h-9 w-36" />
             </header>
             <div className="flex-1 p-8">
-              <Skeleton className="h-[400px] w-full rounded-xl" />
+              <Skeleton className="h-100 w-full rounded-xl" />
             </div>
           </div>
         </div>
@@ -188,7 +189,7 @@ export default function UseTemplatePage({ params }: PageProps) {
             value={formValues[v.name] || ''}
             onChange={(e) => setValue(v.name, e.target.value)}
             placeholder={`Enter ${v.name.toLowerCase()}...`}
-            className={`min-h-[100px] ${colors.input}`}
+            className={`min-h-25 ${colors.input}`}
           />
         )}
 
@@ -300,15 +301,26 @@ export default function UseTemplatePage({ params }: PageProps) {
 
           <ScrollArea className="flex-1">
             <div className="mx-auto max-w-2xl p-8">
-              <div className="bg-background selection:bg-primary/20 min-h-[400px] rounded-xl border p-8 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
+              <div className="bg-background selection:bg-primary/20 min-h-100 rounded-xl border p-8 font-serif text-base leading-relaxed wrap-break-word whitespace-pre-wrap shadow-sm">
                 {interpolatedContent
                   .split(/({{[^}]+}})/g)
                   .map((part: string, i: number) => {
                     if (part.startsWith('{{') && part.endsWith('}}')) {
+                      const varName = part.slice(2, -2);
+                      const variable = (prompt.variables as PromptVariable[]).find(
+                        (v) => v.name === varName,
+                      );
+                      const colors = getVariableColorConfig(
+                        variable?.type || 'text',
+                      );
+
                       return (
                         <span
                           key={i}
-                          className="text-primary bg-primary/5 animate-pulse rounded px-1 font-mono"
+                          className={cn(
+                            'animate-pulse rounded px-1 font-mono',
+                            colors.badge,
+                          )}
                         >
                           {part}
                         </span>
@@ -360,15 +372,26 @@ export default function UseTemplatePage({ params }: PageProps) {
                 <Icon icon="lucide:copy" width={18} />
                 Copy Final Prompt
               </Button>
-              <div className="bg-background selection:bg-primary/20 min-h-[300px] rounded-xl border p-6 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm">
+              <div className="bg-background selection:bg-primary/20 min-h-75 rounded-xl border p-6 font-serif text-base leading-relaxed wrap-break-word whitespace-pre-wrap shadow-sm">
                 {interpolatedContent
                   .split(/({{[^}]+}})/g)
                   .map((part: string, i: number) => {
                     if (part.startsWith('{{') && part.endsWith('}}')) {
+                      const varName = part.slice(2, -2);
+                      const variable = (prompt.variables as PromptVariable[]).find(
+                        (v) => v.name === varName,
+                      );
+                      const colors = getVariableColorConfig(
+                        variable?.type || 'text',
+                      );
+
                       return (
                         <span
                           key={i}
-                          className="text-primary bg-primary/5 animate-pulse rounded px-1 font-mono"
+                          className={cn(
+                            'animate-pulse rounded px-1 font-mono',
+                            colors.badge,
+                          )}
                         >
                           {part}
                         </span>
