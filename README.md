@@ -1,91 +1,170 @@
-# 🖋️ Promptamist
+# 🚀 Promptamist
 
-You struggle to manage, share, and test your LLM prompts. They get lost in random notes or long chat histories. When you lose a great prompt, you waste hours trying to recreate it. You cannot easily share your best work with others, and testing new ideas feels slow and messy.
+**Prompt Engineering as Code.** A professional, high-fidelity platform for managing, versioning, and sharing dynamic AI prompts with real-time synchronization.
 
-We built Promptamist to solve this. We give you one place to write, test, and share your prompts with exact precision.
+[![pnpm](https://img.shields.io/badge/package--manager-pnpm-orange?style=flat-square)](https://pnpm.io/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.2.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19.2.4-61DAFB?style=flat-square&logo=react)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind--CSS-4.0-38B2AC?style=flat-square&logo=tailwind-css)](https://tailwindcss.com/)
+[![Convex](https://img.shields.io/badge/Backend-Convex-ff6b6b?style=flat-square)](https://convex.dev/)
+[![Clerk](https://img.shields.io/badge/Auth-Clerk-6C47FF?style=flat-square&logo=clerk)](https://clerk.com/)
+[![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-## Manage Your Prompts Like a Pro
+---
 
-- **Organize your library:** Create, edit, and sort your prompts in one central place.
-- **Test new ideas:** Use dynamic variables like text, numbers, and lists to experiment quickly.
-- **Share your work:** Generate unique links to show your best prompts to the world.
-- **Reuse your favorites:** Save your top prompts as templates and load them instantly.
-- **Secure your data:** Log in safely and manage your profile with ease.
-- **Work anywhere:** Enjoy a clean, fast interface that looks great on any screen.
+## 🏗️ Project Overview
 
-## How We Built It
+Promptamist is a sophisticated prompt management system built for developers and prompt engineers who need more than just a text file. It treats prompts as dynamic assets, providing a type-safe, real-time environment for building complex LLM interactions.
 
-- **Frontend:** Build fast pages with Next.js, React 19, and Tailwind CSS 4.
-- **Backend:** Sync your data in real-time with Convex.
-- **Authentication:** Keep your account safe using Clerk.
-- **UI & Icons:** Create beautiful screens with Radix UI, shadcn/ui, and Lucide React.
+### Why Promptamist?
 
-## Start Building Today
+- **Prompt Engineering as Code**: Prompts are structured, versioned, and dynamic.
+- **Functional Core**: Built with the `Effect` library for robust, type-safe business logic.
+- **Real-time Everything**: Powered by Convex for instant synchronization across all clients.
+- **Developer First**: Optimized for speed, type-safety, and modern development workflows.
 
-### What You Need First
+---
 
-- Install Node.js on your machine.
-- Install pnpm by running `npm install -g pnpm`.
+## ✨ Key Features
 
-### Set Up Your Workspace
+### 📝 Advanced Prompt Editor
 
-1. **Clone the repository:**
+- **Dynamic Variables**: Support for `Text`, `Number`, `Textarea`, `Choices`, and `List` types.
+- **Drag & Drop**: Reorder variables intuitively using `@dnd-kit`.
+- **Live Preview**: See how your prompt renders with current variable values in real-time.
 
-   ```bash
-   git clone https://github.com/itsyasirkhandev/promptamist-rebuild.git
-   cd promptamist
-   ```
+### 🌐 Sharing & Collaboration
 
-2. **Install the dependencies:**
+- **Public/Private Visibility**: Control who can see and use your prompt templates.
+- **Slug Generation**: Human-readable, unique URLs for easy sharing (`/p/your-prompt-slug`).
+- **Tags & Search**: Organize and find prompts quickly with a powerful tagging system.
 
-   ```bash
-   pnpm install
-   ```
+### 🛡️ Secure & Scalable
 
-3. **Add your keys:**
-   Create a `.env.local` file in the root directory. Add your Clerk and Convex keys to it:
-   ```env
-   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
-   CLERK_SECRET_KEY=your_clerk_secret_key
-   CONVEX_DEPLOYMENT=your_convex_deployment_url
-   NEXT_PUBLIC_CONVEX_URL=your_convex_url
-   ```
+- **Clerk Auth**: Enterprise-grade identity management and secure user flows.
+- **Protected Actions**: Fine-grained access control for mutations and queries.
+- **User Syncing**: Automatic data synchronization via Clerk Webhooks.
 
-### Launch Your App
+---
 
-1. **Start the backend server:**
+## 🛠️ Tech Stack
 
-   ```bash
-   npx convex dev
-   ```
+| Frontend                          | Backend                               | Functional Logic                |
+| :-------------------------------- | :------------------------------------ | :------------------------------ |
+| **Next.js 16** (App Router)       | **Convex** (Real-time DB & Functions) | **Effect** (Functional Effects) |
+| **React 19** (Server Components)  | **Clerk** (Auth & Identity)           | **TypeScript 5** (Strict Mode)  |
+| **Tailwind CSS 4** (OKLCH Colors) | **@dnd-kit** (Sortable Lists)         | **Zod** (Schema Validation)     |
+| **shadcn/ui** (New York Style)    | **Svix** (Webhook Verification)       | **Lucide** (Iconography)        |
 
-2. **Start the frontend server:**
-   ```bash
-   pnpm dev
-   ```
+---
 
-Open your browser and go to `http://localhost:3000`.
+## 🚀 Getting Started
 
-## Find Your Way Around
+### Prerequisites
 
-- Check the `src/app` folder for your pages and layouts.
-- Open `src/components` to find the building blocks of the UI.
-- Look inside `convex` to see your database rules and backend logic.
-- Read the files in `specs` to understand the technical plans for new features.
+- [Node.js](https://nodejs.org/) (Latest LTS recommended)
+- [pnpm](https://pnpm.io/) (`corepack enable pnpm`)
 
-## Run These Commands
+### 1. Clone & Install
 
-- `pnpm dev`: Start your local development server.
-- `pnpm build`: Prepare your app for production.
-- `pnpm lint`: Find and fix code issues.
-- `pnpm typecheck`: Catch type errors before they break your app.
-- `pnpm format`: Make your code look clean and consistent.
-- `pnpm check`: Run lint, typecheck, and format all at once.
+```bash
+git clone https://github.com/your-username/promptamist.git
+cd promptamist
+pnpm install
+```
 
-## Help Us Improve
+### 2. Environment Setup
 
-We want your help! Open an issue first to tell us what you want to change. Then, submit a Pull Request with your updates.
+Create a `.env.local` file in the root directory:
 
-## License
+```env
+# Clerk Keys
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_publishable_key
+CLERK_SECRET_KEY=your_secret_key
 
-We license this project under the MIT License. Read the LICENSE file to learn more.
+# Convex URL (set automatically by npx convex dev)
+NEXT_PUBLIC_CONVEX_URL=your_convex_url
+
+# Webhook Secret (for Clerk user sync)
+CLERK_WEBHOOK_SECRET=your_webhook_signing_secret
+```
+
+### 3. Clerk Webhook Configuration
+
+> [!IMPORTANT]  
+> **User Synchronization Required**  
+> To keep the local `users` table in sync with Clerk, you must configure a webhook:
+>
+> 1. In Clerk Dashboard, go to **Webhooks**.
+> 2. Add an endpoint: `https://<YOUR_CONVEX_DEPLOYMENT_URL>/clerk-users-webhook`.
+> 3. Select `user.created` and `user.updated` events.
+> 4. Copy the **Signing Secret** and add it to your `.env.local` (or Convex dashboard) as `CLERK_WEBHOOK_SECRET`.
+
+### 4. Run Development Environment
+
+You will need two terminal windows:
+
+**Terminal 1: Backend**
+
+```bash
+npx convex dev
+```
+
+**Terminal 2: Frontend**
+
+```bash
+pnpm dev
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+promptamist/
+├── convex/             # Backend: Schema, mutations, and webhooks
+│   ├── authed/         # Client-facing protected functions
+│   ├── private/        # Backend-only internal functions
+│   ├── _generated/     # Auto-generated Convex types
+│   ├── http.ts         # HTTP router (webhooks)
+│   └── schema.ts       # Database definitions
+├── src/
+│   ├── app/            # Next.js App Router (Layouts, Pages)
+│   ├── components/     # UI components (shadcn/ui + custom)
+│   ├── hooks/          # Custom React hooks
+│   ├── lib/            # Shared utilities and Effect logic
+│   └── proxy.ts        # Type-safe client proxies
+├── docs/               # Technical documentation
+└── specs/              # Feature specifications and designs
+```
+
+---
+
+## 🎨 Design System
+
+Promptamist adheres to a strict design language defined in `DESIGN_GUIDELINES.md`:
+
+- **8pt Grid System**: All spacing (margins, padding, gaps) is divisible by 8 or 4.
+- **60/30/10 Color Rule**: Balanced distribution using OKLCH colors for maximum accessibility.
+- **Minimalist Typography**: Limited to 4 sizes and 2 weights (Regular, Semibold) for clarity.
+
+---
+
+## 🛠️ Development Workflow
+
+We use a strict set of checks to maintain code quality:
+
+| Command          | Description                              |
+| :--------------- | :--------------------------------------- |
+| `pnpm dev`       | Start Next.js development server         |
+| `pnpm check`     | Run all checks (Lint, Typecheck, Format) |
+| `pnpm lint`      | Run ESLint check                         |
+| `pnpm typecheck` | Run TypeScript compiler check            |
+| `pnpm format`    | Format codebase with Prettier            |
+| `pnpm build`     | Create a production build                |
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

@@ -27,9 +27,7 @@ export function PromptUseLayout({ children }: PromptUseLayoutProps) {
   if (prompts === undefined) {
     return (
       <div className="flex h-full">
-        {!isFocusedMode && (
-          <Skeleton className="hidden h-full w-64 lg:block" />
-        )}
+        {!isFocusedMode && <Skeleton className="hidden h-full w-64 lg:block" />}
         <div className="flex-1 p-4">
           {!isFocusedMode && (
             <Skeleton className="mb-4 h-10 w-full lg:hidden" />
