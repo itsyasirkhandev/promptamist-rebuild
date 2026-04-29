@@ -33,6 +33,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 
 interface PageProps {
@@ -212,13 +213,43 @@ export default function UseTemplatePage({ params }: PageProps) {
         )}
 
         {v.type === 'list' && (
-          <div className="space-y-2">
-            <Input
-              value={formValues[v.name] || ''}
-              onChange={(e) => setValue(v.name, e.target.value)}
-              placeholder="item1, item2, item3"
-              className={colors.input}
-            />
+          <div className="flex flex-col gap-2 pt-2">
+            {v.options?.map((opt) => {
+              const currentValues = (formValues[v.name] || '')
+                .split(',')
+                .map((s) => s.trim())
+                .filter(Boolean);
+              const isChecked = currentValues.includes(opt);
+
+              return (
+                <div key={opt} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`${v.id}-${opt}`}
+                    checked={isChecked}
+                    onCheckedChange={(checked) => {
+                      let newValues;
+                      if (checked) {
+                        newValues = [...currentValues, opt];
+                      } else {
+                        newValues = currentValues.filter((val) => val !== opt);
+                      }
+                      setValue(v.name, newValues.join(', '));
+                    }}
+                  />
+                  <Label
+                    htmlFor={`${v.id}-${opt}`}
+                    className="cursor-pointer font-normal"
+                  >
+                    {opt}
+                  </Label>
+                </div>
+              );
+            })}
+            {(!v.options || v.options.length === 0) && (
+              <p className="text-muted-foreground text-sm italic">
+                No options defined for this list
+              </p>
+            )}
           </div>
         )}
       </div>
@@ -307,9 +338,9 @@ export default function UseTemplatePage({ params }: PageProps) {
                   .map((part: string, i: number) => {
                     if (part.startsWith('{{') && part.endsWith('}}')) {
                       const varName = part.slice(2, -2);
-                      const variable = (prompt.variables as PromptVariable[]).find(
-                        (v) => v.name === varName,
-                      );
+                      const variable = (
+                        prompt.variables as PromptVariable[]
+                      ).find((v) => v.name === varName);
                       const colors = getVariableColorConfig(
                         variable?.type || 'text',
                       );
@@ -378,9 +409,9 @@ export default function UseTemplatePage({ params }: PageProps) {
                   .map((part: string, i: number) => {
                     if (part.startsWith('{{') && part.endsWith('}}')) {
                       const varName = part.slice(2, -2);
-                      const variable = (prompt.variables as PromptVariable[]).find(
-                        (v) => v.name === varName,
-                      );
+                      const variable = (
+                        prompt.variables as PromptVariable[]
+                      ).find((v) => v.name === varName);
                       const colors = getVariableColorConfig(
                         variable?.type || 'text',
                       );

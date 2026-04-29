@@ -26,6 +26,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 
 interface Variable {
@@ -222,15 +223,54 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
                     </Select>
                   )}
                   {variable.type === 'list' && (
-                    <Input
-                      id={variable.id}
-                      value={variableValues[variable.name] || ''}
-                      onChange={(e) =>
-                        handleVariableChange(variable.name, e.target.value)
-                      }
-                      placeholder="Comma separated values..."
-                      className={colors.input}
-                    />
+                    <div className="flex flex-col gap-2 pt-2">
+                      {variable.options?.map((opt) => {
+                        const currentValues = (
+                          variableValues[variable.name] || ''
+                        )
+                          .split(',')
+                          .map((s) => s.trim())
+                          .filter(Boolean);
+                        const isChecked = currentValues.includes(opt);
+
+                        return (
+                          <div
+                            key={opt}
+                            className="flex items-center space-x-2"
+                          >
+                            <Checkbox
+                              id={`${variable.id}-${opt}`}
+                              checked={isChecked}
+                              onCheckedChange={(checked) => {
+                                let newValues;
+                                if (checked) {
+                                  newValues = [...currentValues, opt];
+                                } else {
+                                  newValues = currentValues.filter(
+                                    (v) => v !== opt,
+                                  );
+                                }
+                                handleVariableChange(
+                                  variable.name,
+                                  newValues.join(', '),
+                                );
+                              }}
+                            />
+                            <Label
+                              htmlFor={`${variable.id}-${opt}`}
+                              className="cursor-pointer font-normal"
+                            >
+                              {opt}
+                            </Label>
+                          </div>
+                        );
+                      })}
+                      {(!variable.options || variable.options.length === 0) && (
+                        <p className="text-muted-foreground text-sm italic">
+                          No options defined for this list
+                        </p>
+                      )}
+                    </div>
                   )}
                 </div>
               );

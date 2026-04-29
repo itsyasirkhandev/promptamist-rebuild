@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const variableSchema = z.object({
   name: z
@@ -263,11 +264,49 @@ export function VariableConfigModal({
                 </SelectContent>
               </Select>
             ) : selectedType === 'list' ? (
-              <Input
-                id="defaultValue"
-                {...register('defaultValue')}
-                placeholder="Comma separated defaults..."
-              />
+              <div className="flex flex-col gap-2 pt-2">
+                {options.map((opt, i) => {
+                  const currentValues = (currentDefaultValue || '')
+                    .split(',')
+                    .map((s) => s.trim())
+                    .filter(Boolean);
+                  const isChecked = currentValues.includes(opt);
+
+                  return (
+                    <div
+                      key={`default-${opt}-${i}`}
+                      className="flex items-center space-x-2"
+                    >
+                      <Checkbox
+                        id={`default-${opt}`}
+                        checked={isChecked}
+                        onCheckedChange={(checked) => {
+                          let newValues;
+                          if (checked) {
+                            newValues = [...currentValues, opt];
+                          } else {
+                            newValues = currentValues.filter((v) => v !== opt);
+                          }
+                          setValue('defaultValue', newValues.join(', '), {
+                            shouldDirty: true,
+                          });
+                        }}
+                      />
+                      <Label
+                        htmlFor={`default-${opt}`}
+                        className="cursor-pointer font-normal"
+                      >
+                        {opt}
+                      </Label>
+                    </div>
+                  );
+                })}
+                {options.length === 0 && (
+                  <span className="text-muted-foreground text-sm italic">
+                    Add options to set default values
+                  </span>
+                )}
+              </div>
             ) : (
               <Input
                 id="defaultValue"
