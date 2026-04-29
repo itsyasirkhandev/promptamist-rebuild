@@ -158,7 +158,9 @@ export default function UseTemplatePage({ params }: PageProps) {
     return (
       <div key={v.id} className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label className="text-sm font-semibold">{v.name}</Label>
+          <Label htmlFor={v.id} className="text-sm font-semibold">
+            {v.name}
+          </Label>
           {v.defaultValue && (
             <span className="text-muted-foreground text-[10px] italic">
               (default: {v.defaultValue})
@@ -168,6 +170,7 @@ export default function UseTemplatePage({ params }: PageProps) {
 
         {v.type === 'text' && (
           <Input
+            id={v.id}
             value={formValues[v.name] || ''}
             onChange={(e) => setValue(v.name, e.target.value)}
             placeholder={`Enter ${v.name.toLowerCase()}...`}
@@ -177,6 +180,7 @@ export default function UseTemplatePage({ params }: PageProps) {
 
         {v.type === 'number' && (
           <Input
+            id={v.id}
             type="number"
             value={formValues[v.name] || ''}
             onChange={(e) => setValue(v.name, e.target.value)}
@@ -187,6 +191,7 @@ export default function UseTemplatePage({ params }: PageProps) {
 
         {v.type === 'textarea' && (
           <Textarea
+            id={v.id}
             value={formValues[v.name] || ''}
             onChange={(e) => setValue(v.name, e.target.value)}
             placeholder={`Enter ${v.name.toLowerCase()}...`}
@@ -199,7 +204,7 @@ export default function UseTemplatePage({ params }: PageProps) {
             value={formValues[v.name] || ''}
             onValueChange={(val) => setValue(v.name, val)}
           >
-            <SelectTrigger className={colors.input}>
+            <SelectTrigger id={v.id} className={colors.input}>
               <SelectValue placeholder="Select an option..." />
             </SelectTrigger>
             <SelectContent>
