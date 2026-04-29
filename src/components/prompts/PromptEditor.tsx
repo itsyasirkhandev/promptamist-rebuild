@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { VariableConfigModal } from './VariableConfigModal';
 import { cn } from '@/lib/utils';
+import { VARIABLE_REGEX } from '@/lib/variables';
 
 interface Variable {
   id: string;
@@ -37,16 +38,14 @@ export function PromptEditor({
 
   const formatContent = React.useCallback(
     (rawContent: string) => {
-      // Convert {{var}} to styled spans
-      let formatted = rawContent;
-      variables.forEach((v) => {
-        const regex = new RegExp(`{{${v.name}}}`, 'g');
-        formatted = formatted.replace(
-          regex,
-          `<span class="bg-primary/20 text-primary rounded px-1 font-mono select-all" data-variable-id="${v.id}" contenteditable="false">{{${v.name}}}</span>`,
-        );
+      // Convert {{var}} to styled spans using the centralized regex
+      return rawContent.replace(VARIABLE_REGEX, (match, name) => {
+        const variable = variables.find((v) => v.name === name);
+        if (variable) {
+          return `<span class="bg-primary/20 text-primary rounded px-1 font-mono select-all" data-variable-id="${variable.id}" contenteditable="false">${match}</span>`;
+        }
+        return match;
       });
-      return formatted;
     },
     [variables],
   );

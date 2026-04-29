@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { interpolateVariables } from '@/lib/variables';
 import {
   Select,
   SelectContent,
@@ -70,13 +71,10 @@ export default function UseTemplatePage({ params }: PageProps) {
 
   const interpolatedContent = React.useMemo(() => {
     if (!prompt) return '';
-    let content = prompt.content;
-    (prompt.variables as PromptVariable[]).forEach((v) => {
-      const val = formValues[v.name] || `{{${v.name}}}`;
-      const regex = new RegExp(`{{${v.name}}}`, 'g');
-      content = content.replace(regex, val);
-    });
-    return content;
+    return interpolateVariables(
+      prompt.content,
+      formValues as Record<string, string>,
+    );
   }, [prompt, formValues]);
 
   const copyToClipboard = () => {

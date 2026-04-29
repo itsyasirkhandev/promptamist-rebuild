@@ -142,10 +142,7 @@ export default function CreatePromptPage() {
     if (!variable) return;
 
     // Remove from content
-    const updatedContent = content.replace(
-      new RegExp(`{{${variable.name}}}`, 'g'),
-      '',
-    );
+    const updatedContent = content.replaceAll(`{{${variable.name}}}`, '');
     setValue('content', updatedContent);
 
     // Remove from variables list
@@ -168,8 +165,8 @@ export default function CreatePromptPage() {
 
     // If name changed, update content placeholders
     if (oldName !== newName) {
-      const updatedContent = content.replace(
-        new RegExp(`{{${oldName}}}`, 'g'),
+      const updatedContent = content.replaceAll(
+        `{{${oldName}}}`,
         `{{${newName}}}`,
       );
       setValue('content', updatedContent);

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { interpolateVariables } from '@/lib/variables';
 import {
   Card,
   CardContent,
@@ -63,14 +64,9 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
 
   const generatedPrompt = React.useMemo(() => {
     if (!prompt) return '';
-    let result = prompt.content;
-    if (prompt.isTemplate) {
-      Object.entries(variableValues).forEach(([key, value]) => {
-        const regex = new RegExp(`{{${key}}}`, 'g');
-        result = result.replace(regex, value || `{{${key}}}`);
-      });
-    }
-    return result;
+    if (!prompt.isTemplate) return prompt.content;
+
+    return interpolateVariables(prompt.content, variableValues);
   }, [prompt, variableValues]);
 
   const handleVariableChange = (name: string, value: string) => {
