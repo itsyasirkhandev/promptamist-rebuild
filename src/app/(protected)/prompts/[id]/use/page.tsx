@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { interpolateVariables } from '@/lib/variables';
+import { interpolateVariables, getVariableColorConfig } from '@/lib/variables';
 import {
   Select,
   SelectContent,
@@ -150,72 +150,79 @@ export default function UseTemplatePage({ params }: PageProps) {
     );
   }
 
-  const renderVariableInput = (v: PromptVariable) => (
-    <div key={v.id} className="space-y-2">
-      <div className="flex items-center justify-between">
-        <Label className="text-sm font-semibold">{v.name}</Label>
-        {v.defaultValue && (
-          <span className="text-muted-foreground text-[10px] italic">
-            (default: {v.defaultValue})
-          </span>
-        )}
-      </div>
+  const renderVariableInput = (v: PromptVariable) => {
+    const colors = getVariableColorConfig(v.type);
 
-      {v.type === 'text' && (
-        <Input
-          value={formValues[v.name] || ''}
-          onChange={(e) => setValue(v.name, e.target.value)}
-          placeholder={`Enter ${v.name.toLowerCase()}...`}
-        />
-      )}
+    return (
+      <div key={v.id} className="space-y-2">
+        <div className="flex items-center justify-between">
+          <Label className="text-sm font-semibold">{v.name}</Label>
+          {v.defaultValue && (
+            <span className="text-muted-foreground text-[10px] italic">
+              (default: {v.defaultValue})
+            </span>
+          )}
+        </div>
 
-      {v.type === 'number' && (
-        <Input
-          type="number"
-          value={formValues[v.name] || ''}
-          onChange={(e) => setValue(v.name, e.target.value)}
-          placeholder="0"
-        />
-      )}
-
-      {v.type === 'textarea' && (
-        <Textarea
-          value={formValues[v.name] || ''}
-          onChange={(e) => setValue(v.name, e.target.value)}
-          placeholder={`Enter ${v.name.toLowerCase()}...`}
-          className="min-h-[100px]"
-        />
-      )}
-
-      {v.type === 'choices' && (
-        <Select
-          value={formValues[v.name] || ''}
-          onValueChange={(val) => setValue(v.name, val)}
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Select an option..." />
-          </SelectTrigger>
-          <SelectContent>
-            {v.options?.map((opt: string) => (
-              <SelectItem key={opt} value={opt}>
-                {opt}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      )}
-
-      {v.type === 'list' && (
-        <div className="space-y-2">
+        {v.type === 'text' && (
           <Input
             value={formValues[v.name] || ''}
             onChange={(e) => setValue(v.name, e.target.value)}
-            placeholder="item1, item2, item3"
+            placeholder={`Enter ${v.name.toLowerCase()}...`}
+            className={colors.input}
           />
-        </div>
-      )}
-    </div>
-  );
+        )}
+
+        {v.type === 'number' && (
+          <Input
+            type="number"
+            value={formValues[v.name] || ''}
+            onChange={(e) => setValue(v.name, e.target.value)}
+            placeholder="0"
+            className={colors.input}
+          />
+        )}
+
+        {v.type === 'textarea' && (
+          <Textarea
+            value={formValues[v.name] || ''}
+            onChange={(e) => setValue(v.name, e.target.value)}
+            placeholder={`Enter ${v.name.toLowerCase()}...`}
+            className={`min-h-[100px] ${colors.input}`}
+          />
+        )}
+
+        {v.type === 'choices' && (
+          <Select
+            value={formValues[v.name] || ''}
+            onValueChange={(val) => setValue(v.name, val)}
+          >
+            <SelectTrigger className={colors.input}>
+              <SelectValue placeholder="Select an option..." />
+            </SelectTrigger>
+            <SelectContent>
+              {v.options?.map((opt: string) => (
+                <SelectItem key={opt} value={opt}>
+                  {opt}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )}
+
+        {v.type === 'list' && (
+          <div className="space-y-2">
+            <Input
+              value={formValues[v.name] || ''}
+              onChange={(e) => setValue(v.name, e.target.value)}
+              placeholder="item1, item2, item3"
+              className={colors.input}
+            />
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="flex h-full flex-col">

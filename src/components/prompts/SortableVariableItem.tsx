@@ -4,6 +4,7 @@ import * as React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Icon } from '@iconify/react';
+import { getVariableColorConfig } from '@/lib/variables';
 
 interface Variable {
   id: string;
@@ -38,6 +39,8 @@ export function SortableVariableItem({
     zIndex: isDragging ? 50 : undefined,
   };
 
+  const colors = getVariableColorConfig(variable.type);
+
   return (
     <div
       ref={setNodeRef}
@@ -63,7 +66,9 @@ export function SortableVariableItem({
             {variable.name}
           </p>
           <div className="flex items-center gap-2">
-            <p className="text-muted-foreground text-[10px] tracking-wider uppercase">
+            <p
+              className={`rounded px-1.5 py-0.5 text-[10px] font-medium tracking-wider uppercase ${colors.badge}`}
+            >
               {variable.type}
             </p>
             {variable.defaultValue && (
