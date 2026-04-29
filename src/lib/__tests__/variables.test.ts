@@ -11,15 +11,17 @@ describe('variables utility', () => {
       expect(isValidVariableName('var_name')).toBe(true);
       expect(isValidVariableName('VAR123')).toBe(true);
       expect(isValidVariableName('a')).toBe(true);
+      expect(isValidVariableName('var name')).toBe(true);
+      expect(isValidVariableName('var-name')).toBe(true);
+      expect(isValidVariableName('var$name')).toBe(true);
       expect(isValidVariableName('a'.repeat(64))).toBe(true);
     });
 
     it('should reject invalid names', () => {
       expect(isValidVariableName('')).toBe(false);
-      expect(isValidVariableName('var-name')).toBe(false);
-      expect(isValidVariableName('var name')).toBe(false);
       expect(isValidVariableName('a'.repeat(65))).toBe(false);
-      expect(isValidVariableName('var$name')).toBe(false);
+      expect(isValidVariableName('var{name')).toBe(false);
+      expect(isValidVariableName('var}name')).toBe(false);
     });
 
     it('should allow names starting with numbers', () => {
@@ -29,13 +31,20 @@ describe('variables utility', () => {
 
   describe('extractVariables', () => {
     it('should extract unique variables', () => {
-      const text = 'Hello {{name}}, welcome to {{place}}. {{name}} again.';
-      expect(extractVariables(text)).toEqual(['name', 'place']);
+      const text =
+        'Hello {{User Name}}, welcome to {{place}}. {{User Name}} again.';
+      expect(extractVariables(text)).toEqual(['User Name', 'place']);
     });
 
     it('should return empty array when no variables found', () => {
       expect(extractVariables('No variables here')).toEqual([]);
-      expect(extractVariables('Almost {{invalid-name}}')).toEqual([]);
+    });
+
+    it('should handle special characters', () => {
+      expect(extractVariables('{{var-name}} {{var$name}}')).toEqual([
+        'var-name',
+        'var$name',
+      ]);
     });
 
     it('should handle variables at boundaries', () => {

@@ -1,9 +1,9 @@
-export const VARIABLE_NAME_PATTERN = /^[a-zA-Z0-9_]{1,64}$/;
-export const VARIABLE_REGEX = /{{([a-zA-Z0-9_]{1,64})}}/g;
+export const VARIABLE_NAME_PATTERN = /^[^{}]{1,64}$/;
+export const VARIABLE_REGEX = /{{([^{}]{1,64})}}/g;
 
 /**
  * Validates if a string is a valid variable name.
- * A valid variable name is 1-64 characters long and contains only alphanumeric characters and underscores.
+ * A valid variable name is 1-64 characters long and does not contain curly braces.
  */
 export function isValidVariableName(name: string): boolean {
   return VARIABLE_NAME_PATTERN.test(name);

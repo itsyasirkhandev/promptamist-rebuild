@@ -30,11 +30,8 @@ const variableSchema = z.object({
   name: z
     .string()
     .min(1, 'Name is required')
-    .max(64, 'Only alphanumeric and underscores allowed (max 64 chars)')
-    .regex(
-      VARIABLE_NAME_PATTERN,
-      'Only alphanumeric and underscores allowed (max 64 chars)',
-    ),
+    .max(64, 'Name must be 1-64 characters')
+    .regex(VARIABLE_NAME_PATTERN, 'Name cannot contain curly braces'),
   type: z.enum(['text', 'number', 'textarea', 'choices', 'list']),
   options: z.array(z.string()).optional(),
   defaultValue: z.string().optional(),
@@ -71,7 +68,7 @@ export function VariableConfigModal({
   } = useForm<VariableFormValues>({
     resolver: zodResolver(variableSchema),
     defaultValues: initialData || {
-      name: initialValue?.replace(/[^a-zA-Z0-9_]/g, '') || '',
+      name: initialValue?.replace(/[{}]+/g, '').slice(0, 64) || '',
       type: 'text',
       options: [],
       defaultValue: '',
@@ -89,7 +86,7 @@ export function VariableConfigModal({
         reset(initialData);
       } else {
         reset({
-          name: initialValue?.replace(/[^a-zA-Z0-9_]/g, '') || '',
+          name: initialValue?.replace(/[{}]+/g, '').slice(0, 64) || '',
           type: 'text',
           options: [],
           defaultValue: '',
