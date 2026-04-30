@@ -5,6 +5,7 @@
 ## Connections by Relation
 
 ### imports_from
+
 - [[errors.ts]] `EXTRACTED`
 - [[helpers.ts]] `EXTRACTED`
 - [[effect.ts]] `EXTRACTED`
@@ -14,8 +15,9 @@
 - [[helpers.ts]] `EXTRACTED`
 
 ### uses_for_logic
+
 - [[Promptamist]] `EXTRACTED`
 
 ---
 
-*Part of the graphify knowledge wiki. See [[index]] to navigate.*
+_Part of the graphify knowledge wiki. See [[index]] to navigate._

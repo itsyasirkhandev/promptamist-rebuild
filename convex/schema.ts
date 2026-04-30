@@ -18,6 +18,13 @@ export default defineSchema({
         notificationsEnabled: v.boolean(),
       }),
     ),
+    promptStats: v.optional(
+      v.object({
+        total: v.number(),
+        templates: v.number(),
+        public: v.number(),
+      }),
+    ),
   })
     .index('by_clerkId', ['clerkId'])
     .index('by_email', ['email']),

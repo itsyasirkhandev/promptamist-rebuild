@@ -5,6 +5,7 @@
 ## Connections by Relation
 
 ### imports_from
+
 - [[dropdown-menu.tsx]] `EXTRACTED`
 - [[breadcrumb.tsx]] `EXTRACTED`
 - [[select.tsx]] `EXTRACTED`
@@ -28,4 +29,4 @@
 
 ---
 
-*Part of the graphify knowledge wiki. See [[index]] to navigate.*
+_Part of the graphify knowledge wiki. See [[index]] to navigate._

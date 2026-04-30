@@ -5,6 +5,7 @@ import { runEffect } from '../effect';
 import {
   generateUniqueSlug,
   getPromptForUser,
+  updateUserPromptStats,
   validatePromptArgs,
 } from './promptHelpers';
 import { promptArgsValidator } from '../validators';
@@ -23,13 +24,18 @@ export const createPrompt = authedMutation({
           publicSlug = yield* generateUniqueSlug(ctx, args.title);
         }
 
-        return yield* Effect.promise(() =>
+        yield* Effect.promise(() =>
           ctx.db.insert('prompts', {
             userId,
             ...args,
             publicSlug,
           }),
         );
+        yield* updateUserPromptStats(ctx, userId, {
+          total: 1,
+          templates: args.isTemplate ? 1 : 0,
+          public: args.isPublic ? 1 : 0,
+        });
       }),
     );
   },
@@ -89,6 +95,18 @@ export const updatePrompt = authedMutation({
         yield* Effect.promise(() =>
           ctx.db.patch(id, { ...updates, publicSlug }),
         );
+
+        const templateChange =
+          (updates.isTemplate ? 1 : 0) - (prompt.isTemplate ? 1 : 0);
+        const publicChange =
+          (updates.isPublic ? 1 : 0) - (prompt.isPublic ? 1 : 0);
+
+        if (templateChange !== 0 || publicChange !== 0) {
+          yield* updateUserPromptStats(ctx, prompt.userId, {
+            templates: templateChange,
+            public: publicChange,
+          });
+        }
       }),
     );
   },
@@ -101,6 +119,11 @@ export const deletePrompt = authedMutation({
       Effect.gen(function* () {
         const prompt = yield* getPromptForUser(ctx, args.id);
         yield* Effect.promise(() => ctx.db.delete(prompt._id));
+        yield* updateUserPromptStats(ctx, prompt.userId, {
+          total: -1,
+          templates: prompt.isTemplate ? -1 : 0,
+          public: prompt.isPublic ? -1 : 0,
+        });
       }),
     );
   },
@@ -111,41 +134,52 @@ export const getPromptStats = authedQuery({
   handler: async (ctx, args) => {
     return await runEffect(
       Effect.gen(function* () {
-        const userId = yield* getUserId(ctx, ctx.identity.subject);
-
-        const prompts = yield* Effect.promise(() =>
+        const user = yield* Effect.promise(() =>
           ctx.db
-            .query('prompts')
-            .withIndex('by_userId', (q) => q.eq('userId', userId))
-            .take(1000),
+            .query('users')
+            .withIndex('by_clerkId', (q) =>
+              q.eq('clerkId', ctx.identity.subject),
+            )
+            .unique(),
         );
 
-        let total = 0;
-        let templates = 0;
-        let publicCount = 0;
-        let newThisWeek = 0;
-        let lastActivityAt: number | null = null;
-
-        for (const prompt of prompts) {
-          total++;
-          if (prompt.isTemplate) templates++;
-          if (prompt.isPublic) publicCount++;
-
-          if (prompt._creationTime >= args.oneWeekAgo) {
-            newThisWeek++;
-          }
-
-          if (!lastActivityAt || prompt._creationTime > lastActivityAt) {
-            lastActivityAt = prompt._creationTime;
-          }
+        if (!user) {
+          return {
+            total: 0,
+            templates: 0,
+            public: 0,
+            newThisWeek: 0,
+            lastActivityAt: null,
+          };
         }
 
+        const stats = user.promptStats ?? { total: 0, templates: 0, public: 0 };
+
+        // Efficiently find only prompts from last week
+        const recentPrompts = yield* Effect.promise(
+          () =>
+            ctx.db
+              .query('prompts')
+              .withIndex('by_userId', (q) =>
+                q.eq('userId', user._id).gte('_creationTime', args.oneWeekAgo),
+              )
+              .take(100), // Safety cap
+        );
+
+        const lastPrompt = yield* Effect.promise(() =>
+          ctx.db
+            .query('prompts')
+            .withIndex('by_userId', (q) => q.eq('userId', user._id))
+            .order('desc')
+            .first(),
+        );
+
         return {
-          total,
-          templates,
-          public: publicCount,
-          newThisWeek,
-          lastActivityAt,
+          total: stats.total,
+          templates: stats.templates,
+          public: stats.public,
+          newThisWeek: recentPrompts.length,
+          lastActivityAt: lastPrompt?._creationTime ?? null,
         };
       }),
     );

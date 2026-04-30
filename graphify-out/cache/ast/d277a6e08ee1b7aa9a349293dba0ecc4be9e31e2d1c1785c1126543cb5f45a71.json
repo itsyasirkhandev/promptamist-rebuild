@@ -1,1 +1,87 @@
-{"nodes": [{"id": "convex_errors_ts", "label": "errors.ts", "file_type": "code", "source_file": "convex\\errors.ts", "source_location": "L1"}, {"id": "convex_errors_unauthorized", "label": "Unauthorized", "file_type": "code", "source_file": "convex\\errors.ts", "source_location": "L3"}, {"id": "convex_errors_notfound", "label": "NotFound", "file_type": "code", "source_file": "convex\\errors.ts", "source_location": "L10"}, {"id": "convex_errors_validationerror", "label": "ValidationError", "file_type": "code", "source_file": "convex\\errors.ts", "source_location": "L15"}, {"id": "convex_errors_internalerror", "label": "InternalError", "file_type": "code", "source_file": "convex\\errors.ts", "source_location": "L23"}], "edges": [{"source": "convex_errors_ts", "target": "effect", "relation": "imports_from", "confidence": "EXTRACTED", "source_file": "convex\\errors.ts", "source_location": "L1", "weight": 1.0}, {"source": "convex_errors_ts", "target": "convex_errors_unauthorized", "relation": "contains", "confidence": "EXTRACTED", "source_file": "convex\\errors.ts", "source_location": "L3", "weight": 1.0}, {"source": "convex_errors_ts", "target": "convex_errors_notfound", "relation": "contains", "confidence": "EXTRACTED", "source_file": "convex\\errors.ts", "source_location": "L10", "weight": 1.0}, {"source": "convex_errors_ts", "target": "convex_errors_validationerror", "relation": "contains", "confidence": "EXTRACTED", "source_file": "convex\\errors.ts", "source_location": "L15", "weight": 1.0}, {"source": "convex_errors_ts", "target": "convex_errors_internalerror", "relation": "contains", "confidence": "EXTRACTED", "source_file": "convex\\errors.ts", "source_location": "L23", "weight": 1.0}], "raw_calls": []}
+{
+  "nodes": [
+    {
+      "id": "convex_errors_ts",
+      "label": "errors.ts",
+      "file_type": "code",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "convex_errors_unauthorized",
+      "label": "Unauthorized",
+      "file_type": "code",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L3"
+    },
+    {
+      "id": "convex_errors_notfound",
+      "label": "NotFound",
+      "file_type": "code",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L10"
+    },
+    {
+      "id": "convex_errors_validationerror",
+      "label": "ValidationError",
+      "file_type": "code",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L15"
+    },
+    {
+      "id": "convex_errors_internalerror",
+      "label": "InternalError",
+      "file_type": "code",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L23"
+    }
+  ],
+  "edges": [
+    {
+      "source": "convex_errors_ts",
+      "target": "effect",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "convex_errors_ts",
+      "target": "convex_errors_unauthorized",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L3",
+      "weight": 1.0
+    },
+    {
+      "source": "convex_errors_ts",
+      "target": "convex_errors_notfound",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "convex_errors_ts",
+      "target": "convex_errors_validationerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "convex_errors_ts",
+      "target": "convex_errors_internalerror",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "convex\\errors.ts",
+      "source_location": "L23",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": []
+}

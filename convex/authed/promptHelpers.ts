@@ -3,6 +3,7 @@ import { Id } from '../_generated/dataModel';
 import { MutationCtx, QueryCtx } from '../_generated/server';
 import { NotFound, ValidationError } from '../errors';
 import { UserIdentity } from 'convex/server';
+import { Doc } from '../_generated/dataModel';
 
 export type AuthedQueryCtx = QueryCtx & { identity: UserIdentity };
 export type AuthedMutationCtx = MutationCtx & { identity: UserIdentity };
@@ -57,4 +58,30 @@ export function* generateUniqueSlug(ctx: MutationCtx, title: string) {
   }
 
   return `${baseSlug}-${Date.now().toString(36)}`;
+}
+
+export function* updateUserPromptStats(
+  ctx: MutationCtx,
+  userId: Id<'users'>,
+  changes: { total?: number; templates?: number; public?: number },
+) {
+  const user = yield* Effect.promise(() => ctx.db.get(userId));
+  if (!user) return;
+
+  const currentStats = user.promptStats ?? {
+    total: 0,
+    templates: 0,
+    public: 0,
+  };
+  const nextStats = {
+    total: currentStats.total + (changes.total ?? 0),
+    templates: currentStats.templates + (changes.templates ?? 0),
+    public: currentStats.public + (changes.public ?? 0),
+  };
+
+  yield* Effect.promise(() =>
+    ctx.db.patch(userId, {
+      promptStats: nextStats,
+    }),
+  );
 }

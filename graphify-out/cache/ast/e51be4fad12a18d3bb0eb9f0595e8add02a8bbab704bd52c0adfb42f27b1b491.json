@@ -1,1 +1,148 @@
-{"nodes": [{"id": "src_lib_variables_ts", "label": "variables.ts", "file_type": "code", "source_file": "src\\lib\\variables.ts", "source_location": "L1"}, {"id": "lib_variables_isvalidvariablename", "label": "isValidVariableName()", "file_type": "code", "source_file": "src\\lib\\variables.ts", "source_location": "L8"}, {"id": "lib_variables_extractvariables", "label": "extractVariables()", "file_type": "code", "source_file": "src\\lib\\variables.ts", "source_location": "L16"}, {"id": "lib_variables_interpolatevariables", "label": "interpolateVariables()", "file_type": "code", "source_file": "src\\lib\\variables.ts", "source_location": "L35"}, {"id": "lib_variables_isvariabletype", "label": "isVariableType()", "file_type": "code", "source_file": "src\\lib\\variables.ts", "source_location": "L87"}, {"id": "lib_variables_getvariablecolorconfig", "label": "getVariableColorConfig()", "file_type": "code", "source_file": "src\\lib\\variables.ts", "source_location": "L91"}], "edges": [{"source": "src_lib_variables_ts", "target": "lib_variables_isvalidvariablename", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src\\lib\\variables.ts", "source_location": "L8", "weight": 1.0}, {"source": "src_lib_variables_ts", "target": "lib_variables_extractvariables", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src\\lib\\variables.ts", "source_location": "L16", "weight": 1.0}, {"source": "src_lib_variables_ts", "target": "lib_variables_interpolatevariables", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src\\lib\\variables.ts", "source_location": "L35", "weight": 1.0}, {"source": "src_lib_variables_ts", "target": "convex_generated_datamodel", "relation": "imports_from", "confidence": "EXTRACTED", "source_file": "src\\lib\\variables.ts", "source_location": "L51", "weight": 1.0}, {"source": "src_lib_variables_ts", "target": "lib_variables_isvariabletype", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src\\lib\\variables.ts", "source_location": "L87", "weight": 1.0}, {"source": "src_lib_variables_ts", "target": "lib_variables_getvariablecolorconfig", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src\\lib\\variables.ts", "source_location": "L91", "weight": 1.0}, {"source": "lib_variables_getvariablecolorconfig", "target": "lib_variables_isvariabletype", "relation": "calls", "confidence": "EXTRACTED", "source_file": "src\\lib\\variables.ts", "source_location": "L92", "weight": 1.0}], "raw_calls": [{"caller_nid": "lib_variables_isvalidvariablename", "callee": "test", "is_member_call": true, "source_file": "src\\lib\\variables.ts", "source_location": "L9"}, {"caller_nid": "lib_variables_extractvariables", "callee": "matchAll", "is_member_call": true, "source_file": "src\\lib\\variables.ts", "source_location": "L17"}, {"caller_nid": "lib_variables_extractvariables", "callee": "add", "is_member_call": true, "source_file": "src\\lib\\variables.ts", "source_location": "L20"}, {"caller_nid": "lib_variables_extractvariables", "callee": "from", "is_member_call": true, "source_file": "src\\lib\\variables.ts", "source_location": "L22"}, {"caller_nid": "lib_variables_interpolatevariables", "callee": "replace", "is_member_call": true, "source_file": "src\\lib\\variables.ts", "source_location": "L42"}]}
+{
+  "nodes": [
+    {
+      "id": "src_lib_variables_ts",
+      "label": "variables.ts",
+      "file_type": "code",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L1"
+    },
+    {
+      "id": "lib_variables_isvalidvariablename",
+      "label": "isValidVariableName()",
+      "file_type": "code",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L8"
+    },
+    {
+      "id": "lib_variables_extractvariables",
+      "label": "extractVariables()",
+      "file_type": "code",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L16"
+    },
+    {
+      "id": "lib_variables_interpolatevariables",
+      "label": "interpolateVariables()",
+      "file_type": "code",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L35"
+    },
+    {
+      "id": "lib_variables_isvariabletype",
+      "label": "isVariableType()",
+      "file_type": "code",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L87"
+    },
+    {
+      "id": "lib_variables_getvariablecolorconfig",
+      "label": "getVariableColorConfig()",
+      "file_type": "code",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L91"
+    }
+  ],
+  "edges": [
+    {
+      "source": "src_lib_variables_ts",
+      "target": "lib_variables_isvalidvariablename",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L8",
+      "weight": 1.0
+    },
+    {
+      "source": "src_lib_variables_ts",
+      "target": "lib_variables_extractvariables",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L16",
+      "weight": 1.0
+    },
+    {
+      "source": "src_lib_variables_ts",
+      "target": "lib_variables_interpolatevariables",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L35",
+      "weight": 1.0
+    },
+    {
+      "source": "src_lib_variables_ts",
+      "target": "convex_generated_datamodel",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "src_lib_variables_ts",
+      "target": "lib_variables_isvariabletype",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L87",
+      "weight": 1.0
+    },
+    {
+      "source": "src_lib_variables_ts",
+      "target": "lib_variables_getvariablecolorconfig",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L91",
+      "weight": 1.0
+    },
+    {
+      "source": "lib_variables_getvariablecolorconfig",
+      "target": "lib_variables_isvariabletype",
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L92",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": [
+    {
+      "caller_nid": "lib_variables_isvalidvariablename",
+      "callee": "test",
+      "is_member_call": true,
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L9"
+    },
+    {
+      "caller_nid": "lib_variables_extractvariables",
+      "callee": "matchAll",
+      "is_member_call": true,
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L17"
+    },
+    {
+      "caller_nid": "lib_variables_extractvariables",
+      "callee": "add",
+      "is_member_call": true,
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L20"
+    },
+    {
+      "caller_nid": "lib_variables_extractvariables",
+      "callee": "from",
+      "is_member_call": true,
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L22"
+    },
+    {
+      "caller_nid": "lib_variables_interpolatevariables",
+      "callee": "replace",
+      "is_member_call": true,
+      "source_file": "src\\lib\\variables.ts",
+      "source_location": "L42"
+    }
+  ]
+}

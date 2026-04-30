@@ -1,1 +1,48 @@
-{"nodes": [{"id": "src_app_page_tsx", "label": "page.tsx", "file_type": "code", "source_file": "src\\app\\page.tsx", "source_location": "L1"}, {"id": "app_page_homepage", "label": "HomePage()", "file_type": "code", "source_file": "src\\app\\page.tsx", "source_location": "L15"}], "edges": [{"source": "src_app_page_tsx", "target": "next", "relation": "imports_from", "confidence": "EXTRACTED", "source_file": "src\\app\\page.tsx", "source_location": "L1", "weight": 1.0}, {"source": "src_app_page_tsx", "target": "i_promptamist_src_components_homeclient", "relation": "imports_from", "confidence": "EXTRACTED", "source_file": "src\\app\\page.tsx", "source_location": "L2", "weight": 1.0}, {"source": "src_app_page_tsx", "target": "app_page_homepage", "relation": "contains", "confidence": "EXTRACTED", "source_file": "src\\app\\page.tsx", "source_location": "L15", "weight": 1.0}], "raw_calls": []}
+{
+  "nodes": [
+    {
+      "id": "src_app_page_tsx",
+      "label": "page.tsx",
+      "file_type": "code",
+      "source_file": "src\\app\\page.tsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "app_page_homepage",
+      "label": "HomePage()",
+      "file_type": "code",
+      "source_file": "src\\app\\page.tsx",
+      "source_location": "L15"
+    }
+  ],
+  "edges": [
+    {
+      "source": "src_app_page_tsx",
+      "target": "next",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\app\\page.tsx",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_page_tsx",
+      "target": "i_promptamist_src_components_homeclient",
+      "relation": "imports_from",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\app\\page.tsx",
+      "source_location": "L2",
+      "weight": 1.0
+    },
+    {
+      "source": "src_app_page_tsx",
+      "target": "app_page_homepage",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src\\app\\page.tsx",
+      "source_location": "L15",
+      "weight": 1.0
+    }
+  ],
+  "raw_calls": []
+}

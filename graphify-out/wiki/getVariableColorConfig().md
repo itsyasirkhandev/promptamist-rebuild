@@ -5,12 +5,14 @@
 ## Connections by Relation
 
 ### calls
+
 - [[isVariableType()]] `EXTRACTED`
 - [[SortableVariableItem()]] `INFERRED`
 
 ### contains
+
 - [[variables.ts]] `EXTRACTED`
 
 ---
 
-*Part of the graphify knowledge wiki. See [[index]] to navigate.*
+_Part of the graphify knowledge wiki. See [[index]] to navigate._
