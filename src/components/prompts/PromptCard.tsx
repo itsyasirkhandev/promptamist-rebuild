@@ -34,7 +34,9 @@ interface PromptCardProps {
   prompt: Doc<'prompts'>;
 }
 
-export function PromptCard({ prompt }: PromptCardProps) {
+export const PromptCard = React.memo(function PromptCard({
+  prompt,
+}: PromptCardProps) {
   const deletePrompt = useMutation(api.authed.prompts.deletePrompt);
 
   const copyToClipboard = () => {
@@ -61,14 +63,14 @@ export function PromptCard({ prompt }: PromptCardProps) {
               {prompt.title}
             </CardTitle>
             <div className="flex shrink-0 flex-wrap justify-end gap-1">
-              {prompt.isPublic && (
+              {prompt.isPublic ? (
                 <Badge
                   variant="secondary"
                   className="bg-green-500/10 text-green-600 hover:bg-green-500/20 @max-md:px-1 @max-md:text-[10px]"
                 >
                   Public
                 </Badge>
-              )}
+              ) : null}
               {prompt.isTemplate ? (
                 <Badge
                   variant="default"
@@ -131,21 +133,23 @@ export function PromptCard({ prompt }: PromptCardProps) {
           )}
 
           <div className="flex gap-2">
-            {prompt.isPublic && prompt.publicSlug && (
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => {
-                  const url = `${window.location.origin}/p/${prompt.publicSlug}`;
-                  navigator.clipboard.writeText(url);
-                  toast.success('Share link copied to clipboard');
-                }}
-                title="Copy Share Link"
-                className="h-10 w-10 @md:h-11 @md:w-11"
-              >
-                <Icon icon="lucide:link" width={18} />
-              </Button>
-            )}
+            {prompt.isPublic ? (
+              prompt.publicSlug ? (
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => {
+                    const url = `${window.location.origin}/p/${prompt.publicSlug}`;
+                    navigator.clipboard.writeText(url);
+                    toast.success('Share link copied to clipboard');
+                  }}
+                  title="Copy Share Link"
+                  className="h-10 w-10 @md:h-11 @md:w-11"
+                >
+                  <Icon icon="lucide:link" width={18} />
+                </Button>
+              ) : null
+            ) : null}
             <Button
               variant="outline"
               size="icon"
@@ -193,4 +197,4 @@ export function PromptCard({ prompt }: PromptCardProps) {
       </Card>
     </div>
   );
-}
+});

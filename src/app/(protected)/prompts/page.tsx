@@ -140,7 +140,7 @@ export default function PromptsPage() {
                 />
               </div>
               <div className="flex flex-wrap gap-2">
-                {allTags.length > 0 && (
+                {allTags.length > 0 ? (
                   <>
                     <Badge
                       variant={selectedTag === null ? 'default' : 'outline'}
@@ -162,7 +162,7 @@ export default function PromptsPage() {
                       </Badge>
                     ))}
                   </>
-                )}
+                ) : null}
               </div>
             </div>
           </div>
@@ -184,11 +184,11 @@ export default function PromptsPage() {
                     : "You haven't created any prompts yet. Start building your library!"}
                 </p>
               </div>
-              {!search && !selectedTag && activeTab === 'all' && (
+              {!search && !selectedTag && activeTab === 'all' ? (
                 <Button asChild>
                   <Link href="/prompts/create">Create New Prompt</Link>
                 </Button>
-              )}
+              ) : null}
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

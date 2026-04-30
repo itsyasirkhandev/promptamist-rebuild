@@ -3,7 +3,6 @@ import { Id } from '../_generated/dataModel';
 import { MutationCtx, QueryCtx } from '../_generated/server';
 import { NotFound, ValidationError } from '../errors';
 import { UserIdentity } from 'convex/server';
-import { Doc } from '../_generated/dataModel';
 
 export type AuthedQueryCtx = QueryCtx & { identity: UserIdentity };
 export type AuthedMutationCtx = MutationCtx & { identity: UserIdentity };

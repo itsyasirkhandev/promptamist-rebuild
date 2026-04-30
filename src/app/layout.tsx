@@ -15,11 +15,6 @@ const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
 const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
-
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
@@ -76,12 +71,10 @@ export default function RootLayout({
       className={cn(
         'h-full',
         'antialiased',
-        geistSans.variable,
+        figtree.variable,
+        geistHeading.variable,
         geistMono.variable,
         'font-sans',
-        geistHeading.variable,
-        'font-sans',
-        figtree.variable,
       )}
     >
       <body className="flex min-h-full flex-col">
