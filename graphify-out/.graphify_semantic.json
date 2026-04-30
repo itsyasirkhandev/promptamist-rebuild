@@ -1,0 +1,43 @@
+﻿{
+  "nodes": [
+    {"id": "promptamist_app", "label": "Promptamist", "file_type": "document", "source_file": "README.md"},
+    {"id": "convex_backend", "label": "Convex Backend", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "clerk_auth", "label": "Clerk Authentication", "file_type": "document", "source_file": "docs/AUTHENTICATION.md"},
+    {"id": "shadcn_ui", "label": "shadcn/ui", "file_type": "document", "source_file": "README.md"},
+    {"id": "tailwind_css", "label": "Tailwind CSS", "file_type": "document", "source_file": "README.md"},
+    {"id": "schema_users", "label": "Users Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_prompts", "label": "Prompts Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_tags", "label": "Tags Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_variables", "label": "Variables Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_versions", "label": "Versions Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_deployments", "label": "Deployments Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_providers", "label": "Providers Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_likes", "label": "Likes Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_stats", "label": "Stats Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "schema_favorites", "label": "Favorites Table", "file_type": "code", "source_file": "convex/schema.ts"},
+    {"id": "app_layout", "label": "App Layout", "file_type": "code", "source_file": "src/app/layout.tsx"},
+    {"id": "app_sidebar", "label": "App Sidebar", "file_type": "code", "source_file": "src/components/layout/AppSidebar.tsx"},
+    {"id": "design_glassmorphism", "label": "Glassmorphism Design", "file_type": "document", "source_file": "DESIGN_GUIDELINES.md"},
+    {"id": "design_animations", "label": "Animations Design", "file_type": "document", "source_file": "DESIGN_GUIDELINES.md"},
+    {"id": "design_accessibility", "label": "Accessibility", "file_type": "document", "source_file": "DESIGN_GUIDELINES.md"},
+    {"id": "training_workflow", "label": "Training Workflow", "file_type": "document", "source_file": "docs/TRAINING.md"},
+    {"id": "llms_txt", "label": "llms.txt", "file_type": "document", "source_file": "public/llms.txt"}
+  ],
+  "edges": [
+    {"source": "promptamist_app", "target": "convex_backend", "relation": "uses", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "README.md"},
+    {"source": "promptamist_app", "target": "clerk_auth", "relation": "uses", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "README.md"},
+    {"source": "promptamist_app", "target": "shadcn_ui", "relation": "uses", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "README.md"},
+    {"source": "convex_backend", "target": "schema_users", "relation": "contains", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "convex/schema.ts"},
+    {"source": "convex_backend", "target": "schema_prompts", "relation": "contains", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "convex/schema.ts"},
+    {"source": "schema_prompts", "target": "schema_users", "relation": "references", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "convex/schema.ts"},
+    {"source": "schema_prompts", "target": "schema_tags", "relation": "contains", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "convex/schema.ts"},
+    {"source": "schema_prompts", "target": "schema_variables", "relation": "contains", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "convex/schema.ts"},
+    {"source": "clerk_auth", "target": "schema_users", "relation": "maps_to", "confidence": "INFERRED", "confidence_score": 0.9, "source_file": "docs/AUTHENTICATION.md"},
+    {"source": "app_layout", "target": "app_sidebar", "relation": "contains", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "src/app/layout.tsx"},
+    {"source": "design_glassmorphism", "target": "app_layout", "relation": "applied_to", "confidence": "INFERRED", "confidence_score": 0.8, "source_file": "DESIGN_GUIDELINES.md"},
+    {"source": "promptamist_app", "target": "llms_txt", "relation": "exposes", "confidence": "EXTRACTED", "confidence_score": 1.0, "source_file": "public/llms.txt"}
+  ],
+  "hyperedges": [],
+  "input_tokens": 500,
+  "output_tokens": 200
+}
