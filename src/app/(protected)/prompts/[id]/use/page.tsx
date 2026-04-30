@@ -10,18 +10,9 @@ import { useForm, useWatch } from 'react-hook-form';
 import { toast } from 'sonner';
 import Link from 'next/link';
 
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { interpolateVariables, getVariableColorConfig } from '@/lib/variables';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
+import { interpolateVariables } from '@/lib/variables';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
@@ -33,20 +24,67 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Checkbox } from '@/components/ui/checkbox';
-import { cn } from '@/lib/utils';
+import {
+  VariableInput,
+  PromptVariable,
+} from '@/components/prompts/VariableInput';
+import { PromptPreview } from '@/components/prompts/PromptPreview';
+
+const VariableList = ({
+  variables,
+  formValues,
+  onValueChange,
+}: {
+  variables: PromptVariable[];
+  formValues: Record<string, string>;
+  onValueChange: (name: string, value: string) => void;
+}) => {
+  if (variables.length === 0) {
+    return (
+      <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
+        <p className="text-muted-foreground text-sm">
+          This prompt has no dynamic variables.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {variables.map((v) => (
+        <VariableInput
+          key={v.id}
+          variable={v}
+          value={formValues[v.name] as string}
+          onChange={(val) => onValueChange(v.name, val)}
+        />
+      ))}
+    </div>
+  );
+};
+
+const LivePreview = ({
+  content,
+  variables,
+  className,
+}: {
+  content: string;
+  variables: PromptVariable[];
+  className?: string;
+}) => (
+  <div
+    className={cn(
+      'bg-background selection:bg-primary/20 rounded-xl border p-8 font-serif text-base leading-relaxed wrap-break-word whitespace-pre-wrap shadow-sm',
+      className,
+    )}
+  >
+    <PromptPreview content={content} variables={variables} />
+  </div>
+);
 
 interface PageProps {
   params: Promise<{ id: string }>;
 }
-
-type PromptVariable = {
-  id: string;
-  name: string;
-  type: 'text' | 'number' | 'textarea' | 'choices' | 'list';
-  options?: string[];
-  defaultValue?: string;
-};
 
 export default function UseTemplatePage({ params }: PageProps) {
   const router = useRouter();
@@ -152,118 +190,8 @@ export default function UseTemplatePage({ params }: PageProps) {
     );
   }
 
-  const renderVariableInput = (v: PromptVariable) => {
-    const colors = getVariableColorConfig(v.type);
-
-    return (
-      <div key={v.id} className="space-y-2">
-        <div className="flex items-center justify-between">
-          <Label htmlFor={v.id} className="text-sm font-semibold">
-            {v.name}
-          </Label>
-          {v.defaultValue && (
-            <span className="text-muted-foreground text-[10px] italic">
-              (default: {v.defaultValue})
-            </span>
-          )}
-        </div>
-
-        {v.type === 'text' && (
-          <Input
-            id={v.id}
-            value={formValues[v.name] || ''}
-            onChange={(e) => setValue(v.name, e.target.value)}
-            placeholder={`Enter ${v.name.toLowerCase()}...`}
-            className={colors.input}
-          />
-        )}
-
-        {v.type === 'number' && (
-          <Input
-            id={v.id}
-            type="number"
-            value={formValues[v.name] || ''}
-            onChange={(e) => setValue(v.name, e.target.value)}
-            placeholder="0"
-            className={colors.input}
-          />
-        )}
-
-        {v.type === 'textarea' && (
-          <Textarea
-            id={v.id}
-            value={formValues[v.name] || ''}
-            onChange={(e) => setValue(v.name, e.target.value)}
-            placeholder={`Enter ${v.name.toLowerCase()}...`}
-            className={`min-h-25 ${colors.input}`}
-          />
-        )}
-
-        {v.type === 'choices' && (
-          <Select
-            value={formValues[v.name] || ''}
-            onValueChange={(val) => setValue(v.name, val)}
-          >
-            <SelectTrigger id={v.id} className={colors.input}>
-              <SelectValue placeholder="Select an option..." />
-            </SelectTrigger>
-            <SelectContent>
-              {v.options?.map((opt: string) => (
-                <SelectItem key={opt} value={opt}>
-                  {opt}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
-
-        {v.type === 'list' && (
-          <div className="flex flex-col gap-2 pt-2">
-            {v.options?.map((opt) => {
-              const currentValues = (formValues[v.name] || '')
-                .split(',')
-                .map((s) => s.trim())
-                .filter(Boolean);
-              const isChecked = currentValues.includes(opt);
-
-              return (
-                <div key={opt} className="flex items-center space-x-2">
-                  <Checkbox
-                    id={`${v.id}-${opt}`}
-                    checked={isChecked}
-                    onCheckedChange={(checked) => {
-                      let newValues;
-                      if (checked) {
-                        newValues = [...currentValues, opt];
-                      } else {
-                        newValues = currentValues.filter((val) => val !== opt);
-                      }
-                      setValue(v.name, newValues.join(', '));
-                    }}
-                  />
-                  <Label
-                    htmlFor={`${v.id}-${opt}`}
-                    className="cursor-pointer font-normal"
-                  >
-                    {opt}
-                  </Label>
-                </div>
-              );
-            })}
-            {(!v.options || v.options.length === 0) && (
-              <p className="text-muted-foreground text-sm italic">
-                No options defined for this list
-              </p>
-            )}
-          </div>
-        )}
-      </div>
-    );
-  };
-
   return (
     <div className="flex h-full flex-col">
-      {/* Breadcrumb & Title */}
       <div className="bg-background border-b px-4 py-3 lg:px-6">
         <Breadcrumb className="mb-2">
           <BreadcrumbList>
@@ -292,7 +220,6 @@ export default function UseTemplatePage({ params }: PageProps) {
       </div>
 
       <div className="hidden flex-1 grid-cols-1 overflow-hidden lg:grid lg:grid-cols-2">
-        {/* Left Side: Inputs - Desktop */}
         <div className="bg-background flex h-full flex-col border-r">
           <header className="shrink-0 space-y-1 border-b p-4 lg:p-6">
             <h2 className="text-muted-foreground text-sm font-semibold tracking-wider uppercase">
@@ -304,21 +231,16 @@ export default function UseTemplatePage({ params }: PageProps) {
           </header>
 
           <ScrollArea className="flex-1">
-            <div className="space-y-6 p-4 lg:p-6">
-              {prompt.variables.length === 0 ? (
-                <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
-                  <p className="text-muted-foreground text-sm">
-                    This prompt has no dynamic variables.
-                  </p>
-                </div>
-              ) : (
-                (prompt.variables as PromptVariable[]).map(renderVariableInput)
-              )}
+            <div className="p-4 lg:p-6">
+              <VariableList
+                variables={prompt.variables as PromptVariable[]}
+                formValues={formValues as Record<string, string>}
+                onValueChange={setValue}
+              />
             </div>
           </ScrollArea>
         </div>
 
-        {/* Right Side: Live Preview - Desktop */}
         <div className="bg-secondary/10 flex h-full flex-col">
           <header className="bg-background/50 flex shrink-0 items-center justify-between border-b p-4 backdrop-blur-sm lg:p-6">
             <h2 className="flex items-center gap-2 font-semibold">
@@ -337,40 +259,16 @@ export default function UseTemplatePage({ params }: PageProps) {
 
           <ScrollArea className="flex-1">
             <div className="mx-auto max-w-2xl p-8">
-              <div className="bg-background selection:bg-primary/20 min-h-100 rounded-xl border p-8 font-serif text-base leading-relaxed wrap-break-word whitespace-pre-wrap shadow-sm">
-                {interpolatedContent
-                  .split(/({{[^}]+}})/g)
-                  .map((part: string, i: number) => {
-                    if (part.startsWith('{{') && part.endsWith('}}')) {
-                      const varName = part.slice(2, -2);
-                      const variable = (
-                        prompt.variables as PromptVariable[]
-                      ).find((v) => v.name === varName);
-                      const colors = getVariableColorConfig(
-                        variable?.type || 'text',
-                      );
-
-                      return (
-                        <span
-                          key={i}
-                          className={cn(
-                            'animate-pulse rounded px-1 font-mono',
-                            colors.badge,
-                          )}
-                        >
-                          {part}
-                        </span>
-                      );
-                    }
-                    return <span key={i}>{part}</span>;
-                  })}
-              </div>
+              <LivePreview
+                content={interpolatedContent}
+                variables={prompt.variables as PromptVariable[]}
+                className="min-h-100"
+              />
             </div>
           </ScrollArea>
         </div>
       </div>
 
-      {/* Mobile Optimized Tabs Flow */}
       <div className="flex flex-1 flex-col overflow-hidden lg:hidden">
         <Tabs defaultValue="fill" className="flex h-full flex-col">
           <div className="bg-background shrink-0 border-b px-4">
@@ -383,17 +281,11 @@ export default function UseTemplatePage({ params }: PageProps) {
             value="fill"
             className="m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
           >
-            <div className="space-y-6">
-              {prompt.variables.length === 0 ? (
-                <div className="bg-secondary/20 rounded-lg border border-dashed py-10 text-center">
-                  <p className="text-muted-foreground text-sm">
-                    This prompt has no dynamic variables.
-                  </p>
-                </div>
-              ) : (
-                (prompt.variables as PromptVariable[]).map(renderVariableInput)
-              )}
-            </div>
+            <VariableList
+              variables={prompt.variables as PromptVariable[]}
+              formValues={formValues as Record<string, string>}
+              onValueChange={setValue}
+            />
           </TabsContent>
           <TabsContent
             value="preview"
@@ -408,34 +300,11 @@ export default function UseTemplatePage({ params }: PageProps) {
                 <Icon icon="lucide:copy" width={18} />
                 Copy Final Prompt
               </Button>
-              <div className="bg-background selection:bg-primary/20 min-h-75 rounded-xl border p-6 font-serif text-base leading-relaxed wrap-break-word whitespace-pre-wrap shadow-sm">
-                {interpolatedContent
-                  .split(/({{[^}]+}})/g)
-                  .map((part: string, i: number) => {
-                    if (part.startsWith('{{') && part.endsWith('}}')) {
-                      const varName = part.slice(2, -2);
-                      const variable = (
-                        prompt.variables as PromptVariable[]
-                      ).find((v) => v.name === varName);
-                      const colors = getVariableColorConfig(
-                        variable?.type || 'text',
-                      );
-
-                      return (
-                        <span
-                          key={i}
-                          className={cn(
-                            'animate-pulse rounded px-1 font-mono',
-                            colors.badge,
-                          )}
-                        >
-                          {part}
-                        </span>
-                      );
-                    }
-                    return <span key={i}>{part}</span>;
-                  })}
-              </div>
+              <LivePreview
+                content={interpolatedContent}
+                variables={prompt.variables as PromptVariable[]}
+                className="min-h-75 p-6"
+              />
             </div>
           </TabsContent>
         </Tabs>

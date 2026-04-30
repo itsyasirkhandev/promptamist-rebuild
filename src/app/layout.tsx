@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono, Inter } from 'next/font/google';
+import { Geist, Geist_Mono, Figtree } from 'next/font/google';
 import './globals.css';
 import { ClerkProvider } from '@clerk/nextjs';
 import { shadcn } from '@clerk/themes';
@@ -13,7 +13,7 @@ import { clerkAppearance } from '@/lib/clerk-appearance';
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
+const figtree = Figtree({ subsets: ['latin'], variable: '--font-sans' });
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -79,8 +79,9 @@ export default function RootLayout({
         geistSans.variable,
         geistMono.variable,
         'font-sans',
-        inter.variable,
         geistHeading.variable,
+        'font-sans',
+        figtree.variable,
       )}
     >
       <body className="flex min-h-full flex-col">

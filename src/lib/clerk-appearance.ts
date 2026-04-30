@@ -24,5 +24,3 @@ export const clerkAppearance: Appearance = {
     alertBox: 'border-destructive bg-destructive/10 text-destructive',
   },
 };
-
-export default clerkAppearance;

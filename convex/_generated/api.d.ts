@@ -9,6 +9,7 @@
  */
 
 import type * as authed_helpers from "../authed/helpers.js";
+import type * as authed_promptHelpers from "../authed/promptHelpers.js";
 import type * as authed_prompts from "../authed/prompts.js";
 import type * as effect from "../effect.js";
 import type * as errors from "../errors.js";
@@ -16,6 +17,7 @@ import type * as http from "../http.js";
 import type * as private_helpers from "../private/helpers.js";
 import type * as publicPrompts from "../publicPrompts.js";
 import type * as users from "../users.js";
+import type * as validators from "../validators.js";
 
 import type {
   ApiFromModules,
@@ -25,6 +27,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "authed/helpers": typeof authed_helpers;
+  "authed/promptHelpers": typeof authed_promptHelpers;
   "authed/prompts": typeof authed_prompts;
   effect: typeof effect;
   errors: typeof errors;
@@ -32,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   "private/helpers": typeof private_helpers;
   publicPrompts: typeof publicPrompts;
   users: typeof users;
+  validators: typeof validators;
 }>;
 
 /**

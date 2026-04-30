@@ -22,7 +22,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-export function Sidebar() {
+export function AppSidebar() {
   const pathname = usePathname();
 
   return (

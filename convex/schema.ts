@@ -1,6 +1,8 @@
 import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
 
+import { promptVariablesValidator } from './validators';
+
 export default defineSchema({
   users: defineTable({
     clerkId: v.string(),
@@ -26,21 +28,7 @@ export default defineSchema({
     content: v.string(),
     tags: v.array(v.string()),
     isTemplate: v.boolean(),
-    variables: v.array(
-      v.object({
-        id: v.string(), // Client-side UUID
-        name: v.string(),
-        type: v.union(
-          v.literal('text'),
-          v.literal('number'),
-          v.literal('textarea'),
-          v.literal('choices'),
-          v.literal('list'),
-        ),
-        options: v.optional(v.array(v.string())),
-        defaultValue: v.optional(v.string()),
-      }),
-    ),
+    variables: promptVariablesValidator,
     isPublic: v.optional(v.boolean()),
     publicSlug: v.optional(v.string()),
   })

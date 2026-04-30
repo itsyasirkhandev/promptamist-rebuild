@@ -7,10 +7,7 @@ import { Icon } from '@iconify/react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { interpolateVariables, getVariableColorConfig } from '@/lib/variables';
+import { interpolateVariables } from '@/lib/variables';
 import {
   Card,
   CardContent,
@@ -20,22 +17,10 @@ import {
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { cn } from '@/lib/utils';
-
-interface Variable {
-  id: string;
-  name: string;
-  type: 'text' | 'number' | 'textarea' | 'choices' | 'list';
-  options?: string[];
-  defaultValue?: string;
-}
+  VariableInput,
+  PromptVariable as Variable,
+} from '@/components/prompts/VariableInput';
+import { PromptPreview } from '@/components/prompts/PromptPreview';
 
 interface PublicPromptClientProps {
   slug: string;
@@ -152,129 +137,14 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
             <CardTitle>Fill in the details</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-6 sm:grid-cols-2">
-            {(prompt.variables as Variable[]).map((variable) => {
-              const colors = getVariableColorConfig(variable.type);
-
-              return (
-                <div key={variable.id} className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor={variable.id} className="font-semibold">
-                      {variable.name}
-                    </Label>
-                    {variable.defaultValue && (
-                      <span className="text-muted-foreground text-[10px] italic">
-                        (default: {variable.defaultValue})
-                      </span>
-                    )}
-                  </div>
-                  {variable.type === 'text' && (
-                    <Input
-                      id={variable.id}
-                      value={variableValues[variable.name] || ''}
-                      onChange={(e) =>
-                        handleVariableChange(variable.name, e.target.value)
-                      }
-                      placeholder={`Enter ${variable.name}...`}
-                      className={colors.input}
-                    />
-                  )}
-                  {variable.type === 'number' && (
-                    <Input
-                      id={variable.id}
-                      type="number"
-                      value={variableValues[variable.name] || ''}
-                      onChange={(e) =>
-                        handleVariableChange(variable.name, e.target.value)
-                      }
-                      placeholder={`Enter ${variable.name}...`}
-                      className={colors.input}
-                    />
-                  )}
-                  {variable.type === 'textarea' && (
-                    <Textarea
-                      id={variable.id}
-                      value={variableValues[variable.name] || ''}
-                      onChange={(e) =>
-                        handleVariableChange(variable.name, e.target.value)
-                      }
-                      placeholder={`Enter ${variable.name}...`}
-                      className={`min-h-25 ${colors.input}`}
-                    />
-                  )}
-                  {variable.type === 'choices' && variable.options && (
-                    <Select
-                      value={variableValues[variable.name] || ''}
-                      onValueChange={(val) =>
-                        handleVariableChange(variable.name, val)
-                      }
-                    >
-                      <SelectTrigger id={variable.id} className={colors.input}>
-                        <SelectValue
-                          placeholder={`Select ${variable.name}...`}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {variable.options.map((opt: string) => (
-                          <SelectItem key={opt} value={opt}>
-                            {opt}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  )}
-                  {variable.type === 'list' && (
-                    <div className="flex flex-col gap-2 pt-2">
-                      {variable.options?.map((opt) => {
-                        const currentValues = (
-                          variableValues[variable.name] || ''
-                        )
-                          .split(',')
-                          .map((s) => s.trim())
-                          .filter(Boolean);
-                        const isChecked = currentValues.includes(opt);
-
-                        return (
-                          <div
-                            key={opt}
-                            className="flex items-center space-x-2"
-                          >
-                            <Checkbox
-                              id={`${variable.id}-${opt}`}
-                              checked={isChecked}
-                              onCheckedChange={(checked) => {
-                                let newValues;
-                                if (checked) {
-                                  newValues = [...currentValues, opt];
-                                } else {
-                                  newValues = currentValues.filter(
-                                    (v) => v !== opt,
-                                  );
-                                }
-                                handleVariableChange(
-                                  variable.name,
-                                  newValues.join(', '),
-                                );
-                              }}
-                            />
-                            <Label
-                              htmlFor={`${variable.id}-${opt}`}
-                              className="cursor-pointer font-normal"
-                            >
-                              {opt}
-                            </Label>
-                          </div>
-                        );
-                      })}
-                      {(!variable.options || variable.options.length === 0) && (
-                        <p className="text-muted-foreground text-sm italic">
-                          No options defined for this list
-                        </p>
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            {(prompt.variables as Variable[]).map((variable) => (
+              <VariableInput
+                key={variable.id}
+                variable={variable}
+                value={variableValues[variable.name] || ''}
+                onChange={(val) => handleVariableChange(variable.name, val)}
+              />
+            ))}
           </CardContent>
         </Card>
       )}
@@ -290,32 +160,10 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
         <CardContent>
           <div className="bg-muted relative rounded-md p-4">
             <div className="text-sm font-medium whitespace-pre-wrap">
-              {generatedPrompt
-                .split(/({{[^}]+}})/g)
-                .map((part: string, i: number) => {
-                  if (part.startsWith('{{') && part.endsWith('}}')) {
-                    const varName = part.slice(2, -2);
-                    const variable = (prompt.variables as Variable[]).find(
-                      (v) => v.name === varName,
-                    );
-                    const colors = getVariableColorConfig(
-                      variable?.type || 'text',
-                    );
-
-                    return (
-                      <span
-                        key={i}
-                        className={cn(
-                          'animate-pulse rounded px-1 font-mono',
-                          colors.badge,
-                        )}
-                      >
-                        {part}
-                      </span>
-                    );
-                  }
-                  return <span key={i}>{part}</span>;
-                })}
+              <PromptPreview
+                content={generatedPrompt}
+                variables={prompt.variables as Variable[]}
+              />
             </div>
           </div>
         </CardContent>

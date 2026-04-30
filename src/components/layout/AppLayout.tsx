@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { usePathname } from 'next/navigation';
-import { Sidebar } from './Sidebar';
+import { AppSidebar } from './AppSidebar';
 import { MobileBottomNav } from './MobileBottomNav';
 import { Authenticated, Unauthenticated } from 'convex/react';
 import { UserButton } from '@clerk/nextjs';
@@ -50,7 +50,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     <SidebarProvider>
       <div className="bg-background flex min-h-screen w-full">
         <Authenticated>
-          <Sidebar />
+          <AppSidebar />
         </Authenticated>
 
         <SidebarInset className="flex flex-1 flex-col">

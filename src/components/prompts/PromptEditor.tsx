@@ -54,55 +54,37 @@ export function PromptEditor({
     [variables],
   );
 
+  const getEditorRawContent = React.useCallback(() => {
+    if (!editorRef.current) return '';
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = editorRef.current.innerHTML;
+
+    const spans = tempDiv.querySelectorAll('span[data-variable-id]');
+    spans.forEach((span) => {
+      const varId = span.getAttribute('data-variable-id');
+      const variable = variables.find((v) => v.id === varId);
+      if (variable) {
+        span.replaceWith(`{{${variable.name}}}`);
+      } else {
+        span.replaceWith(span.textContent || '');
+      }
+    });
+    return tempDiv.innerText;
+  }, [variables]);
+
   // Sync initial content or external changes to editor
   React.useEffect(() => {
     if (!editorRef.current) return;
-
-    // Helper to get raw text from editor innerHTML
-    const getEditorRawContent = () => {
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = editorRef.current?.innerHTML || '';
-
-      const spans = tempDiv.querySelectorAll('span[data-variable-id]');
-      spans.forEach((span) => {
-        const varId = span.getAttribute('data-variable-id');
-        const variable = variables.find((v) => v.id === varId);
-        if (variable) {
-          span.replaceWith(`{{${variable.name}}}`);
-        } else {
-          span.replaceWith(span.textContent || '');
-        }
-      });
-      return tempDiv.innerText;
-    };
 
     const currentRaw = getEditorRawContent();
     if (currentRaw !== content) {
       editorRef.current.innerHTML = formatContent(content);
     }
-  }, [content, formatContent, variables]);
+  }, [content, formatContent, getEditorRawContent]);
 
   const handleInput = () => {
-    if (editorRef.current) {
-      // Extract raw text from editor, ensuring we keep the {{var}} syntax
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = editorRef.current.innerHTML;
-
-      // Replace spans back to {{name}}
-      const spans = tempDiv.querySelectorAll('span[data-variable-id]');
-      spans.forEach((span) => {
-        const varId = span.getAttribute('data-variable-id');
-        const variable = variables.find((v) => v.id === varId);
-        if (variable) {
-          span.replaceWith(`{{${variable.name}}}`);
-        } else {
-          // If variable not found (maybe deleted from list), just keep the text
-          span.replaceWith(span.textContent || '');
-        }
-      });
-
-      onChange(tempDiv.innerText);
-    }
+    const rawContent = getEditorRawContent();
+    onChange(rawContent);
   };
 
   const handleSelection = () => {

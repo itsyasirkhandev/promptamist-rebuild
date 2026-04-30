@@ -52,7 +52,7 @@ import type { Doc } from '../../convex/_generated/dataModel';
 
 export type VariableType = Doc<'prompts'>['variables'][number]['type'];
 
-export const variableTypeColors: Record<
+const variableTypeColors: Record<
   VariableType,
   { badge: string; input: string }
 > = {
@@ -84,7 +84,7 @@ export const variableTypeColors: Record<
   },
 } as const;
 
-export function isVariableType(type: string): type is VariableType {
+function isVariableType(type: string): type is VariableType {
   return type in variableTypeColors;
 }
 

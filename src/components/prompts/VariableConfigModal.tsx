@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { useForm, useWatch } from 'react-hook-form';
+import { useForm, useWatch, UseFormRegister } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Icon } from '@iconify/react';
@@ -49,6 +49,211 @@ interface VariableConfigModalProps {
   existingVariables?: string[];
 }
 
+interface OptionManagerProps {
+  options: string[];
+  onChange: (options: string[]) => void;
+  type: VariableFormValues['type'];
+}
+
+const OptionManager = React.memo(
+  ({ options, onChange, type }: OptionManagerProps) => {
+    const [newOption, setNewOption] = React.useState('');
+
+    const addOption = () => {
+      if (newOption.trim()) {
+        onChange([...options, newOption.trim()]);
+        setNewOption('');
+      }
+    };
+
+    const removeOption = (index: number) => {
+      onChange(options.filter((_, i) => i !== index));
+    };
+
+    if (type !== 'choices' && type !== 'list') return null;
+
+    return (
+      <div className="space-y-4 border-t pt-4">
+        <Label>Options</Label>
+        <div className="flex gap-2">
+          <Input
+            value={newOption}
+            onChange={(e) => setNewOption(e.target.value)}
+            placeholder="Add option..."
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                addOption();
+              }
+            }}
+          />
+          <Button
+            type="button"
+            onClick={addOption}
+            size="icon"
+            variant="secondary"
+          >
+            <Icon icon="lucide:plus" width={18} />
+          </Button>
+        </div>
+        <div className="bg-secondary/30 flex min-h-[40px] flex-wrap gap-2 rounded-md p-2">
+          {options.length === 0 && (
+            <span className="text-muted-foreground text-sm italic">
+              No options added yet
+            </span>
+          )}
+          {options.map((opt, i) => (
+            <Badge key={i} variant="secondary" className="gap-1 px-2 py-1">
+              {opt}
+              <button
+                type="button"
+                onClick={() => removeOption(i)}
+                className="hover:text-destructive focus:outline-none"
+              >
+                <Icon icon="lucide:x" width={14} />
+              </button>
+            </Badge>
+          ))}
+        </div>
+        {type === 'choices' && options.length < 1 && (
+          <p className="text-sm text-amber-500">
+            Add at least 1 option for single select
+          </p>
+        )}
+      </div>
+    );
+  },
+);
+
+OptionManager.displayName = 'OptionManager';
+
+interface DefaultValueInputProps {
+  type: VariableFormValues['type'];
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+  register: UseFormRegister<VariableFormValues>;
+}
+
+const DefaultTextArea = ({
+  register,
+}: {
+  register: UseFormRegister<VariableFormValues>;
+}) => (
+  <Textarea
+    id="defaultValue"
+    {...register('defaultValue')}
+    placeholder="Default text..."
+  />
+);
+
+const DefaultSelect = ({
+  options,
+  value,
+  onChange,
+}: {
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+}) => (
+  <Select onValueChange={onChange} value={value || ''}>
+    <SelectTrigger>
+      <SelectValue placeholder="Select default option" />
+    </SelectTrigger>
+    <SelectContent>
+      {options.map((opt: string, i: number) => (
+        <SelectItem key={`${opt}-${i}`} value={opt}>
+          {opt}
+        </SelectItem>
+      ))}
+    </SelectContent>
+  </Select>
+);
+
+const DefaultCheckboxList = ({
+  options,
+  value,
+  onChange,
+}: {
+  options: string[];
+  value: string;
+  onChange: (value: string) => void;
+}) => {
+  const currentValues = (value || '')
+    .split(',')
+    .map((s: string) => s.trim())
+    .filter(Boolean);
+
+  return (
+    <div className="flex flex-col gap-2 pt-2">
+      {options.map((opt: string, i: number) => {
+        const isChecked = currentValues.includes(opt);
+
+        return (
+          <div
+            key={`default-${opt}-${i}`}
+            className="flex items-center space-x-2"
+          >
+            <Checkbox
+              id={`default-${opt}`}
+              checked={isChecked}
+              onCheckedChange={(checked) => {
+                let newValues;
+                if (checked) {
+                  newValues = [...currentValues, opt];
+                } else {
+                  newValues = currentValues.filter((v: string) => v !== opt);
+                }
+                onChange(newValues.join(', '));
+              }}
+            />
+            <Label
+              htmlFor={`default-${opt}`}
+              className="cursor-pointer font-normal"
+            >
+              {opt}
+            </Label>
+          </div>
+        );
+      })}
+      {options.length === 0 && (
+        <span className="text-muted-foreground text-sm italic">
+          Add options to set default values
+        </span>
+      )}
+    </div>
+  );
+};
+
+const DefaultValueInput = React.memo(
+  ({ type, options, value, onChange, register }: DefaultValueInputProps) => {
+    if (type === 'textarea') return <DefaultTextArea register={register} />;
+    if (type === 'choices')
+      return (
+        <DefaultSelect options={options} value={value} onChange={onChange} />
+      );
+    if (type === 'list')
+      return (
+        <DefaultCheckboxList
+          options={options}
+          value={value}
+          onChange={onChange}
+        />
+      );
+
+    return (
+      <Input
+        id="defaultValue"
+        {...register('defaultValue')}
+        type={type === 'number' ? 'number' : 'text'}
+        placeholder="Default value..."
+      />
+    );
+  },
+);
+
+DefaultValueInput.displayName = 'DefaultValueInput';
+
 export function VariableConfigModal({
   isOpen,
   onClose,
@@ -57,8 +262,6 @@ export function VariableConfigModal({
   initialData,
   existingVariables = [],
 }: VariableConfigModalProps) {
-  const [newOption, setNewOption] = React.useState('');
-
   const {
     register,
     handleSubmit,
@@ -95,19 +298,6 @@ export function VariableConfigModal({
       }
     }
   }, [isOpen, initialValue, initialData, reset]);
-
-  const addOption = () => {
-    if (newOption.trim()) {
-      const updatedOptions = [...options, newOption.trim()];
-      setValue('options', updatedOptions);
-      setNewOption('');
-    }
-  };
-
-  const removeOption = (index: number) => {
-    const updatedOptions = options.filter((_, i) => i !== index);
-    setValue('options', updatedOptions);
-  };
 
   const onSubmit = (data: VariableFormValues, e?: React.BaseSyntheticEvent) => {
     e?.stopPropagation();
@@ -184,137 +374,23 @@ export function VariableConfigModal({
             </Select>
           </div>
 
-          {(selectedType === 'choices' || selectedType === 'list') && (
-            <div className="space-y-4 border-t pt-4">
-              <Label>Options</Label>
-              <div className="flex gap-2">
-                <Input
-                  value={newOption}
-                  onChange={(e) => setNewOption(e.target.value)}
-                  placeholder="Add option..."
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                      addOption();
-                    }
-                  }}
-                />
-                <Button
-                  type="button"
-                  onClick={addOption}
-                  size="icon"
-                  variant="secondary"
-                >
-                  <Icon icon="lucide:plus" width={18} />
-                </Button>
-              </div>
-              <div className="bg-secondary/30 flex min-h-[40px] flex-wrap gap-2 rounded-md p-2">
-                {options.length === 0 && (
-                  <span className="text-muted-foreground text-sm italic">
-                    No options added yet
-                  </span>
-                )}
-                {options.map((opt, i) => (
-                  <Badge
-                    key={i}
-                    variant="secondary"
-                    className="gap-1 px-2 py-1"
-                  >
-                    {opt}
-                    <button
-                      type="button"
-                      onClick={() => removeOption(i)}
-                      className="hover:text-destructive focus:outline-none"
-                    >
-                      <Icon icon="lucide:x" width={14} />
-                    </button>
-                  </Badge>
-                ))}
-              </div>
-              {selectedType === 'choices' && options.length < 1 && (
-                <p className="text-sm text-amber-500">
-                  Add at least 1 option for single select
-                </p>
-              )}
-            </div>
-          )}
+          <OptionManager
+            options={options}
+            onChange={(newOptions) => setValue('options', newOptions)}
+            type={selectedType}
+          />
 
           <div className="space-y-2">
             <Label htmlFor="defaultValue">Default Value (Optional)</Label>
-            {selectedType === 'textarea' ? (
-              <Textarea
-                id="defaultValue"
-                {...register('defaultValue')}
-                placeholder="Default text..."
-              />
-            ) : selectedType === 'choices' ? (
-              <Select
-                onValueChange={(value) => setValue('defaultValue', value)}
-                value={currentDefaultValue || ''}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select default option" />
-                </SelectTrigger>
-                <SelectContent>
-                  {options.map((opt, i) => (
-                    <SelectItem key={`${opt}-${i}`} value={opt}>
-                      {opt}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            ) : selectedType === 'list' ? (
-              <div className="flex flex-col gap-2 pt-2">
-                {options.map((opt, i) => {
-                  const currentValues = (currentDefaultValue || '')
-                    .split(',')
-                    .map((s) => s.trim())
-                    .filter(Boolean);
-                  const isChecked = currentValues.includes(opt);
-
-                  return (
-                    <div
-                      key={`default-${opt}-${i}`}
-                      className="flex items-center space-x-2"
-                    >
-                      <Checkbox
-                        id={`default-${opt}`}
-                        checked={isChecked}
-                        onCheckedChange={(checked) => {
-                          let newValues;
-                          if (checked) {
-                            newValues = [...currentValues, opt];
-                          } else {
-                            newValues = currentValues.filter((v) => v !== opt);
-                          }
-                          setValue('defaultValue', newValues.join(', '), {
-                            shouldDirty: true,
-                          });
-                        }}
-                      />
-                      <Label
-                        htmlFor={`default-${opt}`}
-                        className="cursor-pointer font-normal"
-                      >
-                        {opt}
-                      </Label>
-                    </div>
-                  );
-                })}
-                {options.length === 0 && (
-                  <span className="text-muted-foreground text-sm italic">
-                    Add options to set default values
-                  </span>
-                )}
-              </div>
-            ) : (
-              <Input
-                id="defaultValue"
-                {...register('defaultValue')}
-                type={selectedType === 'number' ? 'number' : 'text'}
-                placeholder="Default value..."
-              />
-            )}
+            <DefaultValueInput
+              type={selectedType}
+              options={options}
+              value={currentDefaultValue || ''}
+              onChange={(val) =>
+                setValue('defaultValue', val, { shouldDirty: true })
+              }
+              register={register}
+            />
           </div>
 
           <DialogFooter className="pt-4">

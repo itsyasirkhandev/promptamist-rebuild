@@ -1,0 +1,506 @@
+■ Metrics: dead files 0.0% (0 of 84) · dead exports 17.4% (40 of 230) · MI 93.2 (good) · 1 churn hotspot
+  84 files analyzed
+  36 entry points detected (36 plugin)
+  3 refactoring targets — start with select.tsx (dead code)
+
+── Dead Code ──────────────────────────────────────
+
+── Unused Code ─────────────────────────────────────
+
+● Unused exports (40)
+  src\components\ui\dropdown-menu.tsx (11)
+    :259 DropdownMenuPortal
+    :262 DropdownMenuGroup
+    :263 DropdownMenuLabel
+    :265 DropdownMenuCheckboxItem
+    :266 DropdownMenuRadioGroup
+    ... and 6 more (--format json for full list)
+  src\components\ui\sidebar.tsx (10)
+    :685 SidebarGroupAction
+    :689 SidebarInput
+    :692 SidebarMenuAction
+    :693 SidebarMenuBadge
+    :696 SidebarMenuSkeleton
+    ... and 5 more (--format json for full list)
+  src\components\ui\dialog.tsx (5)
+    :158 DialogClose
+    :160 DialogDescription
+    :163 DialogOverlay
+    :164 DialogPortal
+    :166 DialogTrigger
+  src\components\ui\select.tsx (5)
+    :190 SelectGroup
+    :192 SelectLabel
+    :193 SelectScrollDownButton
+    :194 SelectScrollUpButton
+    :195 SelectSeparator
+  src\components\ui\alert-dialog.tsx (3)
+    :194 AlertDialogMedia
+    :195 AlertDialogOverlay
+    :196 AlertDialogPortal
+  src\components\ui\sheet.tsx (3)
+    :139 SheetTrigger
+    :140 SheetClose
+    :143 SheetFooter
+  src\components\ui\breadcrumb.tsx
+    :118 BreadcrumbEllipsis
+  src\components\ui\card.tsx
+    :97 CardAction
+  src\lib\clerk-appearance.ts
+    :28 default
+  Exported symbols with no known consumers — https://docs.fallow.tools/explanations/dead-code#unused-exports
+  To auto-fix: fallow fix --dry-run
+  To suppress: // fallow-ignore-next-line unused-exports
+
+── Dependencies ─────────────────────────────────────
+
+● Unresolved imports (1)
+  convex\_generated\server.d.ts
+    :22 ./dataModel.js
+  Import paths that could not be resolved — check for missing packages or broken paths. Framework-specific imports may need a plugin: https://docs.fallow.tools/plugins — https://docs.fallow.tools/explanations/dead-code#unresolved-imports
+
+✗ 40 exports · 1 unresolved import (0.37s)
+
+── Duplication ────────────────────────────────────
+
+● Duplicates (11 clone groups)
+
+     36 lines  2 instances
+    convex\authed\prompts.ts:9-44
+    convex\authed\prompts.ts:128-162
+
+     30 lines  2 instances
+    convex\authed\prompts.ts:48-77
+    convex\authed\prompts.ts:175-202
+
+     30 lines  2 instances
+    src\app\(protected)\prompts\[id]\use\page.tsx:352-381
+    src\app\(protected)\prompts\[id]\use\page.tsx:429-458
+
+     24 lines  2 instances
+    src\app\(protected)\prompts\[id]\use\page.tsx:437-458
+    src\components\prompts\PublicPromptClient.tsx:298-321
+
+     19 lines  2 instances
+    src\app\(protected)\prompts\[id]\use\page.tsx:313-331
+    src\app\(protected)\prompts\[id]\use\page.tsx:397-415
+
+     17 lines  3 instances
+    convex\authed\helpers.ts:31-47
+    convex\authed\helpers.ts:49-65
+    convex\authed\helpers.ts:67-83
+
+     16 lines  3 instances
+    convex\authed\prompts.ts:13-28
+    convex\authed\prompts.ts:132-147
+    convex\schema.ts:28-43
+
+     14 lines  2 instances
+    src\app\(protected)\prompts\[id]\use\page.tsx:125-134
+    src\components\prompts\PublicPromptClient.tsx:229-242
+
+     14 lines  2 instances
+    src\components\prompts\PromptEditor.tsx:64-75
+    src\components\prompts\PromptEditor.tsx:89-102
+
+     10 lines  2 instances
+    convex\authed\prompts.ts:109-118
+    convex\authed\prompts.ts:217-226
+
+  ... and 1 more clone groups
+  Identical code blocks detected via suffix-array analysis — https://docs.fallow.tools/explanations/duplication#clone-groups
+
+● Clone families (3 with multiple groups)
+
+  3 groups, 76 lines across convex\authed\prompts.ts
+    → Extract 3 shared clone groups (76 lines) from prompts.ts into convex\authed
+
+  2 groups, 49 lines across src\app\(protected)\prompts\[id]\use\page.tsx
+    → Extract shared function (30 lines) from page.tsx, page.tsx
+    → Extract shared function (19 lines) from page.tsx, page.tsx
+
+  3 groups, 45 lines across src\app\(protected)\prompts\[id]\use\page.tsx, src\components\prompts\PublicPromptClient.tsx
+    → Extract shared function (24 lines) from page.tsx, PublicPromptClient.tsx
+    → Extract shared function (7 lines) from page.tsx, page.tsx, PublicPromptClient.tsx
+    → Extract shared function (14 lines) from page.tsx, PublicPromptClient.tsx
+
+  Groups of related clones across the same files — https://docs.fallow.tools/explanations/duplication#clone-families
+
+✗ 393 lines (5.2%) duplicated across 6 files (0.02s)
+
+── Complexity ─────────────────────────────────────
+
+■ Metrics: 8,070 LOC · dead files 0.0% · dead exports 17.4% · avg cyclomatic 1.8 · p90 cyclomatic 3 · maintainability 93.2 (good) · 1 churn hotspot
+
+  Function size: 71% low · 14% medium · 8% high · 6% very high  (1-15 / 16-30 / 31-60 / >60 LOC)
+
+● Large functions (10 shown, 23 total)
+  src\components\prompts\PromptForm.tsx
+    :62 PromptForm  368 lines
+  src\app\(protected)\prompts\[id]\use\page.tsx
+    :168 UseTemplatePage  296 lines
+  src\components\prompts\PublicPromptClient.tsx
+    :44 PublicPromptClient  282 lines
+  src\components\prompts\PromptEditor.tsx
+    :27 PromptEditor  207 lines
+  src\app\(protected)\prompts\page.tsx
+    :26 PromptsPage  179 lines
+  src\components\prompts\PromptCard.tsx
+    :37 PromptCard  160 lines
+  src\components\prompts\VariableConfigModal.tsx
+    :230 VariableConfigModal  157 lines
+  src\components\prompts\PublicPromptClient.tsx
+    :155 <arrow>  123 lines
+  src\lib\__tests__\variables.test.ts
+    :8 <arrow>  116 lines
+  src\app\(protected)\prompts\[id]\use\page.tsx
+    :57 VariableInput  108 lines
+  Functions exceeding 60 lines of code (very high risk): https://docs.fallow.tools/explanations/health#unit-size
+  use --top 23 to see all
+
+● High complexity functions (29)
+  src\components\prompts\PromptForm.tsx
+    :62 PromptForm CRITICAL
+          22 cyclomatic   16 cognitive  368 lines
+         506.0 CRAP
+  src\components\prompts\VariableConfigModal.tsx
+    :230 VariableConfigModal CRITICAL
+          16 cyclomatic   14 cognitive  157 lines
+         272.0 CRAP
+  src\components\prompts\PublicPromptClient.tsx
+    :155 <arrow> CRITICAL
+          14 cyclomatic   11 cognitive  123 lines
+         210.0 CRAP
+  convex\authed\prompts.ts
+    :151 <anonymous> CRITICAL
+          13 cyclomatic   20 cognitive   62 lines
+         182.0 CRAP
+  src\app\(protected)\prompts\page.tsx
+    :26 PromptsPage CRITICAL
+          13 cyclomatic   17 cognitive  179 lines
+         182.0 CRAP
+  src\app\(protected)\prompts\[id]\use\page.tsx
+    :57 VariableInput CRITICAL
+          13 cyclomatic   11 cognitive  108 lines
+         182.0 CRAP
+  convex\http.ts
+    :11 handler CRITICAL
+          12 cyclomatic   11 cognitive   64 lines
+         156.0 CRAP
+  src\components\prompts\PublicPromptClient.tsx
+    :44 PublicPromptClient CRITICAL
+          11 cyclomatic    8 cognitive  282 lines
+         132.0 CRAP
+  src\lib\error-handler.ts
+    :4 handleError CRITICAL
+          11 cyclomatic    9 cognitive   36 lines
+         132.0 CRAP
+  src\app\(protected)\prompts\page.tsx
+    :46 <arrow> HIGH
+           9 cyclomatic    6 cognitive   11 lines
+          90.0 CRAP
+  src\components\prompts\VariableConfigModal.tsx
+    :140 DefaultValueInput HIGH
+           8 cyclomatic    7 cognitive   87 lines
+          72.0 CRAP
+  src\components\ui\sidebar.tsx
+    :151 Sidebar HIGH
+           8 cyclomatic    7 cognitive  101 lines
+          72.0 CRAP
+  convex\effect.ts
+    :5 runEffect HIGH
+           7 cyclomatic    7 cognitive   40 lines
+          56.0 CRAP
+  convex\authed\prompts.ts
+    :32 <anonymous> HIGH
+           7 cyclomatic   10 cognitive   55 lines
+          56.0 CRAP
+    :237 <anonymous> HIGH
+           7 cyclomatic   10 cognitive   38 lines
+          56.0 CRAP
+  src\components\prompts\VariableConfigModal.tsx
+    :58 OptionManager
+           6 cyclomatic    4 cognitive   71 lines
+          42.0 CRAP
+    :275 onSubmit
+           6 cyclomatic    4 cognitive   16 lines
+          42.0 CRAP
+  src\components\prompts\use\PromptUseLayout.tsx
+    :16 PromptUseLayout
+           6 cyclomatic    5 cognitive   44 lines
+          42.0 CRAP
+  src\components\prompts\PromptEditor.tsx
+    :108 handleSelection
+           6 cyclomatic    7 cognitive   17 lines
+          42.0 CRAP
+  src\components\prompts\PromptForm.tsx
+    :109 <arrow>
+           6 cyclomatic    5 cognitive   12 lines
+          42.0 CRAP
+  src\components\prompts\PromptCard.tsx
+    :37 PromptCard
+           6 cyclomatic    4 cognitive  160 lines
+          42.0 CRAP
+  src\components\HomeClient.tsx
+    :82 DashboardStats
+           5 cyclomatic    4 cognitive   99 lines
+          30.0 CRAP
+  convex\users.ts
+    :32 handler
+           5 cyclomatic    4 cognitive   32 lines
+          30.0 CRAP
+  src\lib\utils.ts
+    :8 formatRelativeTime
+           5 cyclomatic    5 cognitive   31 lines
+          30.0 CRAP
+  src\components\prompts\PublicPromptClient.tsx
+    :295 <arrow>
+           5 cyclomatic    3 cognitive   24 lines
+          30.0 CRAP
+  src\app\(protected)\prompts\[id]\use\page.tsx
+    :355 <arrow>
+           5 cyclomatic    3 cognitive   24 lines
+          30.0 CRAP
+    :432 <arrow>
+           5 cyclomatic    3 cognitive   24 lines
+          30.0 CRAP
+    :168 UseTemplatePage
+           5 cyclomatic    4 cognitive  296 lines
+          30.0 CRAP
+  src\components\ui\sidebar.tsx
+    :493 SidebarMenuButton
+           5 cyclomatic    4 cognitive   49 lines
+          30.0 CRAP
+  Functions exceeding cyclomatic, cognitive, or CRAP thresholds (https://docs.fallow.tools/explanations/health#complexity-metrics)
+  To suppress: // fallow-ignore-next-line complexity
+
+● File health scores (70 files)
+
+   80.1    src\components\ui\sidebar.tsx
+            706 LOC    2 fan-in    8 fan-out   42% dead  0.09 density  72.0 risk
+
+   81.1    src\components\ui\dropdown-menu.tsx
+            274 LOC    1 fan-in    1 fan-out   73% dead  0.05 density  2.0 risk
+
+   83.5    src\components\ui\dialog.tsx
+            168 LOC    1 fan-in    2 fan-out   50% dead  0.07 density  6.0 risk
+
+   85.0    src\app\(protected)\prompts\page.tsx
+            205 LOC    0 fan-in   10 fan-out    0% dead  0.18 density  182.0 risk
+
+   85.3    src\components\prompts\PublicPromptClient.tsx
+            326 LOC    1 fan-in   11 fan-out    0% dead  0.16 density  210.0 risk
+
+   85.4    src\components\ui\select.tsx
+            199 LOC    4 fan-in    1 fan-out   50% dead  0.06 density  12.0 risk
+
+   85.6    src\app\(protected)\prompts\[id]\use\page.tsx
+            464 LOC    0 fan-in   14 fan-out    0% dead  0.12 density  182.0 risk
+
+   85.8    src\components\prompts\PromptForm.tsx
+            430 LOC    2 fan-in   12 fan-out    0% dead  0.13 density  506.0 risk
+
+   85.9    src\components\ui\sheet.tsx
+            147 LOC    1 fan-in    2 fan-out   38% dead  0.07 density  6.0 risk
+
+   86.0    src\components\prompts\VariableConfigModal.tsx
+            387 LOC    2 fan-in    9 fan-out    0% dead  0.16 density  272.0 risk
+
+  ... and 60 more files (--format json for full list)
+
+  Composite file quality scores based on complexity, coupling, and dead code. Risk: low <15, moderate 15-30, high >=30. CRAP estimated from export references (85% direct, 40% indirect, 0% untested). Use --coverage for exact scores. https://docs.fallow.tools/explanations/health#file-health-scores
+
+● Hotspots (51 files, since 6 months)
+
+   50.6 ─  src\app\(protected)\prompts\[id]\use\page.tsx
+          16 commits   1539 churn  0.12 density   0 fan-in  ─ stable
+
+   42.7 ─  src\components\prompts\PublicPromptClient.tsx
+          10 commits    541 churn  0.16 density   1 fan-in  ─ stable
+
+   35.5 ─  src\hooks\use-mobile.ts
+           6 commits    129 churn  0.23 density   1 fan-in  ─ stable
+
+   34.7 ▼  convex\authed\prompts.ts
+           7 commits    385 churn  0.19 density   1 fan-in  ▼ cooling
+
+   33.8 ▼  src\components\prompts\VariableConfigModal.tsx
+           8 commits    405 churn  0.16 density   2 fan-in  ▼ cooling
+
+   29.2 ▼  src\components\prompts\PromptEditor.tsx
+           7 commits    269 churn  0.16 density   1 fan-in  ▼ cooling
+
+   28.5 ▼  src\app\(protected)\prompts\[id]\edit\page.tsx
+          11 commits    674 churn  0.10 density   0 fan-in  ▼ cooling
+
+   27.5 ▲  src\app\(protected)\prompts\page.tsx
+           6 commits    636 churn  0.18 density   0 fan-in  ▲ accelerating
+
+   19.4 ▼  src\lib\utils.ts
+           5 commits     56 churn  0.15 density  29 fan-in  ▼ cooling
+
+   16.2 ─  src\components\ui\sidebar.tsx
+           7 commits   1987 churn  0.09 density   2 fan-in  ─ stable
+
+   13.0 ▲  src\components\prompts\use\PromptUseLayout.tsx
+           4 commits     75 churn  0.12 density   1 fan-in  ▲ accelerating
+
+   12.9 ▼  src\app\(protected)\prompts\create\page.tsx
+          10 commits    640 churn  0.05 density   0 fan-in  ▼ cooling
+
+   12.5 ─  convex\publicPrompts.ts
+           4 commits     35 churn  0.12 density   1 fan-in  ─ stable
+
+   12.4 ─  src\components\ui\breadcrumb.tsx
+           6 commits    321 churn  0.08 density   3 fan-in  ─ stable
+
+   12.3 ▼  convex\effect.ts
+           3 commits     58 churn  0.16 density   3 fan-in  ▼ cooling
+
+   11.5 ▼  convex\users.ts
+           3 commits     76 churn  0.15 density   1 fan-in  ▼ cooling
+
+   11.3 ▼  src\components\prompts\VariableList.tsx
+           4 commits    101 churn  0.11 density   1 fan-in  ▼ cooling
+
+   10.9 ▼  src\components\prompts\PromptCard.tsx
+           7 commits    432 churn  0.06 density   1 fan-in  ▼ cooling
+
+   10.8 ─  src\components\ui\sheet.tsx
+           6 commits    368 churn  0.07 density   1 fan-in  ─ stable
+
+   10.8 ─  src\components\ui\tooltip.tsx
+           6 commits    135 churn  0.07 density   2 fan-in  ─ stable
+
+   10.8 ─  src\components\ui\skeleton.tsx
+           6 commits     55 churn  0.07 density   8 fan-in  ─ stable
+
+   10.0 ▼  convex\authed\helpers.ts
+           3 commits     93 churn  0.13 density   3 fan-in  ▼ cooling
+
+    9.8 ▼  src\lib\variables.ts
+           3 commits    105 churn  0.12 density   6 fan-in  ▼ cooling
+
+    9.1 ▼  src\app\page.tsx
+           6 commits    425 churn  0.06 density   0 fan-in  ▼ cooling
+
+    9.0 ─  src\components\ui\dialog.tsx
+           5 commits    319 churn  0.07 density   1 fan-in  ─ stable
+
+    9.0 ─  src\components\ui\card.tsx
+           5 commits    240 churn  0.07 density   4 fan-in  ─ stable
+
+    9.0 ─  src\components\ui\input.tsx
+           7 commits     79 churn  0.05 density   7 fan-in  ─ stable
+
+    7.7 ─  src\components\ui\dropdown-menu.tsx
+           6 commits    601 churn  0.05 density   1 fan-in  ─ stable
+
+    7.7 ─  src\components\ui\select.tsx
+           5 commits    396 churn  0.06 density   4 fan-in  ─ stable
+
+    7.7 ─  src\components\ui\alert-dialog.tsx
+           5 commits    387 churn  0.06 density   1 fan-in  ─ stable
+
+    7.2 ─  src\components\ui\tabs.tsx
+           7 commits    254 churn  0.04 density   2 fan-in  ─ stable
+
+    6.5 ─  src\components\ui\textarea.tsx
+           5 commits     50 churn  0.05 density   3 fan-in  ─ stable
+
+    6.2 ▼  src\components\prompts\SortableVariableItem.tsx
+           6 commits    138 churn  0.04 density   1 fan-in  ▼ cooling
+
+    6.1 ▼  src\proxy.ts
+           3 commits     28 churn  0.08 density   0 fan-in  ▼ cooling
+
+    5.4 ▼  src\components\layout\MobileBottomNav.tsx
+           3 commits     45 churn  0.07 density   1 fan-in  ▼ cooling
+
+    5.4 ─  src\components\ui\button.tsx
+           7 commits    329 churn  0.03 density  15 fan-in  ─ stable
+
+    5.2 ─  src\components\HomeClient.tsx
+           5 commits    278 churn  0.04 density   1 fan-in  ─ stable
+
+    5.2 ─  src\components\ui\alert.tsx
+           5 commits    178 churn  0.04 density   1 fan-in  ─ stable
+
+    5.2 ─  src\components\ui\badge.tsx
+           5 commits    147 churn  0.04 density   4 fan-in  ─ stable
+
+    5.2 ─  src\components\ui\label.tsx
+           5 commits     60 churn  0.04 density   4 fan-in  ─ stable
+
+    4.6 ▼  next.config.ts
+           3 commits     19 churn  0.06 density   0 fan-in  ▼ cooling
+
+    4.3 ▼  src\app\layout.tsx
+          17 commits    320 churn  0.01 density   0 fan-in  ▼ cooling
+
+    4.1 ▲  src\components\ui\scroll-area.tsx
+           4 commits    109 churn  0.04 density   3 fan-in  ▲ accelerating
+
+    3.8 ▼  convex\private\helpers.ts
+           3 commits     45 churn  0.05 density   1 fan-in  ▼ cooling
+
+    3.8 ▼  src\components\ui\separator.tsx
+           5 commits    100 churn  0.03 density   2 fan-in  ▼ cooling
+
+    3.1 ▼  src\components\layout\AppLayout.tsx
+           6 commits    111 churn  0.02 density   1 fan-in  ▼ cooling
+
+    3.1 ▲  src\components\ui\switch.tsx
+           4 commits     81 churn  0.03 density   1 fan-in  ▲ accelerating
+
+    3.0 ▼  src\components\ConvexClientProvider.tsx
+           3 commits     34 churn  0.04 density   1 fan-in  ▼ cooling
+
+    1.5 ▲  src\app\sign-in\[[...sign-in]]\page.tsx
+           3 commits     47 churn  0.02 density   0 fan-in  ▲ accelerating
+
+    1.5 ▲  src\app\sign-up\[[...sign-up]]\page.tsx
+           3 commits     49 churn  0.02 density   0 fan-in  ▲ accelerating
+
+    1.5 ▲  src\components\ui\sonner.tsx
+           3 commits    153 churn  0.02 density   1 fan-in  ▲ accelerating
+
+  17 files excluded (< 3 commits)
+
+  Files with high churn and high complexity — https://docs.fallow.tools/explanations/health#hotspot-metrics
+
+● Refactoring targets (3)
+  3 medium
+    score = quick-win ROI (higher = better) · pri = absolute priority
+
+   11.7  pri:23.3    src\components\ui\select.tsx
+         dead code · effort:medium · confidence:high  Remove 5 unused exports to reduce surface area (50% dead)
+
+   10.6  pri:21.2    src\components\ui\dropdown-menu.tsx
+         dead code · effort:medium · confidence:high  Remove 11 unused exports to reduce surface area (73% dead)
+
+    9.3  pri:18.5    src\components\ui\dialog.tsx
+         dead code · effort:medium · confidence:high  Remove 5 unused exports to reduce surface area (50% dead)
+
+  Prioritized refactoring recommendations based on complexity, churn, and coupling signals — https://docs.fallow.tools/explanations/health#refactoring-targets
+
+✗ 29 above threshold · 392 analyzed · maintainability 93.2 (good) (0.05s)
+
+Failed: dead-code (41 issues), dupes (11 clone groups), health (29 above threshold) — start with select.tsx
+
+Admin@DESKTOP-27P8VNL MINGW64 /i/promptamist (main)
+$ rface area (50% dead)
+
+   10.6  pri:21.2    src\components\ui\dropdown-menu.tsx
+         dead code · effort:medium · confidence:high  Remove 11 unused exports to reduce surface area (73% dead)
+
+    9.3  pri:18.5    src\components\ui\dialog.tsx
+         dead code · effort:medium · confidence:high  Remove 5 unused exports to reduce surface area (50% dead)
+
+  Prioritized refactoring recommendations based on complexity, churn, and coupling signals — https://docs.fallow.tools/explanations/health#refactoring-targets
+
+✗ 29 above threshold · 392 analyzed · maintainability 93.2 (good) (0.05s)
+
+Failed: dead-code (41 issues), dupes (11 clone groups), health (29 above threshold) — start with select.tsx
+
+
