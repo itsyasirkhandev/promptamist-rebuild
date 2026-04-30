@@ -1,5 +1,5 @@
 import { v } from 'convex/values';
-import { authedMutation, authedQuery, getUserId } from './helpers';
+import { authedMutation, authedQuery, getUserId, getUser } from './helpers';
 import { Effect } from 'effect';
 import { runEffect } from '../effect';
 import {
@@ -134,14 +134,7 @@ export const getPromptStats = authedQuery({
   handler: async (ctx, args) => {
     return await runEffect(
       Effect.gen(function* () {
-        const user = yield* Effect.promise(() =>
-          ctx.db
-            .query('users')
-            .withIndex('by_clerkId', (q) =>
-              q.eq('clerkId', ctx.identity.subject),
-            )
-            .unique(),
-        );
+        const user = yield* getUser(ctx, ctx.identity.subject);
 
         if (!user) {
           return {

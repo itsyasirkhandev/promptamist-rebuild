@@ -15,14 +15,19 @@ import { ConvexError } from 'convex/values';
 import { Unauthorized, NotFound } from '../errors';
 import { Effect, Schema } from 'effect';
 
-export const getUserId = (ctx: QueryCtx | MutationCtx, clerkId: string) =>
+export const getUser = (ctx: QueryCtx | MutationCtx, clerkId: string) =>
   Effect.gen(function* () {
-    const user = yield* Effect.promise(() =>
+    return yield* Effect.promise(() =>
       ctx.db
         .query('users')
         .withIndex('by_clerkId', (q) => q.eq('clerkId', clerkId))
         .unique(),
     );
+  });
+
+export const getUserId = (ctx: QueryCtx | MutationCtx, clerkId: string) =>
+  Effect.gen(function* () {
+    const user = yield* getUser(ctx, clerkId);
     if (!user) {
       yield* new NotFound({ message: 'User not found' });
     }

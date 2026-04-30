@@ -1,5 +1,5 @@
 import { v } from 'convex/values';
-import { authedQuery } from './authed/helpers';
+import { authedQuery, getUser } from './authed/helpers';
 import { internalMutation } from './_generated/server';
 import { Effect } from 'effect';
 import { runEffect } from './effect';
@@ -9,14 +9,7 @@ export const getCurrentUser = authedQuery({
   handler: async (ctx) => {
     return await runEffect(
       Effect.gen(function* () {
-        return yield* Effect.promise(() =>
-          ctx.db
-            .query('users')
-            .withIndex('by_clerkId', (q) =>
-              q.eq('clerkId', ctx.identity.subject),
-            )
-            .unique(),
-        );
+        return yield* getUser(ctx, ctx.identity.subject);
       }),
     );
   },
