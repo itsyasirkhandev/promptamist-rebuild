@@ -233,6 +233,9 @@ export function PromptForm({
                     if (vars.length > variables.length) {
                       const newVar = vars[vars.length - 1];
                       append(newVar);
+                      if (!isTemplate) {
+                        setValue('isTemplate', true);
+                      }
                     } else {
                       setValue('variables', vars);
                     }

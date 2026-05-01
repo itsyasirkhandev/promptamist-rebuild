@@ -92,23 +92,15 @@ export function PromptEditor({
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const text = selection.toString().trim();
-      if (
-        text &&
-        selection.anchorNode?.parentElement?.closest('.prompt-editor')
-      ) {
+      if (editorRef.current?.contains(selection.anchorNode)) {
         setSelectedText(text);
         setSavedRange(selection.getRangeAt(0).cloneRange());
-      } else {
-        setSelectedText('');
-        setSavedRange(null);
       }
     }
   };
 
   const openVariableModal = () => {
-    if (selectedText) {
-      setIsModalOpen(true);
-    }
+    setIsModalOpen(true);
   };
 
   const handleAddVariable = (data: {
@@ -128,7 +120,11 @@ export function PromptEditor({
     onVariablesChange([...variables, newVar]);
     toast.success(`Variable {{${newVar.name}}} added`);
 
-    if (savedRange && editorRef.current) {
+    if (
+      savedRange &&
+      editorRef.current &&
+      editorRef.current.contains(savedRange.commonAncestorContainer)
+    ) {
       const selection = window.getSelection();
       selection?.removeAllRanges();
       selection?.addRange(savedRange);
@@ -151,6 +147,24 @@ export function PromptEditor({
       selection?.addRange(nextRange);
 
       handleInput();
+    } else if (editorRef.current) {
+      const span = document.createElement('span');
+      span.className =
+        'bg-primary/20 text-primary rounded px-1 font-mono select-all';
+      span.setAttribute('data-variable-id', newVar.id);
+      span.setAttribute('contenteditable', 'false');
+      span.textContent = `{{${newVar.name}}}`;
+
+      editorRef.current.appendChild(span);
+
+      const selection = window.getSelection();
+      const nextRange = document.createRange();
+      nextRange.setStartAfter(span);
+      nextRange.collapse(true);
+      selection?.removeAllRanges();
+      selection?.addRange(nextRange);
+
+      handleInput();
     }
   };
 
@@ -165,7 +179,6 @@ export function PromptEditor({
             type="button"
             size="sm"
             variant="outline"
-            disabled={!selectedText}
             onClick={openVariableModal}
             className="hidden h-8 gap-2 @md:flex"
           >
@@ -188,7 +201,7 @@ export function PromptEditor({
         onFocus={handleSelection}
       />
 
-      {isTemplate && selectedText && (
+      {isTemplate && (
         <div className="fixed bottom-24 left-1/2 z-50 -translate-x-1/2 @md:hidden">
           <Button
             type="button"
