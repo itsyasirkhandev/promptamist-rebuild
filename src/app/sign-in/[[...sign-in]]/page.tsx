@@ -5,6 +5,9 @@ import { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Sign In',
   description: 'Sign in to your Promptamist account to manage your AI prompts.',
+  icons: {
+    icon: '/icon',
+  },
 };
 
 export default function SignInPage() {
