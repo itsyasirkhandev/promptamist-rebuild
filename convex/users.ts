@@ -1,6 +1,7 @@
 import { v } from 'convex/values';
 import { authedQuery, getUser } from './authed/helpers';
 import { internalMutation } from './_generated/server';
+import { internal } from './_generated/api';
 import { Effect } from 'effect';
 import { runEffect } from './effect';
 
@@ -45,7 +46,7 @@ export const upsertFromClerk = internalMutation({
       return id;
     }
 
-    return await ctx.db.insert('users', {
+    const id = await ctx.db.insert('users', {
       clerkId: args.clerkId,
       email: args.email,
       name: args.name,
@@ -53,5 +54,12 @@ export const upsertFromClerk = internalMutation({
       createdAt: Date.now(),
       updatedAt: Date.now(),
     });
+
+    await ctx.scheduler.runAfter(0, internal.emails.sendWelcomeEmail, {
+      email: args.email,
+      name: args.name,
+    });
+
+    return id;
   },
 });
