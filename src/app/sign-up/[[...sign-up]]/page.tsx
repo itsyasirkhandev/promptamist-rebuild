@@ -6,9 +6,6 @@ export const metadata: Metadata = {
   title: 'Sign Up',
   description:
     'Create a Promptamist account and start organizing your AI prompts today.',
-  icons: {
-    icon: '/icon',
-  },
 };
 
 export default function SignUpPage() {
