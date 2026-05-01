@@ -48,7 +48,7 @@ export const sendWelcomeEmail = internalAction({
           sender: {
             name: 'Promptamist Team',
             // NOTE: Change this email to the domain you verified with Brevo
-            email: 'support@promptamist.com',
+            email: 'yasirwebio@gmail.com',
           },
           to: [
             {
