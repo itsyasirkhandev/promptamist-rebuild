@@ -16,6 +16,7 @@ import {
 import { ThemeToggle } from '@/components/ThemeToggle';
 
 import { Logo } from '@/components/Logo';
+import { SubscriptionButton } from '@/components/subscription/SubscriptionButton';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -71,6 +72,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-4">
               <ThemeToggle />
               <Authenticated>
+                <SubscriptionButton />
                 <UserButton />
               </Authenticated>
               <Unauthenticated>
