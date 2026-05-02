@@ -17,7 +17,19 @@ export const createPrompt = authedMutation({
       Effect.gen(function* () {
         yield* validatePromptArgs(args);
 
-        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        const user = yield* getUser(ctx, ctx.identity.subject);
+        if (!user) {
+          return yield* Effect.fail(new Error('User not found'));
+        }
+
+        const isPro = user.subscriptionTier === 'pro';
+        const totalPrompts = user.promptStats?.total ?? 0;
+
+        if (!isPro && totalPrompts >= 50) {
+          return yield* Effect.fail(new Error('Prompt limit reached. Upgrade to Pro to create unlimited prompts.'));
+        }
+
+        const userId = user._id;
 
         let publicSlug: string | undefined = undefined;
         if (args.isPublic) {

@@ -17,11 +17,13 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { handleError } from '@/lib/error-handler';
+import { UpgradeModal } from '@/components/subscription/UpgradeModal';
 
 export default function CreatePromptPage() {
   const router = useRouter();
   const createPrompt = useMutation(api.authed.prompts.createPrompt);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = React.useState(false);
 
   const onSubmit = async (data: PromptFormValues) => {
     setIsSubmitting(true);
@@ -30,7 +32,12 @@ export default function CreatePromptPage() {
       toast.success('Prompt created successfully');
       router.push('/prompts');
     } catch (error) {
-      handleError(error);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      if (errorMessage.includes('Prompt limit reached')) {
+        setShowUpgradeModal(true);
+      } else {
+        handleError(error);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -60,6 +67,7 @@ export default function CreatePromptPage() {
         description="Author static prompts or dynamic templates."
         submitLabel="Save Prompt"
       />
+      <UpgradeModal open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
     </div>
   );
 }

@@ -63,3 +63,26 @@ export const upsertFromClerk = internalMutation({
     return id;
   },
 });
+
+export const updateSubscriptionTier = internalMutation({
+  args: {
+    clerkId: v.string(),
+    tier: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query('users')
+      .withIndex('by_clerkId', (q) => q.eq('clerkId', args.clerkId))
+      .unique();
+
+    if (!user) {
+      console.warn(`User not found for clerkId: ${args.clerkId}`);
+      return;
+    }
+
+    await ctx.db.patch(user._id, {
+      subscriptionTier: args.tier,
+      updatedAt: Date.now(),
+    });
+  },
+});
