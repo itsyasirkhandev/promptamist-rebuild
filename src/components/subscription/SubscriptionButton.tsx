@@ -38,7 +38,7 @@ export function SubscriptionButton() {
             Upgrade to Pro
           </Button>
         ) : (
-          <div className="text-sm font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
+          <div className="text-sm font-medium text-primary-foreground bg-primary px-4 py-1.5 rounded-full shadow-sm">
             Pro Member
           </div>
         )}
