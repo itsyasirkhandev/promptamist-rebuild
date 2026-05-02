@@ -47,9 +47,9 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
               Upgrade to Pro
             </DialogTitle>
             <p className="text-muted-foreground text-sm mt-2">
-              {limitReached 
+              {limitReached
                 ? "You've reached your 50-prompt Hobby limit. Upgrade to unlock boundless creativity."
-                : "Supercharge your workflow with unlimited prompts, premium templates, and priority support."}
+                : "Supercharge your workflow with unlimited prompts, unlimited dynamic prompt templates, and priority support."}
             </p>
           </DialogHeader>
 
@@ -59,11 +59,11 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
                 <span className="font-semibold text-lg text-foreground">Pro Plan</span>
                 <span className="text-xl font-bold text-primary">$5<span className="text-sm font-normal text-muted-foreground">/mo</span></span>
               </div>
-              
+
               <ul className="space-y-3">
                 {[
-                  { icon: 'solar:infinity-bold-duotone', text: 'Unlimited Prompts' },
-                  { icon: 'solar:layers-bold-duotone', text: 'Unlimited Templates' },
+                  { icon: 'solar:infinity-bold-duotone', text: 'Create Unlimited Dynamic Prompts' },
+                  { icon: 'solar:layers-bold-duotone', text: ' Create Unlimited Static prompts' },
                   { icon: 'solar:bolt-circle-bold-duotone', text: 'Premium Support' },
                 ].map((feature, i) => (
                   <li key={i} className="flex items-center gap-3 text-sm font-medium text-foreground/80">
@@ -74,8 +74,8 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
               </ul>
             </div>
 
-            <Button 
-              onClick={handleUpgrade} 
+            <Button
+              onClick={handleUpgrade}
               disabled={isPending}
               size="lg"
               className="w-full shadow-md transition-all rounded-xl h-12 text-base"
@@ -92,7 +92,7 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
                 </span>
               )}
             </Button>
-            
+
             <p className="text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1.5">
               <Icon icon="solar:lock-keyhole-minimalistic-bold-duotone" className="w-4 h-4" />
               Secure payment via Polar.sh
