@@ -22,8 +22,9 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
   const [isPending, startTransition] = useTransition();
 
   const handleUpgrade = () => {
+    const currentOrigin = typeof window !== 'undefined' ? window.location.origin : undefined;
     startTransition(async () => {
-      const result = await createCheckoutSession();
+      const result = await createCheckoutSession(currentOrigin);
       if (result && !result.success) {
         toast.error(result.error);
       }

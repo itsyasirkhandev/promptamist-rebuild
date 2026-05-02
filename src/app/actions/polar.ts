@@ -3,6 +3,7 @@
 import { Polar } from '@polar-sh/sdk';
 import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 import { Effect } from 'effect';
 import { z } from 'zod';
 
@@ -23,10 +24,10 @@ class EnvError {
 const envSchema = z.object({
   POLAR_ACCESS_TOKEN: z.string().min(1, "Polar access token is required"),
   POLAR_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
-  NEXT_PUBLIC_APP_URL: z.string().url().optional().default('http://localhost:3000'),
+  NEXT_PUBLIC_APP_URL: z.string().url().optional(),
 });
 
-export async function createCheckoutSession() {
+export async function createCheckoutSession(clientOrigin?: string) {
   const program = Effect.gen(function* () {
     const user = yield* Effect.promise(() => currentUser());
     
@@ -39,6 +40,17 @@ export async function createCheckoutSession() {
       catch: (e) => new EnvError(`Environment validation failed: ${e}`)
     });
 
+    const headersList = yield* Effect.promise(() => headers());
+    const host = headersList.get('host');
+    const protocol = headersList.get('x-forwarded-proto') || (host?.includes('localhost') ? 'http' : 'https');
+    
+    const appUrl = clientOrigin 
+      || env.NEXT_PUBLIC_APP_URL 
+      || (host ? `${protocol}://${host}` : null)
+      || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null)
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+      || 'http://localhost:3000';
+
     const polar = new Polar({ 
       accessToken: env.POLAR_ACCESS_TOKEN,
       server: env.POLAR_ENVIRONMENT,
@@ -50,7 +62,7 @@ export async function createCheckoutSession() {
         externalCustomerId: user.id,
         customerEmail: user.primaryEmailAddress?.emailAddress,
         customerName: user.fullName || undefined,
-        successUrl: `${env.NEXT_PUBLIC_APP_URL}/?success=true`,
+        successUrl: `${appUrl}/?success=true`,
       }),
       catch: (error) => new CheckoutError(error)
     });
