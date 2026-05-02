@@ -1,7 +1,7 @@
 'use server';
 
 import { Polar } from '@polar-sh/sdk';
-import { auth } from '@clerk/nextjs/server';
+import { currentUser } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { Effect } from 'effect';
 import { z } from 'zod';
@@ -28,9 +28,9 @@ const envSchema = z.object({
 
 export async function createCheckoutSession() {
   const program = Effect.gen(function* () {
-    const { userId } = yield* Effect.promise(() => auth());
+    const user = yield* Effect.promise(() => currentUser());
     
-    if (!userId) {
+    if (!user || !user.id) {
       return yield* Effect.fail(new UnauthorizedError());
     }
 
@@ -47,7 +47,9 @@ export async function createCheckoutSession() {
     const checkout = yield* Effect.tryPromise({
       try: () => polar.checkouts.create({
         products: ['c398bd70-7ccc-4190-8c31-01d274e3c8a4'],
-        externalCustomerId: userId,
+        externalCustomerId: user.id,
+        customerEmail: user.primaryEmailAddress?.emailAddress,
+        customerName: user.fullName || undefined,
         successUrl: `${env.NEXT_PUBLIC_APP_URL}/?success=true`,
       }),
       catch: (error) => new CheckoutError(error)
