@@ -103,12 +103,14 @@ http.route({
       if (event.type.startsWith('subscription.')) {
         const subscription = event.data as {
           metadata?: Record<string, unknown>;
-          customer_metadata?: Record<string, unknown>;
-          customer?: { external_id?: string | null };
+          customer?: { 
+            external_id?: string | null;
+            metadata?: Record<string, unknown>;
+          };
           status?: string;
         };
         const clerkId = (subscription.metadata?.clerkId || 
-                        subscription.customer_metadata?.clerkId ||
+                        subscription.customer?.metadata?.clerkId ||
                         subscription.customer?.external_id) as string | undefined | null;
         const status = subscription.status;
 

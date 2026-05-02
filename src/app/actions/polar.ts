@@ -62,6 +62,8 @@ export async function createCheckoutSession(clientOrigin?: string) {
         externalCustomerId: user.id,
         customerEmail: user.primaryEmailAddress?.emailAddress,
         customerName: user.fullName || undefined,
+        metadata: { clerkId: user.id },
+        customerMetadata: { clerkId: user.id },
         successUrl: `${appUrl}/?success=true`,
       }),
       catch: (error) => new CheckoutError(error)
