@@ -2,7 +2,6 @@ import { httpRouter } from 'convex/server';
 import { httpAction } from './_generated/server';
 import { internal } from './_generated/api';
 import { Webhook } from 'svix';
-import { validateEvent } from '@polar-sh/sdk/webhooks';
 import { Effect } from 'effect';
 
 const http = httpRouter();
@@ -92,8 +91,9 @@ http.route({
         headers[key] = value;
       });
       
+      const wh = new Webhook(btoa(webhookSecret));
       const event = yield* Effect.try({
-        try: () => validateEvent(payload, headers, webhookSecret),
+        try: () => wh.verify(payload, headers) as { type: string; data: Record<string, unknown> },
         catch: (error) => {
           console.error('Polar webhook verification failed:', error);
           return new Response('Invalid signature', { status: 400 });
@@ -103,13 +103,13 @@ http.route({
       if (event.type.startsWith('subscription.')) {
         const subscription = event.data as {
           metadata?: Record<string, unknown>;
-          customerMetadata?: Record<string, unknown>;
-          customer?: { externalId?: string | null };
+          customer_metadata?: Record<string, unknown>;
+          customer?: { external_id?: string | null };
           status?: string;
         };
         const clerkId = (subscription.metadata?.clerkId || 
-                        subscription.customerMetadata?.clerkId ||
-                        subscription.customer?.externalId) as string | undefined | null;
+                        subscription.customer_metadata?.clerkId ||
+                        subscription.customer?.external_id) as string | undefined | null;
         const status = subscription.status;
 
         if (clerkId) {
