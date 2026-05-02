@@ -93,7 +93,7 @@ export default function PromptsPage() {
       </div>
 
       {user === undefined || prompts === undefined ? (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="space-y-3">
               <Skeleton className="h-[250px] w-full rounded-lg" />
@@ -191,7 +191,7 @@ export default function PromptsPage() {
               ) : null}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
               {filteredPrompts.map((prompt) => (
                 <PromptCard key={prompt._id} prompt={prompt} />
               ))}
