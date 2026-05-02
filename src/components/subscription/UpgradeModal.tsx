@@ -6,20 +6,19 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { Loader2, Sparkles } from 'lucide-react';
-
+import { Icon } from '@iconify/react';
 import { toast } from 'sonner';
 
 interface UpgradeModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  limitReached?: boolean;
 }
 
-export function UpgradeModal({ open, onOpenChange }: UpgradeModalProps) {
+export function UpgradeModal({ open, onOpenChange, limitReached = false }: UpgradeModalProps) {
   const [isPending, startTransition] = useTransition();
 
   const handleUpgrade = () => {
@@ -33,49 +32,72 @@ export function UpgradeModal({ open, onOpenChange }: UpgradeModalProps) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="h-5 w-5 text-indigo-500" />
-            Upgrade to Pro
-          </DialogTitle>
-          <DialogDescription>
-            You have reached the maximum limit of 50 prompts on the Hobby tier.
-            Upgrade to Pro to create unlimited prompts and unlock more features!
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col gap-4 py-4">
-          <div className="rounded-lg border bg-card text-card-foreground shadow-sm p-4 flex flex-col gap-2">
-            <h3 className="font-semibold text-lg">Pro Tier</h3>
-            <p className="text-sm text-muted-foreground">
-              $5/month
-            </p>
-            <ul className="text-sm space-y-2 mt-2">
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Unlimited Prompts
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Unlimited Templates
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-500">✓</span> Premium Support
-              </li>
-            </ul>
+      <DialogContent className="sm:max-w-[425px] overflow-hidden p-0 border-0 shadow-2xl">
+        {/* Background Decorative Header */}
+        <div className="h-32 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-900 relative">
+          <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay"></div>
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 p-4 bg-card rounded-2xl shadow-xl border border-indigo-100/20">
+            <Icon icon="solar:crown-star-bold-duotone" className="w-10 h-10 text-indigo-600" />
           </div>
-          <Button 
-            onClick={handleUpgrade} 
-            disabled={isPending}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white"
-          >
-            {isPending ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Processing...
-              </>
-            ) : (
-              'Subscribe for $5/mo'
-            )}
-          </Button>
+        </div>
+
+        <div className="px-6 pb-6 pt-14 text-center">
+          <DialogHeader>
+            <DialogTitle className="text-2xl font-bold tracking-tight text-foreground text-center">
+              Upgrade to Pro
+            </DialogTitle>
+            <p className="text-muted-foreground text-sm mt-2">
+              {limitReached 
+                ? "You've reached your 50-prompt Hobby limit. Upgrade to unlock boundless creativity."
+                : "Supercharge your workflow with unlimited prompts, premium templates, and priority support."}
+            </p>
+          </DialogHeader>
+
+          <div className="mt-6 space-y-4">
+            <div className="bg-indigo-50/50 rounded-2xl p-5 border border-indigo-100 text-left">
+              <div className="flex items-center justify-between mb-4">
+                <span className="font-semibold text-lg text-indigo-900">Pro Plan</span>
+                <span className="text-xl font-bold text-indigo-600">$5<span className="text-sm font-normal text-muted-foreground">/mo</span></span>
+              </div>
+              
+              <ul className="space-y-3">
+                {[
+                  { icon: 'solar:infinity-bold-duotone', text: 'Unlimited Prompts' },
+                  { icon: 'solar:layers-bold-duotone', text: 'Unlimited Templates' },
+                  { icon: 'solar:bolt-circle-bold-duotone', text: 'Premium Support' },
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-3 text-sm font-medium text-slate-700">
+                    <Icon icon={feature.icon} className="w-5 h-5 text-indigo-500 shrink-0" />
+                    {feature.text}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <Button 
+              onClick={handleUpgrade} 
+              disabled={isPending}
+              size="lg"
+              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md transition-all rounded-xl h-12 text-base"
+            >
+              {isPending ? (
+                <>
+                  <Icon icon="lucide:loader-2" className="mr-2 h-5 w-5 animate-spin" />
+                  Securing checkout...
+                </>
+              ) : (
+                <span className="flex items-center gap-2">
+                  <Icon icon="solar:rocket-bold-duotone" className="w-5 h-5" />
+                  Subscribe for $5/month
+                </span>
+              )}
+            </Button>
+            
+            <p className="text-xs text-muted-foreground mt-3 flex items-center justify-center gap-1.5">
+              <Icon icon="solar:lock-keyhole-minimalistic-bold-duotone" className="w-4 h-4" />
+              Secure payment via Polar.sh
+            </p>
+          </div>
         </div>
       </DialogContent>
     </Dialog>

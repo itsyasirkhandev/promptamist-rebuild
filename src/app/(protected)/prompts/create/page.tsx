@@ -67,7 +67,7 @@ export default function CreatePromptPage() {
         description="Author static prompts or dynamic templates."
         submitLabel="Save Prompt"
       />
-      <UpgradeModal open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
+      <UpgradeModal open={showUpgradeModal} onOpenChange={setShowUpgradeModal} limitReached={true} />
     </div>
   );
 }
