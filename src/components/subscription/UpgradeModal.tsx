@@ -34,10 +34,10 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px] overflow-hidden p-0 border-0 shadow-2xl">
         {/* Background Decorative Header */}
-        <div className="h-32 bg-gradient-to-br from-indigo-600 via-purple-600 to-indigo-900 relative">
+        <div className="h-32 bg-gradient-to-br from-primary via-primary/80 to-primary/60 relative">
           <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-20 mix-blend-overlay"></div>
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 p-4 bg-card rounded-2xl shadow-xl border border-indigo-100/20">
-            <Icon icon="solar:crown-star-bold-duotone" className="w-10 h-10 text-indigo-600" />
+          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 p-4 bg-card rounded-2xl shadow-xl border border-border">
+            <Icon icon="solar:crown-star-bold-duotone" className="w-10 h-10 text-primary" />
           </div>
         </div>
 
@@ -54,10 +54,10 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
           </DialogHeader>
 
           <div className="mt-6 space-y-4">
-            <div className="bg-indigo-50/50 rounded-2xl p-5 border border-indigo-100 text-left">
+            <div className="bg-primary/5 rounded-2xl p-5 border border-primary/10 text-left">
               <div className="flex items-center justify-between mb-4">
-                <span className="font-semibold text-lg text-indigo-900">Pro Plan</span>
-                <span className="text-xl font-bold text-indigo-600">$5<span className="text-sm font-normal text-muted-foreground">/mo</span></span>
+                <span className="font-semibold text-lg text-foreground">Pro Plan</span>
+                <span className="text-xl font-bold text-primary">$5<span className="text-sm font-normal text-muted-foreground">/mo</span></span>
               </div>
               
               <ul className="space-y-3">
@@ -66,8 +66,8 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
                   { icon: 'solar:layers-bold-duotone', text: 'Unlimited Templates' },
                   { icon: 'solar:bolt-circle-bold-duotone', text: 'Premium Support' },
                 ].map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm font-medium text-slate-700">
-                    <Icon icon={feature.icon} className="w-5 h-5 text-indigo-500 shrink-0" />
+                  <li key={i} className="flex items-center gap-3 text-sm font-medium text-foreground/80">
+                    <Icon icon={feature.icon} className="w-5 h-5 text-primary shrink-0" />
                     {feature.text}
                   </li>
                 ))}
@@ -78,7 +78,7 @@ export function UpgradeModal({ open, onOpenChange, limitReached = false }: Upgra
               onClick={handleUpgrade} 
               disabled={isPending}
               size="lg"
-              className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-md transition-all rounded-xl h-12 text-base"
+              className="w-full shadow-md transition-all rounded-xl h-12 text-base"
             >
               {isPending ? (
                 <>
