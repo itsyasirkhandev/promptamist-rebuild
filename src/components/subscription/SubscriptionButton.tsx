@@ -25,7 +25,7 @@ export function SubscriptionButton() {
     <>
       <div className="flex items-center gap-4">
         {!isPro && (
-          <div className="text-sm text-muted-foreground hidden md:block">
+          <div className="text-sm text-muted-foreground whitespace-nowrap">
             {stats.total} / 50 Prompts
           </div>
         )}
@@ -33,12 +33,12 @@ export function SubscriptionButton() {
           <Button 
             variant="default" 
             onClick={() => setShowUpgradeModal(true)}
-            className="bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm"
+            className="shadow-sm"
           >
             Upgrade to Pro
           </Button>
         ) : (
-          <div className="text-sm font-medium text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-full border border-indigo-100">
+          <div className="text-sm font-medium text-primary bg-primary/10 px-3 py-1.5 rounded-full border border-primary/20">
             Pro Member
           </div>
         )}
