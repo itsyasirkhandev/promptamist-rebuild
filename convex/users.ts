@@ -68,6 +68,8 @@ export const updateSubscriptionTier = internalMutation({
   args: {
     clerkId: v.string(),
     tier: v.string(),
+    polarCustomerId: v.optional(v.string()),
+    polarSubscriptionId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     const user = await ctx.db
@@ -82,6 +84,8 @@ export const updateSubscriptionTier = internalMutation({
 
     await ctx.db.patch(user._id, {
       subscriptionTier: args.tier,
+      polarCustomerId: args.polarCustomerId,
+      polarSubscriptionId: args.polarSubscriptionId,
       updatedAt: Date.now(),
     });
   },

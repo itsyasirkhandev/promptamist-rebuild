@@ -102,8 +102,10 @@ http.route({
 
       if (event.type.startsWith('subscription.')) {
         const subscription = event.data as {
+          id?: string;
           metadata?: Record<string, unknown>;
           customer?: { 
+            id?: string;
             external_id?: string | null;
             metadata?: Record<string, unknown>;
           };
@@ -118,7 +120,12 @@ http.route({
           const tier = status === 'active' ? 'pro' : 'hobby';
           
           yield* Effect.tryPromise({
-            try: () => ctx.runMutation(internal.users.updateSubscriptionTier, { clerkId, tier }),
+            try: () => ctx.runMutation(internal.users.updateSubscriptionTier, { 
+              clerkId, 
+              tier,
+              polarCustomerId: subscription.customer?.id,
+              polarSubscriptionId: subscription.id,
+            }),
             catch: (error) => {
               console.error('Error updating subscription tier:', error);
               return new Response('Database error', { status: 500 });

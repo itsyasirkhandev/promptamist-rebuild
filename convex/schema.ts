@@ -12,6 +12,8 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
     subscriptionTier: v.optional(v.string()),
+    polarCustomerId: v.optional(v.string()),
+    polarSubscriptionId: v.optional(v.string()),
     preferences: v.optional(
       v.object({
         theme: v.optional(v.string()),
