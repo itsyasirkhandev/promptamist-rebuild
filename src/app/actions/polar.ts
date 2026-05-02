@@ -1,0 +1,79 @@
+'use server';
+
+import { Polar } from '@polar-sh/sdk';
+import { auth } from '@clerk/nextjs/server';
+import { redirect } from 'next/navigation';
+import { Effect } from 'effect';
+import { z } from 'zod';
+
+class UnauthorizedError {
+  readonly _tag = "UnauthorizedError";
+}
+
+class CheckoutError {
+  readonly _tag = "CheckoutError";
+  constructor(readonly cause: unknown) {}
+}
+
+class EnvError {
+  readonly _tag = "EnvError";
+  constructor(readonly message: string) {}
+}
+
+const envSchema = z.object({
+  POLAR_ACCESS_TOKEN: z.string().min(1, "Polar access token is required"),
+  NEXT_PUBLIC_APP_URL: z.string().url().optional().default('http://localhost:3000'),
+});
+
+export async function createCheckoutSession() {
+  const program = Effect.gen(function* () {
+    const { userId } = yield* Effect.promise(() => auth());
+    
+    if (!userId) {
+      return yield* Effect.fail(new UnauthorizedError());
+    }
+
+    const env = yield* Effect.try({
+      try: () => envSchema.parse(process.env),
+      catch: (e) => new EnvError(`Environment validation failed: ${e}`)
+    });
+
+    const polar = new Polar({ 
+      accessToken: env.POLAR_ACCESS_TOKEN,
+    });
+    
+    const checkout = yield* Effect.tryPromise({
+      try: () => polar.checkouts.create({
+        products: ['c398bd70-7ccc-4190-8c31-01d274e3c8a4'],
+        externalCustomerId: userId,
+        successUrl: `${env.NEXT_PUBLIC_APP_URL}/?success=true`,
+      }),
+      catch: (error) => new CheckoutError(error)
+    });
+
+    if (!checkout.url) {
+      return yield* Effect.fail(new CheckoutError("No checkout URL returned by Polar"));
+    }
+
+    return checkout.url;
+  }).pipe(
+    Effect.match({
+      onFailure: (error) => ({ 
+        success: false as const, 
+        error: error._tag === "UnauthorizedError" 
+          ? "You must be logged in to subscribe." 
+          : "Failed to securely initialize checkout session." 
+      }),
+      onSuccess: (url) => ({ success: true as const, url })
+    })
+  );
+
+  const result = await Effect.runPromise(program);
+
+  // Next.js redirect must be called outside of Effect pipeline because it throws an internal error to break control flow
+  if (result.success && result.url) {
+    redirect(result.url);
+  }
+
+  return result;
+}

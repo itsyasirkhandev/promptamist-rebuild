@@ -2,8 +2,22 @@ import { httpRouter } from 'convex/server';
 import { httpAction } from './_generated/server';
 import { internal } from './_generated/api';
 import { Webhook } from 'svix';
+import { z } from 'zod';
+import { Effect } from 'effect';
 
 const http = httpRouter();
+
+const PolarWebhookSchema = z.object({
+  type: z.string(),
+  data: z.object({
+    status: z.string().optional(),
+    customer_metadata: z.record(z.string(), z.any()).optional(),
+    external_customer_id: z.string().nullable().optional(),
+    customer: z.object({
+      external_id: z.string().nullable().optional(),
+    }).optional(),
+  }).passthrough()
+}).passthrough();
 
 http.route({
   path: '/clerk-users-webhook',
@@ -71,6 +85,71 @@ http.route({
     }
 
     return new Response('Webhook processed', { status: 200 });
+  }),
+});
+
+http.route({
+  path: '/polar-webhook',
+  method: 'POST',
+  handler: httpAction(async (ctx, request) => {
+    const program = Effect.gen(function* () {
+      const webhookSecret = process.env.POLAR_WEBHOOK_SECRET;
+      if (!webhookSecret) {
+        return yield* Effect.fail(new Response('Configuration error', { status: 500 }));
+      }
+
+      const webhookId = request.headers.get('webhook-id');
+      const webhookTimestamp = request.headers.get('webhook-timestamp');
+      const webhookSignature = request.headers.get('webhook-signature');
+
+      if (!webhookId || !webhookTimestamp || !webhookSignature) {
+        return yield* Effect.fail(new Response('Missing Webhook headers', { status: 400 }));
+      }
+
+      const payload = yield* Effect.promise(() => request.text());
+      const wh = new Webhook(webhookSecret);
+      
+      const evt = yield* Effect.try({
+        try: () => wh.verify(payload, {
+          'svix-id': webhookId,
+          'svix-timestamp': webhookTimestamp,
+          'svix-signature': webhookSignature,
+        }),
+        catch: () => new Response('Invalid signature', { status: 400 })
+      });
+
+      const event = yield* Effect.try({
+        try: () => PolarWebhookSchema.parse(evt),
+        catch: () => new Response('Malformed payload', { status: 400 })
+      });
+
+      if (event.type.startsWith('subscription.')) {
+        const clerkId = event.data?.customer_metadata?.clerkId || 
+                        event.data?.external_customer_id || 
+                        event.data?.customer?.external_id;
+        const status = event.data?.status;
+
+        if (clerkId) {
+          const tier = status === 'active' ? 'pro' : 'hobby';
+          
+          yield* Effect.tryPromise({
+            try: () => ctx.runMutation(internal.users.updateSubscriptionTier, { clerkId, tier }),
+            catch: () => new Response('Database error', { status: 500 })
+          });
+        }
+      }
+
+      return new Response('Webhook processed', { status: 200 });
+    });
+
+    return await Effect.runPromise(
+      program.pipe(
+        Effect.match({
+          onFailure: (error: Response) => error,
+          onSuccess: (response: Response) => response
+        })
+      )
+    );
   }),
 });
 
