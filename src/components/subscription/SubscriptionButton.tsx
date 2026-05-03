@@ -11,6 +11,7 @@ import { cn } from '@/lib/utils';
 export function SubscriptionButton() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const currentUser = useQuery(api.users.getCurrentUser);
+  // eslint-disable-next-line react-hooks/purity
   const oneWeekAgo = useMemo(() => Date.now() - 7 * 24 * 60 * 60 * 1000, []);
   const stats = useQuery(api.authed.prompts.getPromptStats, { oneWeekAgo });
 
