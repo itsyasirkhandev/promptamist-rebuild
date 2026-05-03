@@ -11,11 +11,21 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { api } from '../../convex/_generated/api';
+import { useState, useMemo } from 'react';
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import { PromptCard } from '@/components/prompts/PromptCard';
+import { Separator } from '@/components/ui/separator';
 import { Icon } from '@iconify/react';
-import { formatRelativeTime, cn } from '@/lib/utils';
-
-import { useState } from 'react';
+import { api } from '../../convex/_generated/api';
+import { cn } from '@/lib/utils';
+import { Doc } from '../../convex/_generated/dataModel';
 
 export function HomeClient() {
   return (
@@ -40,38 +50,56 @@ export function HomeClient() {
         </AuthLoading>
 
         <Authenticated>
-          <div className="container mx-auto px-4 py-16 md:py-24">
-            <section className="mb-20 text-center space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
-              <Badge variant="outline" className="px-4 py-1 rounded-full border-primary/20 bg-primary/5 text-primary">
-                Welcome Back
-              </Badge>
-              <h1 className="font-heading font-extrabold tracking-tight text-balance"
-                style={{ fontSize: 'var(--text-4xl)', lineHeight: '1.1' }}>
-                Your AI <span className="text-primary">Prompt Library</span>
-              </h1>
-              <p className="text-muted-foreground max-w-2xl mx-auto"
-                style={{ fontSize: 'var(--text-base)' }}>
-                Manage your ChatGPT, Claude, and Gemini prompts in one place.
-              </p>
-              <div className="flex flex-col sm:flex-row justify-center gap-4 pt-4">
-                <Button size="lg" className="rounded-2xl h-14 px-8 text-base font-bold shadow-xl shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]" asChild>
-                  <Link href="/prompts">Go to Prompts &rarr;</Link>
-                </Button>
-                <Button size="lg" variant="outline" className="rounded-2xl h-14 px-8 text-base font-bold bg-card/40 backdrop-blur-sm transition-all hover:scale-[1.02] active:scale-[0.98]" asChild>
-                  <a
-                    href="https://github.com/itsyasirkhandev/promptamist-rebuild"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2"
-                  >
-                    <Icon icon="mdi:github" className="h-6 w-6" />
-                    GitHub Repository
-                  </a>
-                </Button>
-              </div>
-            </section>
+          <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 lg:px-8">
+            <div className="space-y-4">
+              <Breadcrumb>
+                <BreadcrumbList>
+                  <BreadcrumbItem>
+                    <BreadcrumbPage>Home</BreadcrumbPage>
+                  </BreadcrumbItem>
+                </BreadcrumbList>
+              </Breadcrumb>
+
+              <header className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
+                <div>
+                  <h1 className="text-4xl font-semibold tracking-tight">
+                    Welcome Back
+                  </h1>
+                  <p className="text-muted-foreground">
+                    Here's what's happening with your prompt library.
+                  </p>
+                </div>
+                <div className="flex items-center gap-4">
+                  <Button asChild className="gap-2">
+                    <Link href="/prompts/create">
+                      <Icon icon="lucide:plus" width={18} />
+                      New Prompt
+                    </Link>
+                  </Button>
+                </div>
+              </header>
+            </div>
 
             <DashboardStats />
+
+            <Separator />
+
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold tracking-tight">Recent Prompts</h2>
+                  <p className="text-muted-foreground text-sm">
+                    Continue where you left off.
+                  </p>
+                </div>
+                <Button variant="ghost" asChild>
+                  <Link href="/prompts" className="gap-2">
+                    View All <Icon icon="lucide:arrow-right" width={16} />
+                  </Link>
+                </Button>
+              </div>
+              <RecentPrompts />
+            </div>
           </div>
         </Authenticated>
 
@@ -282,71 +310,80 @@ function DashboardStats() {
 
   if (stats === undefined) {
     return (
-      <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} className="h-[140px] w-full rounded-3xl" />
+          <Skeleton key={i} className="h-32 w-full rounded-xl" />
         ))}
-        <Skeleton className="col-span-full h-[80px] w-full rounded-3xl" />
       </div>
     );
   }
 
   if (!stats) {
+    return null;
+  }
+
+  return (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {[
+        { label: 'Total Prompts', value: stats.total, icon: 'lucide:file-text', color: 'text-blue-600', bg: 'bg-blue-100 dark:bg-blue-900/30' },
+        { label: 'Templates', value: stats.templates, icon: 'lucide:layout-template', color: 'text-purple-600', bg: 'bg-purple-100 dark:bg-purple-900/30' },
+        { label: 'Public', value: stats.public, icon: 'lucide:globe', color: 'text-green-600', bg: 'bg-green-100 dark:bg-green-900/30' },
+        { label: 'New This Week', value: stats.newThisWeek, icon: 'lucide:calendar-plus', color: 'text-orange-600', bg: 'bg-orange-100 dark:bg-orange-900/30' },
+      ].map((stat) => (
+        <Card key={stat.label} className="border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:shadow-md">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium text-muted-foreground">{stat.label}</CardTitle>
+            <div className={cn("p-2 rounded-lg", stat.bg)}>
+              <Icon
+                icon={stat.icon}
+                className={cn("h-4 w-4", stat.color)}
+              />
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="text-3xl font-bold tracking-tight">{stat.value}</div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+}
+
+function RecentPrompts() {
+  const prompts = useQuery(api.authed.prompts.getPrompts);
+
+  if (prompts === undefined) {
     return (
-      <Card className="max-w-xl mx-auto border-destructive/20 bg-destructive/5">
-        <CardContent className="flex items-center justify-center py-10 gap-3 text-destructive">
-          <Icon icon="lucide:alert-circle" className="h-6 w-6" />
-          <p className="font-semibold text-lg">Failed to load statistics.</p>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-[250px] w-full rounded-xl" />
+        ))}
+      </div>
     );
   }
 
-  const hasNoActivity = stats.total === 0;
+  if (prompts.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed py-12 text-center">
+        <div className="bg-primary/10 mb-4 rounded-full p-4">
+          <Icon icon="lucide:plus" className="text-primary h-8 w-8" />
+        </div>
+        <h3 className="text-lg font-semibold">No prompts yet</h3>
+        <p className="text-muted-foreground mb-6 max-w-sm">
+          Create your first prompt to see it here and start building your library.
+        </p>
+        <Button asChild>
+          <Link href="/prompts/create">Create Prompt</Link>
+        </Button>
+      </div>
+    );
+  }
 
   return (
-    <div className="mx-auto max-w-5xl space-y-8 animate-in fade-in duration-1000">
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {[
-          { label: 'Total Prompts', value: stats.total, icon: 'lucide:file-text', color: 'text-primary', bg: 'bg-primary/10' },
-          { label: 'Template Prompts', value: stats.templates, icon: 'lucide:layout-template', color: 'text-chart-1', bg: 'bg-chart-1/10' },
-          { label: 'Public Prompts', value: stats.public, icon: 'lucide:globe', color: 'text-chart-2', bg: 'bg-chart-2/10' },
-          { label: 'New This Week', value: stats.newThisWeek, icon: 'lucide:calendar-plus', color: 'text-chart-3', bg: 'bg-chart-3/10' },
-        ].map((stat) => (
-          <Card key={stat.label} className="border-border/40 bg-card/60 backdrop-blur-sm hover:shadow-xl hover:shadow-primary/5 transition-all group overflow-hidden">
-            <div className={cn("absolute top-0 left-0 w-1 h-full", stat.color.replace('text-', 'bg-'))} />
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-bold uppercase tracking-widest text-muted-foreground">{stat.label}</CardTitle>
-              <div className={cn("p-2 rounded-lg transition-transform group-hover:scale-110", stat.bg)}>
-                <Icon
-                  icon={stat.icon}
-                  className={cn("h-4 w-4", stat.color)}
-                />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-4xl font-black tracking-tight">{stat.value}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      <Card className="border-border/40 bg-primary/5 backdrop-blur-sm rounded-3xl group overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        <CardContent className="flex items-center gap-4 py-6 relative z-10">
-          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-            <Icon icon="lucide:clock" className="text-primary h-5 w-5" />
-          </div>
-          <span className="text-muted-foreground text-base font-medium">
-            {hasNoActivity || !stats.lastActivityAt
-              ? 'No activity yet. Let\'s create your first prompt!'
-              : `Last prompt created ${formatRelativeTime(stats.lastActivityAt)}.`}
-          </span>
-          <Button variant="ghost" className="ml-auto rounded-xl hover:bg-primary/10 text-primary font-bold" asChild>
-            <Link href="/prompts">View All &rarr;</Link>
-          </Button>
-        </CardContent>
-      </Card>
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+      {prompts.slice(0, 3).map((prompt: Doc<'prompts'>) => (
+        <PromptCard key={prompt._id} prompt={prompt} />
+      ))}
     </div>
   );
 }
