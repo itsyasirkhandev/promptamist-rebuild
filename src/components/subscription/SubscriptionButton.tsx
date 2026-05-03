@@ -45,16 +45,17 @@ export function SubscriptionButton() {
           </span>
         </div>
 
-        <div className="h-3 w-[1px] bg-border" />
-
-        <div className="flex items-center gap-1.5">
-          <span className="text-[10px] font-semibold text-muted-foreground group-hover:text-foreground transition-colors whitespace-nowrap">
-            {isPro ? 'Lifetime Plan' : `${stats.total}/50 Used`}
-          </span>
-          {!isPro && (
-            <Icon icon="lucide:chevron-up" className="h-3 w-3 text-primary animate-pulse" />
-          )}
-        </div>
+        {!isPro && (
+          <>
+            <div className="h-3 w-[1px] bg-border" />
+            <div className="flex items-center gap-1.5">
+              <span className="text-[10px] font-semibold text-muted-foreground group-hover:text-foreground transition-colors whitespace-nowrap">
+                {stats.total}/50 Used
+              </span>
+              <Icon icon="lucide:chevron-up" className="h-3 w-3 text-primary animate-pulse" />
+            </div>
+          </>
+        )}
       </div>
 
       <UpgradeModal open={showUpgradeModal} onOpenChange={setShowUpgradeModal} />
