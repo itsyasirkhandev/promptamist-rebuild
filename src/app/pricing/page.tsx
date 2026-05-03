@@ -93,12 +93,12 @@ export default function PricingPage() {
                 )} />
 
                 <Card className={cn(
-                  "relative h-full flex flex-col border-border/50 bg-card/60 backdrop-blur-xl transition-all duration-500 group-hover:translate-y-[-4px] group-hover:shadow-2xl group-hover:shadow-primary/5",
+                  "relative h-full flex flex-col border-border/50 bg-card/60 backdrop-blur-xl transition-all duration-500 group-hover:translate-y-[-4px] group-hover:shadow-2xl group-hover:shadow-primary/5 !overflow-visible",
                   plan.popular && "ring-1 ring-primary/40 border-primary/20 shadow-xl shadow-primary/10"
                 )}>
                   {plan.popular && (
-                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
-                      <Badge className="bg-primary text-primary-foreground px-4 py-1 rounded-full shadow-lg shadow-primary/25 border-none uppercase tracking-wider text-[10px] font-bold">
+                    <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 z-30">
+                      <Badge className="bg-primary text-primary-foreground px-4 py-1 rounded-full shadow-xl shadow-primary/30 border-none uppercase tracking-wider text-[10px] font-bold whitespace-nowrap">
                         Most Popular
                       </Badge>
                     </div>
