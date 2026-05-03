@@ -17,6 +17,12 @@ According to users, the most painful part of working with AI is rebuilding the s
 - **Private by Default**: All prompts are private unless explicitly made public. Full control over your intellectual property.
 - **Prompt Statistics**: Dashboard showing total prompts, templates, public shares, and activity over time.
 
+## Solutions by Industry
+
+- **Content Creation**: Professional writers use Promptamist to scale blog production, maintain brand voice, and organize storytelling prompts.
+- **Software Development**: Engineers manage system prompts for coding agents, debugging scripts, and architectural context across multiple LLMs.
+- **Marketing & SEO**: Marketers build high-converting ad copy templates and SEO meta description workflows.
+
 ## Supported AI Models
 
 Promptamist is model-agnostic and supports:
@@ -30,6 +36,11 @@ Promptamist is model-agnostic and supports:
 ## Public URLs
 
 - https://repromptamist.vercel.app — Landing page and dashboard
+- https://repromptamist.vercel.app/about — Our mission and story
+- https://repromptamist.vercel.app/pricing — Plan options and features
+- https://repromptamist.vercel.app/solutions — Industry-specific AI workflows
+- https://repromptamist.vercel.app/solutions/content-writing — Tools for AI writers
+- https://repromptamist.vercel.app/solutions/software-development — Tools for AI developers
 - https://repromptamist.vercel.app/sign-up — Create a free account
 - https://repromptamist.vercel.app/sign-in — Sign in to your account
 - https://repromptamist.vercel.app/p/[slug] — Public shared prompt pages
@@ -44,8 +55,8 @@ Promptamist is model-agnostic and supports:
 
 ## Pricing
 
-- **Free Tier**: Available with a prompt limit for getting started
-- **Premium Plans**: Higher prompt limits and advanced features for power users
+- **Free Tier**: Get Started with 50 Prompts for $0.
+- **Pro Plan**: Unlimited prompts and templates for power users ($5/mo).
 
 ## Company
 

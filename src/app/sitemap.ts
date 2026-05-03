@@ -14,30 +14,60 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/about`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/pricing`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/solutions`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/solutions/content-writing`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
+      url: `${baseUrl}/solutions/software-development`,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 0.7,
+    },
+    {
       url: `${baseUrl}/sign-in`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.6,
+      priority: 0.5,
     },
     {
       url: `${baseUrl}/sign-up`,
       lastModified,
       changeFrequency: 'monthly',
-      priority: 0.7,
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/privacy`,
+      lastModified,
+      changeFrequency: 'yearly',
+      priority: 0.3,
+    },
+    {
+      url: `${baseUrl}/terms`,
+      lastModified,
+      changeFrequency: 'yearly',
+      priority: 0.3,
     },
   ];
-
-  // Note: Public prompt pages (/p/[slug]) are dynamically generated
-  // and should be added here via a Convex query in a production setup.
-  // Example pattern for dynamic public prompt pages:
-  //   const publicPrompts = await fetchPublicPrompts();
-  //   const promptRoutes = publicPrompts.map((p) => ({
-  //     url: `${baseUrl}/p/${p.slug}`,
-  //     lastModified: new Date(p._creationTime),
-  //     changeFrequency: 'weekly' as const,
-  //     priority: 0.8,
-  //   }));
-  //   return [...staticRoutes, ...promptRoutes];
 
   return staticRoutes;
 }

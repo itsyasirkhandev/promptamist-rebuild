@@ -17,6 +17,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 
 import { Logo } from '@/components/Logo';
 import { SubscriptionButton } from '@/components/subscription/SubscriptionButton';
+import { Footer } from './Footer';
 
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -43,6 +44,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
         <main className="flex-1">{children}</main>
+        <Footer />
       </div>
     );
   }
@@ -84,6 +86,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </header>
 
           <main className="flex-1 pb-20 lg:pb-0">{children}</main>
+          
+          <Unauthenticated>
+            <Footer />
+          </Unauthenticated>
 
           <Authenticated>
             <MobileBottomNav />

@@ -160,6 +160,54 @@ export function HomeClient() {
           </div>
         </section>
 
+        {/* Solutions Section */}
+        <section
+          aria-label="Industry Solutions"
+          className="px-4 py-20"
+        >
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-12 text-center">
+              <h2 className="mb-3 text-3xl font-bold tracking-tight">
+                Built for Every Professional AI Workflow
+              </h2>
+              <p className="text-muted-foreground text-lg">
+                Specialized tools for the world&apos;s most demanding AI power users.
+              </p>
+            </div>
+            <div className="grid gap-8 md:grid-cols-2">
+              <div className="group relative overflow-hidden rounded-2xl border bg-card p-8 transition-all hover:shadow-md">
+                <Icon icon="lucide:pen-tool" className="mb-4 h-10 w-10 text-primary" />
+                <h3 className="mb-2 text-2xl font-bold">Content Writing</h3>
+                <p className="mb-6 text-muted-foreground">
+                  Scale your blog production and maintain brand voice with structured storytelling templates.
+                </p>
+                <Button variant="link" className="px-0 text-primary" asChild>
+                  <Link href="/solutions/content-writing">
+                    Explore Writing Solutions &rarr;
+                  </Link>
+                </Button>
+              </div>
+              <div className="group relative overflow-hidden rounded-2xl border bg-card p-8 transition-all hover:shadow-md">
+                <Icon icon="lucide:code-2" className="mb-4 h-10 w-10 text-primary" />
+                <h3 className="mb-2 text-2xl font-bold">Software Development</h3>
+                <p className="mb-6 text-muted-foreground">
+                  Manage complex system prompts and architectural context for your AI coding agents.
+                </p>
+                <Button variant="link" className="px-0 text-primary" asChild>
+                  <Link href="/solutions/software-development">
+                    Explore Dev Solutions &rarr;
+                  </Link>
+                </Button>
+              </div>
+            </div>
+            <div className="mt-12 text-center">
+              <Button variant="outline" asChild>
+                <Link href="/solutions">View All Solutions</Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+
         {/* Social Proof / CTA */}
         <section
           aria-label="Call to action"
