@@ -23,10 +23,13 @@ export default function PricingPage() {
       features: [
         'Up to 50 Prompts',
         'Unlimited Public Shares',
+        'Community Templates',
+        'Basic Search',
       ],
       cta: 'Start for Free',
       href: '/sign-up',
       popular: false,
+      gradient: 'from-slate-500/10 to-slate-500/5',
     },
     {
       name: 'Pro',
@@ -38,77 +41,152 @@ export default function PricingPage() {
         'Unlimited Dynamic Templates',
         'Version History (Coming Soon)',
         'Priority Support',
-        'No Prompt Limits',
+        'Advanced Analytics',
+        'Custom Folders',
       ],
       cta: 'Get Pro Access',
       href: '/sign-up',
       popular: true,
+      gradient: 'from-primary/20 to-primary/5',
     },
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <main className="flex-1 py-20 px-4">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl font-bold tracking-tight md:text-5xl mb-4">
-              Simple, Transparent Pricing
+    <div className="flex flex-col min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background">
+      <main className="flex-1 py-16 md:py-24 px-4 overflow-hidden">
+        <div className="max-w-6xl mx-auto">
+          {/* Hero Section with Fluid Typography */}
+          <div className="text-center mb-20 relative">
+            <div className="absolute inset-0 -z-10 blur-3xl opacity-20 bg-primary/30 rounded-full w-96 h-96 mx-auto top-[-100px]" />
+            <h1 className="font-extrabold tracking-tight mb-6 text-balance"
+                style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', lineHeight: '1.1' }}>
+              Simple, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">Transparent</span> Pricing
             </h1>
-            <p className="text-xl text-muted-foreground">
-              Invest in your productivity, not in subscription bloat.
+            <p className="text-muted-foreground max-w-2xl mx-auto"
+               style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)' }}>
+              Invest in your productivity, not in subscription bloat. Scale your AI workflow without breaking the bank.
             </p>
           </div>
 
-          <div className="grid gap-8 md:grid-cols-3">
-            {plans.map((plan) => (
-              <Card key={plan.name} className={`flex flex-col relative ${plan.popular ? 'border-primary shadow-lg scale-105 z-10' : ''}`}>
-                {plan.popular && (
-                  <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-primary text-primary-foreground px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
-                    Most Popular
-                  </div>
-                )}
-                <CardHeader>
-                  <CardTitle className="text-2xl">{plan.name}</CardTitle>
-                  <CardDescription>{plan.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="flex-1">
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className="text-4xl font-bold">{plan.price}</span>
-                    {plan.interval && <span className="text-muted-foreground">{plan.interval}</span>}
-                  </div>
-                  <ul className="space-y-3">
-                    {plan.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2 text-sm">
-                        <Icon icon="lucide:check" className="text-primary h-4 w-4 shrink-0" />
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full" variant={plan.popular ? 'default' : 'outline'} asChild>
-                    <Link href={plan.href}>{plan.cta}</Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+          {/* Intrinsic Grid Layout with Container Queries */}
+          <div className="@container w-full max-w-4xl mx-auto">
+            <div className="grid gap-8 justify-center @[600px]:grid-cols-2">
+              {plans.map((plan) => (
+                <div key={plan.name} className="group relative @container h-full">
+                  <div className={`
+                    absolute -inset-0.5 rounded-3xl blur opacity-30 group-hover:opacity-70 transition duration-1000 group-hover:duration-200
+                    bg-gradient-to-r ${plan.popular ? 'from-primary to-blue-600' : 'from-slate-400 to-slate-600'}
+                  `} />
+                  
+                  <Card className={`
+                    relative h-full flex flex-col border-none bg-background/80 backdrop-blur-xl rounded-2xl overflow-hidden
+                    transition-all duration-300 hover:translate-y-[-8px]
+                    ${plan.popular ? 'ring-2 ring-primary/50' : 'ring-1 ring-border'}
+                  `}>
+                    {plan.popular && (
+                      <div className="absolute top-0 right-0">
+                        <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-bl-lg">
+                          Most Popular
+                        </div>
+                      </div>
+                    )}
+                    
+                    <CardHeader className="pt-8 px-8">
+                      <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${plan.gradient} mb-4 w-fit`}>
+                        <Icon 
+                          icon={plan.popular ? "lucide:zap" : "lucide:rocket"} 
+                          className={`h-6 w-6 ${plan.popular ? 'text-primary' : 'text-slate-500'}`} 
+                        />
+                      </div>
+                      <CardTitle className="text-3xl font-bold">{plan.name}</CardTitle>
+                      <CardDescription className="text-base mt-2 leading-relaxed">
+                        {plan.description}
+                      </CardDescription>
+                    </CardHeader>
+
+                    <CardContent className="flex-1 px-8 pt-4 pb-8">
+                      <div className="flex items-baseline gap-1 mb-8">
+                        <span className="text-5xl font-black tracking-tight"
+                              style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}>
+                          {plan.price}
+                        </span>
+                        {plan.interval && (
+                          <span className="text-muted-foreground font-medium text-lg">
+                            {plan.interval}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Intrinsic list layout using container query */}
+                      <ul className="space-y-4 @[400px]:columns-1">
+                        {plan.features.map((feature) => (
+                          <li key={feature} className="flex items-start gap-3 text-sm group/item">
+                            <div className={`mt-1 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${plan.popular ? 'bg-primary/10 text-primary' : 'bg-slate-100 text-slate-500 dark:bg-slate-800'}`}>
+                              <Icon icon="lucide:check" className="h-3 w-3" />
+                            </div>
+                            <span className="text-muted-foreground group-hover/item:text-foreground transition-colors duration-200">
+                              {feature}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+
+                    <CardFooter className="px-8 pb-8 pt-0 mt-auto">
+                      <Button 
+                        className={`w-full h-12 text-base font-bold rounded-xl transition-all duration-300 shadow-lg ${
+                          plan.popular 
+                            ? 'bg-primary hover:bg-primary/90 shadow-primary/20 hover:shadow-primary/40' 
+                            : 'bg-secondary hover:bg-secondary/80'
+                        }`} 
+                        asChild
+                      >
+                        <Link href={plan.href}>
+                          {plan.cta}
+                          <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4" />
+                        </Link>
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="mt-24 text-center">
-            <h2 className="text-2xl font-bold mb-8">Frequently Asked Questions</h2>
-            <div className="max-w-2xl mx-auto grid gap-6 text-left">
-              <div>
-                <h3 className="font-semibold mb-2">Can I switch plans later?</h3>
-                <p className="text-muted-foreground text-sm">Yes, you can upgrade or downgrade your plan at any time from your settings page.</p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Do you offer a student discount?</h3>
-                <p className="text-muted-foreground text-sm">We offer free Pro access for students. Contact our support team with your student email to apply.</p>
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">Is there a limit on public sharing?</h3>
-                <p className="text-muted-foreground text-sm">No! We believe in sharing knowledge. You can share as many prompts publicly as you like, even on the Free plan.</p>
-              </div>
+          {/* Enhanced FAQ Section */}
+          <div className="mt-32 max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
+              <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
+            </div>
+            
+            <div className="grid gap-6 md:grid-cols-2">
+              {[
+                {
+                  q: "Can I switch plans later?",
+                  a: "Yes, you can upgrade or downgrade your plan at any time. Changes are reflected instantly in your account."
+                },
+                {
+                  q: "Do you offer a student discount?",
+                  a: "Absolutely. We offer free Pro access for students. Contact our support team with your .edu email to apply."
+                },
+                {
+                  q: "Is there a limit on public sharing?",
+                  a: "No! We believe in open knowledge. Share as many prompts publicly as you like, even on the Free plan."
+                },
+                {
+                  q: "What payment methods do you accept?",
+                  a: "We accept all major credit cards, Apple Pay, and Google Pay through our secure payment processor."
+                }
+              ].map((faq, i) => (
+                <div key={i} className="p-6 rounded-2xl border bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-colors">
+                  <h3 className="font-bold mb-3 flex items-center gap-2">
+                    <span className="text-primary text-xl">?</span>
+                    {faq.q}
+                  </h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -116,3 +194,4 @@ export default function PricingPage() {
     </div>
   );
 }
+
