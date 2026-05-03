@@ -23,8 +23,6 @@ export default function PricingPage() {
       features: [
         'Up to 50 Prompts',
         'Unlimited Public Shares',
-        'Community Templates',
-        'Basic Search',
       ],
       cta: 'Start for Free',
       href: '/sign-up',
@@ -39,10 +37,6 @@ export default function PricingPage() {
       features: [
         'Unlimited Private Prompts',
         'Unlimited Dynamic Templates',
-        'Version History (Coming Soon)',
-        'Priority Support',
-        'Advanced Analytics',
-        'Custom Folders',
       ],
       cta: 'Get Pro Access',
       href: '/sign-up',
@@ -59,11 +53,11 @@ export default function PricingPage() {
           <div className="text-center mb-20 relative">
             <div className="absolute inset-0 -z-10 blur-3xl opacity-10 bg-primary rounded-full w-96 h-96 mx-auto top-[-100px]" />
             <h1 className="font-extrabold tracking-tight mb-6 text-balance"
-                style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', lineHeight: '1.1' }}>
+              style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', lineHeight: '1.1' }}>
               Simple, <span className="text-primary">Transparent</span> Pricing
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto"
-               style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)' }}>
+              style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)' }}>
               Invest in your productivity, not in subscription bloat. Scale your AI workflow without breaking the bank.
             </p>
           </div>
@@ -78,7 +72,7 @@ export default function PricingPage() {
                     absolute -inset-0.5 rounded-3xl blur opacity-20 group-hover:opacity-50 transition duration-1000 group-hover:duration-200
                     ${plan.popular ? 'bg-primary' : 'bg-muted-foreground'}
                   `} />
-                  
+
                   <Card className={`
                     relative h-full flex flex-col border-none bg-card/80 backdrop-blur-xl rounded-2xl overflow-hidden
                     transition-all duration-300 hover:translate-y-[-8px]
@@ -91,12 +85,12 @@ export default function PricingPage() {
                         </div>
                       </div>
                     )}
-                    
+
                     <CardHeader className="pt-8 px-8">
                       <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${plan.gradient} mb-4 w-fit ring-1 ring-border/50`}>
-                        <Icon 
-                          icon={plan.popular ? "lucide:zap" : "lucide:rocket"} 
-                          className={`h-6 w-6 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`} 
+                        <Icon
+                          icon={plan.popular ? "lucide:zap" : "lucide:rocket"}
+                          className={`h-6 w-6 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`}
                         />
                       </div>
                       <CardTitle className="text-3xl font-bold">{plan.name}</CardTitle>
@@ -108,7 +102,7 @@ export default function PricingPage() {
                     <CardContent className="flex-1 px-8 pt-4 pb-8">
                       <div className="flex items-baseline gap-1 mb-8">
                         <span className="text-5xl font-black tracking-tight"
-                              style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}>
+                          style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}>
                           {plan.price}
                         </span>
                         {plan.interval && (
@@ -134,12 +128,11 @@ export default function PricingPage() {
                     </CardContent>
 
                     <CardFooter className="px-8 pb-8 pt-0 mt-auto">
-                      <Button 
-                        className={`w-full h-12 text-base font-bold rounded-xl transition-all duration-300 shadow-lg ${
-                          plan.popular 
-                            ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40' 
+                      <Button
+                        className={`w-full h-12 text-base font-bold rounded-xl transition-all duration-300 shadow-lg ${plan.popular
+                            ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40'
                             : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
-                        }`} 
+                          }`}
                         asChild
                       >
                         <Link href={plan.href}>
@@ -160,7 +153,7 @@ export default function PricingPage() {
               <h2 className="text-3xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
               <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
             </div>
-            
+
             <div className="grid gap-6 md:grid-cols-2">
               {[
                 {
