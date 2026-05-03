@@ -21,11 +21,8 @@ export default function PricingPage() {
       price: '$0',
       description: 'Perfect for getting started with prompt engineering.',
       features: [
-        'Up to 10 Private Prompts',
-        '3 Dynamic Templates',
+        'Up to 50 Prompts',
         'Unlimited Public Shares',
-        'Basic Search & Tags',
-        'Community Support',
       ],
       cta: 'Start for Free',
       href: '/sign-up',
@@ -33,13 +30,12 @@ export default function PricingPage() {
     },
     {
       name: 'Pro',
-      price: '$9',
+      price: '$5',
       interval: '/mo',
       description: 'For power users and professional prompt engineers.',
       features: [
         'Unlimited Private Prompts',
         'Unlimited Dynamic Templates',
-        'Advanced Filtering',
         'Version History (Coming Soon)',
         'Priority Support',
         'No Prompt Limits',
@@ -47,23 +43,6 @@ export default function PricingPage() {
       cta: 'Get Pro Access',
       href: '/sign-up',
       popular: true,
-    },
-    {
-      name: 'Team',
-      price: '$29',
-      interval: '/mo',
-      description: 'Collaborate with your team on shared AI workflows.',
-      features: [
-        'Everything in Pro',
-        'Shared Team Workspace',
-        'Collaborative Editing',
-        'Role-based Access',
-        'Admin Dashboard',
-        'SAML/SSO (Custom)',
-      ],
-      cta: 'Contact Sales',
-      href: '/sign-up',
-      popular: false,
     },
   ];
 
