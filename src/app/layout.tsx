@@ -20,42 +20,83 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const BASE_URL =
+  process.env.NEXT_PUBLIC_APP_URL || 'https://repromptamist.vercel.app';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://repromptamist.vercel.app'),
+  metadataBase: new URL(BASE_URL),
   title: {
-    default: 'Organize & Test Your AI Prompts | Promptamist',
+    default: 'Promptamist — Organize, Test & Share AI Prompts',
     template: '%s | Promptamist',
   },
   description:
-    'Stop losing your best AI prompts in endless chat logs. We built Promptamist so you can easily organize, test, and find the exact prompt you need.',
+    'Promptamist is the intelligent prompt management platform for AI power users. Organize your ChatGPT, Claude, and Gemini prompts, build reusable templates with dynamic variables, and share prompts publicly — all in one workspace.',
   keywords: [
-    'AI prompts',
-    'prompt engineering',
-    'prompt management',
-    'AI workflow',
+    'AI prompt manager',
+    'prompt engineering tool',
+    'prompt management platform',
+    'ChatGPT prompt organizer',
+    'Claude prompt templates',
+    'Gemini prompt library',
+    'AI workflow automation',
+    'prompt template builder',
     'prompt optimization',
+    'dynamic prompt variables',
+    'prompt sharing',
+    'AI productivity tool',
+    'prompt library',
+    'LLM prompt manager',
     'Promptamist',
   ],
-  authors: [{ name: 'Promptamist Team' }],
+  authors: [{ name: 'Promptamist Team', url: BASE_URL }],
   creator: 'Promptamist',
+  publisher: 'Promptamist',
+  category: 'Technology',
+  alternates: {
+    canonical: BASE_URL,
+  },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://repromptamist.vercel.app',
+    url: BASE_URL,
     siteName: 'Promptamist',
-    title: 'Organize & Test Your AI Prompts | Promptamist',
+    title: 'Promptamist — Organize, Test & Share AI Prompts',
     description:
-      'Stop losing your best AI prompts in endless chat logs. We built Promptamist so you can easily organize, test, and find the exact prompt you need.',
+      'Promptamist is the intelligent prompt management platform for AI power users. Organize your ChatGPT, Claude, and Gemini prompts, build reusable templates with dynamic variables, and share prompts publicly.',
+    images: [
+      {
+        url: '/opengraph-image',
+        width: 1200,
+        height: 630,
+        alt: 'Promptamist — AI Prompt Management Platform',
+        type: 'image/png',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Organize & Test Your AI Prompts | Promptamist',
+    site: '@promptamist',
+    creator: '@promptamist',
+    title: 'Promptamist — Organize, Test & Share AI Prompts',
     description:
-      'Stop losing your best AI prompts in endless chat logs. We built Promptamist so you can easily organize, test, and find the exact prompt you need.',
+      'The intelligent prompt management platform for AI power users. Organize, template, and share your ChatGPT, Claude & Gemini prompts.',
+    images: ['/opengraph-image'],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/icon.svg',
   },
 };
 

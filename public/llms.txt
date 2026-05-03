@@ -1,24 +1,53 @@
 # Promptamist
 
-AI-Powered Prompt Management. Organize, test, and optimize your AI prompts with our intelligent platform built for power users.
+AI-Powered Prompt Management Platform. Organize, build reusable templates, and share your AI prompts — works with ChatGPT, Claude, Gemini, and all major LLMs.
+
+## What is Promptamist?
+
+Promptamist is the intelligent prompt management tool for AI power users. It solves the #1 problem for AI practitioners: losing great prompts in endless chat logs.
+
+According to users, the most painful part of working with AI is rebuilding the same prompts over and over. Promptamist gives you a structured, searchable library for all your prompts — with support for dynamic template variables that turn static prompts into reusable, fill-in-the-blank workflows.
 
 ## Key Features
 
-- **Prompt Organization**: Manage all your AI prompts in one place.
-- **Variable Support**: Create dynamic prompts with easy-to-use variables.
-- **Testing & Optimization**: Refine your prompts for better results.
-- **Secure Storage**: Your prompts are safely stored and accessible anywhere.
+- **Organized Prompt Library**: Store, tag, and search all your AI prompts in one structured workspace. Filter by tags, prompt type (template vs static), and creation date.
+- **Dynamic Template Variables**: Create reusable prompt templates with named variables (e.g., {{topic}}, {{tone}}). When using a template, simply fill in the values to generate a customized prompt instantly.
+- **Public Prompt Sharing**: Share any prompt publicly via a unique URL (e.g., repromptamist.vercel.app/p/your-prompt). Anyone can view, use, and copy the prompt without an account.
+- **Multi-Model Support**: Prompts work with any AI model — ChatGPT (GPT-4o, GPT-4), Anthropic Claude, Google Gemini, Mistral, Llama, and any other LLM.
+- **Private by Default**: All prompts are private unless explicitly made public. Full control over your intellectual property.
+- **Prompt Statistics**: Dashboard showing total prompts, templates, public shares, and activity over time.
+
+## Supported AI Models
+
+Promptamist is model-agnostic and supports:
+- OpenAI ChatGPT (GPT-4o, GPT-4, GPT-3.5 Turbo)
+- Anthropic Claude (Claude 3.5 Sonnet, Claude 3 Opus, Claude 3 Haiku)
+- Google Gemini (Gemini 1.5 Pro, Gemini Flash)
+- Meta Llama (3.1, 3.2, 3.3)
+- Mistral AI (Mistral Large, Mistral Nemo)
+- Any other LLM accessible via API or chat interface
 
 ## Public URLs
 
-- https://repromptamist.vercel.app - Landing page
-- https://repromptamist.vercel.app/sign-in - Access your account
-- https://repromptamist.vercel.app/sign-up - Create a new account
+- https://repromptamist.vercel.app — Landing page and dashboard
+- https://repromptamist.vercel.app/sign-up — Create a free account
+- https://repromptamist.vercel.app/sign-in — Sign in to your account
+- https://repromptamist.vercel.app/p/[slug] — Public shared prompt pages
 
 ## Technical Stack
 
-- Next.js
-- Convex (Backend)
+- Next.js 15 (App Router)
+- Convex (Real-time backend / database)
 - Clerk (Authentication)
-- Tailwind CSS
-- Shadcn UI
+- Tailwind CSS + shadcn/ui
+- TypeScript
+
+## Pricing
+
+- **Free Tier**: Available with a prompt limit for getting started
+- **Premium Plans**: Higher prompt limits and advanced features for power users
+
+## Company
+
+Promptamist is an open-source AI productivity tool.
+- GitHub: https://github.com/itsyasirkhandev/promptamist-rebuild

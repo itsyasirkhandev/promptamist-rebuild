@@ -2,9 +2,28 @@ import { SignIn } from '@clerk/nextjs';
 import { clerkAppearance } from '@/lib/clerk-appearance';
 import { Metadata } from 'next';
 
+const BASE_URL =
+  process.env.NEXT_PUBLIC_APP_URL || 'https://repromptamist.vercel.app';
+
 export const metadata: Metadata = {
-  title: 'Sign In',
-  description: 'Sign in to your Promptamist account to manage your AI prompts.',
+  title: 'Sign In to Promptamist — AI Prompt Manager',
+  description:
+    'Sign in to your Promptamist account to manage, organize, and share your AI prompts for ChatGPT, Claude, and Gemini.',
+  alternates: {
+    canonical: `${BASE_URL}/sign-in`,
+  },
+  openGraph: {
+    title: 'Sign In to Promptamist',
+    description: 'Access your AI prompt library on Promptamist.',
+    url: `${BASE_URL}/sign-in`,
+    type: 'website',
+    siteName: 'Promptamist',
+  },
+  robots: {
+    // Auth pages should not be indexed
+    index: false,
+    follow: false,
+  },
 };
 
 export default function SignInPage() {

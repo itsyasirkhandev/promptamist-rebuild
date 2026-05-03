@@ -5,16 +5,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     process.env.NEXT_PUBLIC_APP_URL || 'https://repromptamist.vercel.app';
   const lastModified = new Date();
 
-  // Publicly accessible routes
-  const routes = ['', '/sign-in', '/sign-up'].map((route) => ({
-    url: `${baseUrl}${route}`,
-    lastModified,
-    changeFrequency: 'daily' as const,
-    priority: route === '' ? 1 : 0.8,
-  }));
+  // Publicly accessible marketing + auth routes
+  const staticRoutes: MetadataRoute.Sitemap = [
+    {
+      url: baseUrl,
+      lastModified,
+      changeFrequency: 'weekly',
+      priority: 1.0,
+    },
+    {
+      url: `${baseUrl}/sign-in`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    },
+    {
+      url: `${baseUrl}/sign-up`,
+      lastModified,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    },
+  ];
 
-  // Note: We don't include authenticated pages like /prompts, /prompts/create, etc.
-  // as per instructions and best practices.
+  // Note: Public prompt pages (/p/[slug]) are dynamically generated
+  // and should be added here via a Convex query in a production setup.
+  // Example pattern for dynamic public prompt pages:
+  //   const publicPrompts = await fetchPublicPrompts();
+  //   const promptRoutes = publicPrompts.map((p) => ({
+  //     url: `${baseUrl}/p/${p.slug}`,
+  //     lastModified: new Date(p._creationTime),
+  //     changeFrequency: 'weekly' as const,
+  //     priority: 0.8,
+  //   }));
+  //   return [...staticRoutes, ...promptRoutes];
 
-  return [...routes];
+  return staticRoutes;
 }
