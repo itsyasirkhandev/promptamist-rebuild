@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 import { Icon } from '@iconify/react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://repromptamist.vercel.app';
 
@@ -27,7 +29,8 @@ export default function PricingPage() {
       cta: 'Start for Free',
       href: '/sign-up',
       popular: false,
-      gradient: 'from-muted/40 to-muted/10',
+      icon: 'lucide:rocket',
+      gradient: 'from-muted/50 to-muted/10',
     },
     {
       name: 'Pro',
@@ -41,83 +44,108 @@ export default function PricingPage() {
       cta: 'Get Pro Access',
       href: '/sign-up',
       popular: true,
-      gradient: 'from-primary/15 to-primary/5',
+      icon: 'lucide:zap',
+      gradient: 'from-primary/20 to-primary/5',
     },
   ];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-background to-background">
-      <main className="flex-1 py-16 md:py-24 px-4 overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden bg-background">
+      {/* Premium Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px] animate-pulse" />
+        <div className="absolute top-[20%] -right-[5%] w-[30%] h-[30%] rounded-full bg-chart-1/10 blur-[100px]" />
+        <div className="absolute bottom-[10%] left-[20%] w-[25%] h-[25%] rounded-full bg-chart-2/5 blur-[80px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:44px_44px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      </div>
+
+      <main className="relative z-10 flex-1 py-20 md:py-32 px-4">
         <div className="max-w-6xl mx-auto">
-          {/* Hero Section with Fluid Typography */}
-          <div className="text-center mb-20 relative">
-            <div className="absolute inset-0 -z-10 blur-3xl opacity-10 bg-primary rounded-full w-96 h-96 mx-auto top-[-100px]" />
-            <h1 className="font-extrabold tracking-tight mb-6 text-balance"
-              style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', lineHeight: '1.1' }}>
-              Simple, <span className="text-primary">Transparent</span> Pricing
+          {/* Hero Section */}
+          <div className="text-center mb-24 space-y-6">
+            <Badge variant="outline" className="px-4 py-1 rounded-full border-primary/20 bg-primary/5 text-primary animate-in fade-in slide-in-from-bottom-3 duration-500">
+              Pricing Plans
+            </Badge>
+            <h1 className="font-heading font-extrabold tracking-tight text-balance animate-in fade-in slide-in-from-bottom-4 duration-700"
+              style={{ fontSize: 'var(--text-4xl)', lineHeight: '1.1' }}>
+              Simple, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-chart-1">Transparent</span> Pricing
             </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto"
-              style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)' }}>
+            <p className="text-muted-foreground max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom-5 duration-1000"
+              style={{ fontSize: 'var(--text-base)' }}>
               Invest in your productivity, not in subscription bloat. Scale your AI workflow without breaking the bank.
             </p>
           </div>
 
-          {/* Intrinsic Grid Layout with Container Queries */}
-          <div className="@container w-full max-w-4xl mx-auto">
-            <div className="grid gap-8 justify-center @[600px]:grid-cols-2">
-              {plans.map((plan) => (
-                <div key={plan.name} className="group relative @container h-full">
-                  {/* Glowing backdrop using theme colors */}
-                  <div className={`
-                    absolute -inset-0.5 rounded-3xl blur opacity-20 group-hover:opacity-50 transition duration-1000 group-hover:duration-200
-                    ${plan.popular ? 'bg-primary' : 'bg-muted-foreground'}
-                  `} />
+          {/* Pricing Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto relative">
+            {plans.map((plan, index) => (
+              <div 
+                key={plan.name} 
+                className={cn(
+                  "group relative transition-all duration-500 animate-in fade-in slide-in-from-bottom-8",
+                  index === 0 ? "duration-700" : "duration-1000"
+                )}
+              >
+                {/* Card Glow Effect */}
+                <div className={cn(
+                  "absolute -inset-px rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition duration-500 blur-sm",
+                  plan.popular ? "bg-primary/30" : "bg-muted-foreground/20"
+                )} />
 
-                  <Card className={`
-                    relative h-full flex flex-col border-none bg-card/80 backdrop-blur-xl rounded-2xl overflow-hidden
-                    transition-all duration-300 hover:translate-y-[-8px]
-                    ${plan.popular ? 'ring-2 ring-primary/30' : 'ring-1 ring-border'}
-                  `}>
-                    {plan.popular && (
-                      <div className="absolute top-0 right-0">
-                        <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest py-1.5 px-4 rounded-bl-lg">
-                          Most Popular
-                        </div>
-                      </div>
-                    )}
+                <Card className={cn(
+                  "relative h-full flex flex-col border-border/50 bg-card/60 backdrop-blur-xl transition-all duration-500 group-hover:translate-y-[-4px] group-hover:shadow-2xl group-hover:shadow-primary/5",
+                  plan.popular && "ring-1 ring-primary/40 border-primary/20 shadow-xl shadow-primary/10"
+                )}>
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 z-20">
+                      <Badge className="bg-primary text-primary-foreground px-4 py-1 rounded-full shadow-lg shadow-primary/25 border-none uppercase tracking-wider text-[10px] font-bold">
+                        Most Popular
+                      </Badge>
+                    </div>
+                  )}
 
-                    <CardHeader className="pt-8 px-8">
-                      <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${plan.gradient} mb-4 w-fit ring-1 ring-border/50`}>
-                        <Icon
-                          icon={plan.popular ? "lucide:zap" : "lucide:rocket"}
-                          className={`h-6 w-6 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`}
-                        />
-                      </div>
-                      <CardTitle className="text-3xl font-bold">{plan.name}</CardTitle>
-                      <CardDescription className="text-base mt-2 leading-relaxed">
-                        {plan.description}
-                      </CardDescription>
-                    </CardHeader>
-
-                    <CardContent className="flex-1 px-8 pt-4 pb-8">
-                      <div className="flex items-baseline gap-1 mb-8">
-                        <span className="text-5xl font-black tracking-tight"
-                          style={{ fontSize: 'clamp(2.5rem, 5vw, 3.5rem)' }}>
-                          {plan.price}
-                        </span>
-                        {plan.interval && (
-                          <span className="text-muted-foreground font-medium text-lg">
-                            {plan.interval}
-                          </span>
+                  <CardHeader className="p-8">
+                    <div className={cn(
+                      "inline-flex p-3 rounded-2xl bg-gradient-to-br mb-6 w-fit ring-1 ring-border shadow-inner transition-transform duration-500 group-hover:scale-110",
+                      plan.gradient
+                    )}>
+                      <Icon
+                        icon={plan.icon}
+                        className={cn(
+                          "h-6 w-6 transition-colors duration-300",
+                          plan.popular ? 'text-primary' : 'text-muted-foreground'
                         )}
-                      </div>
+                      />
+                    </div>
+                    <CardTitle className="text-3xl font-bold tracking-tight">{plan.name}</CardTitle>
+                    <CardDescription className="text-base mt-2 leading-relaxed h-12">
+                      {plan.description}
+                    </CardDescription>
+                  </CardHeader>
 
-                      {/* Intrinsic list layout using container query */}
-                      <ul className="space-y-4">
+                  <CardContent className="flex-1 p-8 pt-0">
+                    <div className="flex items-baseline gap-1 mb-8 transition-transform duration-500 group-hover:scale-105 origin-left">
+                      <span className="text-5xl font-black tracking-tighter"
+                        style={{ fontSize: 'var(--text-4xl)' }}>
+                        {plan.price}
+                      </span>
+                      {plan.interval && (
+                        <span className="text-muted-foreground font-medium text-lg">
+                          {plan.interval}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="space-y-4">
+                      <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground/70">What&apos;s included:</p>
+                      <ul className="space-y-3">
                         {plan.features.map((feature) => (
-                          <li key={feature} className="flex items-start gap-3 text-sm group/item">
-                            <div className={`mt-1 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${plan.popular ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
-                              <Icon icon="lucide:check" className="h-3 w-3" />
+                          <li key={feature} className="flex items-center gap-3 text-sm group/item">
+                            <div className={cn(
+                              "flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-colors duration-300",
+                              plan.popular ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'
+                            )}>
+                              <Icon icon="lucide:check" className="h-3.5 w-3.5" />
                             </div>
                             <span className="text-muted-foreground group-hover/item:text-foreground transition-colors duration-200">
                               {feature}
@@ -125,36 +153,42 @@ export default function PricingPage() {
                           </li>
                         ))}
                       </ul>
-                    </CardContent>
+                    </div>
+                  </CardContent>
 
-                    <CardFooter className="px-8 pb-8 pt-0 mt-auto">
-                      <Button
-                        className={`w-full h-12 text-base font-bold rounded-xl transition-all duration-300 shadow-lg ${plan.popular
-                            ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40'
-                            : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
-                          }`}
-                        asChild
-                      >
-                        <Link href={plan.href}>
-                          {plan.cta}
-                          <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </div>
-              ))}
-            </div>
+                  <CardFooter className="p-8 pt-0 mt-auto">
+                    <Button
+                      asChild
+                      size="lg"
+                      className={cn(
+                        "w-full h-14 text-base font-bold rounded-2xl transition-all duration-300 shadow-lg group/btn",
+                        plan.popular
+                          ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98]"
+                          : "bg-secondary hover:bg-secondary/80 text-secondary-foreground hover:scale-[1.02] active:scale-[0.98]"
+                      )}
+                    >
+                      <Link href={plan.href}>
+                        {plan.cta}
+                        <Icon icon="lucide:arrow-right" className="ml-2 h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1" />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </div>
+            ))}
           </div>
 
-          {/* Enhanced FAQ Section using theme colors */}
-          <div className="mt-32 max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
-              <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
+          {/* FAQ Section */}
+          <div className="mt-40 max-w-4xl mx-auto relative">
+            <div className="absolute inset-0 bg-primary/5 blur-[100px] -z-10 rounded-full" />
+            
+            <div className="text-center mb-16 space-y-4">
+              <h2 className="text-3xl font-bold tracking-tight">Frequently Asked Questions</h2>
+              <p className="text-muted-foreground">Everything you need to know about our plans and billing.</p>
+              <div className="h-1.5 w-12 bg-primary/40 mx-auto rounded-full" />
             </div>
 
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-4 md:grid-cols-2">
               {[
                 {
                   q: "Can I switch plans later?",
@@ -173,13 +207,19 @@ export default function PricingPage() {
                   a: "We accept all major credit cards, Apple Pay, and Google Pay through our secure payment processor."
                 }
               ].map((faq, i) => (
-                <div key={i} className="p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-colors duration-300">
-                  <h3 className="font-bold mb-3 flex items-center gap-2">
-                    <span className="text-primary text-xl">?</span>
-                    {faq.q}
-                  </h3>
-                  <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
-                </div>
+                <Card key={i} className="border-border/40 bg-card/40 backdrop-blur-sm hover:border-primary/30 transition-all duration-300 hover:shadow-lg group">
+                  <CardHeader className="p-6">
+                    <CardTitle className="text-base font-bold flex items-start gap-3">
+                      <div className="mt-1 w-5 h-5 rounded bg-primary/10 text-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                        <span className="text-[10px]">?</span>
+                      </div>
+                      {faq.q}
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6 pt-0">
+                    <p className="text-muted-foreground text-sm leading-relaxed">{faq.a}</p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
           </div>
