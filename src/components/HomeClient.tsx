@@ -8,17 +8,14 @@ import {
 } from 'convex/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { PromptCard } from '@/components/prompts/PromptCard';
 import { Separator } from '@/components/ui/separator';
@@ -66,7 +63,7 @@ export function HomeClient() {
                     Welcome Back
                   </h1>
                   <p className="text-muted-foreground">
-                    Here's what's happening with your prompt library.
+                    Here&apos;s what&apos;s happening with your prompt library.
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
