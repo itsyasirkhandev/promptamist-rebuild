@@ -29,7 +29,7 @@ export default function PricingPage() {
       cta: 'Start for Free',
       href: '/sign-up',
       popular: false,
-      gradient: 'from-slate-500/10 to-slate-500/5',
+      gradient: 'from-muted/40 to-muted/10',
     },
     {
       name: 'Pro',
@@ -47,7 +47,7 @@ export default function PricingPage() {
       cta: 'Get Pro Access',
       href: '/sign-up',
       popular: true,
-      gradient: 'from-primary/20 to-primary/5',
+      gradient: 'from-primary/15 to-primary/5',
     },
   ];
 
@@ -57,10 +57,10 @@ export default function PricingPage() {
         <div className="max-w-6xl mx-auto">
           {/* Hero Section with Fluid Typography */}
           <div className="text-center mb-20 relative">
-            <div className="absolute inset-0 -z-10 blur-3xl opacity-20 bg-primary/30 rounded-full w-96 h-96 mx-auto top-[-100px]" />
+            <div className="absolute inset-0 -z-10 blur-3xl opacity-10 bg-primary rounded-full w-96 h-96 mx-auto top-[-100px]" />
             <h1 className="font-extrabold tracking-tight mb-6 text-balance"
                 style={{ fontSize: 'clamp(2.5rem, 8vw, 4.5rem)', lineHeight: '1.1' }}>
-              Simple, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">Transparent</span> Pricing
+              Simple, <span className="text-primary">Transparent</span> Pricing
             </h1>
             <p className="text-muted-foreground max-w-2xl mx-auto"
                style={{ fontSize: 'clamp(1.1rem, 2vw, 1.25rem)' }}>
@@ -73,29 +73,30 @@ export default function PricingPage() {
             <div className="grid gap-8 justify-center @[600px]:grid-cols-2">
               {plans.map((plan) => (
                 <div key={plan.name} className="group relative @container h-full">
+                  {/* Glowing backdrop using theme colors */}
                   <div className={`
-                    absolute -inset-0.5 rounded-3xl blur opacity-30 group-hover:opacity-70 transition duration-1000 group-hover:duration-200
-                    bg-gradient-to-r ${plan.popular ? 'from-primary to-blue-600' : 'from-slate-400 to-slate-600'}
+                    absolute -inset-0.5 rounded-3xl blur opacity-20 group-hover:opacity-50 transition duration-1000 group-hover:duration-200
+                    ${plan.popular ? 'bg-primary' : 'bg-muted-foreground'}
                   `} />
                   
                   <Card className={`
-                    relative h-full flex flex-col border-none bg-background/80 backdrop-blur-xl rounded-2xl overflow-hidden
+                    relative h-full flex flex-col border-none bg-card/80 backdrop-blur-xl rounded-2xl overflow-hidden
                     transition-all duration-300 hover:translate-y-[-8px]
-                    ${plan.popular ? 'ring-2 ring-primary/50' : 'ring-1 ring-border'}
+                    ${plan.popular ? 'ring-2 ring-primary/30' : 'ring-1 ring-border'}
                   `}>
                     {plan.popular && (
                       <div className="absolute top-0 right-0">
-                        <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest py-1 px-3 rounded-bl-lg">
+                        <div className="bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest py-1.5 px-4 rounded-bl-lg">
                           Most Popular
                         </div>
                       </div>
                     )}
                     
                     <CardHeader className="pt-8 px-8">
-                      <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${plan.gradient} mb-4 w-fit`}>
+                      <div className={`inline-flex p-3 rounded-xl bg-gradient-to-br ${plan.gradient} mb-4 w-fit ring-1 ring-border/50`}>
                         <Icon 
                           icon={plan.popular ? "lucide:zap" : "lucide:rocket"} 
-                          className={`h-6 w-6 ${plan.popular ? 'text-primary' : 'text-slate-500'}`} 
+                          className={`h-6 w-6 ${plan.popular ? 'text-primary' : 'text-muted-foreground'}`} 
                         />
                       </div>
                       <CardTitle className="text-3xl font-bold">{plan.name}</CardTitle>
@@ -118,10 +119,10 @@ export default function PricingPage() {
                       </div>
 
                       {/* Intrinsic list layout using container query */}
-                      <ul className="space-y-4 @[400px]:columns-1">
+                      <ul className="space-y-4">
                         {plan.features.map((feature) => (
                           <li key={feature} className="flex items-start gap-3 text-sm group/item">
-                            <div className={`mt-1 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${plan.popular ? 'bg-primary/10 text-primary' : 'bg-slate-100 text-slate-500 dark:bg-slate-800'}`}>
+                            <div className={`mt-1 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center ${plan.popular ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
                               <Icon icon="lucide:check" className="h-3 w-3" />
                             </div>
                             <span className="text-muted-foreground group-hover/item:text-foreground transition-colors duration-200">
@@ -136,8 +137,8 @@ export default function PricingPage() {
                       <Button 
                         className={`w-full h-12 text-base font-bold rounded-xl transition-all duration-300 shadow-lg ${
                           plan.popular 
-                            ? 'bg-primary hover:bg-primary/90 shadow-primary/20 hover:shadow-primary/40' 
-                            : 'bg-secondary hover:bg-secondary/80'
+                            ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40' 
+                            : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
                         }`} 
                         asChild
                       >
@@ -153,11 +154,11 @@ export default function PricingPage() {
             </div>
           </div>
 
-          {/* Enhanced FAQ Section */}
+          {/* Enhanced FAQ Section using theme colors */}
           <div className="mt-32 max-w-4xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-3xl font-bold tracking-tight mb-4">Frequently Asked Questions</h2>
-              <div className="h-1 w-20 bg-primary mx-auto rounded-full" />
+              <div className="h-1 w-20 bg-primary/40 mx-auto rounded-full" />
             </div>
             
             <div className="grid gap-6 md:grid-cols-2">
@@ -179,7 +180,7 @@ export default function PricingPage() {
                   a: "We accept all major credit cards, Apple Pay, and Google Pay through our secure payment processor."
                 }
               ].map((faq, i) => (
-                <div key={i} className="p-6 rounded-2xl border bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-colors">
+                <div key={i} className="p-6 rounded-2xl border border-border bg-card/50 backdrop-blur-sm hover:border-primary/50 transition-colors duration-300">
                   <h3 className="font-bold mb-3 flex items-center gap-2">
                     <span className="text-primary text-xl">?</span>
                     {faq.q}
@@ -194,4 +195,5 @@ export default function PricingPage() {
     </div>
   );
 }
+
 
