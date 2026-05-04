@@ -26,24 +26,24 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     pathname?.startsWith('/sign-in') || pathname?.startsWith('/sign-up');
 
   if (isAuthPage) {
-    return <div className="bg-background min-h-screen w-full">{children}</div>;
+    return <div className="bg-neutral-50 dark:bg-stone-950 min-h-screen w-full transition-colors duration-500">{children}</div>;
   }
 
   if (isPublicPromptPage) {
     return (
-      <div className="bg-background flex min-h-screen w-full flex-col">
-        <header className="bg-background/80 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 backdrop-blur">
+      <div className="bg-neutral-50 dark:bg-stone-950 flex min-h-screen w-full flex-col transition-colors duration-500">
+        <header className="bg-white/50 dark:bg-stone-950/50 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-neutral-200/60 dark:border-neutral-800/80 px-4 backdrop-blur-xl transition-all">
           <Link
             href="/"
-            className="flex items-center gap-2 font-semibold tracking-tight"
+            className="flex items-center gap-2 font-semibold tracking-tight text-neutral-900 dark:text-neutral-50"
           >
-            <Logo className="text-primary h-8 w-8" />
+            <Logo className="h-8 w-8" />
             <span className="text-2xl">Promptamist</span>
           </Link>
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <Unauthenticated>
-              <Button size="sm" asChild>
+              <Button size="sm" asChild className="rounded-full px-5">
                 <Link href="/sign-in">Sign In</Link>
               </Button>
             </Unauthenticated>
@@ -57,22 +57,22 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="bg-background flex min-h-screen w-full">
+      <div className="bg-neutral-50 dark:bg-stone-950 flex min-h-screen w-full transition-colors duration-500">
         <Authenticated>
           <AppSidebar />
         </Authenticated>
 
-        <SidebarInset className="flex flex-1 flex-col">
-          <header className="bg-background/80 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 backdrop-blur sm:px-6">
+        <SidebarInset className="flex flex-1 flex-col bg-transparent">
+          <header className="bg-white/50 dark:bg-stone-950/50 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-neutral-200/60 dark:border-neutral-800/80 px-4 backdrop-blur-xl transition-all sm:px-6">
             <div className="flex items-center gap-2 sm:gap-4">
               <Authenticated>
-                <SidebarTrigger className="hidden lg:flex" />
+                <SidebarTrigger className="hidden lg:flex text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50" />
               </Authenticated>
               <Link
                 href="/"
-                className="flex items-center gap-1.5 font-semibold tracking-tight sm:gap-2"
+                className="flex items-center gap-1.5 font-semibold tracking-tight sm:gap-2 text-neutral-900 dark:text-neutral-50"
               >
-                <Logo className="text-primary h-7 w-7 sm:h-8 sm:w-8" />
+                <Logo className="h-7 w-7 sm:h-8 sm:w-8" />
                 <span className="text-xl sm:text-2xl">Promptamist</span>
               </Link>
             </div>
@@ -86,7 +86,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <UserButton />
               </Authenticated>
               <Unauthenticated>
-                <Button size="sm" asChild>
+                <Button size="sm" asChild className="rounded-full px-5">
                   <Link href="/sign-in">Sign In</Link>
                 </Button>
               </Unauthenticated>

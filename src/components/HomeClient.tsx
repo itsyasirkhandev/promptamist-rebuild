@@ -8,7 +8,6 @@ import {
 } from 'convex/react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useState } from 'react';
 import {
@@ -24,76 +23,96 @@ import { api } from '../../convex/_generated/api';
 import { cn } from '@/lib/utils';
 import { Doc } from '../../convex/_generated/dataModel';
 
+// Reusable Texture Card Component
+const TextureCard = ({ children, className, popular }: { children: React.ReactNode, className?: string, popular?: boolean }) => (
+  <div className={cn(
+    "rounded-[24px] border border-white/60 dark:border-stone-950/60 bg-gradient-to-b transition-all duration-300",
+    popular 
+        ? "from-neutral-50 to-white/90 ring-1 ring-black/5 dark:from-neutral-800 dark:to-neutral-950 dark:ring-white/10 shadow-2xl shadow-neutral-200/50 dark:shadow-black/50" 
+        : "from-neutral-100 to-white/70 dark:from-neutral-800 dark:to-neutral-900",
+    className
+  )}>
+    <div className="rounded-[23px] border border-black/10 dark:border-neutral-900/80 flex flex-col h-full">
+      <div className="rounded-[22px] border border-white/50 dark:border-neutral-950 flex flex-col h-full">
+        <div className="rounded-[21px] border border-neutral-950/20 dark:border-neutral-900/70 flex flex-col h-full">
+          <div className="w-full rounded-[20px] border border-white/50 text-neutral-500 dark:border-neutral-700/50 flex flex-col h-full">
+            {children}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
 export function HomeClient() {
   return (
-    <div className="bg-background relative min-h-screen overflow-hidden">
-      {/* Premium Background Elements */}
+    <div className="bg-neutral-50 dark:bg-stone-950 relative min-h-screen transition-colors duration-500">
+      {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="bg-primary/10 absolute -top-[10%] -left-[10%] h-[40%] w-[40%] animate-pulse rounded-full blur-[120px]" />
-        <div className="bg-chart-1/10 absolute top-[20%] -right-[5%] h-[30%] w-[30%] rounded-full blur-[100px]" />
-        <div className="bg-chart-2/5 absolute bottom-[10%] left-[20%] h-[25%] w-[25%] rounded-full blur-[80px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:44px_44px]" />
+        <div className="bg-primary/5 absolute top-0 left-1/2 h-[500px] w-full max-w-6xl -translate-x-1/2 rounded-full opacity-50 blur-[120px]" />
       </div>
 
       <main className="relative z-10 flex-1">
         <AuthLoading>
           <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
             <div className="relative">
-              <div className="bg-primary/20 absolute -inset-4 animate-pulse rounded-full blur-xl" />
-              <div className="border-primary relative h-12 w-12 animate-spin rounded-full border-4 border-t-transparent shadow-xl" />
+              <div className="bg-primary/10 absolute -inset-4 animate-pulse rounded-full blur-xl" />
+              <div className="border-primary/20 relative h-12 w-12 animate-spin rounded-full border-4 border-t-primary shadow-xl" />
             </div>
-            <p className="text-muted-foreground animate-pulse font-medium">
-              Securing your session...
+            <p className="text-neutral-500 animate-pulse font-medium text-sm tracking-wide uppercase">
+              Securing your session
             </p>
           </div>
         </AuthLoading>
 
         <Authenticated>
-          <div className="mx-auto max-w-7xl space-y-8 px-4 py-8 lg:px-8">
-            <div className="space-y-4">
+          <div className="mx-auto max-w-7xl space-y-12 px-4 py-8 lg:px-8">
+            <div className="space-y-6">
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem>
-                    <BreadcrumbPage>Home</BreadcrumbPage>
+                    <BreadcrumbPage className="text-neutral-500 dark:text-neutral-400 font-medium">Home</BreadcrumbPage>
                   </BreadcrumbItem>
                 </BreadcrumbList>
               </Breadcrumb>
 
               <header className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
                 <div>
-                  <h1 className="text-4xl font-semibold tracking-tight">
+                  <h1 className="text-4xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
                     Welcome Back
                   </h1>
-                  <p className="text-muted-foreground">
+                  <p className="text-neutral-600 dark:text-neutral-400 mt-1">
                     Here&apos;s what&apos;s happening with your prompt library.
                   </p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Button asChild className="gap-2">
-                    <Link href="/prompts/create">
-                      <Icon icon="lucide:plus" width={18} />
-                      New Prompt
-                    </Link>
-                  </Button>
+                  <Link href="/prompts/create">
+                    <div className="border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80 rounded-[12px] group">
+                      <div className="flex h-full w-full items-center justify-center gap-2 bg-gradient-to-b from-neutral-800 to-black text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:active:from-stone-300 dark:active:to-neutral-300 dark:hover:from-stone-200 dark:hover:to-neutral-200 rounded-[10px] px-4 py-2 text-sm font-medium">
+                        <Icon icon="lucide:plus" className="w-4 h-4" />
+                        New Prompt
+                      </div>
+                    </div>
+                  </Link>
                 </div>
               </header>
             </div>
 
             <DashboardStats />
 
-            <Separator />
+            <Separator className="bg-neutral-200 dark:bg-neutral-800" />
 
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold tracking-tight">
+                  <h2 className="text-2xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-50">
                     Recent Prompts
                   </h2>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-neutral-600 dark:text-neutral-400 text-sm">
                     Continue where you left off.
                   </p>
                 </div>
-                <Button variant="ghost" asChild>
+                <Button variant="ghost" asChild className="text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100">
                   <Link href="/prompts" className="gap-2">
                     View All <Icon icon="lucide:arrow-right" width={16} />
                   </Link>
@@ -106,96 +125,71 @@ export function HomeClient() {
 
         <Unauthenticated>
           {/* Hero Section */}
-          <section
-            aria-label="Hero — AI Prompt Management Platform"
-            className="px-4 py-24 text-center md:py-32"
-          >
-            <div className="mx-auto max-w-4xl space-y-8">
-              <div className="bg-primary/10 text-primary border-primary/20 animate-in fade-in slide-in-from-top-4 mb-6 inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium duration-500">
-                <Icon icon="lucide:sparkles" className="h-4 w-4" />
+          <section className="px-4 py-24 text-center md:py-32">
+            <div className="mx-auto max-w-4xl">
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/50 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-neutral-600 dark:border-neutral-800 dark:bg-stone-900/50 dark:text-neutral-400">
+                <Icon icon="lucide:sparkles" className="h-3.5 w-3.5" />
                 The AI Prompt Manager Built for Power Users
               </div>
-              <h1
-                className="font-heading animate-in fade-in slide-in-from-bottom-4 font-extrabold tracking-tight text-balance duration-700"
-                style={{ fontSize: 'var(--text-5xl)', lineHeight: '1.1' }}
-              >
-                Organize, Test & Share
-                <span className="from-primary to-chart-1 mt-2 block bg-gradient-to-r bg-clip-text text-transparent">
-                  Your AI Prompts
-                </span>
+              <h1 className="text-balance font-semibold text-4xl text-neutral-900 tracking-tight md:text-6xl dark:text-neutral-50 leading-[1.1]">
+                Organize, Test & Share <br className="hidden md:block" />
+                <span className="text-neutral-500">Your AI Prompts</span>
               </h1>
-              <p
-                className="text-muted-foreground animate-in fade-in slide-in-from-bottom-6 mx-auto max-w-2xl text-balance duration-1000"
-                style={{ fontSize: 'var(--text-lg)' }}
-              >
+              <p className="mx-auto mt-6 max-w-2xl text-pretty text-neutral-600 dark:text-neutral-400 text-lg md:text-xl">
                 Stop losing your best prompts in endless chat logs. Promptamist
                 gives you a structured library for all your{' '}
-                <strong className="text-foreground">
+                <strong className="text-neutral-900 dark:text-neutral-100 font-semibold">
                   ChatGPT, Claude, and Gemini
                 </strong>{' '}
                 prompts — with reusable templates, dynamic variables, and
                 one-click public sharing.
               </p>
-              <div className="animate-in fade-in slide-in-from-bottom-8 flex flex-col justify-center gap-4 pt-6 duration-1000 sm:flex-row">
-                <Button
-                  size="lg"
-                  className="shadow-primary/20 h-16 gap-2 rounded-2xl px-10 text-lg font-bold shadow-2xl transition-all hover:scale-[1.05] active:scale-[0.95]"
-                  asChild
-                >
-                  <Link href="/sign-up">
-                    <Icon icon="lucide:rocket" className="h-6 w-6" />
-                    Start Free — No Credit Card
-                  </Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-card/40 h-16 gap-2 rounded-2xl px-10 text-lg font-bold backdrop-blur-xl transition-all hover:scale-[1.05] active:scale-[0.95]"
-                  asChild
-                >
-                  <Link href="/sign-in">
-                    <Icon icon="lucide:log-in" className="h-6 w-6" />
-                    Sign In
-                  </Link>
-                </Button>
+              <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+                <Link href="/sign-up">
+                  <div className="border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80 rounded-[14px] group">
+                    <div className="flex h-14 w-full min-w-[200px] items-center justify-center gap-3 bg-gradient-to-b from-neutral-800 to-black text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:active:from-stone-300 dark:active:to-neutral-300 dark:hover:from-stone-200 dark:hover:to-neutral-200 rounded-[12px] px-8 text-lg font-semibold">
+                      <Icon icon="lucide:rocket" className="h-5 w-5" />
+                      Start Free
+                    </div>
+                  </div>
+                </Link>
+                <Link href="/sign-in">
+                  <div className="group/texture-button border-[1px] border-black/20 bg-white/50 p-[1px] hover:bg-gradient-to-t hover:from-neutral-100 active:bg-neutral-200 dark:border-[2px] dark:border-neutral-950 dark:bg-neutral-600/80 dark:active:bg-neutral-800 dark:hover:from-neutral-600/50 dark:hover:to-neutral-600/70 rounded-[14px]">
+                    <div className="flex h-14 w-full min-w-[160px] items-center justify-center gap-3 text-neutral-700 dark:text-neutral-200 bg-gradient-to-b from-white to-neutral-50/50 transition duration-300 ease-in-out group-hover/texture-button:bg-gradient-to-b group-hover/texture-button:from-neutral-50/50 group-hover/texture-button:to-neutral-100/60 group-active/texture-button:bg-gradient-to-b group-active/texture-button:from-neutral-100/60 group-active/texture-button:to-neutral-100/90 dark:from-neutral-800 dark:to-neutral-700/50 dark:group-active/texture-button:from-neutral-800 dark:group-active/texture-button:to-neutral-700 dark:group-hover/texture-button:from-neutral-700 dark:group-hover/texture-button:to-neutral-700/60 rounded-[12px] px-8 text-lg font-semibold">
+                      Sign In
+                    </div>
+                  </div>
+                </Link>
               </div>
             </div>
           </section>
 
           {/* Features Section */}
-          <section
-            aria-label="Key Features"
-            className="relative px-4 py-24 md:py-32"
-          >
-            <div className="bg-muted/30 absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]" />
-            <div className="relative mx-auto max-w-6xl">
-              <div className="mb-20 space-y-4 px-4 text-center">
-                <h2
-                  className="font-bold tracking-tight"
-                  style={{ fontSize: 'var(--text-3xl)' }}
-                >
-                  Everything You Need for AI Prompt Engineering
-                </h2>
-                <p
-                  className="text-muted-foreground mx-auto max-w-2xl"
-                  style={{ fontSize: 'var(--text-base)' }}
-                >
-                  A professional workspace purpose-built for AI prompt
-                  management.
+          <section className="relative px-4 py-24 md:py-32 overflow-hidden">
+            <div className="mx-auto max-w-6xl">
+              <div className="mb-16 text-center">
+                <p className="mb-2 text-neutral-600 text-xs font-bold uppercase tracking-[0.2em] dark:text-neutral-400">
+                  Features
                 </p>
-                <div className="bg-primary/40 mx-auto h-1.5 w-16 rounded-full" />
+                <h2 className="text-balance font-semibold text-3xl text-neutral-900 tracking-tight md:text-5xl dark:text-neutral-50">
+                  Built for Professional <br /> Prompt Engineering
+                </h2>
+                <p className="mx-auto mt-4 max-w-2xl text-neutral-600 dark:text-neutral-400 text-lg">
+                  A professional workspace purpose-built for AI power users who need structure and scale.
+                </p>
               </div>
-              <dl className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {[
                   {
                     icon: 'lucide:layout-template',
                     term: 'Dynamic Prompt Templates',
-                    desc: 'Build reusable prompt templates with named variables. Fill in values instantly to generate customized prompts for any task.',
+                    desc: 'Build reusable prompt templates with named variables. Fill in values instantly to generate customized prompts.',
                   },
                   {
                     icon: 'lucide:library',
                     term: 'Organized Prompt Library',
-                    desc: 'Tag, filter, and search your entire prompt collection. Never lose a great prompt again — find it in seconds.',
+                    desc: 'Tag, filter, and search your entire prompt collection. Never lose a great prompt again.',
                   },
                   {
                     icon: 'lucide:share-2',
@@ -205,138 +199,101 @@ export function HomeClient() {
                   {
                     icon: 'lucide:zap',
                     term: 'Works with Any LLM',
-                    desc: 'Use your prompts with ChatGPT, Claude, Gemini, Mistral, Llama, or any other AI model — Promptamist is model-agnostic.',
+                    desc: 'Use your prompts with ChatGPT, Claude, Gemini, or any other AI model — model-agnostic by design.',
                   },
                   {
                     icon: 'lucide:shield-check',
                     term: 'Private by Default',
-                    desc: 'Your prompts are private by default. Choose exactly which prompts to share publicly and which to keep for yourself.',
+                    desc: 'Your prompts are private by default. Choose exactly which prompts to share publicly.',
                   },
                   {
                     icon: 'lucide:trending-up',
                     term: 'Prompt Statistics',
-                    desc: 'Track your prompt library growth. See total prompts, templates, public shares, and your activity over time.',
+                    desc: 'Track your library growth. See total prompts, templates, and public shares over time.',
                   },
                 ].map(({ icon, term, desc }) => (
-                  <Card
-                    key={term}
-                    className="group border-border/40 bg-card/60 hover:shadow-primary/5 relative backdrop-blur-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl"
-                  >
-                    <CardHeader>
-                      <div className="bg-primary/10 group-hover:bg-primary/20 mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition-all duration-300 group-hover:scale-110">
-                        <Icon icon={icon} className="text-primary h-6 w-6" />
+                  <TextureCard key={term}>
+                    <div className="p-6">
+                      <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl border border-neutral-200 bg-white/50 text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800 dark:text-neutral-100">
+                        <Icon icon={icon} className="h-6 w-6" />
                       </div>
-                      <CardTitle className="text-xl font-bold">
+                      <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-2">
                         {term}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground text-sm leading-relaxed">
+                      </h3>
+                      <p className="text-neutral-600 dark:text-neutral-400 text-sm leading-relaxed">
                         {desc}
                       </p>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </TextureCard>
                 ))}
-              </dl>
+              </div>
             </div>
           </section>
 
           {/* Solutions Section */}
-          <section
-            aria-label="Industry Solutions"
-            className="px-4 py-24 md:py-32"
-          >
+          <section className="px-4 py-24 md:py-32">
             <div className="mx-auto max-w-6xl">
-              <div className="mb-20 space-y-4 px-4 text-center">
-                <h2
-                  className="font-bold tracking-tight"
-                  style={{ fontSize: 'var(--text-3xl)' }}
-                >
+              <div className="mb-16 text-center">
+                <p className="mb-2 text-neutral-600 text-xs font-bold uppercase tracking-[0.2em] dark:text-neutral-400">
+                  Solutions
+                </p>
+                <h2 className="text-balance font-semibold text-3xl text-neutral-900 tracking-tight md:text-5xl dark:text-neutral-50">
                   Built for Every Professional AI Workflow
                 </h2>
-                <p
-                  className="text-muted-foreground mx-auto max-w-2xl"
-                  style={{ fontSize: 'var(--text-base)' }}
-                >
-                  Specialized tools for the world&apos;s most demanding AI power
-                  users.
+                <p className="mx-auto mt-4 max-w-2xl text-neutral-600 dark:text-neutral-400 text-lg">
+                  Specialized tools for the world&apos;s most demanding AI power users.
                 </p>
-                <div className="bg-chart-1/40 mx-auto h-1.5 w-16 rounded-full" />
               </div>
               <div className="grid gap-8 md:grid-cols-2">
-                <Card className="group border-border/40 bg-card/40 hover:shadow-primary/5 relative overflow-hidden p-4 backdrop-blur-xl transition-all duration-500 hover:translate-y-[-4px] hover:shadow-2xl">
-                  <div className="bg-primary/5 absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full blur-3xl transition-all group-hover:scale-150" />
-                  <CardHeader className="p-6">
-                    <div className="bg-primary/10 mb-6 flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:scale-110">
-                      <Icon
-                        icon="lucide:pen-tool"
-                        className="text-primary h-8 w-8"
-                      />
+                {[
+                  {
+                    title: 'Content Writing',
+                    icon: 'lucide:pen-tool',
+                    desc: 'Scale your blog production and maintain brand voice with structured storytelling templates.',
+                    href: '/solutions/content-writing',
+                    label: 'Explore Writing Solutions'
+                  },
+                  {
+                    title: 'Software Development',
+                    icon: 'lucide:code-2',
+                    desc: 'Manage complex system prompts and architectural context for your AI coding agents.',
+                    href: '/solutions/software-development',
+                    label: 'Explore Dev Solutions'
+                  }
+                ].map((solution) => (
+                  <TextureCard key={solution.title} className="p-2">
+                    <div className="p-6">
+                      <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl border border-neutral-200 bg-white/50 text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800 dark:text-neutral-100">
+                        <Icon icon={solution.icon} className="h-8 w-8" />
+                      </div>
+                      <h3 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                        {solution.title}
+                      </h3>
+                      <p className="text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed mb-8">
+                        {solution.desc}
+                      </p>
+                      <Button
+                        variant="link"
+                        className="text-neutral-900 dark:text-neutral-100 group/link px-0 text-base font-bold h-auto p-0"
+                        asChild
+                      >
+                        <Link href={solution.href}>
+                          {solution.label}
+                          <Icon
+                            icon="lucide:arrow-right"
+                            className="ml-2 h-4 w-4 transition-transform group-hover/link:translate-x-1"
+                          />
+                        </Link>
+                      </Button>
                     </div>
-                    <CardTitle className="text-3xl font-bold">
-                      Content Writing
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="px-6 pt-0 pb-6">
-                    <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
-                      Scale your blog production and maintain brand voice with
-                      structured storytelling templates.
-                    </p>
-                    <Button
-                      variant="link"
-                      className="text-primary group/link px-0 text-base font-bold"
-                      asChild
-                    >
-                      <Link href="/solutions/content-writing">
-                        Explore Writing Solutions{' '}
-                        <Icon
-                          icon="lucide:arrow-right"
-                          className="ml-2 h-4 w-4 transition-transform group-hover/link:translate-x-1"
-                        />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
-
-                <Card className="group border-border/40 bg-card/40 hover:shadow-primary/5 relative overflow-hidden p-4 backdrop-blur-xl transition-all duration-500 hover:translate-y-[-4px] hover:shadow-2xl">
-                  <div className="bg-chart-1/5 absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full blur-3xl transition-all group-hover:scale-150" />
-                  <CardHeader className="p-6">
-                    <div className="bg-chart-1/10 mb-6 flex h-14 w-14 items-center justify-center rounded-2xl transition-transform group-hover:scale-110">
-                      <Icon
-                        icon="lucide:code-2"
-                        className="text-chart-1 h-8 w-8"
-                      />
-                    </div>
-                    <CardTitle className="text-3xl font-bold">
-                      Software Development
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="px-6 pt-0 pb-6">
-                    <p className="text-muted-foreground mb-8 text-lg leading-relaxed">
-                      Manage complex system prompts and architectural context
-                      for your AI coding agents.
-                    </p>
-                    <Button
-                      variant="link"
-                      className="text-primary group/link px-0 text-base font-bold"
-                      asChild
-                    >
-                      <Link href="/solutions/software-development">
-                        Explore Dev Solutions{' '}
-                        <Icon
-                          icon="lucide:arrow-right"
-                          className="ml-2 h-4 w-4 transition-transform group-hover/link:translate-x-1"
-                        />
-                      </Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+                  </TextureCard>
+                ))}
               </div>
-              <div className="mt-16 animate-bounce text-center duration-[3000ms]">
+              <div className="mt-16 text-center">
                 <Button
                   variant="outline"
                   size="lg"
-                  className="border-primary/20 hover:bg-primary/5 h-14 rounded-2xl px-10 font-bold"
+                  className="border-neutral-200 dark:border-neutral-800 hover:bg-neutral-100 dark:hover:bg-neutral-800 h-14 rounded-2xl px-10 font-bold transition-all text-neutral-600 dark:text-neutral-400"
                   asChild
                 >
                   <Link href="/solutions">View All Solutions</Link>
@@ -345,37 +302,26 @@ export function HomeClient() {
             </div>
           </section>
 
-          {/* Social Proof / CTA */}
-          <section
-            aria-label="Call to action"
-            className="relative px-4 py-32 text-center"
-          >
-            <div className="bg-primary/5 absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-            <div className="relative mx-auto max-w-3xl space-y-8">
-              <h2
-                className="font-extrabold tracking-tight"
-                style={{ fontSize: 'var(--text-4xl)' }}
-              >
+          {/* CTA Section */}
+          <section className="relative px-4 py-32 text-center overflow-hidden">
+            <div className="mx-auto max-w-3xl space-y-8 relative">
+              <h2 className="text-balance font-semibold text-4xl text-neutral-900 tracking-tight md:text-5xl dark:text-neutral-50">
                 Your Prompt Library Awaits
               </h2>
-              <p
-                className="text-muted-foreground mx-auto max-w-xl"
-                style={{ fontSize: 'var(--text-lg)' }}
-              >
+              <p className="text-neutral-600 dark:text-neutral-400 mx-auto max-w-xl text-lg">
                 Join AI power users who have already organized their prompt
-                workflows with Promptamist. Free to start, no credit card
-                required.
+                workflows with Promptamist. Free to start, no credit card required.
               </p>
-              <Button
-                size="lg"
-                className="shadow-primary/25 h-16 gap-3 rounded-2xl px-12 text-lg font-bold shadow-2xl transition-all hover:scale-110 active:scale-95"
-                asChild
-              >
+              <div className="flex justify-center">
                 <Link href="/sign-up">
-                  <Icon icon="lucide:sparkles" className="h-6 w-6" />
-                  Get Started for Free
+                  <div className="border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80 rounded-[14px] group">
+                    <div className="flex h-16 w-full min-w-[240px] items-center justify-center gap-3 bg-gradient-to-b from-neutral-800 to-black text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:active:from-stone-300 dark:active:to-neutral-300 dark:hover:from-stone-200 dark:hover:to-neutral-200 rounded-[12px] px-10 text-lg font-semibold">
+                      <Icon icon="lucide:sparkles" className="h-5 w-5" />
+                      Get Started for Free
+                    </div>
+                  </div>
                 </Link>
-              </Button>
+              </div>
             </div>
           </section>
         </Unauthenticated>
@@ -392,7 +338,7 @@ function DashboardStats() {
     return (
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {[1, 2, 3, 4].map((i) => (
-          <Skeleton key={i} className="h-32 w-full rounded-xl" />
+          <Skeleton key={i} className="h-32 w-full rounded-[24px]" />
         ))}
       </div>
     );
@@ -409,49 +355,46 @@ function DashboardStats() {
           label: 'Total Prompts',
           value: stats.total,
           icon: 'lucide:file-text',
-          color: 'text-blue-600',
-          bg: 'bg-blue-100 dark:bg-blue-900/30',
+          color: 'text-neutral-900 dark:text-neutral-50',
+          bg: 'bg-neutral-100 dark:bg-neutral-800',
         },
         {
           label: 'Templates',
           value: stats.templates,
           icon: 'lucide:layout-template',
-          color: 'text-purple-600',
-          bg: 'bg-purple-100 dark:bg-purple-900/30',
+          color: 'text-neutral-900 dark:text-neutral-50',
+          bg: 'bg-neutral-100 dark:bg-neutral-800',
         },
         {
           label: 'Public',
           value: stats.public,
           icon: 'lucide:globe',
-          color: 'text-green-600',
-          bg: 'bg-green-100 dark:bg-green-900/30',
+          color: 'text-neutral-900 dark:text-neutral-50',
+          bg: 'bg-neutral-100 dark:bg-neutral-800',
         },
         {
           label: 'New This Week',
           value: stats.newThisWeek,
           icon: 'lucide:calendar-plus',
-          color: 'text-orange-600',
-          bg: 'bg-orange-100 dark:bg-orange-900/30',
+          color: 'text-neutral-900 dark:text-neutral-50',
+          bg: 'bg-neutral-100 dark:bg-neutral-800',
         },
       ].map((stat) => (
-        <Card
-          key={stat.label}
-          className="border-border/50 bg-card/50 backdrop-blur-sm transition-all hover:shadow-md"
-        >
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-muted-foreground text-sm font-medium">
-              {stat.label}
-            </CardTitle>
-            <div className={cn('rounded-lg p-2', stat.bg)}>
-              <Icon icon={stat.icon} className={cn('h-4 w-4', stat.color)} />
+        <TextureCard key={stat.label}>
+          <div className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-neutral-500 dark:text-neutral-400 text-sm font-medium">
+                {stat.label}
+              </span>
+              <div className={cn('rounded-lg p-2', stat.bg)}>
+                <Icon icon={stat.icon} className={cn('h-4 w-4', stat.color)} />
+              </div>
             </div>
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold tracking-tight">
+            <div className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
               {stat.value}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </TextureCard>
       ))}
     </div>
   );
@@ -464,7 +407,7 @@ function RecentPrompts() {
     return (
       <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
         {[1, 2, 3].map((i) => (
-          <Skeleton key={i} className="h-[250px] w-full rounded-xl" />
+          <Skeleton key={i} className="h-[250px] w-full rounded-[24px]" />
         ))}
       </div>
     );
@@ -472,24 +415,27 @@ function RecentPrompts() {
 
   if (prompts.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border-2 border-dashed py-12 text-center">
-        <div className="bg-primary/10 mb-4 rounded-full p-4">
-          <Icon icon="lucide:plus" className="text-primary h-8 w-8" />
+      <div className="flex flex-col items-center justify-center rounded-[32px] border-2 border-dashed border-neutral-200 dark:border-neutral-800 py-16 text-center bg-white/30 dark:bg-stone-900/30">
+        <div className="bg-neutral-100 dark:bg-neutral-800 mb-6 rounded-2xl p-5">
+          <Icon icon="lucide:plus" className="text-neutral-500 dark:text-neutral-400 h-8 w-8" />
         </div>
-        <h3 className="text-lg font-semibold">No prompts yet</h3>
-        <p className="text-muted-foreground mb-6 max-w-sm">
-          Create your first prompt to see it here and start building your
-          library.
+        <h3 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-2">No prompts yet</h3>
+        <p className="text-neutral-600 dark:text-neutral-400 mb-8 max-w-sm px-4">
+          Create your first prompt to see it here and start building your library.
         </p>
-        <Button asChild>
-          <Link href="/prompts/create">Create Prompt</Link>
-        </Button>
+        <Link href="/prompts/create">
+          <div className="border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] rounded-[12px] group">
+            <div className="flex h-12 items-center justify-center gap-2 bg-gradient-to-b from-neutral-800 to-black text-white/90 px-6 text-sm font-medium rounded-[10px]">
+              Create Prompt
+            </div>
+          </div>
+        </Link>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8">
       {prompts.slice(0, 3).map((prompt: Doc<'prompts'>) => (
         <PromptCard key={prompt._id} prompt={prompt} />
       ))}

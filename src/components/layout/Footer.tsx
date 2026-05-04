@@ -32,34 +32,34 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-background border-t">
-      <div className="container mx-auto px-4 py-12 md:px-6">
-        <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
+    <footer className="bg-neutral-50 dark:bg-stone-950 border-t border-neutral-200/60 dark:border-neutral-800/80 transition-colors duration-500">
+      <div className="container mx-auto px-4 py-16 md:px-6">
+        <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <Link
               href="/"
-              className="mb-4 flex items-center gap-2 font-semibold"
+              className="mb-6 flex items-center gap-2 font-semibold text-neutral-900 dark:text-neutral-50"
             >
-              <Logo className="text-primary h-6 w-6" />
-              <span className="text-xl tracking-tight">Promptamist</span>
+              <Logo className="h-7 w-7" />
+              <span className="text-2xl tracking-tight">Promptamist</span>
             </Link>
-            <p className="text-muted-foreground mb-4 max-w-xs text-sm">
+            <p className="text-neutral-600 dark:text-neutral-400 mb-6 max-w-xs text-sm leading-relaxed">
               The intelligent prompt management platform for AI power users.
               Organize, template, and share your AI workflows.
             </p>
           </div>
 
           {sections.map((section) => (
-            <div key={section.title} className="space-y-4">
-              <h3 className="text-sm font-bold tracking-wider uppercase">
+            <div key={section.title} className="space-y-6">
+              <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-900 dark:text-neutral-50">
                 {section.title}
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-muted-foreground hover:text-primary text-sm transition-colors"
+                      className="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50 text-sm transition-colors"
                     >
                       {link.label}
                     </Link>
@@ -70,8 +70,8 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t pt-8 md:flex-row">
-          <p className="text-muted-foreground text-xs">
+        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-neutral-200/60 dark:border-neutral-800/80 pt-8 md:flex-row">
+          <p className="text-neutral-500 dark:text-neutral-400 text-xs font-medium">
             © {currentYear} Promptamist. Built for the AI-first future.
           </p>
           <div className="flex gap-6">
@@ -79,10 +79,9 @@ export function Footer() {
               href="https://github.com/itsyasirkhandev/promptamist-rebuild"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-muted-foreground hover:text-primary transition-colors"
+              className="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50 transition-colors"
             >
               <span className="sr-only">GitHub</span>
-              {/* GitHub Icon placeholder or use Iconify if preferred */}
               <svg
                 className="h-5 w-5"
                 fill="currentColor"
