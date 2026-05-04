@@ -70,35 +70,20 @@ export default function SignUpPage() {
       </div>
 
       {/* Main Container */}
-      <div className="animate-in fade-in zoom-in-95 relative z-10 w-full max-w-[460px] duration-500">
-        <div className="bg-muted/30 rounded-[20px] p-2 sm:p-3">
-          <div className="bg-card border-border relative flex flex-col items-center rounded-2xl border px-6 py-10 shadow-xl sm:px-12">
+      <div className="animate-in fade-in zoom-in-95 relative z-10 w-full max-w-[440px] duration-500">
+        <div className="bg-muted/40 rounded-[32px] p-2 shadow-2xl sm:p-3">
+          <div className="bg-card border-border relative flex flex-col items-center rounded-[24px] border px-6 py-10 sm:px-10">
             {/* Logo */}
-            <div className="mb-8">
-              <Link href="/" className="flex items-center gap-2">
-                <Logo className="text-primary h-10 w-10" />
-                <span className="text-2xl font-bold tracking-tight">
+            <div className="mb-6 flex flex-col items-center gap-3">
+              <Link
+                href="/"
+                className="flex items-center gap-2.5 transition-transform hover:scale-105"
+              >
+                <Logo className="text-primary h-12 w-12" />
+                <span className="text-foreground text-3xl font-bold tracking-tight">
                   Promptamist
                 </span>
               </Link>
-            </div>
-
-            {/* Header */}
-            <div className="mb-8 flex flex-col items-center gap-3 text-center">
-              <h1 className="text-foreground text-2xl font-bold tracking-tight">
-                Create an account
-              </h1>
-              <div className="flex items-center gap-1.5 text-sm">
-                <span className="text-muted-foreground">
-                  Already have an account?
-                </span>
-                <Link
-                  href="/sign-in"
-                  className="text-primary hover:text-primary/80 font-semibold transition-colors"
-                >
-                  Sign in
-                </Link>
-              </div>
             </div>
 
             {/* Auth Form */}
@@ -113,9 +98,22 @@ export default function SignUpPage() {
             </div>
 
             {/* Footer Text */}
-            <div className="text-muted-foreground mt-8 text-center text-xs">
-              By continuing, you agree to our Terms of Service and Privacy
-              Policy.
+            <div className="text-muted-foreground/60 mt-8 text-center text-xs">
+              By continuing, you agree to our <br />
+              <Link
+                href="/terms"
+                className="hover:text-primary underline transition-colors"
+              >
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link
+                href="/privacy"
+                className="hover:text-primary underline transition-colors"
+              >
+                Privacy Policy
+              </Link>
+              .
             </div>
           </div>
         </div>
