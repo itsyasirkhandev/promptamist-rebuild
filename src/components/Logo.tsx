@@ -14,12 +14,12 @@ export function Logo({
     >
       <defs>
         <linearGradient id="logo-primary" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="currentColor" />
-          <stop offset="100%" stopColor="currentColor" stopOpacity="0.8" />
+          <stop offset="0%" stopColor="var(--primary)" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.8" />
         </linearGradient>
         <linearGradient id="logo-secondary" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />
-          <stop offset="100%" stopColor="currentColor" stopOpacity="0.0" />
+          <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.15" />
+          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.0" />
         </linearGradient>
       </defs>
 
@@ -38,13 +38,13 @@ export function Logo({
       {/* Main AI Spark */}
       <path
         d="M65 25 L68.5 34.5 L78 38 L68.5 41.5 L65 51 L61.5 41.5 L52 38 L61.5 34.5 Z"
-        fill="var(--primary-foreground)"
+        fill="white"
       />
 
       {/* Secondary AI Spark */}
       <path
         d="M42 45 L44 50 L49 52 L44 54 L42 59 L40 54 L35 52 L40 50 Z"
-        fill="var(--primary-foreground)"
+        fill="white"
         opacity="0.9"
       />
     </svg>
