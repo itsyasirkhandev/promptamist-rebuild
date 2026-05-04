@@ -22,6 +22,7 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function PromptsPage() {
   const user = useQuery(api.users.getCurrentUser);
@@ -125,8 +126,8 @@ export default function PromptsPage() {
               </TabsList>
             </Tabs>
 
-            <div className="flex flex-col items-start gap-4 md:flex-row md:items-center">
-              <div className="relative w-full flex-grow md:w-auto">
+            <div className="flex flex-col gap-4">
+              <div className="relative w-full max-w-md">
                 <Icon
                   icon="lucide:search"
                   className="text-muted-foreground absolute top-1/2 left-3 -translate-y-1/2"
@@ -139,9 +140,9 @@ export default function PromptsPage() {
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
-              <div className="flex flex-wrap gap-2">
-                {allTags.length > 0 ? (
-                  <>
+              {allTags.length > 0 ? (
+                <ScrollArea className="w-full pb-3 whitespace-nowrap">
+                  <div className="flex w-max space-x-2">
                     <Badge
                       variant={selectedTag === null ? 'default' : 'outline'}
                       className="cursor-pointer"
@@ -161,9 +162,10 @@ export default function PromptsPage() {
                         {tag}
                       </Badge>
                     ))}
-                  </>
-                ) : null}
-              </div>
+                  </div>
+                  <ScrollBar orientation="horizontal" />
+                </ScrollArea>
+              ) : null}
             </div>
           </div>
 

@@ -26,9 +26,9 @@
 
 ```javascript
 function calculateKeywordDensity(content, keyword) {
-  const totalWords = content.split(/\s+/).length
-  const keywordCount = (content.match(new RegExp(keyword, 'gi')) || []).length
-  const density = (keywordCount / totalWords) * 100
+  const totalWords = content.split(/\s+/).length;
+  const keywordCount = (content.match(new RegExp(keyword, 'gi')) || []).length;
+  const density = (keywordCount / totalWords) * 100;
 
   return {
     count: keywordCount,
@@ -40,7 +40,7 @@ function calculateKeywordDensity(content, keyword) {
         : density < 1
           ? 'too low'
           : 'too high',
-  }
+  };
 }
 ```
 
@@ -91,24 +91,24 @@ Common LSI patterns for "project management":
 
 ```javascript
 function analyzeParagraphs(content) {
-  const paragraphs = content.split('\n\n')
+  const paragraphs = content.split('\n\n');
   const analysis = paragraphs.map((p) => {
-    const wordCount = p.split(/\s+/).length
+    const wordCount = p.split(/\s+/).length;
     return {
       words: wordCount,
       status: wordCount <= 150 ? 'good' : 'too long',
       recommendation: wordCount > 150 ? 'Split into 2 paragraphs' : null,
-    }
-  })
+    };
+  });
 
   const avgLength =
-    analysis.reduce((sum, p) => sum + p.words, 0) / paragraphs.length
+    analysis.reduce((sum, p) => sum + p.words, 0) / paragraphs.length;
 
   return {
     paragraphs: analysis,
     average: avgLength.toFixed(1),
     needsSplitting: analysis.filter((p) => p.status === 'too long').length,
-  }
+  };
 }
 ```
 
@@ -129,29 +129,30 @@ function analyzeParagraphs(content) {
 function calculateFleschScore(text) {
   const sentences = text
     .split(/[.!?]+/)
-    .filter((s) => s.trim().length > 0).length
-  const words = text.split(/\s+/).length
-  const syllables = countSyllables(text) // Implement syllable counter
+    .filter((s) => s.trim().length > 0).length;
+  const words = text.split(/\s+/).length;
+  const syllables = countSyllables(text); // Implement syllable counter
 
-  const avgSentenceLength = words / sentences
-  const avgSyllablesPerWord = syllables / words
+  const avgSentenceLength = words / sentences;
+  const avgSyllablesPerWord = syllables / words;
 
-  const score = 206.835 - 1.015 * avgSentenceLength - 84.6 * avgSyllablesPerWord
+  const score =
+    206.835 - 1.015 * avgSentenceLength - 84.6 * avgSyllablesPerWord;
 
   return {
     score: Math.round(score),
     interpretation: getInterpretation(score),
-  }
+  };
 }
 
 function getInterpretation(score) {
-  if (score >= 90) return 'Very Easy (5th grade)'
-  if (score >= 80) return 'Easy (6th grade)'
-  if (score >= 70) return 'Fairly Easy (7th grade)'
-  if (score >= 60) return 'Standard (8-9th grade)'
-  if (score >= 50) return 'Fairly Difficult (10-12th grade)'
-  if (score >= 30) return 'Difficult (College)'
-  return 'Very Difficult (College graduate)'
+  if (score >= 90) return 'Very Easy (5th grade)';
+  if (score >= 80) return 'Easy (6th grade)';
+  if (score >= 70) return 'Fairly Easy (7th grade)';
+  if (score >= 60) return 'Standard (8-9th grade)';
+  if (score >= 50) return 'Fairly Difficult (10-12th grade)';
+  if (score >= 30) return 'Difficult (College)';
+  return 'Very Difficult (College graduate)';
 }
 ```
 
@@ -166,25 +167,25 @@ function getInterpretation(score) {
 
 ```javascript
 function analyzeSentences(text) {
-  const sentences = text.split(/[.!?]+/).filter((s) => s.trim().length > 0)
+  const sentences = text.split(/[.!?]+/).filter((s) => s.trim().length > 0);
   const analysis = sentences.map((s) => {
-    const words = s.trim().split(/\s+/).length
+    const words = s.trim().split(/\s+/).length;
     return {
       words: words,
       status: words <= 20 ? 'good' : words <= 30 ? 'acceptable' : 'too long',
-    }
-  })
+    };
+  });
 
   const avgLength =
-    analysis.reduce((sum, s) => sum + s.words, 0) / sentences.length
-  const tooLong = analysis.filter((s) => s.status === 'too long').length
+    analysis.reduce((sum, s) => sum + s.words, 0) / sentences.length;
+  const tooLong = analysis.filter((s) => s.status === 'too long').length;
 
   return {
     average: avgLength.toFixed(1),
     target: '<20 words',
     needsSplitting: tooLong,
     percentage: ((tooLong / sentences.length) * 100).toFixed(1) + '%',
-  }
+  };
 }
 ```
 
@@ -240,7 +241,7 @@ project management ❌ (Too short, no value proposition)
 
 ```javascript
 function validateMetaTitle(title) {
-  const length = title.length
+  const length = title.length;
   return {
     length: length,
     status:
@@ -255,7 +256,7 @@ function validateMetaTitle(title) {
         : length > 60
           ? 'Shorten by ' + (length - 60) + ' chars'
           : null,
-  }
+  };
 }
 ```
 

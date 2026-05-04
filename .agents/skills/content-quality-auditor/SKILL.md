@@ -1,18 +1,18 @@
 ---
 name: content-quality-auditor
 description: 'Use when auditing content quality, E-E-A-T, publish readiness, or 内容质量/EEAT评分. Runs 80-item CORE-EEAT scoring with veto checks and fix plan.'
-version: "9.9.5"
+version: '9.9.5'
 license: Apache-2.0
 allowed-tools: WebFetch
-compatibility: "Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy"
-homepage: "https://github.com/aaron-he-zhu/seo-geo-claude-skills"
-when_to_use: "Use when auditing content quality before publishing. Runs CORE-EEAT 80-item scoring with veto checks. Also when the user asks for E-E-A-T analysis or publish readiness."
-argument-hint: "<URL or paste content> [keyword]"
+compatibility: 'Claude Code, skills.sh, ClawHub, Vercel Labs, Cursor, Windsurf, Codex CLI, Amp, Gemini CLI, Kimi Code, Qwen Code, CodeBuddy'
+homepage: 'https://github.com/aaron-he-zhu/seo-geo-claude-skills'
+when_to_use: 'Use when auditing content quality before publishing. Runs CORE-EEAT 80-item scoring with veto checks. Also when the user asks for E-E-A-T analysis or publish readiness.'
+argument-hint: '<URL or paste content> [keyword]'
 class: auditor
 metadata:
   author: aaron-he-zhu
-  version: "9.9.5"
-  geo-relevance: "high"
+  version: '9.9.5'
+  geo-relevance: 'high'
   tags:
     - seo
     - geo
@@ -28,37 +28,37 @@ metadata:
     - auditoria-eeat
   triggers:
     # EN-formal
-    - "audit content quality"
-    - "EEAT score"
-    - "CORE-EEAT audit"
-    - "content quality check"
+    - 'audit content quality'
+    - 'EEAT score'
+    - 'CORE-EEAT audit'
+    - 'content quality check'
     # EN-casual
-    - "is this ready to publish"
-    - "grade my article"
-    - "check before publishing"
-    - "is my content good enough to rank"
+    - 'is this ready to publish'
+    - 'grade my article'
+    - 'check before publishing'
+    - 'is my content good enough to rank'
     # EN-question
-    - "is my content ready to publish"
-    - "how do I improve content quality"
+    - 'is my content ready to publish'
+    - 'how do I improve content quality'
     # ZH-pro
-    - "内容质量审计"
-    - "EEAT评分"
-    - "内容评估"
+    - '内容质量审计'
+    - 'EEAT评分'
+    - '内容评估'
     # ZH-casual
-    - "文章能发吗"
-    - "内容打几分"
-    - "文章写得怎么样"
+    - '文章能发吗'
+    - '内容打几分'
+    - '文章写得怎么样'
     # JA
-    - "コンテンツ品質監査"
-    - "E-E-A-T評価"
+    - 'コンテンツ品質監査'
+    - 'E-E-A-T評価'
     # KO
-    - "콘텐츠 품질 감사"
-    - "EEAT 점수"
+    - '콘텐츠 품질 감사'
+    - 'EEAT 점수'
     # ES
-    - "auditoría de calidad de contenido"
-    - "puntuación EEAT"
+    - 'auditoría de calidad de contenido'
+    - 'puntuación EEAT'
     # PT
-    - "auditoria de qualidade"
+    - 'auditoria de qualidade'
 ---
 
 # Content Quality Auditor
@@ -142,6 +142,7 @@ Automatically fetch page content, extract HTML structure, check schema markup, v
 
 **With manual data only:**
 Ask the user to provide:
+
 1. Content text, URL, or file path
 2. Content type (if not auto-detectable): Product Review, How-to Guide, Comparison, Landing Page, Blog Post, FAQ Page, Alternative, Best-of, or Testimonial
 3. Optional: competitor content for benchmarking
@@ -153,6 +154,7 @@ Proceed with the full 80-item audit using provided data. Note in the output whic
 When stopping to ask, always: (1) state the specific value and threshold, (2) offer numbered options with outcomes.
 
 **Stop and ask the user when:**
+
 - Content is under minimum word count for its type (blog/guide: 300 words; product/landing page: 150 words; FAQ: fewer than 3 entries with 50+ words each) — state the actual count and offer: (1) expand to minimum, (2) continue audit with Insufficient Data flags, (3) cancel
 - Content type cannot be auto-detected — state what you detected and ask to confirm before proceeding
 - Content is primarily media (video/image) with minimal text — ask whether to audit transcript, alt text, or skip
@@ -160,6 +162,7 @@ When stopping to ask, always: (1) state the specific value and threshold, (2) of
 - Any veto item triggers — flag it immediately with the item ID and ask: (1) stop for immediate fix, (2) continue full audit and flag in report
 
 **Continue silently (never stop for):**
+
 - Individual Partial scores within a dimension
 - Missing SEO tool data (mark items as N/A and continue)
 - Low overall score (the report is the deliverable, not a judgment call)
@@ -180,11 +183,11 @@ When a user requests a content quality audit:
 
 #### Critical Trust Check (Emergency Brake)
 
-| Check | Status | Action |
-|-------|--------|--------|
-| Affiliate links disclosed | ✅ Pass / ⚠️ CRITICAL | [If CRITICAL: "Add disclosure banner at page top immediately"] |
-| Title matches page content | ✅ Pass / ⚠️ CRITICAL | [If CRITICAL: "Rewrite title and first paragraph to match"] |
-| Data points are consistent | ✅ Pass / ⚠️ CRITICAL | [If CRITICAL: "Verify all data before publishing"] |
+| Check                      | Status                | Action                                                         |
+| -------------------------- | --------------------- | -------------------------------------------------------------- |
+| Affiliate links disclosed  | ✅ Pass / ⚠️ CRITICAL | [If CRITICAL: "Add disclosure banner at page top immediately"] |
+| Title matches page content | ✅ Pass / ⚠️ CRITICAL | [If CRITICAL: "Rewrite title and first paragraph to match"]    |
+| Data points are consistent | ✅ Pass / ⚠️ CRITICAL | [If CRITICAL: "Verify all data before publishing"]             |
 ```
 
 If any veto item triggers, flag it prominently at the top of the report and recommend immediate action before continuing the full audit.
@@ -194,6 +197,7 @@ If any veto item triggers, flag it prominently at the top of the report and reco
 Evaluate each item against the criteria in [references/core-eeat-benchmark.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/core-eeat-benchmark.md).
 
 Score each item:
+
 - **Pass** = 10 points (fully meets criteria)
 - **Partial** = 5 points (partially meets criteria)
 - **Fail** = 0 points (does not meet criteria)
@@ -201,11 +205,11 @@ Score each item:
 ```markdown
 ### C — Contextual Clarity
 
-| ID | Check Item | Score | Notes |
-|----|-----------|-------|-------|
+| ID  | Check Item       | Score             | Notes                  |
+| --- | ---------------- | ----------------- | ---------------------- |
 | C01 | Intent Alignment | Pass/Partial/Fail | [specific observation] |
-| C02 | Direct Answer | Pass/Partial/Fail | [specific observation] |
-| ... | ... | ... | ... |
+| C02 | Direct Answer    | Pass/Partial/Fail | [specific observation] |
+| ... | ...              | ...               | ...                    |
 | C10 | Semantic Closure | Pass/Partial/Fail | [specific observation] |
 
 **C Score**: [X]/100
@@ -218,10 +222,10 @@ Repeat the same table format for **O** (Organization), **R** (Referenceability),
 ```markdown
 ### Exp — Experience
 
-| ID | Check Item | Score | Notes |
-|----|-----------|-------|-------|
+| ID    | Check Item             | Score             | Notes                  |
+| ----- | ---------------------- | ----------------- | ---------------------- |
 | Exp01 | First-Person Narrative | Pass/Partial/Fail | [specific observation] |
-| ... | ... | ... | ... |
+| ...   | ...                    | ...               | ...                    |
 
 **Exp Score**: [X]/100
 ```
@@ -231,17 +235,17 @@ Repeat the same table format for **Ept** (Expertise), **A** (Authority), and **T
 See [references/item-reference.md](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/cross-cutting/content-quality-auditor/references/item-reference.md) for the complete 80-item ID lookup table and site-level item handling notes.
 
 <!-- runbook-sync start: source_sha256=782eb8827d3139216dbf55154285f72b5fe6d1601acc693bb93d769df5224e2f block_sha256=5053bbe68577b7ca6fd16551244ac6de6b9c7e694be6c400ecef1af0a4df820d -->
+
 ## §1 · Handoff Schema (authoritative)
 
 Every auditor-class handoff MUST follow this shape. Emitted audit artifact files (e.g., `memory/audits/**/*.md`) MUST include `class: auditor-output` in their YAML frontmatter so the PostToolUse Artifact Gate and guarded auditor archive checks can detect them by frontmatter class instead of prose pattern-matching. Files lacking this marker are not treated as audit artifacts regardless of body content.
 
 ```yaml
 ---
-class: auditor-output            # REQUIRED frontmatter marker for emitted audit artifacts
+class: auditor-output # REQUIRED frontmatter marker for emitted audit artifacts
 ---
-
 status: DONE | DONE_WITH_CONCERNS | BLOCKED | NEEDS_INPUT
-objective: "what was audited"
+objective: 'what was audited'
 key_findings:
   - title: short issue name
     severity: veto | high | medium | low
@@ -251,9 +255,9 @@ open_loops: blockers or missing inputs
 recommended_next_skill: primary next move
 
 # Cap-related fields — AUDITOR-CLASS ONLY
-cap_applied: true | false        # REQUIRED for auditors
-raw_overall_score: <number>      # REQUIRED for auditors; score before cap
-final_overall_score: <number>    # REQUIRED for auditors; score after cap
+cap_applied: true | false # REQUIRED for auditors
+raw_overall_score: <number> # REQUIRED for auditors; score before cap
+final_overall_score: <number> # REQUIRED for auditors; score after cap
 ```
 
 ### Legacy compatibility for archived outputs
@@ -281,17 +285,18 @@ Non-auditor skill handoffs follow [skill-contract.md §Handoff Summary Format](h
 **Rule summary**: when any veto item fails, cap the affected dimension and the overall score at **60/100**. Show raw and capped side by side in the internal report. Set `cap_applied: true` in handoff.
 
 **Veto items**:
+
 - CORE-EEAT: T04, C01, R10 — see [core-eeat-benchmark.md §Veto Items](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/core-eeat-benchmark.md)
 - CITE: T03, T05, T09 — see [cite-domain-rating.md §Veto Items](https://github.com/aaron-he-zhu/seo-geo-claude-skills/blob/main/references/cite-domain-rating.md)
 
 ### Decision table
 
-| Scenario | Affected dimension behavior | Overall score behavior | Handoff status |
-|---|---|---|---|
-| **0 veto fails** | no cap | no cap | `cap_applied: false` |
-| **1 veto fails; raw dim > 60** | `min(raw_dim, 60)` → capped down to 60 | `min(raw_overall, 60)` | `cap_applied: true` |
-| **1 veto fails; raw dim ≤ 60** | unchanged (no raise, no lower) | `min(raw_overall, 60)` | `cap_applied: true` |
-| **2+ veto fails** | `status: BLOCKED`, do NOT emit capped scores | `raw_overall_score` retained for record | `cap_applied: false`, reason in `open_loops` |
+| Scenario                       | Affected dimension behavior                  | Overall score behavior                  | Handoff status                               |
+| ------------------------------ | -------------------------------------------- | --------------------------------------- | -------------------------------------------- |
+| **0 veto fails**               | no cap                                       | no cap                                  | `cap_applied: false`                         |
+| **1 veto fails; raw dim > 60** | `min(raw_dim, 60)` → capped down to 60       | `min(raw_overall, 60)`                  | `cap_applied: true`                          |
+| **1 veto fails; raw dim ≤ 60** | unchanged (no raise, no lower)               | `min(raw_overall, 60)`                  | `cap_applied: true`                          |
+| **2+ veto fails**              | `status: BLOCKED`, do NOT emit capped scores | `raw_overall_score` retained for record | `cap_applied: false`, reason in `open_loops` |
 
 **Cap target**: always the post-penalty final dimension value, never the raw pre-penalty value. If non-veto items already penalized the dimension, compute the post-penalty number first, then apply the veto cap to that.
 
@@ -386,14 +391,14 @@ Handoff:
 
 These signals are POSITIVE under stated conditions. Award points, do not deduct. **Conditions are explicit — unconditional positive reframes cause false negatives.**
 
-| Signal | Treat as positive WHEN | Example flag rule |
-|---|---|---|
-| Year marker in title/body | Year is within `[current_year − 2, current_year]` | "2026" in 2026: freshness positive. "2020" in 2026: R-dimension concern, review for staleness — do NOT award freshness |
-| Numbered list ("5 best", "Top 10", "3 steps") | Always | CTR positive, counts toward O-dimension structure |
-| Qualifier ("Open-Source", "Self-Hosted", "Free", "Local-First") | Always | Narrow intent, counts toward E-dimension exclusivity |
-| Short acronym ("SEO", "AI", "CRM", "API") | Always | Never apply length or stop-word filter to these tokens |
-| Homepage brand-first title ("Acme \| AI Workflow") | The page IS the homepage | Correct pattern; do not flag under C01 |
-| Inner-page keyword-first title ("AI Workflow for Teams — Acme") | The page is NOT the homepage | Correct pattern; do not flag under C01 |
+| Signal                                                          | Treat as positive WHEN                            | Example flag rule                                                                                                      |
+| --------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Year marker in title/body                                       | Year is within `[current_year − 2, current_year]` | "2026" in 2026: freshness positive. "2020" in 2026: R-dimension concern, review for staleness — do NOT award freshness |
+| Numbered list ("5 best", "Top 10", "3 steps")                   | Always                                            | CTR positive, counts toward O-dimension structure                                                                      |
+| Qualifier ("Open-Source", "Self-Hosted", "Free", "Local-First") | Always                                            | Narrow intent, counts toward E-dimension exclusivity                                                                   |
+| Short acronym ("SEO", "AI", "CRM", "API")                       | Always                                            | Never apply length or stop-word filter to these tokens                                                                 |
+| Homepage brand-first title ("Acme \| AI Workflow")              | The page IS the homepage                          | Correct pattern; do not flag under C01                                                                                 |
+| Inner-page keyword-first title ("AI Workflow for Teams — Acme") | The page is NOT the homepage                      | Correct pattern; do not flag under C01                                                                                 |
 
 ### Exception path
 
@@ -440,11 +445,12 @@ Before rendering to the user, translate internal language. This respects [skill-
 ### Required pattern when cap is applied
 
 ```markdown
-**Overall Score: 60/100**  *(capped due to 1 critical issue)*
+**Overall Score: 60/100** _(capped due to 1 critical issue)_
 
 **Critical issue to fix:**
+
 - Missing affiliate disclosure on your product review
-  *(search engines and AI engines treat unsigned affiliate content as low-trust)*
+  _(search engines and AI engines treat unsigned affiliate content as low-trust)_
 
 **Fix this one item and your score rises to approximately 78.**
 ```
@@ -465,6 +471,7 @@ Fix these, then rerun the audit for a score.
 Before rendering the score to the user, check `memory/audits/` for any prior audit of the same URL (by `target` field match). If a prior audit exists AND the new `final_overall_score` differs from the prior `final_overall_score` by more than 10 points, AND the prior audit was produced by a Runbook version earlier than the current one, **prepend a one-line explainer** to the user output.
 
 **Version detection logic** (process in order):
+
 1. If prior archive has `runbook_version` field → compare directly
 2. If prior archive is **missing** the `runbook_version` field entirely → treat as pre-v7.1.0 (this is the common upgrade case — always trigger the explainer)
 3. Never use `cap_applied: false` as a version proxy — it is ambiguous between "old audit" and "new clean audit"
@@ -501,17 +508,17 @@ However, if a user request ever surfaces `open_loops` to the user directly — f
 
 ### Never say → Always say (plain-language mapping)
 
-| Internal | User-facing |
-|---|---|
-| "T04 failed" | "Missing affiliate disclosure" |
-| "C01 veto triggered" | "Title doesn't match what the page delivers" |
-| "R10 failure" | "Data on the page contradicts itself" |
-| "T03 failed" | "HTTPS security is not fully enforced" |
-| "T05 failed" | "No published editorial or review policy" |
-| "T09 failed" | "Reviews show authenticity concerns" |
-| "cap_applied: true" | "capped due to N critical issue(s)" |
-| "raw_overall_score: 78" | "your score rises to approximately 78 once this is fixed" |
-| "dimension capped at 60" | (never expose; describe the underlying fix instead) |
+| Internal                 | User-facing                                               |
+| ------------------------ | --------------------------------------------------------- |
+| "T04 failed"             | "Missing affiliate disclosure"                            |
+| "C01 veto triggered"     | "Title doesn't match what the page delivers"              |
+| "R10 failure"            | "Data on the page contradicts itself"                     |
+| "T03 failed"             | "HTTPS security is not fully enforced"                    |
+| "T05 failed"             | "No published editorial or review policy"                 |
+| "T09 failed"             | "Reviews show authenticity concerns"                      |
+| "cap_applied: true"      | "capped due to N critical issue(s)"                       |
+| "raw_overall_score: 78"  | "your score rises to approximately 78 once this is fixed" |
+| "dimension capped at 60" | (never expose; describe the underlying fix instead)       |
 
 ---
 
@@ -547,19 +554,20 @@ Calculate scores and generate the final report:
 
 ### Dimension Scores
 
-| Dimension | Score | Rating | Weight | Weighted |
-|-----------|-------|--------|--------|----------|
-| C — Contextual Clarity | [X]/100 | [rating] | [X]% | [X] |
-| O — Organization | [X]/100 | [rating] | [X]% | [X] |
-| R — Referenceability | [X]/100 | [rating] | [X]% | [X] |
-| E — Exclusivity | [X]/100 | [rating] | [X]% | [X] |
-| Exp — Experience | [X]/100 | [rating] | [X]% | [X] |
-| Ept — Expertise | [X]/100 | [rating] | [X]% | [X] |
-| A — Authority | [X]/100 | [rating] | [X]% | [X] |
-| T — Trust | [X]/100 | [rating] | [X]% | [X] |
-| **Weighted Total** | | | | **[X]/100** |
+| Dimension              | Score   | Rating   | Weight | Weighted    |
+| ---------------------- | ------- | -------- | ------ | ----------- |
+| C — Contextual Clarity | [X]/100 | [rating] | [X]%   | [X]         |
+| O — Organization       | [X]/100 | [rating] | [X]%   | [X]         |
+| R — Referenceability   | [X]/100 | [rating] | [X]%   | [X]         |
+| E — Exclusivity        | [X]/100 | [rating] | [X]%   | [X]         |
+| Exp — Experience       | [X]/100 | [rating] | [X]%   | [X]         |
+| Ept — Expertise        | [X]/100 | [rating] | [X]%   | [X]         |
+| A — Authority          | [X]/100 | [rating] | [X]%   | [X]         |
+| T — Trust              | [X]/100 | [rating] | [X]%   | [X]         |
+| **Weighted Total**     |         |          |        | **[X]/100** |
 
 **Score Calculation**:
+
 - GEO Score = (C + O + R + E) / 4
 - SEO Score = (Exp + Ept + A + T) / 4
 - Weighted Score = Σ (dimension_score × content_type_weight)
@@ -577,6 +585,7 @@ When an item cannot be evaluated (e.g., A01 Backlink Profile requires site-level
 5. Recalculate weighted total using only dimensions with sufficient data, re-normalizing weights to sum to 100%
 
 **Example**: Authority dimension with 8 N/A items and 2 scored items (A05=8, A07=5):
+
 - Dimension score = (8+5) / (2 x 10) x 100 = 65
 - But 8/10 items are N/A (>50%), so flag as "Insufficient Data -- Authority"
 - Exclude A dimension from weighted total; redistribute its weight proportionally to remaining dimensions
@@ -585,18 +594,18 @@ When an item cannot be evaluated (e.g., A01 Backlink Profile requires site-level
 
 #### CORE — Content Body (40 Items)
 
-| ID | Check Item | Score | Notes |
-|----|-----------|-------|-------|
+| ID  | Check Item       | Score               | Notes         |
+| --- | ---------------- | ------------------- | ------------- |
 | C01 | Intent Alignment | [Pass/Partial/Fail] | [observation] |
-| C02 | Direct Answer | [Pass/Partial/Fail] | [observation] |
-| ... | ... | ... | ... |
+| C02 | Direct Answer    | [Pass/Partial/Fail] | [observation] |
+| ... | ...              | ...                 | ...           |
 
 #### EEAT — Source Credibility (40 Items)
 
-| ID | Check Item | Score | Notes |
-|----|-----------|-------|-------|
+| ID    | Check Item             | Score               | Notes         |
+| ----- | ---------------------- | ------------------- | ------------- |
 | Exp01 | First-Person Narrative | [Pass/Partial/Fail] | [observation] |
-| ... | ... | ... | ... |
+| ...   | ...                    | ...                 | ...           |
 
 ### Top 5 Priority Improvements
 
@@ -615,14 +624,17 @@ Sorted by: weight × points lost (highest impact first)
 ### Action Plan
 
 #### Quick Wins (< 30 minutes each)
+
 - [ ] [Action 1]
 - [ ] [Action 2]
 
 #### Medium Effort (1-2 hours)
+
 - [ ] [Action 3]
 - [ ] [Action 4]
 
 #### Strategic (Requires planning)
+
 - [ ] [Action 5]
 - [ ] [Action 6]
 
@@ -649,12 +661,14 @@ Ask "Save these results for future sessions?" — if yes, write `YYYY-MM-DD-<top
 ## Validation Checkpoints
 
 ### Input Validation
+
 - [ ] Content source identified (text, URL, or file path)
 - [ ] Content type confirmed (auto-detected or user-specified)
 - [ ] Content is substantial enough for meaningful audit (≥300 words)
 - [ ] If comparative audit, competitor content also provided
 
 ### Output Validation
+
 - [ ] All 80 items scored (or marked N/A with reason)
 - [ ] All 8 dimension scores calculated correctly
 - [ ] Weighted total matches content-type weight configuration

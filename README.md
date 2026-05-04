@@ -1,11 +1,8 @@
 # Promptamist
 
-
 **Prompt Engineering as Code.** A professional, high-fidelity platform for managing, versioning, and sharing dynamic AI prompts with real-time synchronization.
 
-
 <img width="1269" height="907" alt="image" src="https://github.com/user-attachments/assets/db96c269-2427-4d69-b719-be36d317525e" />
-
 
 [![pnpm](https://img.shields.io/badge/package--manager-pnpm-orange?style=flat-square)](https://pnpm.io/)
 [![Next.js](https://img.shields.io/badge/Next.js-16.2.4-black?style=flat-square&logo=next.js)](https://nextjs.org/)

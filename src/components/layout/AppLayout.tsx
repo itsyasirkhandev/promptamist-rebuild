@@ -86,7 +86,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </header>
 
           <main className="flex-1 pb-20 lg:pb-0">{children}</main>
-          
+
           <Unauthenticated>
             <Footer />
           </Unauthenticated>

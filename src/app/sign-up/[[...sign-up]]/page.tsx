@@ -31,7 +31,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Create Your Free Promptamist Account',
-    description: 'Organize your ChatGPT, Claude & Gemini prompts. Free to start.',
+    description:
+      'Organize your ChatGPT, Claude & Gemini prompts. Free to start.',
     images: ['/opengraph-image'],
   },
   robots: {

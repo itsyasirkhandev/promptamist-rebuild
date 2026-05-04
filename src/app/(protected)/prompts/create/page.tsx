@@ -32,7 +32,8 @@ export default function CreatePromptPage() {
       toast.success('Prompt created successfully');
       router.push('/prompts');
     } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
       if (errorMessage.includes('Prompt limit reached')) {
         setShowUpgradeModal(true);
       } else {
@@ -67,7 +68,11 @@ export default function CreatePromptPage() {
         description="Author static prompts or dynamic templates."
         submitLabel="Save Prompt"
       />
-      <UpgradeModal open={showUpgradeModal} onOpenChange={setShowUpgradeModal} limitReached={true} />
+      <UpgradeModal
+        open={showUpgradeModal}
+        onOpenChange={setShowUpgradeModal}
+        limitReached={true}
+      />
     </div>
   );
 }

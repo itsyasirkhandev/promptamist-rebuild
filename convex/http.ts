@@ -82,7 +82,9 @@ http.route({
     const program = Effect.gen(function* () {
       const webhookSecret = process.env.POLAR_WEBHOOK_SECRET;
       if (!webhookSecret) {
-        return yield* Effect.fail(new Response('Configuration error', { status: 500 }));
+        return yield* Effect.fail(
+          new Response('Configuration error', { status: 500 }),
+        );
       }
 
       const payload = yield* Effect.promise(() => request.text());
@@ -90,46 +92,51 @@ http.route({
       request.headers.forEach((value, key) => {
         headers[key] = value;
       });
-      
+
       const wh = new Webhook(btoa(webhookSecret));
       const event = yield* Effect.try({
-        try: () => wh.verify(payload, headers) as { type: string; data: Record<string, unknown> },
+        try: () =>
+          wh.verify(payload, headers) as {
+            type: string;
+            data: Record<string, unknown>;
+          },
         catch: (error) => {
           console.error('Polar webhook verification failed:', error);
           return new Response('Invalid signature', { status: 400 });
-        }
+        },
       });
 
       if (event.type.startsWith('subscription.')) {
         const subscription = event.data as {
           id?: string;
           metadata?: Record<string, unknown>;
-          customer?: { 
+          customer?: {
             id?: string;
             external_id?: string | null;
             metadata?: Record<string, unknown>;
           };
           status?: string;
         };
-        const clerkId = (subscription.metadata?.clerkId || 
-                        subscription.customer?.metadata?.clerkId ||
-                        subscription.customer?.external_id) as string | undefined | null;
+        const clerkId = (subscription.metadata?.clerkId ||
+          subscription.customer?.metadata?.clerkId ||
+          subscription.customer?.external_id) as string | undefined | null;
         const status = subscription.status;
 
         if (clerkId) {
           const tier = status === 'active' ? 'pro' : 'hobby';
-          
+
           yield* Effect.tryPromise({
-            try: () => ctx.runMutation(internal.users.updateSubscriptionTier, { 
-              clerkId, 
-              tier,
-              polarCustomerId: subscription.customer?.id,
-              polarSubscriptionId: subscription.id,
-            }),
+            try: () =>
+              ctx.runMutation(internal.users.updateSubscriptionTier, {
+                clerkId,
+                tier,
+                polarCustomerId: subscription.customer?.id,
+                polarSubscriptionId: subscription.id,
+              }),
             catch: (error) => {
               console.error('Error updating subscription tier:', error);
               return new Response('Database error', { status: 500 });
-            }
+            },
           });
         }
       }
@@ -141,9 +148,9 @@ http.route({
       program.pipe(
         Effect.match({
           onFailure: (error: Response) => error,
-          onSuccess: (response: Response) => response
-        })
-      )
+          onSuccess: (response: Response) => response,
+        }),
+      ),
     );
   }),
 });

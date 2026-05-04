@@ -6,7 +6,9 @@ This document outlines the tasks required to integrate Polar.sh subscriptions an
 ## Phases
 
 ### Phase 1: Database Mutations & Webhook Infrastructure
-*(Sequential: Must be completed before Phase 2 & 3)*
+
+_(Sequential: Must be completed before Phase 2 & 3)_
+
 - [ ] `[Phase 1]` Create `updateSubscriptionTier` mutation in `convex/users.ts` to accept a `clerkId` and `tier` string ('pro' or 'hobby') and patch the corresponding user's `subscriptionTier`.
 - [ ] `[Phase 1]` Add `/polar-webhook` HTTP route to `convex/http.ts`. Ensure it handles POST requests.
 - [ ] `[Phase 1]` In `/polar-webhook`, use `svix` `Webhook` instance to securely verify the Polar webhook signature using standard `svix-id`, `svix-timestamp`, and `svix-signature` headers mapped from incoming `webhook-*` headers.
@@ -14,13 +16,17 @@ This document outlines the tasks required to integrate Polar.sh subscriptions an
 - [ ] `[Phase 1]` In `/polar-webhook`, execute the internal `updateSubscriptionTier` mutation based on the subscription status ('active' -> 'pro', otherwise -> 'hobby').
 
 ### Phase 2: Backend Usage Enforcement
-*(Sequential: Relies on the user subscription tier field being properly established)*
+
+_(Sequential: Relies on the user subscription tier field being properly established)_
+
 - [ ] `[Phase 2]` Modify `createPrompt` in `convex/authed/prompts.ts` to extract the `subscriptionTier` from the fetched user record.
 - [ ] `[Phase 2]` Modify `createPrompt` to extract `promptStats.total` (defaulting to 0) from the user record.
 - [ ] `[Phase 2]` Add logic in `createPrompt`: if the `subscriptionTier` is not 'pro' and the `total` is >= 50, throw a specific `Effect.fail(new Error(...))` blocking the prompt creation.
 
 ### Phase 3: Frontend Server Actions & UI
-*(Parallelizable with Phase 1 & 2 if the Server Action does not strictly rely on Convex types)*
+
+_(Parallelizable with Phase 1 & 2 if the Server Action does not strictly rely on Convex types)_
+
 - [ ] `[Phase 3]` Install `@polar-sh/sdk` if not already installed (`pnpm add @polar-sh/sdk`).
 - [ ] `[Phase 3]` Create a Next.js Server Action in `src/app/actions/polar.ts` (or similar).
 - [ ] `[Phase 3]` In the Server Action, instantiate the Polar client with `POLAR_ACCESS_TOKEN`.
@@ -30,5 +36,6 @@ This document outlines the tasks required to integrate Polar.sh subscriptions an
 - [ ] `[Phase 3]` Display the current prompt count usage against the 50 limit for Hobby users within the UI (using existing Convex queries if needed, or augmenting the UI state).
 
 ## Parallelization Strategy
+
 - **Phase 1** and **Phase 2** can be done sequentially by a backend-focused engineer. They involve pure Convex mutations, queries, and edge handlers.
 - **Phase 3** can be done perfectly in parallel with the backend work by a frontend engineer. The Next.js Server Action uses Polar's API and Clerk's auth, neither of which strictly block on the Convex webhook integration or the `prompts.ts` mutation edits being finished.

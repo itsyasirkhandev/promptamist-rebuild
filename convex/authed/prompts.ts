@@ -26,7 +26,11 @@ export const createPrompt = authedMutation({
         const totalPrompts = user.promptStats?.total ?? 0;
 
         if (!isPro && totalPrompts >= 50) {
-          return yield* Effect.fail(new Error('Prompt limit reached. Upgrade to Pro to create unlimited prompts.'));
+          return yield* Effect.fail(
+            new Error(
+              'Prompt limit reached. Upgrade to Pro to create unlimited prompts.',
+            ),
+          );
         }
 
         const userId = user._id;

@@ -46,7 +46,7 @@ const readabilityMetrics = {
   avgSentenceLength: 18, // Target: <20 words
   passiveVoice: 5, // Target: <10%
   transitionWords: 30, // Target: >30%
-}
+};
 ```
 
 **Key Metrics:**

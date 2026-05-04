@@ -16,17 +16,17 @@ export default function robots(): MetadataRoute.Robots {
           '/p/', // Public shared prompts
         ],
         disallow: [
-          '/prompts',      // Protected app routes
+          '/prompts', // Protected app routes
           '/prompts/',
-          '/api/',         // API endpoints
-          '/_next/',       // Next.js internals
-          '/actions/',     // Server actions
+          '/api/', // API endpoints
+          '/_next/', // Next.js internals
+          '/actions/', // Server actions
         ],
       },
       // ——— AI Search Engine Bots ———
       // Allow all AI crawlers on public pages for GEO citations
       {
-        userAgent: 'GPTBot',      // OpenAI / ChatGPT
+        userAgent: 'GPTBot', // OpenAI / ChatGPT
         allow: ['/', '/p/', '/sign-in', '/sign-up'],
         disallow: ['/prompts', '/api/', '/_next/'],
       },
@@ -41,22 +41,22 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/prompts', '/api/', '/_next/'],
       },
       {
-        userAgent: 'ClaudeBot',     // Anthropic Claude
+        userAgent: 'ClaudeBot', // Anthropic Claude
         allow: ['/', '/p/', '/sign-in', '/sign-up'],
         disallow: ['/prompts', '/api/', '/_next/'],
       },
       {
-        userAgent: 'anthropic-ai',  // Anthropic crawler
+        userAgent: 'anthropic-ai', // Anthropic crawler
         allow: ['/', '/p/', '/sign-in', '/sign-up'],
         disallow: ['/prompts', '/api/', '/_next/'],
       },
       {
-        userAgent: 'Googlebot',     // Google Search + AI Overview
+        userAgent: 'Googlebot', // Google Search + AI Overview
         allow: ['/', '/p/', '/sign-in', '/sign-up'],
         disallow: ['/prompts', '/api/', '/_next/'],
       },
       {
-        userAgent: 'Bingbot',       // Bing / Microsoft Copilot
+        userAgent: 'Bingbot', // Bing / Microsoft Copilot
         allow: ['/', '/p/', '/sign-in', '/sign-up'],
         disallow: ['/prompts', '/api/', '/_next/'],
       },
