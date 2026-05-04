@@ -69,7 +69,7 @@ export function SubscriptionButton() {
                   className={cn(
                     'text-[10px] font-black tracking-[0.2em] uppercase',
                     isPro
-                      ? 'text-primary-foreground dark:text-primary-foreground bg-primary px-1.5 py-0.5 rounded-md'
+                      ? 'text-primary-foreground dark:text-primary-foreground bg-primary rounded-md px-1.5 py-0.5'
                       : 'text-neutral-900 dark:text-neutral-50',
                   )}
                 >
@@ -81,16 +81,21 @@ export function SubscriptionButton() {
                 <>
                   <div className="h-3 w-px bg-neutral-300 dark:bg-neutral-700" />
                   <div className="flex items-center gap-2">
-                    <div className="relative h-1.5 w-16 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800 border border-black/5 dark:border-white/5">
+                    <div className="relative h-1.5 w-16 overflow-hidden rounded-full border border-black/5 bg-neutral-200 dark:border-white/5 dark:bg-neutral-800">
                       <div
-                        className="bg-primary absolute inset-y-0 left-0 transition-all duration-500 shadow-[0_0_8px_rgba(var(--primary),0.5)]"
+                        className="bg-primary absolute inset-y-0 left-0 shadow-[0_0_8px_rgba(var(--primary),0.5)] transition-all duration-500"
                         style={{
                           width: `${Math.min((stats.total / 50) * 100, 100)}%`,
                         }}
                       />
                     </div>
                     <span className="text-[10px] font-bold text-neutral-800 tabular-nums dark:text-neutral-200">
-                      {stats.total}/50
+                      <span className="md:hidden">
+                        {stats.total} Created • {Math.max(0, 50 - stats.total)} Left
+                      </span>
+                      <span className="hidden md:inline">
+                        {stats.total}/50
+                      </span>
                     </span>
                     <Icon
                       icon="lucide:arrow-up-circle"
