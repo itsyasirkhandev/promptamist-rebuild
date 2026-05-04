@@ -84,7 +84,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="flex items-center gap-2 sm:gap-4">
               <ThemeToggle />
               <Authenticated>
-                <div className="hidden sm:flex">
+                <div className="flex items-center">
                   <SubscriptionButton />
                 </div>
                 <UserButton />
