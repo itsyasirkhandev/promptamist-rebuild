@@ -10,6 +10,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { clerkAppearance } from '@/lib/clerk-appearance';
+import { PromoBanner } from '@/components/promotional/PromoBanner';
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -125,6 +126,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <PromoBanner />
           <ClerkProvider
             appearance={{
               ...clerkAppearance,
