@@ -56,9 +56,9 @@ export default function SignUpPage() {
 
         <Link
           href="/"
-          className="relative z-10 flex items-center gap-2 text-2xl font-bold tracking-tight text-primary-foreground"
+          className="text-primary-foreground relative z-10 flex items-center gap-2 text-2xl font-bold tracking-tight"
         >
-          <Logo className="h-10 w-10 text-primary-foreground" />
+          <Logo className="text-primary-foreground h-10 w-10" />
           Promptamist
         </Link>
       </div>
