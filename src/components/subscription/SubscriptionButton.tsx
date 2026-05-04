@@ -54,15 +54,15 @@ export function SubscriptionButton() {
               <div className="flex items-center gap-2">
                 <div
                   className={cn(
-                    'flex h-5 w-5 items-center justify-center rounded-lg border shadow-sm transition-transform group-hover:scale-110',
+                    'flex h-6 w-6 items-center justify-center rounded-lg border shadow-md transition-transform group-hover:scale-110',
                     isPro
-                      ? 'bg-primary border-primary/20 text-white'
-                      : 'border-neutral-300 bg-neutral-100 text-neutral-700 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
+                      ? 'bg-gradient-to-br from-amber-400 to-amber-600 border-amber-400/30 text-white shadow-amber-500/20'
+                      : 'bg-gradient-to-br from-blue-500 to-blue-700 border-blue-400/30 text-white shadow-blue-500/20',
                   )}
                 >
                   <Icon
-                    icon={isPro ? 'lucide:zap' : 'lucide:shield'}
-                    className={cn('h-3 w-3', isPro && 'fill-current')}
+                    icon={isPro ? 'solar:crown-minimalistic-bold-duotone' : 'solar:user-bold-duotone'}
+                    className="h-4 w-4"
                   />
                 </div>
                 <span
@@ -91,11 +91,10 @@ export function SubscriptionButton() {
                     </div>
                     <span className="text-[10px] font-bold text-neutral-800 tabular-nums dark:text-neutral-200">
                       <span className="md:hidden">
-                        {stats.total} Created • {Math.max(0, 50 - stats.total)} Left
+                        {stats.total} Created • {Math.max(0, 50 - stats.total)}{' '}
+                        Left
                       </span>
-                      <span className="hidden md:inline">
-                        {stats.total}/50
-                      </span>
+                      <span className="hidden md:inline">{stats.total}/50</span>
                     </span>
                     <Icon
                       icon="lucide:arrow-up-circle"
