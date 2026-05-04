@@ -116,9 +116,9 @@ export const PromptCard = React.memo(function PromptCard({
                   ) : (
                     <button
                       onClick={copyToClipboard}
-                      className="group/btn flex-1 rounded-[10px] border-[1px] border-black/20 bg-white/50 p-[1px] hover:bg-gradient-to-t hover:from-neutral-100 active:bg-neutral-200 dark:border-[2px] dark:border-neutral-950 dark:bg-neutral-600/80 dark:hover:from-neutral-600/50 dark:hover:to-neutral-600/70 dark:active:bg-neutral-800"
+                      className="group/btn flex-1 rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-neutral-200 to-neutral-50 p-[1px] shadow-sm transition duration-300 ease-in-out dark:border-[2px] dark:border-neutral-950 dark:from-neutral-700 dark:to-neutral-800"
                     >
-                      <div className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-gradient-to-b from-white to-neutral-50/50 px-4 text-xs font-semibold text-neutral-700 transition duration-300 ease-in-out group-hover/btn:bg-gradient-to-b group-hover/btn:from-neutral-50/50 group-hover/btn:to-neutral-100/60 dark:text-neutral-200">
+                      <div className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-gradient-to-b from-white to-neutral-50/50 px-4 text-xs font-semibold text-neutral-700 transition duration-300 ease-in-out group-hover/btn:from-neutral-50 group-hover/btn:to-neutral-100/60 dark:from-neutral-800 dark:to-neutral-900 dark:text-neutral-200 dark:group-hover/btn:from-neutral-700 dark:group-hover/btn:to-neutral-800">
                         <Icon icon="lucide:copy" className="h-3.5 w-3.5" />
                         Copy
                       </div>
