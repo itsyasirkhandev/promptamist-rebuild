@@ -54,24 +54,24 @@ export default function SignInPage() {
       </div>
 
       {/* Main Container */}
-      <div className="animate-in fade-in zoom-in-95 relative z-10 w-full max-w-[440px] duration-500">
-        <div className="bg-muted/40 rounded-[32px] p-2 shadow-2xl sm:p-3">
-          <div className="bg-card border-border relative flex flex-col items-center rounded-[24px] border px-6 py-10 sm:px-10">
+      <div className="animate-in fade-in zoom-in-95 relative z-10 flex h-full w-full items-center justify-center py-12">
+        <div className="bg-muted/30 w-full max-w-[500px] rounded-[40px] p-2 shadow-2xl sm:p-4">
+          <div className="bg-card border-border relative flex min-h-[600px] w-full flex-col items-center rounded-[32px] border px-6 py-12 sm:px-12">
             {/* Logo */}
-            <div className="mb-6 flex flex-col items-center gap-3">
+            <div className="mb-12 flex flex-col items-center gap-4">
               <Link
                 href="/"
-                className="flex items-center gap-2.5 transition-transform hover:scale-105"
+                className="flex items-center gap-3 transition-transform hover:scale-105"
               >
-                <Logo className="text-primary h-12 w-12" />
-                <span className="text-foreground text-3xl font-bold tracking-tight">
+                <Logo className="text-primary h-14 w-14" />
+                <span className="text-foreground text-4xl font-bold tracking-tight">
                   Promptamist
                 </span>
               </Link>
             </div>
 
             {/* Auth Form */}
-            <div className="w-full">
+            <div className="w-full flex-1">
               <SignIn
                 appearance={clerkAppearance}
                 path="/sign-in"
@@ -81,7 +81,7 @@ export default function SignInPage() {
             </div>
 
             {/* Footer Text */}
-            <div className="text-muted-foreground/60 mt-8 text-center text-xs">
+            <div className="text-muted-foreground/50 mt-12 text-center text-xs leading-relaxed">
               By continuing, you agree to our <br />
               <Link
                 href="/terms"
