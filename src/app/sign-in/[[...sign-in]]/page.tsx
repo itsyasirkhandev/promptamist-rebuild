@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Logo } from '@/components/Logo';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Icon } from '@iconify/react';
+import { Button } from '@/components/ui/button';
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || 'https://repromptamist.vercel.app';
@@ -31,55 +32,82 @@ export const metadata: Metadata = {
 
 export default function SignInPage() {
   return (
-    <div className="flex h-screen w-full overflow-hidden">
-      {/* Left Side: Hero (Visible on lg+) */}
-      <div className="bg-primary relative hidden h-full flex-1 flex-col justify-between p-12 lg:flex">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_50%,rgba(255,255,255,0.1),transparent_50%)] opacity-50" />
-        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay" />
-
-        <Link
-          href="/"
-          className="text-primary-foreground relative z-10 flex items-center gap-2 text-2xl font-bold tracking-tight"
+    <div className="bg-background relative flex h-screen w-full flex-col items-center justify-center overflow-hidden px-4">
+      {/* Back to Home Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Button
+          variant="outline"
+          size="sm"
+          asChild
+          className="gap-2 rounded-xl border-border bg-card shadow-sm transition-all hover:bg-accent"
         >
-          <Logo className="text-primary-foreground h-10 w-10" />
-          Promptamist
-        </Link>
+          <Link href="/">
+            <Icon icon="lucide:arrow-left" width={16} />
+            Back to Home
+          </Link>
+        </Button>
       </div>
 
-      {/* Right Side: Auth Form */}
-      <div className="relative flex flex-1 flex-col items-center justify-center p-4 sm:p-8 lg:p-12">
-        <div className="absolute top-8 right-8 flex items-center gap-4">
-          <ThemeToggle />
-        </div>
+      {/* Theme Toggle */}
+      <div className="absolute top-6 right-6 z-20">
+        <ThemeToggle />
+      </div>
 
-        <div className="w-full max-w-md">
-          <div className="mb-8 text-center lg:text-left">
-            <div className="mb-4 inline-flex lg:hidden">
-              <Link href="/">
-                <Logo className="text-primary h-12 w-12" />
+      {/* Main Container */}
+      <div className="animate-in fade-in zoom-in-95 relative z-10 w-full max-w-[460px] duration-500">
+        <div className="bg-muted/30 rounded-[20px] p-2 sm:p-3">
+          <div className="bg-card border-border relative flex flex-col items-center rounded-2xl border px-6 py-10 shadow-xl sm:px-12">
+            {/* Logo */}
+            <div className="mb-8">
+              <Link href="/" className="flex items-center gap-2">
+                <Logo className="text-primary h-10 w-10" />
+                <span className="text-2xl font-bold tracking-tight">
+                  Promptamist
+                </span>
               </Link>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight">Welcome back</h1>
-            <p className="text-muted-foreground mt-2 text-sm">
-              Sign in to your Promptamist account to continue
-            </p>
-          </div>
 
-          <div className="flex justify-center lg:justify-start">
-            <SignIn
-              appearance={clerkAppearance}
-              path="/sign-in"
-              routing="path"
-              signUpUrl="/sign-up"
-            />
+            {/* Header */}
+            <div className="mb-8 flex flex-col items-center gap-3 text-center">
+              <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                Welcome back
+              </h1>
+              <div className="flex items-center gap-1.5 text-sm">
+                <span className="text-muted-foreground">
+                  Don't have an account?
+                </span>
+                <Link
+                  href="/sign-up"
+                  className="text-primary font-semibold transition-colors hover:text-primary/80"
+                >
+                  Sign up
+                </Link>
+              </div>
+            </div>
+
+            {/* Auth Form */}
+            <div className="w-full">
+              <SignIn
+                appearance={clerkAppearance}
+                path="/sign-in"
+                routing="path"
+                signUpUrl="/sign-up"
+              />
+            </div>
+
+            {/* Footer Text */}
+            <div className="mt-8 text-center text-xs text-muted-foreground">
+              By continuing, you agree to our Terms of Service and Privacy
+              Policy.
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Mobile Footer */}
-        <div className="text-muted-foreground mt-8 text-center text-xs lg:hidden">
-          © {new Date().getFullYear()} Promptamist. All rights reserved.
-        </div>
+      {/* Background Decorations */}
+      <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+        <div className="bg-primary/5 absolute top-1/2 left-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[120px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:64px_64px]" />
       </div>
     </div>
   );
