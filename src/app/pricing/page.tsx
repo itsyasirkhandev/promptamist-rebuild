@@ -9,7 +9,6 @@ import {
   CardTitle,
   CardDescription,
   CardContent,
-  CardFooter,
 } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
@@ -36,7 +35,6 @@ export default function PricingPage() {
       href: '/sign-up',
       popular: false,
       icon: 'lucide:rocket',
-      gradient: 'from-muted/50 to-muted/10',
     },
     {
       name: 'Pro',
@@ -48,175 +46,128 @@ export default function PricingPage() {
       href: '/sign-up',
       popular: true,
       icon: 'lucide:zap',
-      gradient: 'from-primary/20 to-primary/5',
     },
   ];
 
   return (
-    <div className="bg-background relative min-h-screen overflow-hidden">
-      {/* Premium Background Elements */}
+    <div className="relative min-h-screen overflow-hidden bg-neutral-50 dark:bg-stone-950">
+      {/* Background decoration to match the texture theme */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="bg-primary/10 absolute -top-[10%] -left-[10%] h-[40%] w-[40%] animate-pulse rounded-full blur-[120px]" />
-        <div className="bg-chart-1/10 absolute top-[20%] -right-[5%] h-[30%] w-[30%] rounded-full blur-[100px]" />
-        <div className="bg-chart-2/5 absolute bottom-[10%] left-[20%] h-[25%] w-[25%] rounded-full blur-[80px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] bg-[size:44px_44px]" />
+        <div className="bg-primary/5 absolute top-0 left-1/2 h-[500px] w-full max-w-6xl -translate-x-1/2 rounded-full opacity-50 blur-[120px]" />
       </div>
 
-      <main className="relative z-10 flex-1 px-4 py-20 md:py-32">
+      <main className="relative z-10 px-4 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
-          {/* Hero Section */}
-          <div className="mb-24 space-y-6 text-center">
-            <Badge
-              variant="outline"
-              className="border-primary/20 bg-primary/5 text-primary animate-in fade-in slide-in-from-bottom-3 rounded-full px-4 py-1 duration-500"
-            >
-              Pricing Plans
-            </Badge>
-            <h1
-              className="font-heading animate-in fade-in slide-in-from-bottom-4 font-extrabold tracking-tight text-balance duration-700"
-              style={{ fontSize: 'var(--text-5xl)', lineHeight: '1.1' }}
-            >
-              Simple,{' '}
-              <span className="from-primary to-chart-1 bg-gradient-to-r bg-clip-text text-transparent">
-                Transparent
-              </span>{' '}
+          {/* Header Section */}
+          <div className="mb-12 text-center md:mb-16">
+            <p className="mb-2 text-xs tracking-widest text-neutral-600 uppercase dark:text-neutral-400">
               Pricing
+            </p>
+            <h1 className="text-3xl font-semibold tracking-tight text-balance text-neutral-900 md:text-5xl dark:text-neutral-50">
+              Simple, Transparent Pricing
             </h1>
-            <p
-              className="text-muted-foreground animate-in fade-in slide-in-from-bottom-5 mx-auto max-w-2xl duration-1000"
-              style={{ fontSize: 'var(--text-lg)' }}
-            >
+            <p className="mx-auto mt-3 max-w-xl text-pretty text-neutral-600 dark:text-neutral-400">
               Invest in your productivity, not in subscription bloat. Scale your
               AI workflow without breaking the bank.
             </p>
           </div>
 
           {/* Pricing Grid */}
-          <div className="relative mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
-            {plans.map((plan, index) => (
+          <div className="mx-auto grid max-w-4xl grid-cols-1 gap-6 md:grid-cols-2 md:items-stretch md:gap-8">
+            {plans.map((plan) => (
               <div
                 key={plan.name}
                 className={cn(
-                  'group animate-in fade-in slide-in-from-bottom-8 relative transition-all duration-500',
-                  index === 0 ? 'duration-700' : 'duration-1000',
+                  'rounded-[24px] border border-white/60 bg-gradient-to-b md:h-full md:min-h-0 dark:border-stone-950/60 [&>div]:flex [&>div]:h-full [&>div]:min-h-0 [&>div]:flex-col [&>div>div]:flex [&>div>div]:h-full [&>div>div]:min-h-0 [&>div>div]:flex-col [&>div>div>div]:flex [&>div>div>div]:h-full [&>div>div>div]:min-h-0 [&>div>div>div]:flex-col [&>div>div>div>div]:flex [&>div>div>div>div]:h-full [&>div>div>div>div]:min-h-0 [&>div>div>div>div]:flex-col',
+                  plan.popular
+                    ? 'from-neutral-50 to-white/90 ring-1 ring-black/5 md:-mt-1 md:mb-1 dark:from-neutral-800 dark:to-neutral-950 dark:ring-white/10'
+                    : 'from-neutral-100 to-white/70 dark:from-neutral-800 dark:to-neutral-900',
                 )}
               >
-                {/* Card Glow Effect */}
-                <div
-                  className={cn(
-                    'absolute -inset-px rounded-[2.5rem] opacity-0 blur-sm transition duration-500 group-hover:opacity-100',
-                    plan.popular ? 'bg-primary/30' : 'bg-muted-foreground/20',
-                  )}
-                />
-
-                <Card
-                  className={cn(
-                    'border-border/50 bg-card/60 group-hover:shadow-primary/5 relative flex h-full flex-col !overflow-visible backdrop-blur-xl transition-all duration-500 group-hover:translate-y-[-4px] group-hover:shadow-2xl',
-                    plan.popular &&
-                      'ring-primary/40 border-primary/20 shadow-primary/10 shadow-xl ring-1',
-                  )}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3.5 left-1/2 z-30 -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground shadow-primary/30 rounded-full border-none px-4 py-1 text-[10px] font-bold tracking-wider whitespace-nowrap uppercase shadow-xl">
-                        Most Popular
-                      </Badge>
-                    </div>
-                  )}
-
-                  <CardHeader className="p-8">
-                    <div
-                      className={cn(
-                        'ring-border mb-6 inline-flex w-fit rounded-2xl bg-gradient-to-br p-3 shadow-inner ring-1 transition-transform duration-500 group-hover:scale-110',
-                        plan.gradient,
-                      )}
-                    >
-                      <Icon
-                        icon={plan.icon}
-                        className={cn(
-                          'h-6 w-6 transition-colors duration-300',
-                          plan.popular
-                            ? 'text-primary'
-                            : 'text-muted-foreground',
-                        )}
-                      />
-                    </div>
-                    <CardTitle className="text-3xl font-bold tracking-tight">
-                      {plan.name}
-                    </CardTitle>
-                    <CardDescription className="mt-2 h-12 text-base leading-relaxed">
-                      {plan.description}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="flex-1 p-8 pt-0">
-                    <div className="mb-8 flex origin-left items-baseline gap-1 transition-transform duration-500 group-hover:scale-105">
-                      <span
-                        className="font-black tracking-tighter"
-                        style={{ fontSize: 'var(--text-4xl)' }}
-                      >
-                        {plan.price}
-                      </span>
-                      {plan.interval && (
-                        <span className="text-muted-foreground text-lg font-medium">
-                          {plan.interval}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="space-y-4">
-                      <p className="text-muted-foreground/70 text-xs font-semibold tracking-widest uppercase">
-                        What&apos;s included:
-                      </p>
-                      <ul className="space-y-3">
-                        {plan.features.map((feature) => (
-                          <li
-                            key={feature}
-                            className="group/item flex items-center gap-3 text-sm"
-                          >
-                            <div
-                              className={cn(
-                                'flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors duration-300',
-                                plan.popular
-                                  ? 'bg-primary/10 text-primary'
-                                  : 'bg-muted text-muted-foreground',
-                              )}
-                            >
-                              <Icon
-                                icon="lucide:check"
-                                className="h-3.5 w-3.5"
-                              />
-                            </div>
-                            <span className="text-muted-foreground group-hover/item:text-foreground transition-colors duration-200">
-                              {feature}
+                <div className="rounded-[23px] border border-black/10 dark:border-neutral-900/80">
+                  <div className="rounded-[22px] border border-white/50 dark:border-neutral-950">
+                    <div className="rounded-[21px] border border-neutral-950/20 dark:border-neutral-900/70">
+                      <div className="w-full rounded-[20px] border border-white/50 text-neutral-500 dark:border-neutral-700/50">
+                        {/* Card Header */}
+                        <div className="flex shrink-0 flex-col gap-1 p-6 pb-4 first:pt-6 last:pb-6">
+                          <div className="mb-1 flex items-center justify-between gap-2">
+                            <h3 className="pl-0 text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+                              {plan.name}
+                            </h3>
+                            {plan.popular && (
+                              <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+                                Popular
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-baseline gap-1 pl-0">
+                            <span className="text-3xl font-semibold text-neutral-900 tabular-nums dark:text-neutral-50">
+                              {plan.price}
                             </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
+                            {plan.interval && (
+                              <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                                {plan.interval}
+                              </span>
+                            )}
+                          </div>
+                          <p className="pl-0 text-sm leading-snug text-neutral-600 dark:text-neutral-400">
+                            {plan.description}
+                          </p>
+                        </div>
 
-                  <CardFooter className="mt-auto p-8 pt-0">
-                    <Button
-                      asChild
-                      size="lg"
-                      className={cn(
-                        'group/btn h-14 w-full rounded-2xl text-base font-bold shadow-lg transition-all duration-300',
-                        plan.popular
-                          ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98]'
-                          : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground hover:scale-[1.02] active:scale-[0.98]',
-                      )}
-                    >
-                      <Link href={plan.href}>
-                        {plan.cta}
-                        <Icon
-                          icon="lucide:arrow-right"
-                          className="ml-2 h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1"
-                        />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+                        {/* Divider */}
+                        <div className="shrink-0">
+                          <div className="border border-t-neutral-50 border-r-transparent border-b-neutral-300/50 border-l-transparent dark:border-t-neutral-950 dark:border-b-neutral-700/50"></div>
+                        </div>
+
+                        {/* Features */}
+                        <div className="flex min-h-0 flex-1 flex-col px-6 py-5">
+                          <ul className="flex flex-col gap-3">
+                            {plan.features.map((feature) => (
+                              <li
+                                key={feature}
+                                className="flex items-start gap-2 text-sm text-neutral-700 dark:text-neutral-300"
+                              >
+                                <Icon
+                                  icon="lucide:check"
+                                  className="mt-0.5 h-4 w-4 shrink-0 stroke-neutral-900 dark:stroke-neutral-100"
+                                />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* CTA Button */}
+                        <div className="flex shrink-0 flex-col items-center justify-between gap-2 border-t border-neutral-200/60 px-6 py-4 pt-2 dark:border-neutral-800/80">
+                          {plan.popular ? (
+                            <Link href={plan.href} className="w-full">
+                              <button
+                                className="w-full rounded-[12px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80"
+                                type="button"
+                              >
+                                <div className="flex h-full w-full items-center justify-center gap-2 rounded-[10px] bg-gradient-to-b from-neutral-800 to-black px-4 py-2 text-sm text-white/90 transition duration-300 ease-in-out hover:from-stone-800 hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:hover:from-stone-200 dark:hover:to-neutral-200 dark:active:from-stone-300 dark:active:to-neutral-300">
+                                  {plan.cta}
+                                </div>
+                              </button>
+                            </Link>
+                          ) : (
+                            <Link href={plan.href} className="w-full">
+                              <button
+                                className="group/texture-button w-full rounded-[12px] border-[1px] border-black/20 bg-white/50 to-white p-[1px] hover:bg-gradient-to-t hover:from-neutral-100 active:bg-neutral-200 dark:border-[2px] dark:border-neutral-950 dark:bg-neutral-600/80 dark:hover:from-neutral-600/50 dark:hover:to-neutral-600/70 dark:active:bg-neutral-800"
+                                type="button"
+                              >
+                                <div className="text-muted-foreground flex h-full w-full items-center justify-center rounded-[10px] bg-gradient-to-b from-white to-neutral-50/50 px-4 py-2 text-sm transition duration-300 ease-in-out group-hover/texture-button:bg-gradient-to-b group-hover/texture-button:from-neutral-50/50 group-hover/texture-button:to-neutral-100/60 group-active/texture-button:bg-gradient-to-b group-active/texture-button:from-neutral-100/60 group-active/texture-button:to-neutral-100/90 dark:from-neutral-800 dark:to-neutral-700/50 dark:group-hover/texture-button:from-neutral-700 dark:group-hover/texture-button:to-neutral-700/60 dark:group-active/texture-button:from-neutral-800 dark:group-active/texture-button:to-neutral-700">
+                                  {plan.cta}
+                                </div>
+                              </button>
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -227,15 +178,12 @@ export default function PricingPage() {
 
             <div className="mb-16 space-y-4 px-4 text-center">
               <h2
-                className="font-bold tracking-tight"
+                className="font-bold tracking-tight text-neutral-900 dark:text-neutral-50"
                 style={{ fontSize: 'var(--text-3xl)' }}
               >
                 Frequently Asked Questions
               </h2>
-              <p
-                className="text-muted-foreground"
-                style={{ fontSize: 'var(--text-base)' }}
-              >
+              <p className="text-neutral-600 dark:text-neutral-400">
                 Everything you need to know about our plans and billing.
               </p>
               <div className="bg-primary/40 mx-auto h-1.5 w-12 rounded-full" />
@@ -265,7 +213,7 @@ export default function PricingPage() {
                   className="border-border/40 bg-card/40 hover:border-primary/30 group backdrop-blur-sm transition-all duration-300 hover:shadow-lg"
                 >
                   <CardHeader className="p-6">
-                    <CardTitle className="flex items-start gap-3 text-base font-bold">
+                    <CardTitle className="flex items-start gap-3 text-base font-bold text-neutral-900 dark:text-neutral-100">
                       <div className="bg-primary/10 text-primary mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded transition-transform group-hover:scale-110">
                         <span className="text-[10px]">?</span>
                       </div>
@@ -273,7 +221,7 @@ export default function PricingPage() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 pt-0">
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
                       {faq.a}
                     </p>
                   </CardContent>
