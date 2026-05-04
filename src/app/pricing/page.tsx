@@ -3,14 +3,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@iconify/react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 const BASE_URL =
@@ -26,32 +18,6 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  const plans = [
-    {
-      name: 'Free',
-      price: '$0',
-      description: 'Perfect for getting started with prompt engineering.',
-      features: ['Up to 50 Prompts', 'Unlimited Public Shares'],
-      cta: 'Start for Free',
-      href: '/sign-up',
-      popular: false,
-      icon: 'lucide:rocket',
-      gradient: 'from-muted/50 to-muted/10',
-    },
-    {
-      name: 'Pro',
-      price: '$5',
-      interval: '/mo',
-      description: 'For power users and professional prompt engineers.',
-      features: ['Unlimited Private Prompts', 'Unlimited Dynamic Templates'],
-      cta: 'Get Pro Access',
-      href: '/sign-up',
-      popular: true,
-      icon: 'lucide:zap',
-      gradient: 'from-primary/20 to-primary/5',
-    },
-  ];
-
   return (
     <div className="bg-background relative min-h-screen overflow-hidden">
       {/* Premium Background Elements */}
@@ -63,179 +29,252 @@ export default function PricingPage() {
       </div>
 
       <main className="relative z-10 flex-1 px-4 py-20 md:py-32">
-        <div className="mx-auto max-w-6xl">
-          {/* Hero Section */}
-          <div className="mb-24 space-y-6 text-center">
-            <Badge
-              variant="outline"
-              className="border-primary/20 bg-primary/5 text-primary animate-in fade-in slide-in-from-bottom-3 rounded-full px-4 py-1 duration-500"
-            >
-              Pricing Plans
-            </Badge>
-            <h1
-              className="font-heading animate-in fade-in slide-in-from-bottom-4 font-extrabold tracking-tight text-balance duration-700"
-              style={{ fontSize: 'var(--text-5xl)', lineHeight: '1.1' }}
-            >
-              Simple,{' '}
-              <span className="from-primary to-chart-1 bg-gradient-to-r bg-clip-text text-transparent">
-                Transparent
-              </span>{' '}
+        <section className="mx-auto max-w-6xl">
+          <div className="mb-12 text-center md:mb-16">
+            <p className="mb-2 text-muted-foreground text-xs font-semibold tracking-widest uppercase">
               Pricing
+            </p>
+            <h1 className="text-balance font-bold text-3xl tracking-tight text-foreground md:text-5xl">
+              Plans that stay in the{' '}
+              <span className="from-primary to-chart-1 bg-gradient-to-r bg-clip-text text-transparent">
+                texture system
+              </span>
             </h1>
-            <p
-              className="text-muted-foreground animate-in fade-in slide-in-from-bottom-5 mx-auto max-w-2xl duration-1000"
-              style={{ fontSize: 'var(--text-lg)' }}
-            >
-              Invest in your productivity, not in subscription bloat. Scale your
-              AI workflow without breaking the bank.
+            <p className="mx-auto mt-4 max-w-xl text-pretty text-muted-foreground">
+              Neutral emphasis on the column that matters—no neon badges, just
+              border and gradient shifts on the card.
             </p>
           </div>
 
-          {/* Pricing Grid */}
-          <div className="relative mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
-            {plans.map((plan, index) => (
-              <div
-                key={plan.name}
-                className={cn(
-                  'group animate-in fade-in slide-in-from-bottom-8 relative transition-all duration-500',
-                  index === 0 ? 'duration-700' : 'duration-1000',
-                )}
-              >
-                {/* Card Glow Effect */}
-                <div
-                  className={cn(
-                    'absolute -inset-px rounded-[2.5rem] opacity-0 blur-sm transition duration-500 group-hover:opacity-100',
-                    plan.popular ? 'bg-primary/30' : 'bg-muted-foreground/20',
-                  )}
-                />
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-stretch md:gap-5">
+            {/* Starter Plan */}
+            <div className="rounded-[24px] border border-foreground/5 bg-gradient-to-b from-muted to-background/70 dark:border-border/60 dark:from-muted/20 dark:to-background/50 flex flex-col">
+              <div className="rounded-[23px] border border-black/5 dark:border-white/5 flex-1 flex flex-col">
+                <div className="rounded-[22px] border border-white/50 dark:border-black/20 flex-1 flex flex-col">
+                  <div className="rounded-[21px] border border-black/5 dark:border-white/5 flex-1 flex flex-col">
+                    <div className="w-full rounded-[20px] border border-white/50 dark:border-white/5 flex-1 flex flex-col text-muted-foreground">
+                      <div className="p-6 pb-4">
+                        <div className="mb-1 flex items-center justify-between gap-2">
+                          <h3 className="font-semibold text-foreground text-lg">
+                            Starter
+                          </h3>
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="font-bold text-3xl text-foreground tabular-nums">
+                            $0
+                          </span>
+                          <span className="text-sm font-medium">/mo</span>
+                        </div>
+                        <p className="mt-2 text-sm leading-snug">
+                          For individuals shipping a first version.
+                        </p>
+                      </div>
 
-                <Card
-                  className={cn(
-                    'border-border/50 bg-card/60 group-hover:shadow-primary/5 relative flex h-full flex-col !overflow-visible backdrop-blur-xl transition-all duration-500 group-hover:translate-y-[-4px] group-hover:shadow-2xl',
-                    plan.popular &&
-                      'ring-primary/40 border-primary/20 shadow-primary/10 shadow-xl ring-1',
-                  )}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3.5 left-1/2 z-30 -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground shadow-primary/30 rounded-full border-none px-4 py-1 text-[10px] font-bold tracking-wider whitespace-nowrap uppercase shadow-xl">
-                        Most Popular
-                      </Badge>
-                    </div>
-                  )}
+                      <div className="border-t border-border/50"></div>
 
-                  <CardHeader className="p-8">
-                    <div
-                      className={cn(
-                        'ring-border mb-6 inline-flex w-fit rounded-2xl bg-gradient-to-br p-3 shadow-inner ring-1 transition-transform duration-500 group-hover:scale-110',
-                        plan.gradient,
-                      )}
-                    >
-                      <Icon
-                        icon={plan.icon}
-                        className={cn(
-                          'h-6 w-6 transition-colors duration-300',
-                          plan.popular
-                            ? 'text-primary'
-                            : 'text-muted-foreground',
-                        )}
-                      />
-                    </div>
-                    <CardTitle className="text-3xl font-bold tracking-tight">
-                      {plan.name}
-                    </CardTitle>
-                    <CardDescription className="mt-2 h-12 text-base leading-relaxed">
-                      {plan.description}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="flex-1 p-8 pt-0">
-                    <div className="mb-8 flex origin-left items-baseline gap-1 transition-transform duration-500 group-hover:scale-105">
-                      <span
-                        className="font-black tracking-tighter"
-                        style={{ fontSize: 'var(--text-4xl)' }}
-                      >
-                        {plan.price}
-                      </span>
-                      {plan.interval && (
-                        <span className="text-muted-foreground text-lg font-medium">
-                          {plan.interval}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="space-y-4">
-                      <p className="text-muted-foreground/70 text-xs font-semibold tracking-widest uppercase">
-                        What&apos;s included:
-                      </p>
-                      <ul className="space-y-3">
-                        {plan.features.map((feature) => (
-                          <li
-                            key={feature}
-                            className="group/item flex items-center gap-3 text-sm"
-                          >
-                            <div
-                              className={cn(
-                                'flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors duration-300',
-                                plan.popular
-                                  ? 'bg-primary/10 text-primary'
-                                  : 'bg-muted text-muted-foreground',
-                              )}
-                            >
-                              <Icon
-                                icon="lucide:check"
-                                className="h-3.5 w-3.5"
-                              />
-                            </div>
-                            <span className="text-muted-foreground group-hover/item:text-foreground transition-colors duration-200">
-                              {feature}
-                            </span>
+                      <div className="flex-1 px-6 py-5">
+                        <ul className="flex flex-col gap-3">
+                          <li className="flex items-start gap-2 text-sm">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>2 seats</span>
                           </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </CardContent>
+                          <li className="flex items-start gap-2 text-sm">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Basic analytics</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-sm">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Email support</span>
+                          </li>
+                        </ul>
+                      </div>
 
-                  <CardFooter className="mt-auto p-8 pt-0">
-                    <Button
-                      asChild
-                      size="lg"
-                      className={cn(
-                        'group/btn h-14 w-full rounded-2xl text-base font-bold shadow-lg transition-all duration-300',
-                        plan.popular
-                          ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98]'
-                          : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground hover:scale-[1.02] active:scale-[0.98]',
-                      )}
-                    >
-                      <Link href={plan.href}>
-                        {plan.cta}
-                        <Icon
-                          icon="lucide:arrow-right"
-                          className="ml-2 h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1"
-                        />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+                      <div className="px-6 py-4 border-t border-border/50">
+                        <Button
+                          asChild
+                          className="w-full rounded-[12px] h-10 shadow-sm"
+                          variant="outline"
+                        >
+                          <Link href="/sign-up">Get started</Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            ))}
+            </div>
+
+            {/* Pro Plan */}
+            <div className="rounded-[24px] border border-primary/20 bg-gradient-to-b from-primary/5 to-background ring-1 ring-primary/10 dark:border-primary/30 dark:from-primary/10 dark:to-background/80 flex flex-col md:-mt-2 md:mb-2 scale-105 z-10">
+              <div className="rounded-[23px] border border-black/5 dark:border-white/5 flex-1 flex flex-col">
+                <div className="rounded-[22px] border border-white/50 dark:border-black/20 flex-1 flex flex-col">
+                  <div className="rounded-[21px] border border-black/5 dark:border-white/5 flex-1 flex flex-col">
+                    <div className="w-full rounded-[20px] border border-white/50 dark:border-white/5 flex-1 flex flex-col text-muted-foreground">
+                      <div className="p-6 pb-4">
+                        <div className="mb-1 flex items-center justify-between gap-2">
+                          <h3 className="font-bold text-foreground text-lg">
+                            Pro
+                          </h3>
+                          <Badge
+                            variant="secondary"
+                            className="bg-primary/10 text-primary border-none text-[10px] uppercase tracking-wider font-bold"
+                          >
+                            Popular
+                          </Badge>
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="font-bold text-3xl text-foreground tabular-nums">
+                            $5
+                          </span>
+                          <span className="text-sm font-medium">/mo</span>
+                        </div>
+                        <p className="mt-2 text-sm leading-snug text-foreground/80">
+                          For teams that need polish without noise.
+                        </p>
+                      </div>
+
+                      <div className="border-t border-primary/10"></div>
+
+                      <div className="flex-1 px-6 py-5">
+                        <ul className="flex flex-col gap-3">
+                          <li className="flex items-start gap-2 text-sm text-foreground/90 font-medium">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>10 seats</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-sm text-foreground/90 font-medium">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Advanced analytics</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-sm text-foreground/90 font-medium">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Priority support</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-sm text-foreground/90 font-medium">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>SSO-ready exports</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="px-6 py-4 border-t border-primary/10">
+                        <Button
+                          asChild
+                          className="w-full rounded-[12px] h-10 shadow-lg shadow-primary/20"
+                        >
+                          <Link href="/sign-up">Get started</Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Enterprise Plan */}
+            <div className="rounded-[24px] border border-foreground/5 bg-gradient-to-b from-muted to-background/70 dark:border-border/60 dark:from-muted/20 dark:to-background/50 flex flex-col">
+              <div className="rounded-[23px] border border-black/5 dark:border-white/5 flex-1 flex flex-col">
+                <div className="rounded-[22px] border border-white/50 dark:border-black/20 flex-1 flex flex-col">
+                  <div className="rounded-[21px] border border-black/5 dark:border-white/5 flex-1 flex flex-col">
+                    <div className="w-full rounded-[20px] border border-white/50 dark:border-white/5 flex-1 flex flex-col text-muted-foreground">
+                      <div className="p-6 pb-4">
+                        <div className="mb-1 flex items-center justify-between gap-2">
+                          <h3 className="font-semibold text-foreground text-lg">
+                            Enterprise
+                          </h3>
+                        </div>
+                        <div className="flex items-baseline gap-1">
+                          <span className="font-bold text-3xl text-foreground tabular-nums">
+                            Custom
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm leading-snug">
+                          Volume, security reviews, and bespoke terms.
+                        </p>
+                      </div>
+
+                      <div className="border-t border-border/50"></div>
+
+                      <div className="flex-1 px-6 py-5">
+                        <ul className="flex flex-col gap-3">
+                          <li className="flex items-start gap-2 text-sm">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Unlimited seats</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-sm">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Dedicated success</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-sm">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Audit logs</span>
+                          </li>
+                          <li className="flex items-start gap-2 text-sm">
+                            <Icon
+                              icon="lucide:check"
+                              className="mt-0.5 h-4 w-4 shrink-0 text-primary"
+                            />
+                            <span>Custom SLAs</span>
+                          </li>
+                        </ul>
+                      </div>
+
+                      <div className="px-6 py-4 border-t border-border/50">
+                        <Button
+                          asChild
+                          className="w-full rounded-[12px] h-10 shadow-sm"
+                          variant="outline"
+                        >
+                          <Link href="mailto:sales@promptamist.com">
+                            Talk to sales
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* FAQ Section */}
           <div className="relative mx-auto mt-40 max-w-4xl">
             <div className="bg-primary/5 absolute inset-0 -z-10 rounded-full blur-[100px]" />
 
-            <div className="mb-16 space-y-4 px-4 text-center">
-              <h2
-                className="font-bold tracking-tight"
-                style={{ fontSize: 'var(--text-3xl)' }}
-              >
+            <div className="mb-12 space-y-4 px-4 text-center">
+              <h2 className="text-3xl font-bold tracking-tight">
                 Frequently Asked Questions
               </h2>
-              <p
-                className="text-muted-foreground"
-                style={{ fontSize: 'var(--text-base)' }}
-              >
+              <p className="text-muted-foreground">
                 Everything you need to know about our plans and billing.
               </p>
               <div className="bg-primary/40 mx-auto h-1.5 w-12 rounded-full" />
@@ -260,28 +299,24 @@ export default function PricingPage() {
                   a: 'We accept all major credit cards, Apple Pay, and Google Pay through our secure payment processor.',
                 },
               ].map((faq, i) => (
-                <Card
+                <div
                   key={i}
-                  className="border-border/40 bg-card/40 hover:border-primary/30 group backdrop-blur-sm transition-all duration-300 hover:shadow-lg"
+                  className="border-border/40 bg-card/40 hover:border-primary/30 group rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300 hover:shadow-lg"
                 >
-                  <CardHeader className="p-6">
-                    <CardTitle className="flex items-start gap-3 text-base font-bold">
-                      <div className="bg-primary/10 text-primary mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded transition-transform group-hover:scale-110">
-                        <span className="text-[10px]">?</span>
-                      </div>
-                      {faq.q}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6 pt-0">
-                    <p className="text-muted-foreground text-sm leading-relaxed">
-                      {faq.a}
-                    </p>
-                  </CardContent>
-                </Card>
+                  <h3 className="flex items-start gap-3 text-base font-bold">
+                    <div className="bg-primary/10 text-primary mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded transition-transform group-hover:scale-110">
+                      <span className="text-[10px]">?</span>
+                    </div>
+                    {faq.q}
+                  </h3>
+                  <p className="text-muted-foreground mt-3 text-sm leading-relaxed pl-8">
+                    {faq.a}
+                  </p>
+                </div>
               ))}
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   );
