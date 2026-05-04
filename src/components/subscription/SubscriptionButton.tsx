@@ -56,12 +56,16 @@ export function SubscriptionButton() {
                   className={cn(
                     'flex h-6 w-6 items-center justify-center rounded-lg border shadow-md transition-transform group-hover:scale-110',
                     isPro
-                      ? 'bg-gradient-to-br from-amber-400 to-amber-600 border-amber-400/30 text-white shadow-amber-500/20'
-                      : 'bg-gradient-to-br from-blue-500 to-blue-700 border-blue-400/30 text-white shadow-blue-500/20',
+                      ? 'border-amber-400/30 bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-amber-500/20'
+                      : 'border-blue-400/30 bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-blue-500/20',
                   )}
                 >
                   <Icon
-                    icon={isPro ? 'solar:crown-minimalistic-bold-duotone' : 'solar:user-bold-duotone'}
+                    icon={
+                      isPro
+                        ? 'solar:crown-minimalistic-bold-duotone'
+                        : 'solar:user-bold-duotone'
+                    }
                     className="h-4 w-4"
                   />
                 </div>
