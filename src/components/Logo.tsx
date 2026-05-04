@@ -14,8 +14,8 @@ export function Logo({
     >
       <defs>
         <linearGradient id="logo-primary" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="var(--primary)" />
-          <stop offset="100%" stopColor="var(--primary)" stopOpacity="0.8" />
+          <stop offset="0%" stopColor="currentColor" />
+          <stop offset="100%" stopColor="currentColor" stopOpacity="0.8" />
         </linearGradient>
         <linearGradient id="logo-secondary" x1="0%" y1="0%" x2="100%" y2="100%">
           <stop offset="0%" stopColor="currentColor" stopOpacity="0.15" />

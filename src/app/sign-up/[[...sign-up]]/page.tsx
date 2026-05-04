@@ -56,33 +56,11 @@ export default function SignUpPage() {
 
         <Link
           href="/"
-          className="relative z-10 flex items-center gap-2 text-2xl font-bold tracking-tight text-white"
+          className="relative z-10 flex items-center gap-2 text-2xl font-bold tracking-tight text-primary-foreground"
         >
-          <Logo className="h-10 w-10 text-white" />
+          <Logo className="h-10 w-10 text-primary-foreground" />
           Promptamist
         </Link>
-
-        <div className="relative z-10 space-y-6">
-          <h2 className="text-5xl font-extrabold leading-tight tracking-tight text-white">
-            Build your library of <br />
-            <span className="opacity-80">perfect prompts.</span>
-          </h2>
-          <p className="max-w-md text-lg font-medium text-white/80">
-            Join thousands of professionals who use Promptamist to manage their
-            AI workflows across ChatGPT, Claude, and Gemini.
-          </p>
-        </div>
-
-        <div className="relative z-10 flex items-center gap-6 text-sm font-medium text-white/60">
-          <div className="flex items-center gap-2">
-            <Icon icon="lucide:check-circle-2" className="h-5 w-5" />
-            <span>Free Forever Tier</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Icon icon="lucide:share-2" className="h-5 w-5" />
-            <span>Public Sharing</span>
-          </div>
-        </div>
       </div>
 
       {/* Right Side: Auth Form */}

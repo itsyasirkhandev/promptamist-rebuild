@@ -40,33 +40,11 @@ export default function SignInPage() {
 
         <Link
           href="/"
-          className="relative z-10 flex items-center gap-2 text-2xl font-bold tracking-tight text-white"
+          className="relative z-10 flex items-center gap-2 text-2xl font-bold tracking-tight text-primary-foreground"
         >
-          <Logo className="h-10 w-10 text-white" />
+          <Logo className="h-10 w-10 text-primary-foreground" />
           Promptamist
         </Link>
-
-        <div className="relative z-10 space-y-6">
-          <h2 className="text-5xl font-extrabold leading-tight tracking-tight text-white">
-            Welcome back to your <br />
-            <span className="opacity-80">intelligent workspace.</span>
-          </h2>
-          <p className="max-w-md text-lg font-medium text-white/80">
-            Continue organizing, testing, and sharing your best AI prompts with
-            our purpose-built library.
-          </p>
-        </div>
-
-        <div className="relative z-10 flex items-center gap-6 text-sm font-medium text-white/60">
-          <div className="flex items-center gap-2">
-            <Icon icon="lucide:check-circle-2" className="h-5 w-5" />
-            <span>Encrypted Data</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Icon icon="lucide:zap" className="h-5 w-5" />
-            <span>Fast Access</span>
-          </div>
-        </div>
       </div>
 
       {/* Right Side: Auth Form */}
