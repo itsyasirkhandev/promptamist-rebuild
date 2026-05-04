@@ -143,9 +143,9 @@ export function HomeClient() {
           {/* Hero Section */}
           <section className="px-4 py-24 text-center md:py-32">
             <div className="mx-auto max-w-4xl">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/50 px-4 py-1.5 text-xs font-bold tracking-[0.2em] text-neutral-600 uppercase dark:border-neutral-800 dark:bg-stone-900/50 dark:text-neutral-400">
-                <Icon icon="lucide:sparkles" className="h-3.5 w-3.5" />
-                The AI Prompt Manager Built for Power Users
+              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/50 px-3 py-1 text-[min(2.8vw,12px)] font-bold tracking-[0.1em] text-neutral-600 uppercase sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.2em] dark:border-neutral-800 dark:bg-stone-900/50 dark:text-neutral-400">
+                <Icon icon="lucide:sparkles" className="h-3.5 w-3.5 shrink-0" />
+                <span className="whitespace-nowrap">The AI Prompt Manager Built for Power Users</span>
               </div>
               <h1 className="text-4xl leading-[1.1] font-semibold tracking-tight text-balance text-neutral-900 md:text-6xl dark:text-neutral-50">
                 Organize, Test & Share <br className="hidden md:block" />
