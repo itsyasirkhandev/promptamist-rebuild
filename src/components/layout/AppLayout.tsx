@@ -77,11 +77,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 className="flex items-center gap-1.5 font-semibold tracking-tight text-neutral-900 sm:gap-2 dark:text-neutral-50"
               >
                 <Logo className="h-7 w-7 sm:h-8 sm:w-8" />
-                <span className="text-xl sm:text-2xl">Promptamist</span>
+                <span className="hidden text-xl sm:inline sm:text-2xl">
+                  Promptamist
+                </span>
               </Link>
             </div>
 
-            <div className="flex items-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-1.5 sm:gap-4">
               <ThemeToggle />
               <Authenticated>
                 <div className="flex items-center">

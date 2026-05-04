@@ -56,12 +56,17 @@ export function SubscriptionButton() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-tight">
+          <span
+            className={cn(
+              'text-[11px] font-bold uppercase tracking-tight',
+              !isPro && 'hidden sm:inline',
+            )}
+          >
             {isPro ? 'Pro' : 'Free'}
           </span>
 
           {!isPro && (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2">
               <div className="h-3 w-px bg-neutral-200 dark:bg-neutral-800" />
               <span className="text-[10px] font-semibold tabular-nums text-neutral-500 dark:text-neutral-400">
                 <span className="hidden sm:inline">
@@ -71,7 +76,7 @@ export function SubscriptionButton() {
               </span>
               <Icon
                 icon="lucide:chevron-right"
-                className="h-3 w-3 text-neutral-400 transition-transform group-hover:translate-x-0.5"
+                className="hidden h-3 w-3 text-neutral-400 transition-transform group-hover:translate-x-0.5 sm:block"
               />
             </div>
           )}
