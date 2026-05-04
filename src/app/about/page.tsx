@@ -46,46 +46,22 @@ export default function AboutPage() {
 
         <section className="px-4 py-12 md:py-20">
           <div className="mx-auto max-w-5xl space-y-24">
-            <div className="grid items-center gap-12 md:grid-cols-2">
-              <div className="space-y-6">
-                <div className="flex items-center gap-3">
-                  <div className="bg-primary/10 border-primary/20 dark:bg-primary/20 flex h-10 w-10 items-center justify-center rounded-xl border">
-                    <Icon
-                      icon="lucide:target"
-                      className="text-primary h-5 w-5"
-                    />
-                  </div>
-                  <h2 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
-                    Our Mission
-                  </h2>
+            <div className="mx-auto max-w-3xl space-y-6 text-center">
+              <div className="flex items-center justify-center gap-3">
+                <div className="bg-primary/10 border-primary/20 dark:bg-primary/20 flex h-10 w-10 items-center justify-center rounded-xl border">
+                  <Icon icon="lucide:target" className="text-primary h-5 w-5" />
                 </div>
-                <p className="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
-                  Promptamist is on a mission to make AI interaction structured,
-                  repeatable, and collaborative. As LLMs become core to our
-                  professional lives, the ability to manage the
-                  &quot;instructions&quot; we give them becomes the most
-                  valuable skill in the modern economy.
-                </p>
+                <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+                  Our Mission
+                </h2>
               </div>
-              <TextureCard className="p-8">
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                    <span className="text-xs font-bold tracking-widest text-neutral-400 uppercase">
-                      System Status
-                    </span>
-                  </div>
-                  <p className="text-2xl font-bold text-neutral-900 dark:text-neutral-50">
-                    Scaling with you.
-                  </p>
-                  <div className="h-1 w-full rounded-full bg-neutral-100 dark:bg-neutral-800">
-                    <div className="bg-primary h-full w-[85%] rounded-full" />
-                  </div>
-                  <p className="text-sm text-neutral-500">
-                    Trusted by 10,000+ AI power users worldwide.
-                  </p>
-                </div>
-              </TextureCard>
+              <p className="text-lg leading-relaxed text-neutral-600 dark:text-neutral-400">
+                Promptamist is on a mission to make AI interaction structured,
+                repeatable, and collaborative. As LLMs become core to our
+                professional lives, the ability to manage the
+                &quot;instructions&quot; we give them becomes the most
+                valuable skill in the modern economy.
+              </p>
             </div>
 
             <div className="space-y-12">
