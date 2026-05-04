@@ -1,10 +1,7 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Icon } from '@iconify/react';
-import { cn } from '@/lib/utils';
+import { TextureCard } from '@/components/ui/TextureCard';
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_APP_URL || 'https://repromptamist.vercel.app';
@@ -20,127 +17,120 @@ export const metadata: Metadata = {
 
 export default function ContentWritingSolution() {
   return (
-    <div className="bg-background relative min-h-screen overflow-hidden">
+    <div className="bg-neutral-50 dark:bg-stone-950 relative min-h-screen transition-colors duration-500">
       {/* Premium Background Elements */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="bg-primary/5 absolute -top-[10%] -left-[10%] h-[40%] w-[40%] rounded-full blur-[120px]" />
-        <div className="bg-chart-1/5 absolute top-[20%] -right-[5%] h-[30%] w-[30%] rounded-full blur-[100px]" />
-        <div className="bg-chart-2/5 absolute bottom-[10%] left-[20%] h-[25%] w-[25%] rounded-full blur-[80px]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:64px_64px]" />
+        <div className="absolute top-0 left-1/2 -z-10 h-[1000px] w-full max-w-7xl -translate-x-1/2 pointer-events-none">
+          <div className="absolute top-[-10%] left-[20%] h-[500px] w-[500px] rounded-full bg-neutral-200/50 blur-[120px] dark:bg-stone-800/20" />
+          <div className="absolute top-[10%] right-[20%] h-[400px] w-[400px] rounded-full bg-neutral-300/30 blur-[100px] dark:bg-neutral-900/30" />
+        </div>
       </div>
 
       <main className="relative z-10 flex-1">
-        <section className="relative overflow-hidden px-4 py-24 text-center md:py-32">
-          <div className="animate-in fade-in slide-in-from-bottom-8 mx-auto max-w-4xl space-y-8 duration-700">
-            <Badge
-              variant="outline"
-              className="border-primary/20 bg-primary/5 text-primary rounded-full px-4 py-1"
-            >
+        <section className="relative overflow-hidden px-4 py-24 text-center md:py-36">
+          <div className="mx-auto max-w-4xl relative">
+            <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-neutral-200/60 bg-white/40 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-neutral-500 backdrop-blur-xl dark:border-neutral-800/40 dark:bg-stone-900/40 dark:text-neutral-400">
+              <Icon icon="lucide:sparkles" className="h-3.5 w-3.5 text-neutral-400/80" />
               For Content Creators
-            </Badge>
-            <h1
-              className="font-heading font-extrabold tracking-tight text-balance"
-              style={{ fontSize: 'var(--text-4xl)', lineHeight: '1.1' }}
-            >
-              The Professional Workspace for
-              <span className="from-primary to-chart-1 mt-2 block bg-gradient-to-r bg-clip-text text-transparent">
+            </div>
+            
+            <h1 className="text-balance font-bold text-5xl tracking-tight text-neutral-900 sm:text-7xl md:text-8xl dark:text-neutral-50 leading-[1.05] mb-8">
+              The Workspace for <br className="hidden md:block" />
+              <span className="bg-gradient-to-b from-neutral-400 to-neutral-600 bg-clip-text text-transparent dark:from-neutral-500 dark:to-neutral-700">
                 AI Content Writers
               </span>
             </h1>
-            <p
-              className="text-muted-foreground mx-auto max-w-2xl leading-relaxed"
-              style={{ fontSize: 'var(--text-base)' }}
-            >
+
+            <p className="mx-auto mt-8 max-w-2xl text-pretty text-lg leading-relaxed text-neutral-600 md:text-xl dark:text-neutral-400">
               Stop losing your best storytelling prompts. Organize your creative
               workflow and generate high-quality content 10x faster.
             </p>
-            <div className="pt-6">
-              <Button
-                size="lg"
-                className="shadow-primary/20 h-16 rounded-2xl px-12 text-lg font-bold shadow-2xl transition-all hover:scale-110 active:scale-95"
-                asChild
-              >
-                <Link href="/sign-up">Start Writing with AI</Link>
-              </Button>
+
+            <div className="mt-14 flex justify-center">
+              <Link href="/sign-up">
+                <div className="border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80 rounded-[16px] group shadow-xl shadow-neutral-200/40 dark:shadow-black/60">
+                  <div className="flex h-16 w-full min-w-[240px] items-center justify-center gap-3 bg-gradient-to-b from-neutral-800 to-black text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 rounded-[14px] px-10 text-lg font-bold">
+                    Start Writing with AI
+                  </div>
+                </div>
+              </Link>
             </div>
           </div>
         </section>
 
-        <section className="border-border/40 relative border-y px-4 py-24">
-          <div className="bg-primary/5 absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
+        <section className="relative px-4 py-24 md:py-40 bg-white dark:bg-neutral-900/30">
           <div className="relative mx-auto grid max-w-6xl items-center gap-16 md:grid-cols-2">
-            <div className="animate-in fade-in slide-in-from-left-8 space-y-8 duration-1000">
-              <h2 className="text-3xl font-bold tracking-tight">
-                Build Reusable Blog Templates
+            <div className="space-y-10">
+              <h2 className="text-4xl md:text-5xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+                Build Reusable <br /> Blog Templates
               </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
+              <p className="text-neutral-600 dark:text-neutral-400 text-xl leading-relaxed">
                 Create structured templates for every stage of your writing
                 process — from brainstorming titles to drafting full-length
                 articles and SEO meta descriptions.
               </p>
-              <ul className="space-y-6">
+              <ul className="space-y-8">
                 {[
                   'Define tone, style, and persona variables once.',
                   'Ensure brand consistency across all AI outputs.',
-                  'Share your best writing templates with your team or audience.',
+                  'Share your best writing templates with your team.',
                 ].map((item) => (
-                  <li key={item} className="group flex items-start gap-4">
-                    <div className="bg-primary/10 text-primary flex h-6 w-6 shrink-0 items-center justify-center rounded-full transition-transform group-hover:scale-110">
-                      <Icon icon="lucide:check-circle" className="h-4 w-4" />
+                  <li key={item} className="group flex items-start gap-5">
+                    <div className="bg-neutral-100 dark:bg-neutral-800 text-neutral-900 dark:text-neutral-100 flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-neutral-200 dark:border-neutral-700 shadow-sm transition-transform group-hover:scale-110">
+                      <Icon icon="lucide:check" className="h-4 w-4" />
                     </div>
-                    <span className="text-muted-foreground group-hover:text-foreground transition-colors">
+                    <span className="text-neutral-600 dark:text-neutral-400 text-lg group-hover:text-neutral-900 dark:group-hover:text-neutral-100 transition-colors">
                       {item}
                     </span>
                   </li>
                 ))}
               </ul>
             </div>
-            <Card className="border-border/40 bg-card/60 shadow-primary/5 animate-in fade-in slide-in-from-right-8 group p-8 shadow-2xl backdrop-blur-xl duration-1000">
-              <div className="bg-primary/10 absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full blur-3xl transition-transform duration-700 group-hover:scale-150" />
-              <div className="relative space-y-6">
-                <div className="border-border/40 flex items-center gap-2 border-b pb-4">
-                  <div className="h-3 w-3 rounded-full bg-red-500/50" />
-                  <div className="h-3 w-3 rounded-full bg-yellow-500/50" />
-                  <div className="h-3 w-3 rounded-full bg-green-500/50" />
-                  <span className="text-muted-foreground ml-2 font-mono text-xs">
+            
+            <TextureCard className="group p-2">
+              <div className="p-8 md:p-10 space-y-8">
+                <div className="flex items-center gap-3 border-b border-neutral-200 dark:border-neutral-800 pb-6">
+                  <div className="h-3.5 w-3.5 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+                  <div className="h-3.5 w-3.5 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+                  <div className="h-3.5 w-3.5 rounded-full bg-neutral-200 dark:bg-neutral-800" />
+                  <span className="text-neutral-400 ml-3 font-mono text-xs tracking-wider uppercase">
                     blog-template.prompt
                   </span>
                 </div>
-                <div className="space-y-4">
-                  <div className="space-y-1">
-                    <span className="text-primary text-[10px] font-bold tracking-widest uppercase">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <span className="text-neutral-400 text-[10px] font-bold tracking-[0.2em] uppercase">
                       Template Variable
                     </span>
-                    <div className="bg-primary/5 border-primary/20 text-primary w-fit rounded-lg border px-3 py-1.5 font-mono text-sm">
+                    <div className="bg-neutral-100 dark:bg-neutral-800 border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-neutral-100 w-fit rounded-lg border px-4 py-2 font-mono text-sm shadow-sm">
                       {`{{topic}}`}
                     </div>
                   </div>
-                  <p className="text-muted-foreground leading-relaxed font-medium italic">
+                  <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed text-lg font-medium italic">
                     &quot;Write a compelling 1,500-word blog post about{' '}
                     {`{{topic}}`} using a conversational yet authoritative
                     tone...&quot;
                   </p>
                 </div>
               </div>
-            </Card>
+            </TextureCard>
           </div>
         </section>
 
-        <section className="px-4 py-24 md:py-32">
+        <section className="px-4 py-24 md:py-40">
           <div className="mx-auto max-w-6xl">
-            <div className="mb-20 space-y-4 text-center">
-              <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
-                Why Top Writers Choose Promptamist
+            <div className="mb-24 text-center">
+              <h2 className="text-4xl font-bold tracking-tight md:text-6xl text-neutral-900 dark:text-neutral-50 mb-6">
+                Why Top Writers Choose Us
               </h2>
-              <p className="text-muted-foreground text-lg">
+              <p className="text-neutral-600 dark:text-neutral-400 text-xl max-w-2xl mx-auto">
                 The tools you need to master the art of AI-assisted writing.
               </p>
-              <div className="bg-primary/40 mx-auto h-1.5 w-16 rounded-full" />
             </div>
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+            <div className="grid grid-cols-1 gap-10 sm:grid-cols-3">
               {[
                 {
-                  title: 'No More Search Fatigue',
+                  title: 'No Search Fatigue',
                   desc: 'Find the exact prompt for "Twitter Hooks" or "SEO Introductions" in seconds with advanced tagging.',
                   icon: 'lucide:search',
                 },
@@ -155,45 +145,39 @@ export default function ContentWritingSolution() {
                   icon: 'lucide:trending-up',
                 },
               ].map((f) => (
-                <Card
-                  key={f.title}
-                  className="group border-border/40 bg-card/40 hover:shadow-primary/5 backdrop-blur-sm transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl"
-                >
-                  <CardHeader>
-                    <div className="bg-primary/10 mb-4 flex h-12 w-12 items-center justify-center rounded-2xl transition-transform group-hover:scale-110">
-                      <Icon icon={f.icon} className="text-primary h-6 w-6" />
+                <TextureCard key={f.title} className="group/card hover:-translate-y-1 transition-all duration-500">
+                  <div className="p-8">
+                    <div className="mb-8 flex h-14 w-14 items-center justify-center rounded-2xl border border-neutral-200 bg-white/80 text-neutral-900 dark:border-neutral-800 dark:bg-neutral-800 dark:text-neutral-100 group-hover/card:scale-110 transition-transform duration-500 shadow-sm">
+                      <Icon icon={f.icon} className="h-7 w-7" />
                     </div>
-                    <CardTitle className="text-xl font-bold">
+                    <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                       {f.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground text-sm leading-relaxed">
+                    </h3>
+                    <p className="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed">
                       {f.desc}
                     </p>
-                  </CardContent>
-                </Card>
+                  </div>
+                </TextureCard>
               ))}
             </div>
           </div>
         </section>
 
-        <section className="relative overflow-hidden px-4 py-32 text-center">
-          <div className="bg-primary/5 absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
-          <div className="relative mx-auto max-w-2xl space-y-8">
-            <h2 className="text-3xl font-extrabold tracking-tight md:text-4xl">
-              Ready to transform your content?
+        <section className="relative overflow-hidden px-4 py-32 md:py-48 text-center">
+          <div className="mx-auto max-w-3xl space-y-10 relative">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+              Transform Your Content.
             </h2>
-            <Button
-              size="lg"
-              className="shadow-primary/20 h-16 rounded-2xl px-12 text-lg font-bold shadow-2xl transition-all hover:scale-110 active:scale-95"
-              asChild
-            >
+            <div className="flex justify-center pt-8">
               <Link href="/sign-up">
-                Start Free Workspace{' '}
-                <Icon icon="lucide:arrow-right" className="ml-2 h-5 w-5" />
+                <div className="border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80 rounded-[18px] group shadow-2xl">
+                  <div className="flex h-16 w-full min-w-[280px] items-center justify-center gap-3 bg-gradient-to-b from-neutral-800 to-black text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 rounded-[16px] px-12 text-xl font-bold">
+                    Start Free Workspace
+                    <Icon icon="lucide:arrow-right" className="h-6 w-6" />
+                  </div>
+                </div>
               </Link>
-            </Button>
+            </div>
           </div>
         </section>
       </main>
