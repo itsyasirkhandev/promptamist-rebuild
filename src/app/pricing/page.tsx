@@ -1,16 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Icon } from '@iconify/react';
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
-} from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 const BASE_URL =
@@ -35,8 +25,6 @@ export default function PricingPage() {
       cta: 'Start for Free',
       href: '/sign-up',
       popular: false,
-      icon: 'lucide:rocket',
-      gradient: 'from-muted/50 to-muted/10',
     },
     {
       name: 'Pro',
@@ -47,239 +35,172 @@ export default function PricingPage() {
       cta: 'Get Pro Access',
       href: '/sign-up',
       popular: true,
-      icon: 'lucide:zap',
-      gradient: 'from-primary/20 to-primary/5',
     },
   ];
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-neutral-50 dark:bg-stone-950">
-      {/* Background decoration to match the texture theme */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="bg-primary/5 absolute top-0 left-1/2 h-[500px] w-full max-w-6xl -translate-x-1/2 rounded-full opacity-50 blur-[120px]" />
-      </div>
-
-      <main className="relative z-10 flex-1 px-4 py-20 md:py-32">
+    <div className="min-h-screen bg-neutral-50 dark:bg-stone-950 transition-colors duration-500">
+      <section className="px-4 py-16 md:py-24">
         <div className="mx-auto max-w-6xl">
-          {/* Hero Section */}
-          <div className="mb-24 space-y-6 text-center">
-            <Badge
-              variant="outline"
-              className="border-primary/20 bg-primary/5 text-primary animate-in fade-in slide-in-from-bottom-3 rounded-full px-4 py-1 duration-500"
-            >
-              Pricing Plans
-            </Badge>
-            <h1
-              className="font-heading animate-in fade-in slide-in-from-bottom-4 font-extrabold tracking-tight text-balance duration-700"
-              style={{ fontSize: 'var(--text-5xl)', lineHeight: '1.1' }}
-            >
-              Simple,{' '}
-              <span className="from-primary to-chart-1 bg-gradient-to-r bg-clip-text text-transparent">
-                Transparent
-              </span>{' '}
+          {/* Header Section */}
+          <div className="mb-12 text-center md:mb-16">
+            <p className="mb-2 text-neutral-600 text-xs font-bold uppercase tracking-[0.2em] dark:text-neutral-400">
               Pricing
+            </p>
+            <h1 className="text-balance font-semibold text-3xl text-neutral-900 tracking-tight md:text-5xl dark:text-neutral-50">
+              Simple, <span className="text-neutral-500">Transparent</span> Pricing
             </h1>
-            <p
-              className="text-muted-foreground animate-in fade-in slide-in-from-bottom-5 mx-auto max-w-2xl duration-1000"
-              style={{ fontSize: 'var(--text-lg)' }}
-            >
+            <p className="mx-auto mt-4 max-w-xl text-pretty text-neutral-600 dark:text-neutral-400">
               Invest in your productivity, not in subscription bloat. Scale your
               AI workflow without breaking the bank.
             </p>
           </div>
 
           {/* Pricing Grid */}
-          <div className="relative mx-auto grid max-w-4xl grid-cols-1 gap-8 md:grid-cols-2">
-            {plans.map((plan, index) => (
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:max-w-4xl lg:mx-auto md:items-stretch md:gap-8">
+            {plans.map((plan) => (
               <div
                 key={plan.name}
                 className={cn(
-                  'group animate-in fade-in slide-in-from-bottom-8 relative transition-all duration-500',
-                  index === 0 ? 'duration-700' : 'duration-1000',
+                  'rounded-[24px] border border-white/60 dark:border-stone-950/60 bg-gradient-to-b md:h-full md:min-h-0 transition-all duration-300',
+                  plan.popular
+                    ? 'from-neutral-50 to-white/90 ring-1 ring-black/5 md:-mt-1 md:mb-1 dark:from-neutral-800 dark:to-neutral-950 dark:ring-white/10 shadow-2xl shadow-neutral-200/50 dark:shadow-black/50'
+                    : 'from-neutral-100 to-white/70 dark:from-neutral-800 dark:to-neutral-900'
                 )}
               >
-                {/* Card Glow Effect */}
-                <div
-                  className={cn(
-                    'absolute -inset-px rounded-[2.5rem] opacity-0 blur-sm transition duration-500 group-hover:opacity-100',
-                    plan.popular ? 'bg-primary/30' : 'bg-muted-foreground/20',
-                  )}
-                />
-
-                <Card
-                  className={cn(
-                    'border-border/50 bg-card/60 group-hover:shadow-primary/5 relative flex h-full flex-col !overflow-visible backdrop-blur-xl transition-all duration-500 group-hover:translate-y-[-4px] group-hover:shadow-2xl',
-                    plan.popular &&
-                    'ring-primary/40 border-primary/20 shadow-primary/10 shadow-xl ring-1',
-                  )}
-                >
-                  {plan.popular && (
-                    <div className="absolute -top-3.5 left-1/2 z-30 -translate-x-1/2">
-                      <Badge className="bg-primary text-primary-foreground shadow-primary/30 rounded-full border-none px-4 py-1 text-[10px] font-bold tracking-wider whitespace-nowrap uppercase shadow-xl">
-                        Most Popular
-                      </Badge>
-                    </div>
-                  )}
-
-                  <CardHeader className="p-8">
-                    <div
-                      className={cn(
-                        'ring-border mb-6 inline-flex w-fit rounded-2xl bg-gradient-to-br p-3 shadow-inner ring-1 transition-transform duration-500 group-hover:scale-110',
-                        plan.gradient,
-                      )}
-                    >
-                      <Icon
-                        icon={plan.icon}
-                        className={cn(
-                          'h-6 w-6 transition-colors duration-300',
-                          plan.popular
-                            ? 'text-primary'
-                            : 'text-muted-foreground',
-                        )}
-                      />
-                    </div>
-                    <CardTitle className="text-3xl font-bold tracking-tight">
-                      {plan.name}
-                    </CardTitle>
-                    <CardDescription className="mt-2 h-12 text-base leading-relaxed">
-                      {plan.description}
-                    </CardDescription>
-                  </CardHeader>
-
-                  <CardContent className="flex-1 p-8 pt-0">
-                    <div className="mb-8 flex origin-left items-baseline gap-1 transition-transform duration-500 group-hover:scale-105">
-                      <span
-                        className="font-black tracking-tighter"
-                        style={{ fontSize: 'var(--text-4xl)' }}
-                      >
-                        {plan.price}
-                      </span>
-                      {plan.interval && (
-                        <span className="text-muted-foreground text-lg font-medium">
-                          {plan.interval}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="space-y-4">
-                      <p className="text-muted-foreground/70 text-xs font-semibold tracking-widest uppercase">
-                        What&apos;s included:
-                      </p>
-                      <ul className="space-y-3">
-                        {plan.features.map((feature) => (
-                          <li
-                            key={feature}
-                            className="group/item flex items-center gap-3 text-sm"
-                          >
-                            <div
-                              className={cn(
-                                'flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full transition-colors duration-300',
-                                plan.popular
-                                  ? 'bg-primary/10 text-primary'
-                                  : 'bg-muted text-muted-foreground',
-                              )}
-                            >
-                              <Icon
-                                icon="lucide:check"
-                                className="h-3.5 w-3.5"
-                              />
-                            </div>
-                            <span className="text-muted-foreground group-hover/item:text-foreground transition-colors duration-200">
-                              {feature}
+                <div className="rounded-[23px] border border-black/10 dark:border-neutral-900/80 flex flex-col h-full">
+                  <div className="rounded-[22px] border border-white/50 dark:border-neutral-950 flex flex-col h-full">
+                    <div className="rounded-[21px] border border-neutral-950/20 dark:border-neutral-900/70 flex flex-col h-full">
+                      <div className="w-full rounded-[20px] border border-white/50 text-neutral-500 dark:border-neutral-700/50 flex flex-col h-full">
+                        {/* Card Header */}
+                        <div className="first:pt-6 last:pb-6 flex shrink-0 flex-col gap-1 p-6 pb-4">
+                          <div className="mb-1 flex items-center justify-between gap-2">
+                            <h3 className="font-semibold text-neutral-900 dark:text-neutral-100 text-lg">
+                              {plan.name}
+                            </h3>
+                            {plan.popular && (
+                              <span className="font-medium text-neutral-600 text-xs dark:text-neutral-400 px-2 py-0.5 rounded-full border border-neutral-200 dark:border-neutral-800">
+                                Popular
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-baseline gap-1">
+                            <span className="font-semibold text-3xl text-neutral-900 tabular-nums dark:text-neutral-50">
+                              {plan.price}
                             </span>
-                          </li>
-                        ))}
-                      </ul>
+                            {plan.interval && (
+                              <span className="text-neutral-600 text-sm dark:text-neutral-400">
+                                {plan.interval}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-neutral-600 text-sm leading-snug dark:text-neutral-400 mt-1">
+                            {plan.description}
+                          </p>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="shrink-0">
+                          <div className="border border-t-neutral-50 border-r-transparent border-b-neutral-300/50 border-l-transparent dark:border-t-neutral-950 dark:border-b-neutral-700/50"></div>
+                        </div>
+
+                        {/* Card Content (Features) */}
+                        <div className="flex min-h-0 flex-1 flex-col px-6 py-5">
+                          <ul className="flex flex-col gap-3">
+                            {plan.features.map((feature) => (
+                              <li
+                                key={feature}
+                                className="flex items-start gap-2 text-neutral-700 text-sm dark:text-neutral-300"
+                              >
+                                <Icon
+                                  icon="lucide:check"
+                                  className="mt-0.5 h-4 w-4 shrink-0 stroke-neutral-900 dark:stroke-neutral-100"
+                                />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Card Footer (CTA) */}
+                        <div className="flex items-center justify-between py-4 shrink-0 flex-col gap-2 border-neutral-200/60 border-t px-6 pt-2 dark:border-neutral-800/80">
+                          <Link
+                            href={plan.href}
+                            className="w-full"
+                          >
+                            {plan.popular ? (
+                              <div className="border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80 rounded-[12px] w-full group">
+                                <div className="flex h-full w-full items-center justify-center gap-2 bg-gradient-to-b from-neutral-800 to-black text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:active:from-stone-300 dark:active:to-neutral-300 dark:hover:from-stone-200 dark:hover:to-neutral-200 rounded-[10px] px-4 py-2.5 text-sm font-medium">
+                                  {plan.cta}
+                                  <Icon icon="lucide:arrow-right" className="w-4 h-4" />
+                                </div>
+                              </div>
+                            ) : (
+                              <div className="group/texture-button border-[1px] border-black/20 bg-white/50 p-[1px] hover:bg-gradient-to-t hover:from-neutral-100 active:bg-neutral-200 dark:border-[2px] dark:border-neutral-950 dark:bg-neutral-600/80 dark:active:bg-neutral-800 dark:hover:from-neutral-600/50 dark:hover:to-neutral-600/70 rounded-[12px] w-full">
+                                <div className="flex h-full w-full items-center justify-center text-neutral-700 dark:text-neutral-200 bg-gradient-to-b from-white to-neutral-50/50 transition duration-300 ease-in-out group-hover/texture-button:bg-gradient-to-b group-hover/texture-button:from-neutral-50/50 group-hover/texture-button:to-neutral-100/60 group-active/texture-button:bg-gradient-to-b group-active/texture-button:from-neutral-100/60 group-active/texture-button:to-neutral-100/90 dark:from-neutral-800 dark:to-neutral-700/50 dark:group-active/texture-button:from-neutral-800 dark:group-active/texture-button:to-neutral-700 dark:group-hover/texture-button:from-neutral-700 dark:group-hover/texture-button:to-neutral-700/60 rounded-[10px] px-4 py-2.5 text-sm font-medium">
+                                  {plan.cta}
+                                </div>
+                              </div>
+                            )}
+                          </Link>
+                        </div>
+                      </div>
                     </div>
-                  </CardContent>
-
-                  <CardFooter className="mt-auto p-8 pt-0">
-                    <Button
-                      asChild
-                      size="lg"
-                      className={cn(
-                        'group/btn h-14 w-full rounded-2xl text-base font-bold shadow-lg transition-all duration-300',
-                        plan.popular
-                          ? 'bg-primary hover:bg-primary/90 text-primary-foreground shadow-primary/20 hover:shadow-primary/40 hover:scale-[1.02] active:scale-[0.98]'
-                          : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground hover:scale-[1.02] active:scale-[0.98]',
-                      )}
-                    >
-                      <Link href={plan.href}>
-                        {plan.cta}
-                        <Icon
-                          icon="lucide:arrow-right"
-                          className="ml-2 h-4 w-4 transition-transform duration-300 group-hover/btn:translate-x-1"
-                        />
-                      </Link>
-                    </Button>
-                  </CardFooter>
-                </Card>
+                  </div>
+                </div>
               </div>
-            </div>
-        </div>
-
-        {/* FAQ Section */}
-        <div className="relative mx-auto mt-40 max-w-4xl">
-          <div className="bg-primary/5 absolute inset-0 -z-10 rounded-full blur-[100px]" />
-
-          <div className="mb-16 space-y-4 px-4 text-center">
-            <h2
-              className="font-bold tracking-tight"
-              style={{ fontSize: 'var(--text-3xl)' }}
-            >
-              Frequently Asked Questions
-            </h2>
-            <p
-              className="text-muted-foreground"
-              style={{ fontSize: 'var(--text-base)' }}
-            >
-              Everything you need to know about our plans and billing.
-            </p>
-            <div className="bg-primary/40 mx-auto h-1.5 w-12 rounded-full" />
+            ))}
           </div>
 
-          <div className="grid gap-4 md:grid-cols-2">
-            {[
-              {
-                q: 'Can I switch plans later?',
-                a: 'Yes, you can upgrade or downgrade your plan at any time. Changes are reflected instantly in your account.',
-              },
-              {
-                q: 'Do you offer a student discount?',
-                a: 'Absolutely. We offer free Pro access for students. Contact our support team with your .edu email to apply.',
-              },
-              {
-                q: 'Is there a limit on public sharing?',
-                a: 'No! We believe in open knowledge. Share as many prompts publicly as you like, even on the Free plan.',
-              },
-              {
-                q: 'What payment methods do you accept?',
-                a: 'We accept all major credit cards, Apple Pay, and Google Pay through our secure payment processor.',
-              },
-            ].map((faq, i) => (
-              <div
-                key={i}
-                className="border-border/40 bg-card/40 hover:border-primary/30 group rounded-2xl border p-6 backdrop-blur-sm transition-all duration-300 hover:shadow-lg"
-              >
-                <CardHeader className="p-6">
-                  <CardTitle className="flex items-start gap-3 text-base font-bold">
-                    <div className="bg-primary/10 text-primary mt-1 flex h-5 w-5 shrink-0 items-center justify-center rounded transition-transform group-hover:scale-110">
-                      <span className="text-[10px]">?</span>
-                    </div>
+          {/* FAQ Section */}
+          <div className="mt-40 max-w-4xl mx-auto">
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+                Frequently Asked Questions
+              </h2>
+              <p className="mt-4 text-neutral-600 dark:text-neutral-400">
+                Everything you need to know about our plans and billing.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {[
+                {
+                  q: 'Can I switch plans later?',
+                  a: 'Yes, you can upgrade or downgrade your plan at any time. Changes are reflected instantly in your account.',
+                },
+                {
+                  q: 'Do you offer a student discount?',
+                  a: 'Absolutely. We offer free Pro access for students. Contact our support team with your .edu email to apply.',
+                },
+                {
+                  q: 'Is there a limit on public sharing?',
+                  a: 'No! We believe in open knowledge. Share as many prompts publicly as you like, even on the Free plan.',
+                },
+                {
+                  q: 'What payment methods do you accept?',
+                  a: 'We accept all major credit cards, Apple Pay, and Google Pay through our secure payment processor.',
+                },
+              ].map((faq, i) => (
+                <div
+                  key={i}
+                  className="group relative rounded-[24px] border border-neutral-200 dark:border-neutral-800 bg-white/50 dark:bg-stone-900/50 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                >
+                  <h3 className="flex items-start gap-3 text-base font-bold text-neutral-900 dark:text-neutral-100">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800 text-[10px] text-neutral-500">
+                      ?
+                    </span>
                     {faq.q}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 pt-0">
-                  <p className="text-muted-foreground text-sm leading-relaxed">
+                  </h3>
+                  <p className="mt-3 pl-9 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
                     {faq.a}
                   </p>
-                </CardContent>
-              </Card>
-            ))}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
-    </main>
-    </div >
+    </div>
   );
 }
