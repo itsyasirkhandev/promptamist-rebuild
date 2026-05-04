@@ -39,7 +39,7 @@ export default function SignInPage() {
           variant="outline"
           size="sm"
           asChild
-          className="gap-2 rounded-xl border-border bg-card shadow-sm transition-all hover:bg-accent"
+          className="border-border bg-card hover:bg-accent gap-2 rounded-xl shadow-sm transition-all"
         >
           <Link href="/">
             <Icon icon="lucide:arrow-left" width={16} />
@@ -69,7 +69,7 @@ export default function SignInPage() {
 
             {/* Header */}
             <div className="mb-8 flex flex-col items-center gap-3 text-center">
-              <h1 className="text-2xl font-bold tracking-tight text-foreground">
+              <h1 className="text-foreground text-2xl font-bold tracking-tight">
                 Welcome back
               </h1>
               <div className="flex items-center gap-1.5 text-sm">
@@ -78,7 +78,7 @@ export default function SignInPage() {
                 </span>
                 <Link
                   href="/sign-up"
-                  className="text-primary font-semibold transition-colors hover:text-primary/80"
+                  className="text-primary hover:text-primary/80 font-semibold transition-colors"
                 >
                   Sign up
                 </Link>
@@ -96,7 +96,7 @@ export default function SignInPage() {
             </div>
 
             {/* Footer Text */}
-            <div className="mt-8 text-center text-xs text-muted-foreground">
+            <div className="text-muted-foreground mt-8 text-center text-xs">
               By continuing, you agree to our Terms of Service and Privacy
               Policy.
             </div>
