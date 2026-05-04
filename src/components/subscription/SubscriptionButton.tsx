@@ -56,12 +56,7 @@ export function SubscriptionButton() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span
-            className={cn(
-              'text-[11px] font-bold uppercase tracking-tight',
-              !isPro && 'hidden sm:inline',
-            )}
-          >
+          <span className="text-[11px] font-bold uppercase tracking-tight">
             {isPro ? 'Pro' : 'Free'}
           </span>
 
