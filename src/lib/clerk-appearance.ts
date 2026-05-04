@@ -31,12 +31,12 @@ export const clerkAppearance: Appearance = {
     socialButtonsBlockButtonText: 'font-medium',
     socialButtonsBlockButtonArrow: 'hidden',
     socialButtonsProviderIcon: 'size-4',
-    socialButtonsBlockButtonContainer: 'flex flex-col gap-2 w-full', // Force column layout
+    socialButtonsBlockButtonContainer: 'flex flex-col gap-2 w-full',
     badge: 'hidden',
-    dividerRow: 'relative w-full my-4',
-    dividerLine: 'absolute inset-0 flex items-center border-t border-muted-foreground/20',
+    dividerRow: 'relative flex items-center justify-center w-full my-4 h-4',
+    dividerLine: 'absolute w-full border-t border-muted-foreground/20',
     dividerText:
-      'relative flex justify-center text-xs uppercase bg-card px-2 text-muted-foreground',
+      'relative z-10 bg-card px-2 text-[10px] font-bold uppercase text-muted-foreground',
     formButtonPrimary:
       'flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm font-medium shadow-xs transition-all hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 h-9',
     formFieldInput:
