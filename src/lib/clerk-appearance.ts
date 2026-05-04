@@ -17,9 +17,9 @@ export const clerkAppearance: Appearance = {
   },
   elements: {
     rootBox: 'w-full',
-    cardBox: 'w-full !shadow-none !border-none !bg-transparent !p-0',
-    card: 'shadow-none border-none bg-transparent !p-0 w-full !shadow-none !bg-transparent',
-    main: 'w-full bg-transparent gap-4',
+    cardBox: 'w-full !shadow-none !border-none !bg-transparent',
+    card: 'shadow-none border-none bg-transparent w-full !shadow-none !bg-transparent',
+    main: 'w-full bg-transparent gap-4 px-1',
     navbar: '!hidden',
     header: '!hidden',
     headerTitle: '!hidden',
@@ -31,6 +31,7 @@ export const clerkAppearance: Appearance = {
     socialButtonsBlockButtonText: 'font-medium',
     socialButtonsBlockButtonArrow: 'hidden',
     socialButtonsProviderIcon: 'size-4',
+    socialButtonsBlockButtonContainer: 'flex flex-col gap-2 w-full', // Force column layout
     badge: 'hidden',
     dividerRow: 'relative w-full my-4',
     dividerLine: 'absolute inset-0 flex items-center border-t border-muted-foreground/20',

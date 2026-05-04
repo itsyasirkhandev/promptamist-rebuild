@@ -45,7 +45,7 @@ export default function SignInPage() {
       </div>
 
       {/* Auth Card */}
-      <div className="flex w-full max-w-sm flex-col items-start gap-y-4 rounded-md border border-muted-foreground/20 bg-card p-6 shadow-sm">
+      <div className="flex w-full max-w-sm flex-col items-start gap-y-4 rounded-md border border-muted-foreground/20 bg-card p-5 shadow-sm">
         <div className="flex flex-col items-start gap-y-1">
           <h1 className="text-xl font-semibold text-foreground">Log In</h1>
           <div className="text-sm">
