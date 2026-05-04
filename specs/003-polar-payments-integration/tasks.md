@@ -30,7 +30,7 @@ _(Parallelizable with Phase 1 & 2 if the Server Action does not strictly rely on
 - [ ] `[Phase 3]` Install `@polar-sh/sdk` if not already installed (`pnpm add @polar-sh/sdk`).
 - [ ] `[Phase 3]` Create a Next.js Server Action in `src/app/actions/polar.ts` (or similar).
 - [ ] `[Phase 3]` In the Server Action, instantiate the Polar client with `POLAR_ACCESS_TOKEN`.
-- [ ] `[Phase 3]` In the Server Action, fetch the current user's ID via Clerk (`auth()`), and initiate a checkout session using Product ID `c398bd70-7ccc-4190-8c31-01d274e3c8a4`, passing `clerkId` into `customerMetadata`.
+- [ ] `[Phase 3]` In the Server Action, fetch the current user's ID via Clerk (`auth()`), and initiate a checkout session using Product ID `bdea346d-5096-4cf7-b21c-f355ee41eaa4`, passing `clerkId` into `customerMetadata`.
 - [ ] `[Phase 3]` In the Server Action, redirect the user to the generated checkout URL upon success.
 - [ ] `[Phase 3]` Update the `SubscriptionButton` component to trigger the Server Action instead of a placeholder or static link.
 - [ ] `[Phase 3]` Display the current prompt count usage against the 50 limit for Hobby users within the UI (using existing Convex queries if needed, or augmenting the UI state).

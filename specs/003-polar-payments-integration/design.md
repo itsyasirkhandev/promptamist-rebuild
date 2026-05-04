@@ -49,7 +49,7 @@ export async function createCheckoutSession() {
   const polar = new Polar({ accessToken: process.env.POLAR_ACCESS_TOKEN });
 
   const checkout = await polar.checkouts.custom.create({
-    productId: 'c398bd70-7ccc-4190-8c31-01d274e3c8a4',
+    productId: 'bdea346d-5096-4cf7-b21c-f355ee41eaa4',
     customerMetadata: { clerkId: userId },
     successUrl: `${process.env.NEXT_PUBLIC_APP_URL}/?success=true`,
   });

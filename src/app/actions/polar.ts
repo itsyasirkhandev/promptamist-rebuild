@@ -64,7 +64,7 @@ export async function createCheckoutSession(clientOrigin?: string) {
     const checkout = yield* Effect.tryPromise({
       try: () =>
         polar.checkouts.create({
-          products: ['c398bd70-7ccc-4190-8c31-01d274e3c8a4'],
+          products: ['bdea346d-5096-4cf7-b21c-f355ee41eaa4'],
           externalCustomerId: user.id,
           customerEmail: user.primaryEmailAddress?.emailAddress,
           customerName: user.fullName || undefined,

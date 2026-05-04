@@ -6,7 +6,7 @@ The application currently does not have a monetization strategy or usage limits.
 **2. Functional Requirements**
 
 - **Payment Gateway**: Integrate Polar.sh for handling subscriptions.
-- **Product ID**: Use `c398bd70-7ccc-4190-8c31-01d274e3c8a4` for the "Pro" tier subscription.
+- **Product ID**: Use `bdea346d-5096-4cf7-b21c-f355ee41eaa4` for the "Pro" tier subscription.
 - **Subscription Tiers**:
   - **Hobby Tier (Default/Free)**: The default state for all users upon sign up/login. Users on this tier can create a maximum of 50 prompts in total (inclusive of public, static, and dynamic prompts).
   - **Pro Tier ($5/month)**: Users on this paid tier have unlimited prompt creation capabilities.
