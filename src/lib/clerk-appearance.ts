@@ -1,6 +1,11 @@
 import type { Appearance } from '@clerk/types';
 
 export const clerkAppearance: Appearance = {
+  layout: {
+    socialButtonsVariant: 'blockButton',
+    socialButtonsPlacement: 'top',
+    showOptionalFields: false,
+  },
   variables: {
     colorPrimary: 'var(--primary)',
     colorBackground: 'var(--background)',
@@ -12,9 +17,9 @@ export const clerkAppearance: Appearance = {
   },
   elements: {
     rootBox: 'w-full',
-    cardBox: 'w-full !shadow-none !border-none !bg-transparent !p-0 !m-0',
-    card: 'shadow-none border-none bg-transparent !p-0 w-full !shadow-none !bg-transparent !m-0',
-    main: 'w-full bg-transparent gap-3',
+    cardBox: 'w-full !shadow-none !border-none !bg-transparent !p-0',
+    card: 'shadow-none border-none bg-transparent !p-0 w-full !shadow-none !bg-transparent',
+    main: 'w-full bg-transparent gap-4',
     navbar: '!hidden',
     header: '!hidden',
     headerTitle: '!hidden',
@@ -27,7 +32,7 @@ export const clerkAppearance: Appearance = {
     socialButtonsBlockButtonArrow: 'hidden',
     socialButtonsProviderIcon: 'size-4',
     badge: 'hidden',
-    dividerRow: 'relative w-full my-2',
+    dividerRow: 'relative w-full my-4',
     dividerLine: 'absolute inset-0 flex items-center border-t border-muted-foreground/20',
     dividerText:
       'relative flex justify-center text-xs uppercase bg-card px-2 text-muted-foreground',
