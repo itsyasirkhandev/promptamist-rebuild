@@ -32,7 +32,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="bg-neutral-50 dark:bg-stone-950 border-t border-neutral-200/60 dark:border-neutral-800/80 transition-colors duration-500">
+    <footer className="border-t border-neutral-200/60 bg-neutral-50 transition-colors duration-500 dark:border-neutral-800/80 dark:bg-stone-950">
       <div className="container mx-auto px-4 py-16 md:px-6">
         <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-5">
           <div className="lg:col-span-2">
@@ -43,7 +43,7 @@ export function Footer() {
               <Logo className="h-7 w-7" />
               <span className="text-2xl tracking-tight">Promptamist</span>
             </Link>
-            <p className="text-neutral-600 dark:text-neutral-400 mb-6 max-w-xs text-sm leading-relaxed">
+            <p className="mb-6 max-w-xs text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
               The intelligent prompt management platform for AI power users.
               Organize, template, and share your AI workflows.
             </p>
@@ -51,7 +51,7 @@ export function Footer() {
 
           {sections.map((section) => (
             <div key={section.title} className="space-y-6">
-              <h3 className="text-xs font-bold tracking-[0.2em] uppercase text-neutral-900 dark:text-neutral-50">
+              <h3 className="text-xs font-bold tracking-[0.2em] text-neutral-900 uppercase dark:text-neutral-50">
                 {section.title}
               </h3>
               <ul className="space-y-3">
@@ -59,7 +59,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       href={link.href}
-                      className="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50 text-sm transition-colors"
+                      className="text-sm text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50"
                     >
                       {link.label}
                     </Link>
@@ -70,8 +70,8 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-neutral-200/60 dark:border-neutral-800/80 pt-8 md:flex-row">
-          <p className="text-neutral-500 dark:text-neutral-400 text-xs font-medium">
+        <div className="mt-16 flex flex-col items-center justify-between gap-6 border-t border-neutral-200/60 pt-8 md:flex-row dark:border-neutral-800/80">
+          <p className="text-xs font-medium text-neutral-500 dark:text-neutral-400">
             © {currentYear} Promptamist. Built for the AI-first future.
           </p>
           <div className="flex gap-6">
@@ -79,7 +79,7 @@ export function Footer() {
               href="https://github.com/itsyasirkhandev/promptamist-rebuild"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50 transition-colors"
+              className="text-neutral-500 transition-colors hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50"
             >
               <span className="sr-only">GitHub</span>
               <svg

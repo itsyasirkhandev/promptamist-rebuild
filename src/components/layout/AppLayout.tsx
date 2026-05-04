@@ -26,13 +26,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     pathname?.startsWith('/sign-in') || pathname?.startsWith('/sign-up');
 
   if (isAuthPage) {
-    return <div className="bg-neutral-50 dark:bg-stone-950 min-h-screen w-full transition-colors duration-500">{children}</div>;
+    return (
+      <div className="min-h-screen w-full bg-neutral-50 transition-colors duration-500 dark:bg-stone-950">
+        {children}
+      </div>
+    );
   }
 
   if (isPublicPromptPage) {
     return (
-      <div className="bg-neutral-50 dark:bg-stone-950 flex min-h-screen w-full flex-col transition-colors duration-500">
-        <header className="bg-white/50 dark:bg-stone-950/50 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-neutral-200/60 dark:border-neutral-800/80 px-4 backdrop-blur-xl transition-all">
+      <div className="flex min-h-screen w-full flex-col bg-neutral-50 transition-colors duration-500 dark:bg-stone-950">
+        <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-neutral-200/60 bg-white/50 px-4 backdrop-blur-xl transition-all dark:border-neutral-800/80 dark:bg-stone-950/50">
           <Link
             href="/"
             className="flex items-center gap-2 font-semibold tracking-tight text-neutral-900 dark:text-neutral-50"
@@ -57,20 +61,20 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <SidebarProvider>
-      <div className="bg-neutral-50 dark:bg-stone-950 flex min-h-screen w-full transition-colors duration-500">
+      <div className="flex min-h-screen w-full bg-neutral-50 transition-colors duration-500 dark:bg-stone-950">
         <Authenticated>
           <AppSidebar />
         </Authenticated>
 
         <SidebarInset className="flex flex-1 flex-col bg-transparent">
-          <header className="bg-white/50 dark:bg-stone-950/50 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-neutral-200/60 dark:border-neutral-800/80 px-4 backdrop-blur-xl transition-all sm:px-6">
+          <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b border-neutral-200/60 bg-white/50 px-4 backdrop-blur-xl transition-all sm:px-6 dark:border-neutral-800/80 dark:bg-stone-950/50">
             <div className="flex items-center gap-2 sm:gap-4">
               <Authenticated>
-                <SidebarTrigger className="hidden lg:flex text-neutral-500 hover:text-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50" />
+                <SidebarTrigger className="hidden text-neutral-500 hover:text-neutral-900 lg:flex dark:text-neutral-400 dark:hover:text-neutral-50" />
               </Authenticated>
               <Link
                 href="/"
-                className="flex items-center gap-1.5 font-semibold tracking-tight sm:gap-2 text-neutral-900 dark:text-neutral-50"
+                className="flex items-center gap-1.5 font-semibold tracking-tight text-neutral-900 sm:gap-2 dark:text-neutral-50"
               >
                 <Logo className="h-7 w-7 sm:h-8 sm:w-8" />
                 <span className="text-xl sm:text-2xl">Promptamist</span>
