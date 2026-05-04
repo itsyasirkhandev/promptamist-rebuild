@@ -59,8 +59,8 @@ export default function AboutPage() {
                 Promptamist is on a mission to make AI interaction structured,
                 repeatable, and collaborative. As LLMs become core to our
                 professional lives, the ability to manage the
-                &quot;instructions&quot; we give them becomes the most
-                valuable skill in the modern economy.
+                &quot;instructions&quot; we give them becomes the most valuable
+                skill in the modern economy.
               </p>
             </div>
 
