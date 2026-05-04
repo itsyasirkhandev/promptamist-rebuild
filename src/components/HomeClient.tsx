@@ -117,7 +117,7 @@ export function HomeClient() {
               </div>
               <h1
                 className="font-heading animate-in fade-in slide-in-from-bottom-4 font-extrabold tracking-tight text-balance duration-700"
-                style={{ fontSize: 'var(--text-4xl)', lineHeight: '1' }}
+                style={{ fontSize: 'var(--text-5xl)', lineHeight: '1.1' }}
               >
                 Organize, Test & Share
                 <span className="from-primary to-chart-1 mt-2 block bg-gradient-to-r bg-clip-text text-transparent">
@@ -126,7 +126,7 @@ export function HomeClient() {
               </h1>
               <p
                 className="text-muted-foreground animate-in fade-in slide-in-from-bottom-6 mx-auto max-w-2xl text-balance duration-1000"
-                style={{ fontSize: 'var(--text-base)' }}
+                style={{ fontSize: 'var(--text-lg)' }}
               >
                 Stop losing your best prompts in endless chat logs. Promptamist
                 gives you a structured library for all your{' '}
@@ -169,11 +169,17 @@ export function HomeClient() {
           >
             <div className="bg-muted/30 absolute inset-0 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)]" />
             <div className="relative mx-auto max-w-6xl">
-              <div className="mb-20 space-y-4 text-center">
-                <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              <div className="mb-20 space-y-4 px-4 text-center">
+                <h2
+                  className="font-bold tracking-tight"
+                  style={{ fontSize: 'var(--text-3xl)' }}
+                >
                   Everything You Need for AI Prompt Engineering
                 </h2>
-                <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+                <p
+                  className="text-muted-foreground mx-auto max-w-2xl"
+                  style={{ fontSize: 'var(--text-base)' }}
+                >
                   A professional workspace purpose-built for AI prompt
                   management.
                 </p>
@@ -241,11 +247,17 @@ export function HomeClient() {
             className="px-4 py-24 md:py-32"
           >
             <div className="mx-auto max-w-6xl">
-              <div className="mb-20 space-y-4 text-center">
-                <h2 className="text-3xl font-bold tracking-tight md:text-4xl">
+              <div className="mb-20 space-y-4 px-4 text-center">
+                <h2
+                  className="font-bold tracking-tight"
+                  style={{ fontSize: 'var(--text-3xl)' }}
+                >
                   Built for Every Professional AI Workflow
                 </h2>
-                <p className="text-muted-foreground mx-auto max-w-2xl text-lg">
+                <p
+                  className="text-muted-foreground mx-auto max-w-2xl"
+                  style={{ fontSize: 'var(--text-base)' }}
+                >
                   Specialized tools for the world&apos;s most demanding AI power
                   users.
                 </p>
@@ -340,10 +352,16 @@ export function HomeClient() {
           >
             <div className="bg-primary/5 absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,black,transparent_70%)]" />
             <div className="relative mx-auto max-w-3xl space-y-8">
-              <h2 className="text-4xl font-extrabold tracking-tight md:text-5xl">
+              <h2
+                className="font-extrabold tracking-tight"
+                style={{ fontSize: 'var(--text-4xl)' }}
+              >
                 Your Prompt Library Awaits
               </h2>
-              <p className="text-muted-foreground mx-auto max-w-xl text-xl">
+              <p
+                className="text-muted-foreground mx-auto max-w-xl"
+                style={{ fontSize: 'var(--text-lg)' }}
+              >
                 Join AI power users who have already organized their prompt
                 workflows with Promptamist. Free to start, no credit card
                 required.

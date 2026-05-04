@@ -57,24 +57,26 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </Authenticated>
 
         <SidebarInset className="flex flex-1 flex-col">
-          <header className="bg-background/80 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 backdrop-blur">
-            <div className="flex items-center gap-4">
+          <header className="bg-background/80 sticky top-0 z-40 flex h-16 shrink-0 items-center justify-between border-b px-4 backdrop-blur sm:px-6">
+            <div className="flex items-center gap-2 sm:gap-4">
               <Authenticated>
                 <SidebarTrigger className="hidden lg:flex" />
               </Authenticated>
               <Link
                 href="/"
-                className="flex items-center gap-2 font-semibold tracking-tight"
+                className="flex items-center gap-1.5 font-semibold tracking-tight sm:gap-2"
               >
-                <Logo className="text-primary h-8 w-8" />
-                <span className="text-2xl">Promptamist</span>
+                <Logo className="text-primary h-7 w-7 sm:h-8 sm:w-8" />
+                <span className="text-xl sm:text-2xl">Promptamist</span>
               </Link>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2 sm:gap-4">
               <ThemeToggle />
               <Authenticated>
-                <SubscriptionButton />
+                <div className="hidden sm:flex">
+                  <SubscriptionButton />
+                </div>
                 <UserButton />
               </Authenticated>
               <Unauthenticated>

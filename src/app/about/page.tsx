@@ -40,7 +40,7 @@ export default function AboutPage() {
             </Badge>
             <h1
               className="font-heading font-extrabold tracking-tight text-balance"
-              style={{ fontSize: 'var(--text-4xl)', lineHeight: '1.1' }}
+              style={{ fontSize: 'var(--text-5xl)', lineHeight: '1.1' }}
             >
               Empowering the Next Generation of
               <span className="from-primary to-chart-1 mt-2 block bg-gradient-to-r bg-clip-text text-transparent">
@@ -49,7 +49,7 @@ export default function AboutPage() {
             </h1>
             <p
               className="text-muted-foreground mx-auto max-w-2xl leading-relaxed"
-              style={{ fontSize: 'var(--text-base)' }}
+              style={{ fontSize: 'var(--text-lg)' }}
             >
               We built Promptamist because we were tired of losing our best
               ideas in the bottomless pit of AI chat histories.
@@ -57,13 +57,13 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="px-4 py-20">
-          <div className="mx-auto max-w-3xl space-y-24">
+        <section className="px-4 py-12 md:py-20">
+          <div className="mx-auto max-w-3xl space-y-16 md:space-y-24">
             <div className="animate-in fade-in slide-in-from-bottom-12 space-y-6 duration-1000">
-              <h2 className="border-primary border-l-4 pl-6 text-3xl font-bold tracking-tight">
+              <h2 className="border-primary border-l-4 pl-6 text-2xl font-bold tracking-tight md:text-3xl">
                 Our Mission
               </h2>
-              <p className="text-muted-foreground text-lg leading-relaxed">
+              <p className="text-muted-foreground text-base leading-relaxed md:text-lg">
                 Promptamist is on a mission to make AI interaction structured,
                 repeatable, and collaborative. As LLMs like GPT-4, Claude 3.5,
                 and Gemini become core to our professional lives, the ability to

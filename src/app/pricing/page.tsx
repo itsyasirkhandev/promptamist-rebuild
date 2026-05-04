@@ -74,7 +74,7 @@ export default function PricingPage() {
             </Badge>
             <h1
               className="font-heading animate-in fade-in slide-in-from-bottom-4 font-extrabold tracking-tight text-balance duration-700"
-              style={{ fontSize: 'var(--text-4xl)', lineHeight: '1.1' }}
+              style={{ fontSize: 'var(--text-5xl)', lineHeight: '1.1' }}
             >
               Simple,{' '}
               <span className="from-primary to-chart-1 bg-gradient-to-r bg-clip-text text-transparent">
@@ -84,7 +84,7 @@ export default function PricingPage() {
             </h1>
             <p
               className="text-muted-foreground animate-in fade-in slide-in-from-bottom-5 mx-auto max-w-2xl duration-1000"
-              style={{ fontSize: 'var(--text-base)' }}
+              style={{ fontSize: 'var(--text-lg)' }}
             >
               Invest in your productivity, not in subscription bloat. Scale your
               AI workflow without breaking the bank.
@@ -152,7 +152,7 @@ export default function PricingPage() {
                   <CardContent className="flex-1 p-8 pt-0">
                     <div className="mb-8 flex origin-left items-baseline gap-1 transition-transform duration-500 group-hover:scale-105">
                       <span
-                        className="text-5xl font-black tracking-tighter"
+                        className="font-black tracking-tighter"
                         style={{ fontSize: 'var(--text-4xl)' }}
                       >
                         {plan.price}
@@ -225,11 +225,17 @@ export default function PricingPage() {
           <div className="relative mx-auto mt-40 max-w-4xl">
             <div className="bg-primary/5 absolute inset-0 -z-10 rounded-full blur-[100px]" />
 
-            <div className="mb-16 space-y-4 text-center">
-              <h2 className="text-3xl font-bold tracking-tight">
+            <div className="mb-16 space-y-4 px-4 text-center">
+              <h2
+                className="font-bold tracking-tight"
+                style={{ fontSize: 'var(--text-3xl)' }}
+              >
                 Frequently Asked Questions
               </h2>
-              <p className="text-muted-foreground">
+              <p
+                className="text-muted-foreground"
+                style={{ fontSize: 'var(--text-base)' }}
+              >
                 Everything you need to know about our plans and billing.
               </p>
               <div className="bg-primary/40 mx-auto h-1.5 w-12 rounded-full" />
