@@ -32,12 +32,12 @@ export default function TermsPage() {
         <div className="mx-auto max-w-4xl space-y-20">
           {/* Header Section */}
           <div className="text-center">
-            <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-neutral-200/60 bg-white/40 px-4 py-2 text-[10px] font-bold tracking-[0.2em] text-neutral-500 uppercase backdrop-blur-xl dark:border-neutral-800/40 dark:bg-stone-900/40 dark:text-neutral-400">
+            <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/50 px-3 py-1 text-[min(2.8vw,12px)] font-bold tracking-[0.1em] text-neutral-600 uppercase sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.2em] dark:border-neutral-800 dark:bg-stone-900/50 dark:text-neutral-400">
               <Icon
                 icon="lucide:scroll-text"
-                className="h-3.5 w-3.5 text-neutral-400/80"
+                className="h-3.5 w-3.5 shrink-0"
               />
-              Legal Framework
+              <span className="whitespace-nowrap">Legal Framework</span>
             </div>
             <h1 className="mb-8 text-5xl leading-[1.05] font-bold tracking-tight text-balance text-neutral-900 sm:text-7xl dark:text-neutral-50">
               Terms of Service

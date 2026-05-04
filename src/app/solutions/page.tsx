@@ -114,22 +114,31 @@ export default function SolutionsLandingPage() {
           </div>
 
           {/* CTA Banner */}
-          <div className="group relative mt-32 overflow-hidden rounded-[32px] border border-neutral-200 bg-white/50 p-12 text-center backdrop-blur-xl md:p-20 dark:border-neutral-800 dark:bg-stone-900/50">
-            <div className="absolute inset-0 -z-10 bg-gradient-to-b from-neutral-50/50 to-transparent dark:from-neutral-900/50" />
-            <h2 className="mb-6 text-4xl font-bold text-neutral-900 dark:text-neutral-50">
-              Custom Industry Needs?
-            </h2>
-            <p className="mx-auto mb-12 max-w-xl text-xl text-neutral-600 dark:text-neutral-400">
-              Promptamist is highly flexible and works for any niche where AI
-              prompts are part of the daily workflow.
-            </p>
-            <Link href="/sign-up">
-              <div className="group mx-auto max-w-xs rounded-[16px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] shadow-xl transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80">
-                <div className="flex h-16 w-full items-center justify-center gap-3 rounded-[14px] bg-gradient-to-b from-neutral-800 to-black px-8 text-lg font-bold text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80">
-                  Build Your Library
+          <div className="mt-32">
+            <div className="rounded-[32px] border border-white/60 bg-gradient-to-b from-neutral-100 to-white/70 shadow-2xl shadow-neutral-200/50 transition-all duration-300 dark:border-stone-950/60 dark:from-neutral-800 dark:to-neutral-900 dark:shadow-black/50">
+              <div className="rounded-[31px] border border-black/10 dark:border-neutral-900/80">
+                <div className="rounded-[30px] border border-white/50 dark:border-neutral-950">
+                  <div className="rounded-[29px] border border-neutral-950/20 dark:border-neutral-900/70">
+                    <div className="flex w-full flex-col items-center justify-center rounded-[28px] border border-white/50 bg-white/40 p-12 text-center backdrop-blur-xl md:p-20 dark:border-neutral-700/50 dark:bg-black/40">
+                      <h2 className="mb-6 text-4xl font-bold text-neutral-900 dark:text-neutral-50">
+                        Custom Industry Needs?
+                      </h2>
+                      <p className="mx-auto mb-12 max-w-xl text-xl text-neutral-600 dark:text-neutral-400">
+                        Promptamist is highly flexible and works for any niche
+                        where AI prompts are part of the daily workflow.
+                      </p>
+                      <Link href="/sign-up">
+                        <div className="group mx-auto max-w-xs rounded-[16px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] shadow-xl transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80">
+                          <div className="flex h-16 w-full items-center justify-center gap-3 rounded-[14px] bg-gradient-to-b from-neutral-800 to-black px-8 text-lg font-bold text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80">
+                            Build Your Library
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </Link>
+            </div>
           </div>
         </div>
       </main>

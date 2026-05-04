@@ -29,12 +29,9 @@ export default function ContentWritingSolution() {
       <main className="relative z-10 flex-1">
         <section className="relative overflow-hidden px-4 py-24 text-center md:py-36">
           <div className="relative mx-auto max-w-4xl">
-            <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-neutral-200/60 bg-white/40 px-4 py-2 text-[10px] font-bold tracking-[0.2em] text-neutral-500 uppercase backdrop-blur-xl dark:border-neutral-800/40 dark:bg-stone-900/40 dark:text-neutral-400">
-              <Icon
-                icon="lucide:sparkles"
-                className="h-3.5 w-3.5 text-neutral-400/80"
-              />
-              For Content Creators
+            <div className="mb-10 inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white/50 px-3 py-1 text-[min(2.8vw,12px)] font-bold tracking-[0.1em] text-neutral-600 uppercase sm:px-4 sm:py-1.5 sm:text-xs sm:tracking-[0.2em] dark:border-neutral-800 dark:bg-stone-900/50 dark:text-neutral-400">
+              <Icon icon="lucide:sparkles" className="h-3.5 w-3.5 shrink-0" />
+              <span className="whitespace-nowrap">For Content Creators</span>
             </div>
 
             <h1 className="mb-8 text-5xl leading-[1.05] font-bold tracking-tight text-balance text-neutral-900 sm:text-7xl md:text-8xl dark:text-neutral-50">
@@ -51,9 +48,10 @@ export default function ContentWritingSolution() {
 
             <div className="mt-14 flex justify-center">
               <Link href="/sign-up">
-                <div className="group rounded-[16px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] shadow-xl shadow-neutral-200/40 transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80 dark:shadow-black/60">
-                  <div className="flex h-16 w-full min-w-[240px] items-center justify-center gap-3 rounded-[14px] bg-gradient-to-b from-neutral-800 to-black px-10 text-lg font-bold text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80">
+                <div className="group rounded-[18px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] shadow-2xl transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80">
+                  <div className="flex h-16 w-full min-w-[280px] items-center justify-center gap-3 rounded-[16px] bg-gradient-to-b from-neutral-800 to-black px-12 text-xl font-bold text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80">
                     Start Writing with AI
+                    <Icon icon="lucide:arrow-right" className="h-6 w-6" />
                   </div>
                 </div>
               </Link>
