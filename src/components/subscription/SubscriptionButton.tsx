@@ -37,7 +37,7 @@ export function SubscriptionButton() {
           className={cn(
             'rounded-full border border-white/60 p-[1px] shadow-lg transition-all duration-300 dark:border-stone-950/60',
             isPro
-              ? 'from-primary/40 to-primary shadow-primary/20 bg-gradient-to-b'
+              ? 'from-primary/60 to-primary shadow-primary/30 bg-gradient-to-b'
               : 'bg-gradient-to-b from-neutral-200 to-neutral-50 shadow-neutral-200/50 dark:from-neutral-800 dark:to-neutral-900 dark:shadow-black/50',
           )}
         >
@@ -46,8 +46,8 @@ export function SubscriptionButton() {
               className={cn(
                 'flex items-center gap-3 rounded-full border border-white/50 px-4 py-1.5 backdrop-blur-xl transition-all duration-300',
                 isPro
-                  ? 'bg-primary/10 dark:bg-primary/20 border-primary/20'
-                  : 'border-neutral-200/50 bg-white/40 dark:border-neutral-700/50 dark:bg-black/40',
+                  ? 'bg-primary/10 dark:bg-primary/20 border-primary/30'
+                  : 'border-neutral-200/80 bg-white/60 dark:border-neutral-700/80 dark:bg-black/60',
               )}
             >
               {/* Plan Icon/Label */}
@@ -57,7 +57,7 @@ export function SubscriptionButton() {
                     'flex h-5 w-5 items-center justify-center rounded-lg border shadow-sm transition-transform group-hover:scale-110',
                     isPro
                       ? 'bg-primary border-primary/20 text-white'
-                      : 'border-neutral-200 bg-neutral-100 text-neutral-600 dark:border-neutral-700 dark:bg-neutral-800 dark:text-neutral-400',
+                      : 'border-neutral-300 bg-neutral-100 text-neutral-700 dark:border-neutral-600 dark:bg-neutral-800 dark:text-neutral-300',
                   )}
                 >
                   <Icon
@@ -69,8 +69,8 @@ export function SubscriptionButton() {
                   className={cn(
                     'text-[10px] font-black tracking-[0.2em] uppercase',
                     isPro
-                      ? 'text-primary dark:text-primary-foreground'
-                      : 'text-neutral-500 dark:text-neutral-400',
+                      ? 'text-primary-foreground dark:text-primary-foreground bg-primary px-1.5 py-0.5 rounded-md'
+                      : 'text-neutral-900 dark:text-neutral-50',
                   )}
                 >
                   {isPro ? 'Pro' : 'Free'}
@@ -79,17 +79,17 @@ export function SubscriptionButton() {
 
               {!isPro && (
                 <>
-                  <div className="h-3 w-px bg-neutral-200 dark:bg-neutral-800" />
+                  <div className="h-3 w-px bg-neutral-300 dark:bg-neutral-700" />
                   <div className="flex items-center gap-2">
-                    <div className="relative h-1.5 w-16 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800">
+                    <div className="relative h-1.5 w-16 overflow-hidden rounded-full bg-neutral-200 dark:bg-neutral-800 border border-black/5 dark:border-white/5">
                       <div
-                        className="bg-primary absolute inset-y-0 left-0 transition-all duration-500"
+                        className="bg-primary absolute inset-y-0 left-0 transition-all duration-500 shadow-[0_0_8px_rgba(var(--primary),0.5)]"
                         style={{
                           width: `${Math.min((stats.total / 50) * 100, 100)}%`,
                         }}
                       />
                     </div>
-                    <span className="text-[10px] font-bold text-neutral-600 tabular-nums dark:text-neutral-400">
+                    <span className="text-[10px] font-bold text-neutral-800 tabular-nums dark:text-neutral-200">
                       {stats.total}/50
                     </span>
                     <Icon
