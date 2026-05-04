@@ -22,6 +22,12 @@ import { Footer } from './Footer';
 export function AppLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isPublicPromptPage = pathname?.startsWith('/p/');
+  const isAuthPage =
+    pathname?.startsWith('/sign-in') || pathname?.startsWith('/sign-up');
+
+  if (isAuthPage) {
+    return <div className="bg-background min-h-screen w-full">{children}</div>;
+  }
 
   if (isPublicPromptPage) {
     return (
