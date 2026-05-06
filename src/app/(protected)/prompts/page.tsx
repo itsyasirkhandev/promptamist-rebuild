@@ -75,16 +75,10 @@ export default function PromptsPage() {
         </Breadcrumb>
         <header className="flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <h1
-              className="font-semibold tracking-tight"
-              style={{ fontSize: 'var(--text-4xl)' }}
-            >
+            <h1 className="text-4xl font-semibold tracking-tight">
               Prompts Dashboard
             </h1>
-            <p
-              className="text-muted-foreground"
-              style={{ fontSize: 'var(--text-base)' }}
-            >
+            <p className="text-base text-muted-foreground">
               Manage and organize your prompt library.
             </p>
           </div>
