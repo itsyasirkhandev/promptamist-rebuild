@@ -1,7 +1,7 @@
 # Promptamist
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=24&duration=3000&pause=1000&color=F8FAFC&center=true&vCenter=true&width=600&lines=Prompt+Engineering+as+Code.;Manage.+Version.+Sync.;The+Type-Safe+Prompt+Engine." alt="Promptamist Tagline" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=24&duration=3000&pause=1000&color=F8FAFC&center=true&vCenter=true&width=600&lines=Prompt+Engineering+as+Code.;Versioned.+Syncable.+Type-Safe.;Scale+your+LLM+workflows+with+precision." alt="Promptamist Tagline" />
 </p>
 
 <p align="center">
@@ -22,25 +22,7 @@
 
 ---
 
-## [01] System Configuration
-
-```yaml
-project:
-  name: Promptamist
-  tagline: Prompt Engineering as Code
-  version: 0.1.0
-  status: functional-beta
-
-core_principles:
-  - type_safe_abstractions
-  - real_time_synchronization
-  - functional_composition
-  - developer_first_dx
-```
-
----
-
-## [02] Architectural Flow
+## [01] Architectural Flow
 
 Promptamist utilizes a high-performance reactive stack to manage prompt lifecycles from definition to execution.
 
@@ -49,60 +31,64 @@ graph TD
     User([User Engineer]) --> UI[Next.js App Router]
     UI --> Hooks[Convex React Hooks]
     Hooks <--> Sync[Convex Real-time DB]
-    
-    subgraph "Backend Engine"
+
+    subgraph Engine [Backend Engine]
         Sync --> Actions[Convex Actions/Mutations]
         Actions --> Effect[Effect Library Logic]
         Effect --> LLM[LLM Provider API]
     end
-    
-    subgraph "Identity & Security"
+
+    subgraph Security [Identity and Security]
         Auth[Clerk Auth] -.-> UI
         Webhook[SVIX Webhook] -.-> Sync
     end
 
     style User fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style Backend Engine fill:#f0f4ff,stroke:#58a6ff,stroke-width:1px
-    style Identity & Security fill:#fff5f5,stroke:#ff6b6b,stroke-width:1px
+    style Engine fill:#f0f4ff,stroke:#58a6ff,stroke-width:1px
+    style Security fill:#fff5f5,stroke:#ff6b6b,stroke-width:1px
 ```
 
 ---
 
-## [03] Core Capabilities
+## [02] Core Capabilities
 
 ### Prompt Architecture
+
 - **Dynamic Variable Injection**: Schema-aware support for `Text`, `Number`, `Choices`, and `Lists`.
 - **Structural Integrity**: Strict versioning and draft/publish workflows.
 - **Live Context Rendering**: Real-time evaluation of prompt templates with active variables.
 
 ### Distribution & Lifecycle
+
 - **Semantic Routing**: Human-readable, SEO-optimized slugs for prompt discovery.
 - **Collaborative Workspaces**: Fine-grained visibility controls (Public vs. Private).
 - **Metadata Engine**: Robust tagging and categorization for large-scale prompt libraries.
 
 ### Security Infrastructure
+
 - **Unified Identity**: Enterprise-grade authentication via Clerk integration.
 - **Edge Security**: SVIX-verified webhook synchronization for user data integrity.
 - **Contextual Access**: Server-side permission enforcement on all data operations.
 
 ---
 
-## [04] Infrastructure Stack
+## [03] Infrastructure Stack
 
-| Layer | Implementation | Strategic Rationale |
-| :--- | :--- | :--- |
-| **Interface** | Next.js 16 | SSR-first performance and optimized asset delivery. |
-| **Persistence** | Convex | Document-relational storage with native real-time sync. |
-| **Logic Engine** | Effect | Type-safe error handling and functional composition. |
-| **Identity** | Clerk | Decoupled auth management and multi-session support. |
-| **Design** | Tailwind 4 | JIT-compiled utility-first styling with OKLCH support. |
-| **Components** | shadcn/ui | Radix-based accessible UI primitives. |
+| Layer            | Implementation | Strategic Rationale                                     |
+| :--------------- | :------------- | :------------------------------------------------------ |
+| **Interface**    | Next.js 16     | SSR-first performance and optimized asset delivery.     |
+| **Persistence**  | Convex         | Document-relational storage with native real-time sync. |
+| **Logic Engine** | Effect         | Type-safe error handling and functional composition.    |
+| **Identity**     | Clerk          | Decoupled auth management and multi-session support.    |
+| **Design**       | Tailwind 4     | JIT-compiled utility-first styling with OKLCH support.  |
+| **Components**   | shadcn/ui      | Radix-based accessible UI primitives.                   |
 
 ---
 
-## [05] Local Deployment
+## [04] Local Deployment
 
 ### 1. Environment Initialization
+
 ```bash
 git clone https://github.com/your-username/promptamist.git
 cd promptamist
@@ -110,7 +96,9 @@ pnpm install
 ```
 
 ### 2. Service Configuration
+
 Define local environment variables in `.env.local`:
+
 ```env
 # Identity Provider
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
@@ -122,6 +110,7 @@ CLERK_WEBHOOK_SECRET=whsec_...
 ```
 
 ### 3. Execution
+
 ```bash
 # Terminal A: Background Services
 npx convex dev
@@ -132,7 +121,7 @@ pnpm dev
 
 ---
 
-## [06] Project Topology
+## [05] Project Topology
 
 ```text
 promptamist/
@@ -150,7 +139,7 @@ promptamist/
 
 ---
 
-## [07] Governance & Quality
+## [06] Governance & Quality
 
 - **Linting**: Strict ESLint configuration for code consistency.
 - **Types**: 100% TypeScript coverage with inferred API types.
@@ -159,7 +148,6 @@ promptamist/
 
 ---
 
-## [08] License
+## [07] License
 
 Released under the [MIT License](LICENSE).
-
