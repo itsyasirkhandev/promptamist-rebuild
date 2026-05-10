@@ -28,7 +28,7 @@ Promptamist utilizes a high-performance reactive stack to manage prompt lifecycl
 
 ```mermaid
 flowchart LR
-    Draft[Drafting: {{vars}}] --> Extract[Variable Extraction]
+    Draft["Drafting: {{vars}}"] --> Extract[Variable Extraction]
     Extract --> Valid[Effect-Safe Validation]
 
     subgraph Reactive_Core ["Reactive Engine"]
