@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { Icon } from '@iconify/react';
 import { toast } from 'sonner';
+import { Loader } from '@/components/ui/Loader';
 
 interface UpgradeModalProps {
   open: boolean;
@@ -129,10 +130,7 @@ export function UpgradeModal({
             >
               {isPending ? (
                 <>
-                  <Icon
-                    icon="lucide:loader-2"
-                    className="mr-2 h-5 w-5 animate-spin"
-                  />
+                  <Loader size={20} className="mr-2" />
                   Securing checkout...
                 </>
               ) : (

@@ -24,6 +24,7 @@ import { cn } from '@/lib/utils';
 import { Doc } from '../../convex/_generated/dataModel';
 import { TextureCard } from '@/components/ui/TextureCard';
 import { CTASection } from '@/components/CTASection';
+import { Loader } from '@/components/ui/Loader';
 
 export function HomeClient() {
   return (
@@ -37,8 +38,8 @@ export function HomeClient() {
         <AuthLoading>
           <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
             <div className="relative">
-              <div className="bg-primary/10 absolute -inset-4 animate-pulse rounded-full blur-xl" />
-              <div className="border-primary/20 border-t-primary relative h-12 w-12 animate-spin rounded-full border-4 shadow-xl" />
+              <div className="bg-primary/10 absolute -inset-6 animate-pulse rounded-full blur-2xl" />
+              <Loader size={64} className="text-primary" />
             </div>
             <p className="animate-pulse text-sm font-medium tracking-wide text-neutral-500 uppercase">
               Securing your session

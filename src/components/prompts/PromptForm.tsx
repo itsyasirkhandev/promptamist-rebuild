@@ -29,6 +29,7 @@ import { VariableList } from '@/components/prompts/VariableList';
 import { cn } from '@/lib/utils';
 import { TagsSection } from './form/TagsSection';
 import { SettingsSection } from './form/SettingsSection';
+import { Loader } from '@/components/ui/Loader';
 
 const promptFormSchema = z.object({
   title: z
@@ -314,11 +315,7 @@ export function PromptForm({
               disabled={isSubmitting}
             >
               {isSubmitting ? (
-                <Icon
-                  icon="lucide:loader-2"
-                  className="animate-spin"
-                  width={20}
-                />
+                <Loader size={20} />
               ) : (
                 submitLabel
               )}
