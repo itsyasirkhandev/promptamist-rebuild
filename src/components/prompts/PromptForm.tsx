@@ -314,11 +314,7 @@ export function PromptForm({
               className="h-12 w-full text-base"
               disabled={isSubmitting}
             >
-              {isSubmitting ? (
-                <Loader size={20} />
-              ) : (
-                submitLabel
-              )}
+              {isSubmitting ? <Loader size={20} /> : submitLabel}
             </Button>
           </div>
         </div>
