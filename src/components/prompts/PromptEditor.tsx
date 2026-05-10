@@ -120,51 +120,43 @@ export function PromptEditor({
     onVariablesChange([...variables, newVar]);
     toast.success(`Variable {{${newVar.name}}} added`);
 
+    const insertVariableNode = (range?: Range) => {
+      const selection = window.getSelection();
+      const span = document.createElement('span');
+      span.className =
+        'bg-primary/20 text-primary rounded px-1 font-mono select-all';
+      span.setAttribute('data-variable-id', newVar.id);
+      span.setAttribute('contenteditable', 'false');
+      span.textContent = `{{${newVar.name}}}`;
+
+      if (range) {
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+        range.deleteContents();
+        range.insertNode(span);
+      } else if (editorRef.current) {
+        editorRef.current.appendChild(span);
+      } else {
+        return;
+      }
+
+      const nextRange = document.createRange();
+      nextRange.setStartAfter(span);
+      nextRange.collapse(true);
+      selection?.removeAllRanges();
+      selection?.addRange(nextRange);
+
+      handleInput();
+    };
+
     if (
       savedRange &&
       editorRef.current &&
       editorRef.current.contains(savedRange.commonAncestorContainer)
     ) {
-      const selection = window.getSelection();
-      selection?.removeAllRanges();
-      selection?.addRange(savedRange);
-
-      const span = document.createElement('span');
-      span.className =
-        'bg-primary/20 text-primary rounded px-1 font-mono select-all';
-      span.setAttribute('data-variable-id', newVar.id);
-      span.setAttribute('contenteditable', 'false');
-      span.textContent = `{{${newVar.name}}}`;
-
-      savedRange.deleteContents();
-      savedRange.insertNode(span);
-
-      // Move cursor after the span
-      const nextRange = document.createRange();
-      nextRange.setStartAfter(span);
-      nextRange.collapse(true);
-      selection?.removeAllRanges();
-      selection?.addRange(nextRange);
-
-      handleInput();
-    } else if (editorRef.current) {
-      const span = document.createElement('span');
-      span.className =
-        'bg-primary/20 text-primary rounded px-1 font-mono select-all';
-      span.setAttribute('data-variable-id', newVar.id);
-      span.setAttribute('contenteditable', 'false');
-      span.textContent = `{{${newVar.name}}}`;
-
-      editorRef.current.appendChild(span);
-
-      const selection = window.getSelection();
-      const nextRange = document.createRange();
-      nextRange.setStartAfter(span);
-      nextRange.collapse(true);
-      selection?.removeAllRanges();
-      selection?.addRange(nextRange);
-
-      handleInput();
+      insertVariableNode(savedRange);
+    } else {
+      insertVariableNode();
     }
   };
 

@@ -144,36 +144,50 @@ export const VariableInput = React.memo(
           )}
         </div>
 
-        {v.type === 'text' && (
-          <TextInput v={v} value={value} onChange={onChange} colors={colors} />
-        )}
-        {v.type === 'number' && (
-          <NumberInput
-            v={v}
-            value={value}
-            onChange={onChange}
-            colors={colors}
-          />
-        )}
-        {v.type === 'textarea' && (
-          <TextAreaInput
-            v={v}
-            value={value}
-            onChange={onChange}
-            colors={colors}
-          />
-        )}
-        {v.type === 'choices' && (
-          <ChoiceInput
-            v={v}
-            value={value}
-            onChange={onChange}
-            colors={colors}
-          />
-        )}
-        {v.type === 'list' && (
-          <ListInput v={v} value={value} onChange={onChange} />
-        )}
+        {(() => {
+          switch (v.type) {
+            case 'text':
+              return (
+                <TextInput
+                  v={v}
+                  value={value}
+                  onChange={onChange}
+                  colors={colors}
+                />
+              );
+            case 'number':
+              return (
+                <NumberInput
+                  v={v}
+                  value={value}
+                  onChange={onChange}
+                  colors={colors}
+                />
+              );
+            case 'textarea':
+              return (
+                <TextAreaInput
+                  v={v}
+                  value={value}
+                  onChange={onChange}
+                  colors={colors}
+                />
+              );
+            case 'choices':
+              return (
+                <ChoiceInput
+                  v={v}
+                  value={value}
+                  onChange={onChange}
+                  colors={colors}
+                />
+              );
+            case 'list':
+              return <ListInput v={v} value={value} onChange={onChange} />;
+            default:
+              return null;
+          }
+        })()}
       </div>
     );
   },

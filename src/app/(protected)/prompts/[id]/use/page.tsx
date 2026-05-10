@@ -82,6 +82,13 @@ const LivePreview = ({
   </div>
 );
 
+const SkeletonInput = () => (
+  <div className="space-y-2">
+    <Skeleton className="h-4 w-24" />
+    <Skeleton className="h-10 w-full" />
+  </div>
+);
+
 interface PageProps {
   params: Promise<{ id: string }>;
 }
@@ -139,18 +146,9 @@ export default function UseTemplatePage({ params }: PageProps) {
               <Skeleton className="h-4 w-48" />
             </header>
             <div className="flex-1 space-y-6 p-4 lg:p-6">
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-10 w-full" />
-              </div>
-              <div className="space-y-2">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-10 w-full" />
-              </div>
+              <SkeletonInput />
+              <SkeletonInput />
+              <SkeletonInput />
             </div>
           </div>
           <div className="bg-secondary/10 flex h-full flex-col">
@@ -165,14 +163,8 @@ export default function UseTemplatePage({ params }: PageProps) {
         </div>
         <div className="flex flex-1 flex-col overflow-hidden lg:hidden">
           <div className="space-y-6 p-4">
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-10 w-full" />
-            </div>
+            <SkeletonInput />
+            <SkeletonInput />
           </div>
         </div>
       </div>
