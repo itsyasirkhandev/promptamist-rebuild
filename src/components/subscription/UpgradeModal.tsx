@@ -105,7 +105,7 @@ export function UpgradeModal({
               </ul>
             </div>
 
-            <div className="bg-primary/10 border-primary/20 flex flex-col items-center justify-between gap-2 rounded-xl border px-4 py-2.5 text-sm shadow-sm xs:flex-row xs:gap-0 sm:py-2">
+            <div className="bg-primary/10 border-primary/20 xs:flex-row xs:gap-0 flex flex-col items-center justify-between gap-2 rounded-xl border px-4 py-2.5 text-sm shadow-sm sm:py-2">
               <div className="flex items-center gap-2">
                 <Icon
                   icon="solar:ticket-bold-duotone"
@@ -116,7 +116,7 @@ export function UpgradeModal({
                   prompt4yasir
                 </span>
               </div>
-              <span className="text-primary text-xs font-bold uppercase xs:text-muted-foreground xs:font-semibold">
+              <span className="text-primary xs:text-muted-foreground xs:font-semibold text-xs font-bold uppercase">
                 100% OFF
               </span>
             </div>

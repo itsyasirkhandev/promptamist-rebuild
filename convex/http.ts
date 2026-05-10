@@ -55,7 +55,7 @@ http.route({
 
       const payload = yield* Effect.promise(() => request.text());
       const wh = new Webhook(webhookSecret);
-      
+
       const event = yield* Effect.try({
         try: () =>
           wh.verify(payload, {

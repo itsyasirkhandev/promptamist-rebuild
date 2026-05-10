@@ -78,7 +78,7 @@ export default function PromptsPage() {
             <h1 className="text-4xl font-semibold tracking-tight">
               Prompts Dashboard
             </h1>
-            <p className="text-base text-muted-foreground">
+            <p className="text-muted-foreground text-base">
               Manage and organize your prompt library.
             </p>
           </div>

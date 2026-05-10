@@ -34,7 +34,7 @@ export function SubscriptionButton() {
             ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-900/20 dark:text-amber-400'
             : 'border-neutral-200 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100',
           !isPro &&
-            'cursor-pointer hover:border-primary/50 hover:bg-neutral-50 dark:hover:bg-neutral-800',
+            'hover:border-primary/50 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800',
         )}
       >
         <div
@@ -56,14 +56,14 @@ export function SubscriptionButton() {
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold uppercase tracking-tight">
+          <span className="text-[11px] font-bold tracking-tight uppercase">
             {isPro ? 'Pro' : 'Free'}
           </span>
 
           {!isPro && (
             <div className="flex items-center gap-1.5 sm:gap-2">
               <div className="h-3 w-px bg-neutral-200 dark:bg-neutral-800" />
-              <span className="text-[10px] font-semibold tabular-nums text-neutral-500 dark:text-neutral-400">
+              <span className="text-[10px] font-semibold text-neutral-500 tabular-nums dark:text-neutral-400">
                 <span className="hidden sm:inline">
                   {stats.total}/50 Prompts
                 </span>
