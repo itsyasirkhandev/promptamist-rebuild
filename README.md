@@ -27,25 +27,27 @@
 Promptamist utilizes a high-performance reactive stack to manage prompt lifecycles from definition to execution.
 
 ```mermaid
-graph TD
-    User([User Engineer]) --> UI[Next.js App Router]
-    UI --> Hooks[Convex React Hooks]
-    Hooks <--> Sync[Convex Real-time DB]
+flowchart LR
+    Draft[Drafting: {{vars}}] --> Extract[Variable Extraction]
+    Extract --> Valid[Effect-Safe Validation]
 
-    subgraph Engine [Backend Engine]
-        Sync --> Actions[Convex Actions/Mutations]
-        Actions --> Effect[Effect Library Logic]
-        Effect --> LLM[LLM Provider API]
+    subgraph Reactive_Core ["Reactive Engine"]
+        direction TB
+        Valid --> Sync[Convex Real-time Sync]
+        Sync <--> UI[Collaborative UI]
     end
 
-    subgraph Security [Identity and Security]
-        Auth[Clerk Auth] -.-> UI
-        Webhook[SVIX Webhook] -.-> Sync
+    subgraph Sharing_System ["Lifecycle & Sharing"]
+        direction LR
+        Sync --> Slug[Slug Generation]
+        Sync --> Stats[Usage Analytics]
     end
 
-    style User fill:#f9f9f9,stroke:#333,stroke-width:2px
-    style Engine fill:#f0f4ff,stroke:#58a6ff,stroke-width:1px
-    style Security fill:#fff5f5,stroke:#ff6b6b,stroke-width:1px
+    Sync --> Preview[Live Interpolation]
+    Preview --> Final[Final Prompt Payload]
+
+    style Reactive_Core fill:#f0f4ff,stroke:#58a6ff,stroke-width:1px
+    style Sharing_System fill:#fff5f5,stroke:#ff6b6b,stroke-width:1px
 ```
 
 ---
