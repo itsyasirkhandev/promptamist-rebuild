@@ -1,0 +1,39 @@
+name: Convex Deploy
+
+on:
+  push:
+    branches:
+      - '**' # Trigger on all branches
+  pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Deploy to Production
+        if: github.ref == 'refs/heads/main'
+        run: pnpm convex deploy --yes
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_DEPLOY_KEY }}
+
+      - name: Deploy Preview
+        if: github.ref != 'refs/heads/main'
+        run: pnpm convex deploy --preview --yes
+        env:
+          CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_PREVIEW_KEY }}
