@@ -21,6 +21,11 @@ class EnvError {
   constructor(readonly message: string) {}
 }
 
+class PortalError {
+  readonly _tag = 'PortalError';
+  constructor(readonly cause: unknown) {}
+}
+
 const envSchema = z.object({
   POLAR_ACCESS_TOKEN: z.string().min(1, 'Polar access token is required'),
   POLAR_ENVIRONMENT: z.enum(['sandbox', 'production']).default('sandbox'),
@@ -111,6 +116,80 @@ export async function createCheckoutSession(clientOrigin?: string) {
   const result = await Effect.runPromise(program);
 
   // Next.js redirect must be called outside of Effect pipeline because it throws an internal error to break control flow
+  if (result.success && result.url) {
+    redirect(result.url);
+  }
+
+  return result;
+}
+
+export async function createCustomerPortalSession() {
+  const program = Effect.gen(function* () {
+    const user = yield* Effect.promise(() => currentUser());
+
+    if (!user || !user.id) {
+      return yield* Effect.fail(new UnauthorizedError());
+    }
+
+    const env = yield* Effect.try({
+      try: () => envSchema.parse(process.env),
+      catch: (e) => new EnvError(`Environment validation failed: ${e}`),
+    });
+
+    const polar = new Polar({
+      accessToken: env.POLAR_ACCESS_TOKEN,
+      server: env.POLAR_ENVIRONMENT,
+    });
+
+    const sessionResponse = yield* Effect.tryPromise({
+      try: () =>
+        polar.customerSessions.create({
+          externalCustomerId: user.id,
+        }),
+      catch: (error) => new PortalError(error),
+    });
+
+    // Extract URL from the response
+    const portalUrl = sessionResponse.customerPortalUrl;
+
+    if (!portalUrl) {
+      return yield* Effect.fail(
+        new PortalError('No portal URL returned by Polar'),
+      );
+    }
+
+    return portalUrl;
+  }).pipe(
+    // Match the existing pattern for consistent UI messaging
+    Effect.match({
+      onFailure: (error) => {
+        console.error('Polar Portal Error:', error);
+        return {
+          success: false as const,
+          error: (function () {
+            if (error._tag === 'UnauthorizedError')
+              return 'You must be logged in to manage your subscription.';
+            if (error._tag === 'EnvError')
+              return `Configuration error: ${error.message}`;
+
+            const cause = error.cause;
+            const causeMessage =
+              // Handle error cause serialization
+              typeof cause === 'object' && cause !== null
+                ? (cause as Error).message || String(cause)
+                : String(cause || 'Unknown error');
+
+            return `Portal access failed: ${causeMessage}`;
+          })(),
+        };
+      },
+      onSuccess: (url) => ({ success: true as const, url }),
+    }),
+  );
+
+  const result = await Effect.runPromise(program);
+
+  // Externalize redirect to avoid throwing within the Effect generator
   if (result.success && result.url) {
     redirect(result.url);
   }
