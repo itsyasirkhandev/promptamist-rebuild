@@ -117,3 +117,73 @@ export async function createCheckoutSession(clientOrigin?: string) {
 
   return result;
 }
+
+class PolarApiError {
+  readonly _tag = 'PolarApiError';
+  constructor(public readonly message: string) {}
+}
+
+export async function createCustomerPortalSession() {
+  const program = Effect.gen(function* () {
+    const user = yield* Effect.promise(() => currentUser());
+
+    if (!user || !user.id) {
+      return yield* Effect.fail(new UnauthorizedError());
+    }
+
+    const env = yield* Effect.try({
+      try: () => envSchema.parse(process.env),
+      catch: (e) => new EnvError(`Environment validation failed: ${e}`),
+    });
+
+    const headersList = yield* Effect.promise(() => headers());
+    const host = headersList.get('host');
+    const protocol =
+      headersList.get('x-forwarded-proto') ||
+      (host?.includes('localhost') ? 'http' : 'https');
+
+    const appUrl =
+      env.NEXT_PUBLIC_APP_URL ||
+      (host ? `${protocol}://${host}` : null) ||
+      (process.env.VERCEL_PROJECT_PRODUCTION_URL
+        ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+        : null) ||
+      (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null) ||
+      'http://localhost:3000';
+
+    const polar = new Polar({
+      accessToken: env.POLAR_ACCESS_TOKEN,
+      server: env.POLAR_ENVIRONMENT,
+    });
+
+    const result = yield* Effect.tryPromise({
+      try: () =>
+        polar.customerSessions.create({
+          externalCustomerId: user.id,
+          returnUrl: `${appUrl}`,
+        }),
+      catch: (e) =>
+        new PolarApiError(
+          e instanceof Error ? e.message : 'Unknown Polar API Error',
+        ),
+    });
+
+    if (!result.customerPortalUrl) {
+      return yield* Effect.fail(
+        new PolarApiError('No URL returned from Polar API'),
+      );
+    }
+
+    return result.customerPortalUrl;
+  });
+
+  return Effect.runPromise(
+    Effect.match(program, {
+      onFailure: (error) => {
+        console.error('Portal Session Error:', error);
+        return { success: false as const, error: error._tag };
+      },
+      onSuccess: (url) => ({ success: true as const, url }),
+    }),
+  );
+}

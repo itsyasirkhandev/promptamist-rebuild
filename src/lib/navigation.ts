@@ -29,4 +29,10 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     icon: 'lucide:plus-circle',
     requireAuth: true,
   },
+  {
+    title: 'Settings',
+    href: '/settings',
+    icon: 'lucide:settings',
+    requireAuth: true,
+  },
 ];
