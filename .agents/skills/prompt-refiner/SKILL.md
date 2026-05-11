@@ -18,6 +18,7 @@ Enhance the current user prompt to make it super context-rich. Transform short, 
    - Identify the exact tech stack and versions (e.g., Next.js, React, Convex, Tailwind).
    - Read the `package.json` file to identify currently installed packages. You MUST extract and list the exact major, minor, and patch version of each relevant library. Do not assume the version of any library.
    - Identify existing architectural patterns and conventions (e.g., auth routing, database schemas).
+   - Evaluate available MCP tools, search tools, and agent skills. Describe and list all relevant tools and skills that the AI coding agent can invoke to enhance its workflow and accomplish the task effectively.
 3. **Identify Missing Context**: If crucial details for the specific task are missing, ask the user up to 3 specific, numbered questions. 
 4. **Draft the Refined Prompt**: Create a detailed, to-the-point prompt structured into clear sections. **DO NOT include a Role or Persona (e.g., "You are an expert...")** as the target AI already has its own system prompt.
    - **Context & Environment**: Detailed breakdown of the tech stack, existing patterns, and relevant dependencies (including their major, minor, and patch versions). This must be the first thing in the prompt.
@@ -38,6 +39,7 @@ Here is your refined prompt:
 - **Tech Stack**: [e.g., Next.js 14.1.0 (App Router), React 18.2.0, Tailwind CSS 3.4.1]
 - **Dependencies**: [e.g., Clerk for auth (v4.29.3), Convex for backend (v1.8.0)]
 - **Existing Patterns**: [e.g., Backend logic resides in `convex/`, use `pnpm`]
+- **Relevant Tools & Skills**: [e.g., `mcp_exa_web_search_exa`, `seo-optimizer` skill]
 
 # Objective
 [Clear, concise statement of the goal]
