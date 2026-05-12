@@ -4,6 +4,7 @@
 Implement a backend Server Action to generate a session for the Polar Hosted Customer Portal. This allows authenticated users to manage their subscriptions, payment methods, and billing history directly on Polar's hosted infrastructure.
 
 **2. Tech Stack**
+
 - **Next.js 16 (App Router)**: Server Actions for secure backend execution.
 - **Polar SDK (v0.47.1)**: To interact with Polar's API for session creation.
 - **Effect (v4.0.0-beta.52)**: Functional programming library for robust error handling and control flow.
@@ -11,6 +12,7 @@ Implement a backend Server Action to generate a session for the Polar Hosted Cus
 - **Zod**: Schema validation for environment variables.
 
 **3. High-Level Architecture**
+
 - **Backend (Server Action)**: `createCustomerPortalSession` will reside in `src/app/actions/polar.ts`.
 - **Logic Flow**:
   1. Authenticate user via Clerk.
@@ -21,10 +23,12 @@ Implement a backend Server Action to generate a session for the Polar Hosted Cus
 
 **4. Data Model**
 The implementation relies on existing user data mappings:
+
 - `user.id` (Clerk) is mapped to Polar's `externalCustomerId`.
 - Polar internal `customer_id` is linked via the `externalCustomerId` provided during checkout/session creation.
 
 **5. Core Design Decisions**
+
 - **Effect Pattern Consistency**: Replicate the `Effect.gen` and `Effect.match` pattern used in `createCheckoutSession` for consistent error handling and logging.
 - **Type Safety**: Define a `PortalError` class to differentiate portal-specific failures from checkout failures.
 - **Redirect Handling**: Maintain the pattern of calling `redirect()` outside the `Effect` pipeline to correctly handle Next.js's internal redirect mechanics.
@@ -33,6 +37,7 @@ The implementation relies on existing user data mappings:
 **6. Core Functional Flows**
 
 **A. Portal Session Generation**
+
 ```typescript
 // Proposed Implementation in src/app/actions/polar.ts
 
@@ -60,9 +65,10 @@ export async function createCustomerPortalSession() {
     });
 
     const sessionResponse = yield* Effect.tryPromise({
-      try: () => polar.customerSessions.create({
-        externalCustomerId: user.id
-      }),
+      try: () =>
+        polar.customerSessions.create({
+          externalCustomerId: user.id,
+        }),
       catch: (error) => new PortalError(error),
     });
 
@@ -116,6 +122,7 @@ export async function createCustomerPortalSession() {
 ```
 
 **7. Development Plan**
+
 1. **Refine src/app/actions/polar.ts**:
    - Add `PortalError` class.
    - Implement `createCustomerPortalSession` function following the established pattern.

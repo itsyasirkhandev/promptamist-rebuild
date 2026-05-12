@@ -28,13 +28,18 @@ export function SubscriptionButton() {
 
   const handleProClick = () => {
     startTransition(async () => {
-      const result = await createCustomerPortalSession({ shouldRedirect: false });
+      const result = await createCustomerPortalSession({
+        shouldRedirect: false,
+      });
       if (result.success) {
         if (result.url) {
           window.open(result.url, '_blank');
         }
       } else {
-        console.error('Failed to create customer portal session:', result.error);
+        console.error(
+          'Failed to create customer portal session:',
+          result.error,
+        );
       }
     });
   };
@@ -51,11 +56,11 @@ export function SubscriptionButton() {
         }}
         disabled={isPending}
         className={cn(
-          'group flex items-center gap-2.5 rounded-full border px-3.5 py-1.5 transition-all duration-200 active:scale-95 cursor-pointer',
+          'group flex cursor-pointer items-center gap-2.5 rounded-full border px-3.5 py-1.5 transition-all duration-200 active:scale-95',
           isPro
             ? 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-900/50 dark:bg-amber-900/20 dark:text-amber-400 dark:hover:bg-amber-900/40'
-            : 'border-neutral-200 bg-white text-neutral-900 hover:border-primary/50 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800',
-          isPending && 'opacity-70 pointer-events-none'
+            : 'hover:border-primary/50 border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800',
+          isPending && 'pointer-events-none opacity-70',
         )}
       >
         <div

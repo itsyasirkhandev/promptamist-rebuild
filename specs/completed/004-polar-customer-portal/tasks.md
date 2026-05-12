@@ -6,7 +6,9 @@ This implementation focuses exclusively on adding the backend Server Action to g
 ## Phases
 
 ### Phase 1: Backend Implementation
-*(Sequential: Core logic must be implemented first)*
+
+_(Sequential: Core logic must be implemented first)_
+
 - [x] `[Phase 1]` Add `PortalError` class to `src/app/actions/polar.ts` to handle portal-specific exceptions.
 - [x] `[Phase 1]` Implement `createCustomerPortalSession` asynchronous function in `src/app/actions/polar.ts`.
 - [x] `[Phase 1]` Integrate `currentUser()` from Clerk for session-based authentication within the action.
@@ -14,10 +16,13 @@ This implementation focuses exclusively on adding the backend Server Action to g
 - [x] `[Phase 1]` Extract the `customerPortalUrl` from the Polar SDK response and handle the redirect outside the Effect pipeline.
 
 ### Phase 2: Verification & Quality Assurance
-*(Sequential: Must be completed after implementation)*
+
+_(Sequential: Must be completed after implementation)_
+
 - [x] `[Phase 2]` Run `pnpm lint` to ensure the new code adheres to the project's coding standards.
 - [x] `[Phase 2]` Run `pnpm typecheck` to verify that the Polar SDK method signatures (`polar.customerSessions.create`) and return types are correctly handled.
 
 ## Parallelization Strategy
+
 - Since this is a single-file backend update, tasks within Phase 1 should be handled sequentially.
 - Phase 2 is strictly dependent on the completion of Phase 1.
