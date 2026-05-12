@@ -20,19 +20,12 @@ export const clerkAppearance: Appearance = {
     cardBox: 'w-full !shadow-none !border-none !bg-transparent',
     card: 'shadow-none border-none bg-transparent w-full !shadow-none !bg-transparent',
     main: 'w-full bg-transparent gap-4 px-1',
-    navbar: '!hidden',
-    header: '!hidden',
-    headerTitle: '!hidden',
-    headerSubtitle: '!hidden',
-    footer: '!hidden',
-    footerAction: '!hidden',
     socialButtonsBlockButton:
       'flex w-full items-center justify-center gap-2 rounded-md border border-border bg-background px-3 py-2 text-sm font-medium shadow-xs transition-all hover:bg-muted hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 h-9',
     socialButtonsBlockButtonText: 'font-medium',
     socialButtonsBlockButtonArrow: 'hidden',
     socialButtonsProviderIcon: 'size-4',
     socialButtonsBlockButtonContainer: 'flex flex-col gap-2 w-full',
-    badge: 'hidden',
     dividerRow: 'relative flex items-center justify-center w-full my-4 h-4',
     dividerLine: 'absolute w-full border-t border-muted-foreground/20',
     dividerText:
@@ -43,11 +36,25 @@ export const clerkAppearance: Appearance = {
       'flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
     formFieldLabel:
       'text-sm font-medium leading-none mb-1.5 block text-foreground',
-    identityPreview: 'hidden',
     formFieldAction: 'text-primary hover:text-primary/80 text-xs font-medium',
     formFieldInputShowPasswordButton:
       'text-muted-foreground hover:text-foreground',
     alert:
       'rounded-md border border-destructive/20 bg-destructive/10 text-destructive text-xs p-3',
+  },
+};
+
+export const clerkAuthAppearance: Appearance = {
+  ...clerkAppearance,
+  elements: {
+    ...clerkAppearance.elements,
+    navbar: '!hidden',
+    header: '!hidden',
+    headerTitle: '!hidden',
+    headerSubtitle: '!hidden',
+    footer: '!hidden',
+    footerAction: '!hidden',
+    badge: 'hidden',
+    identityPreview: 'hidden',
   },
 };

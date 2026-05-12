@@ -1,5 +1,5 @@
 import { SignIn } from '@clerk/nextjs';
-import { clerkAppearance } from '@/lib/clerk-appearance';
+import { clerkAuthAppearance } from '@/lib/clerk-appearance';
 import { Metadata } from 'next';
 import { AuthWrapper } from '@/components/layout/AuthWrapper';
 
@@ -35,7 +35,7 @@ export default function SignInPage() {
       linkHref="/sign-up"
     >
       <SignIn
-        appearance={clerkAppearance}
+        appearance={clerkAuthAppearance}
         path="/sign-in"
         routing="path"
         signUpUrl="/sign-up"
