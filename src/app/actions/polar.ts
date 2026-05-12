@@ -123,7 +123,8 @@ export async function createCheckoutSession(clientOrigin?: string) {
   return result;
 }
 
-export async function createCustomerPortalSession() {
+export async function createCustomerPortalSession(options?: { shouldRedirect?: boolean }) {
+  const shouldRedirect = options?.shouldRedirect ?? true;
   const program = Effect.gen(function* () {
     const user = yield* Effect.promise(() => currentUser());
 
@@ -190,7 +191,7 @@ export async function createCustomerPortalSession() {
   const result = await Effect.runPromise(program);
 
   // Externalize redirect to avoid throwing within the Effect generator
-  if (result.success && result.url) {
+  if (result.success && result.url && shouldRedirect) {
     redirect(result.url);
   }
 

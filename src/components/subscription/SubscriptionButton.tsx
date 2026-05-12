@@ -4,12 +4,14 @@ import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UpgradeModal } from './UpgradeModal';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useTransition } from 'react';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
+import { createCustomerPortalSession } from '@/app/actions/polar';
 
 export function SubscriptionButton() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const currentUser = useQuery(api.users.getCurrentUser);
   // eslint-disable-next-line react-hooks/purity
   const oneWeekAgo = useMemo(() => Date.now() - 7 * 24 * 60 * 60 * 1000, []);
@@ -24,17 +26,36 @@ export function SubscriptionButton() {
   const isPro = currentUser.subscriptionTier === 'pro';
   const remaining = Math.max(0, 50 - stats.total);
 
+  const handleProClick = () => {
+    startTransition(async () => {
+      const result = await createCustomerPortalSession({ shouldRedirect: false });
+      if (result.success) {
+        if (result.url) {
+          window.open(result.url, '_blank');
+        }
+      } else {
+        console.error('Failed to create customer portal session:', result.error);
+      }
+    });
+  };
+
   return (
     <>
       <button
-        onClick={() => !isPro && setShowUpgradeModal(true)}
+        onClick={() => {
+          if (!isPro) {
+            setShowUpgradeModal(true);
+          } else {
+            handleProClick();
+          }
+        }}
+        disabled={isPending}
         className={cn(
-          'group flex items-center gap-2.5 rounded-full border px-3.5 py-1.5 transition-all duration-200 active:scale-95',
+          'group flex items-center gap-2.5 rounded-full border px-3.5 py-1.5 transition-all duration-200 active:scale-95 cursor-pointer',
           isPro
-            ? 'border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-900/20 dark:text-amber-400'
-            : 'border-neutral-200 bg-white text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100',
-          !isPro &&
-            'hover:border-primary/50 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800',
+            ? 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-900/50 dark:bg-amber-900/20 dark:text-amber-400 dark:hover:bg-amber-900/40'
+            : 'border-neutral-200 bg-white text-neutral-900 hover:border-primary/50 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800',
+          isPending && 'opacity-70 pointer-events-none'
         )}
       >
         <div
@@ -45,14 +66,18 @@ export function SubscriptionButton() {
               : 'bg-primary/10 text-primary',
           )}
         >
-          <Icon
-            icon={
-              isPro
-                ? 'solar:crown-minimalistic-bold-duotone'
-                : 'solar:bolt-circle-bold-duotone'
-            }
-            className="h-3.5 w-3.5"
-          />
+          {isPending ? (
+            <Icon icon="lucide:loader-2" className="h-3.5 w-3.5 animate-spin" />
+          ) : (
+            <Icon
+              icon={
+                isPro
+                  ? 'solar:crown-minimalistic-bold-duotone'
+                  : 'solar:bolt-circle-bold-duotone'
+              }
+              className="h-3.5 w-3.5"
+            />
+          )}
         </div>
 
         <div className="flex items-center gap-2">
