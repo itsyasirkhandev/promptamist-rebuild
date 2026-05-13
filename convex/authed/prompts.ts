@@ -9,6 +9,7 @@ import {
   validatePromptArgs,
 } from './promptHelpers';
 import { promptArgsValidator } from '../validators';
+import { toPromptDTO } from '../dto';
 
 export const createPrompt = authedMutation({
   args: promptArgsValidator,
@@ -63,13 +64,15 @@ export const getPrompts = authedQuery({
     return await runEffect(
       Effect.gen(function* () {
         const userId = yield* getUserId(ctx, ctx.identity.subject);
-        return yield* Effect.promise(() =>
+        const prompts = yield* Effect.promise(() =>
           ctx.db
             .query('prompts')
             .withIndex('by_userId', (q) => q.eq('userId', userId))
             .order('desc')
             .take(100),
         );
+        // DTO: strip userId and conditionally hide publicSlug
+        return prompts.map(toPromptDTO);
       }),
     );
   },
@@ -80,7 +83,9 @@ export const getPromptById = authedQuery({
   handler: async (ctx, args) => {
     return await runEffect(
       Effect.gen(function* () {
-        return yield* getPromptForUser(ctx, args.id);
+        const prompt = yield* getPromptForUser(ctx, args.id);
+        // DTO: strip userId and conditionally hide publicSlug
+        return toPromptDTO(prompt);
       }),
     );
   },

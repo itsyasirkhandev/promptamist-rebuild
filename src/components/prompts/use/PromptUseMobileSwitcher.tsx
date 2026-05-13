@@ -4,7 +4,8 @@ import * as React from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useConvex } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
-import { Doc, Id } from '../../../../convex/_generated/dataModel';
+import { Id } from '../../../../convex/_generated/dataModel';
+import { PromptDTO } from '../../../../convex/dto';
 import {
   Select,
   SelectContent,
@@ -14,7 +15,7 @@ import {
 } from '@/components/ui/select';
 
 interface PromptUseMobileSwitcherProps {
-  prompts: Doc<'prompts'>[];
+  prompts: PromptDTO[];
   activeId?: string;
 }
 

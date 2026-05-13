@@ -1,5 +1,6 @@
 import { v } from 'convex/values';
 import { query } from './_generated/server';
+import { toPublicPromptDTO } from './dto';
 
 export const getPromptBySlug = query({
   args: { slug: v.string() },
@@ -9,25 +10,11 @@ export const getPromptBySlug = query({
       .withIndex('by_publicSlug', (q) => q.eq('publicSlug', args.slug))
       .unique();
 
-    if (!prompt) {
+    if (!prompt || !prompt.isPublic) {
       return null;
     }
 
-    if (!prompt.isPublic) {
-      return null;
-    }
-
-    // It shouldn't contain sensitive user details other than what's in the prompt.
-    return {
-      _id: prompt._id,
-      _creationTime: prompt._creationTime,
-      title: prompt.title,
-      content: prompt.content,
-      tags: prompt.tags,
-      isTemplate: prompt.isTemplate,
-      variables: prompt.variables,
-      isPublic: prompt.isPublic,
-      publicSlug: prompt.publicSlug,
-    };
+    // DTO: strip userId and any internal fields before sending to unauthenticated clients
+    return toPublicPromptDTO(prompt);
   },
 });

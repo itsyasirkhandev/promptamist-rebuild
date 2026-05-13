@@ -5,13 +5,14 @@ import Link from 'next/link';
 import { Icon } from '@iconify/react';
 import { useConvex } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
-import { Doc, Id } from '../../../../convex/_generated/dataModel';
+import { Id } from '../../../../convex/_generated/dataModel';
+import { PromptDTO } from '../../../../convex/dto';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface PromptUseSidebarProps {
-  prompts: Doc<'prompts'>[];
+  prompts: PromptDTO[];
   activeId: string;
 }
 

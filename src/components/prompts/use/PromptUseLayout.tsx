@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
-import { Doc } from '../../../../convex/_generated/dataModel';
+import { PromptDTO } from '../../../../convex/dto';
 import { useParams, useSearchParams } from 'next/navigation';
 import { PromptUseSidebar } from './PromptUseSidebar';
 import { PromptUseMobileSwitcher } from './PromptUseMobileSwitcher';
@@ -22,7 +22,7 @@ export function PromptUseLayout({ children }: PromptUseLayoutProps) {
   const prompts = useQuery(api.authed.prompts.getPrompts);
 
   const templatePrompts =
-    prompts?.filter((p: Doc<'prompts'>) => p.isTemplate) ?? [];
+    prompts?.filter((p: PromptDTO) => p.isTemplate) ?? [];
 
   if (prompts === undefined) {
     return (

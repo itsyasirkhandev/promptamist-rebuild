@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
-import { Doc } from '../../../../convex/_generated/dataModel';
+import { PromptDTO } from '../../../../convex/dto';
 import Link from 'next/link';
 import { Icon } from '@iconify/react';
 
@@ -36,7 +36,7 @@ export default function PromptsPage() {
   const allTags = React.useMemo(() => {
     if (!prompts) return [];
     const tags = new Set<string>();
-    prompts.forEach((p: Doc<'prompts'>) =>
+    prompts.forEach((p: PromptDTO) =>
       p.tags.forEach((t: string) => tags.add(t)),
     );
     return Array.from(tags).sort();
@@ -44,7 +44,7 @@ export default function PromptsPage() {
 
   const filteredPrompts = React.useMemo(() => {
     if (!prompts) return [];
-    return (prompts as Doc<'prompts'>[]).filter((p) => {
+    return prompts.filter((p) => {
       const matchesSearch =
         p.title.toLowerCase().includes(search.toLowerCase()) ||
         p.content.toLowerCase().includes(search.toLowerCase());

@@ -4,13 +4,17 @@ import { internalMutation } from './_generated/server';
 import { internal } from './_generated/api';
 import { Effect } from 'effect';
 import { runEffect } from './effect';
+import { toUserDTO } from './dto';
 
 export const getCurrentUser = authedQuery({
   args: {},
   handler: async (ctx) => {
     return await runEffect(
       Effect.gen(function* () {
-        return yield* getUser(ctx, ctx.identity.subject);
+        const user = yield* getUser(ctx, ctx.identity.subject);
+        if (!user) return null;
+        // DTO: strip internal/sensitive fields before sending to client
+        return toUserDTO(user);
       }),
     );
   },

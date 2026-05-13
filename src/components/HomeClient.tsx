@@ -21,7 +21,6 @@ import { Separator } from '@/components/ui/separator';
 import { Icon } from '@iconify/react';
 import { api } from '../../convex/_generated/api';
 import { cn } from '@/lib/utils';
-import { Doc } from '../../convex/_generated/dataModel';
 import { TextureCard } from '@/components/ui/TextureCard';
 import { CTASection } from '@/components/CTASection';
 import { Loader } from '@/components/ui/Loader';
@@ -414,7 +413,7 @@ function RecentPrompts() {
 
   return (
     <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8">
-      {prompts.slice(0, 3).map((prompt: Doc<'prompts'>) => (
+      {prompts.slice(0, 3).map((prompt) => (
         <PromptCard key={prompt._id} prompt={prompt} />
       ))}
     </div>

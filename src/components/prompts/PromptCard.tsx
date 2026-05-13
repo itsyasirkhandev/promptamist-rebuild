@@ -6,7 +6,7 @@ import { Icon } from '@iconify/react';
 import { toast } from 'sonner';
 import { useMutation } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
-import { Doc } from '../../../convex/_generated/dataModel';
+import { PromptDTO } from '../../../convex/dto';
 import { TextureCard } from '@/components/ui/TextureCard';
 
 import {
@@ -22,7 +22,7 @@ import {
 } from '@/components/ui/alert-dialog';
 
 interface PromptCardProps {
-  prompt: Doc<'prompts'>;
+  prompt: PromptDTO;
 }
 
 export const PromptCard = React.memo(function PromptCard({
