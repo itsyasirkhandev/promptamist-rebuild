@@ -1,14 +1,12 @@
 import { v } from 'convex/values';
 import { query } from './_generated/server';
 import { toPublicPromptDTO } from './dto';
+import { findPromptBySlug } from './dal/prompts.dal';
 
 export const getPromptBySlug = query({
   args: { slug: v.string() },
   handler: async (ctx, args) => {
-    const prompt = await ctx.db
-      .query('prompts')
-      .withIndex('by_publicSlug', (q) => q.eq('publicSlug', args.slug))
-      .unique();
+    const prompt = await findPromptBySlug(ctx, args.slug);
 
     if (!prompt || !prompt.isPublic) {
       return null;

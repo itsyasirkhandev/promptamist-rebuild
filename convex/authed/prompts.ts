@@ -10,6 +10,18 @@ import {
 } from './promptHelpers';
 import { promptArgsValidator } from '../validators';
 import { toPromptDTO } from '../dto';
+import {
+  insertPrompt,
+  listPromptsByUser,
+  listRecentPromptsByUser,
+  findLastPromptByUser,
+  patchPrompt,
+  deletePrompt as dalDeletePrompt,
+} from '../dal/prompts.dal';
+
+// ---------------------------------------------------------------------------
+// Mutations
+// ---------------------------------------------------------------------------
 
 export const createPrompt = authedMutation({
   args: promptArgsValidator,
@@ -42,50 +54,14 @@ export const createPrompt = authedMutation({
         }
 
         yield* Effect.promise(() =>
-          ctx.db.insert('prompts', {
-            userId,
-            ...args,
-            publicSlug,
-          }),
+          insertPrompt(ctx, { userId, ...args, publicSlug }),
         );
+
         yield* updateUserPromptStats(ctx, userId, {
           total: 1,
           templates: args.isTemplate ? 1 : 0,
           public: args.isPublic ? 1 : 0,
         });
-      }),
-    );
-  },
-});
-
-export const getPrompts = authedQuery({
-  args: {},
-  handler: async (ctx) => {
-    return await runEffect(
-      Effect.gen(function* () {
-        const userId = yield* getUserId(ctx, ctx.identity.subject);
-        const prompts = yield* Effect.promise(() =>
-          ctx.db
-            .query('prompts')
-            .withIndex('by_userId', (q) => q.eq('userId', userId))
-            .order('desc')
-            .take(100),
-        );
-        // DTO: strip userId and conditionally hide publicSlug
-        return prompts.map(toPromptDTO);
-      }),
-    );
-  },
-});
-
-export const getPromptById = authedQuery({
-  args: { id: v.id('prompts') },
-  handler: async (ctx, args) => {
-    return await runEffect(
-      Effect.gen(function* () {
-        const prompt = yield* getPromptForUser(ctx, args.id);
-        // DTO: strip userId and conditionally hide publicSlug
-        return toPromptDTO(prompt);
       }),
     );
   },
@@ -107,15 +83,13 @@ export const updatePrompt = authedMutation({
 
         let publicSlug = prompt.publicSlug;
         if (updates.isPublic && !prompt.isPublic) {
-          // Transitioned to public, generate a unique slug if it doesn't have one
+          // Transitioned to public — generate a unique slug if it doesn't have one
           if (!publicSlug) {
             publicSlug = yield* generateUniqueSlug(ctx, updates.title);
           }
         }
 
-        yield* Effect.promise(() =>
-          ctx.db.patch(id, { ...updates, publicSlug }),
-        );
+        yield* Effect.promise(() => patchPrompt(ctx, id, { ...updates, publicSlug }));
 
         const templateChange =
           (updates.isTemplate ? 1 : 0) - (prompt.isTemplate ? 1 : 0);
@@ -139,12 +113,45 @@ export const deletePrompt = authedMutation({
     return await runEffect(
       Effect.gen(function* () {
         const prompt = yield* getPromptForUser(ctx, args.id);
-        yield* Effect.promise(() => ctx.db.delete(prompt._id));
+        yield* Effect.promise(() => dalDeletePrompt(ctx, prompt._id));
         yield* updateUserPromptStats(ctx, prompt.userId, {
           total: -1,
           templates: prompt.isTemplate ? -1 : 0,
           public: prompt.isPublic ? -1 : 0,
         });
+      }),
+    );
+  },
+});
+
+// ---------------------------------------------------------------------------
+// Queries
+// ---------------------------------------------------------------------------
+
+export const getPrompts = authedQuery({
+  args: {},
+  handler: async (ctx) => {
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        const prompts = yield* Effect.promise(() =>
+          listPromptsByUser(ctx, userId),
+        );
+        // DTO: strip userId and conditionally hide publicSlug
+        return prompts.map(toPromptDTO);
+      }),
+    );
+  },
+});
+
+export const getPromptById = authedQuery({
+  args: { id: v.id('prompts') },
+  handler: async (ctx, args) => {
+    return await runEffect(
+      Effect.gen(function* () {
+        const prompt = yield* getPromptForUser(ctx, args.id);
+        // DTO: strip userId and conditionally hide publicSlug
+        return toPromptDTO(prompt);
       }),
     );
   },
@@ -169,23 +176,12 @@ export const getPromptStats = authedQuery({
 
         const stats = user.promptStats ?? { total: 0, templates: 0, public: 0 };
 
-        // Efficiently find only prompts from last week
-        const recentPrompts = yield* Effect.promise(
-          () =>
-            ctx.db
-              .query('prompts')
-              .withIndex('by_userId', (q) =>
-                q.eq('userId', user._id).gte('_creationTime', args.oneWeekAgo),
-              )
-              .take(100), // Safety cap
+        const recentPrompts = yield* Effect.promise(() =>
+          listRecentPromptsByUser(ctx, user._id, args.oneWeekAgo),
         );
 
         const lastPrompt = yield* Effect.promise(() =>
-          ctx.db
-            .query('prompts')
-            .withIndex('by_userId', (q) => q.eq('userId', user._id))
-            .order('desc')
-            .first(),
+          findLastPromptByUser(ctx, user._id),
         );
 
         return {

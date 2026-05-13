@@ -14,15 +14,11 @@ import {
 import { ConvexError } from 'convex/values';
 import { Unauthorized, NotFound } from '../errors';
 import { Effect, Schema } from 'effect';
+import { findUserByClerkId } from '../dal/users.dal';
 
 export const getUser = (ctx: QueryCtx | MutationCtx, clerkId: string) =>
   Effect.gen(function* () {
-    return yield* Effect.promise(() =>
-      ctx.db
-        .query('users')
-        .withIndex('by_clerkId', (q) => q.eq('clerkId', clerkId))
-        .unique(),
-    );
+    return yield* Effect.promise(() => findUserByClerkId(ctx, clerkId));
   });
 
 export const getUserId = (ctx: QueryCtx | MutationCtx, clerkId: string) =>

@@ -5,6 +5,16 @@ import { internal } from './_generated/api';
 import { Effect } from 'effect';
 import { runEffect } from './effect';
 import { toUserDTO } from './dto';
+import {
+  findUserByClerkId,
+  insertUser,
+  patchUserProfile,
+  patchUserSubscription,
+} from './dal/users.dal';
+
+// ---------------------------------------------------------------------------
+// Queries
+// ---------------------------------------------------------------------------
 
 export const getCurrentUser = authedQuery({
   args: {},
@@ -20,6 +30,10 @@ export const getCurrentUser = authedQuery({
   },
 });
 
+// ---------------------------------------------------------------------------
+// Internal Mutations (called from Clerk webhook / Polar webhook)
+// ---------------------------------------------------------------------------
+
 export const upsertFromClerk = internalMutation({
   args: {
     clerkId: v.string(),
@@ -28,35 +42,29 @@ export const upsertFromClerk = internalMutation({
     imageUrl: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const existingUser = await ctx.db
-      .query('users')
-      .withIndex('by_clerkId', (q) => q.eq('clerkId', args.clerkId))
-      .unique();
+    const existingUser = await findUserByClerkId(ctx, args.clerkId);
 
     if (existingUser) {
-      const id = existingUser._id;
-      if (
+      const hasProfileChanged =
         existingUser.email !== args.email ||
         existingUser.name !== args.name ||
-        existingUser.imageUrl !== args.imageUrl
-      ) {
-        await ctx.db.patch(id, {
+        existingUser.imageUrl !== args.imageUrl;
+
+      if (hasProfileChanged) {
+        await patchUserProfile(ctx, existingUser._id, {
           email: args.email,
           name: args.name,
           imageUrl: args.imageUrl,
-          updatedAt: Date.now(),
         });
       }
-      return id;
+      return existingUser._id;
     }
 
-    const id = await ctx.db.insert('users', {
+    const id = await insertUser(ctx, {
       clerkId: args.clerkId,
       email: args.email,
       name: args.name,
       imageUrl: args.imageUrl,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
     });
 
     await ctx.scheduler.runAfter(0, internal.emails.sendWelcomeEmail, {
@@ -76,21 +84,17 @@ export const updateSubscriptionTier = internalMutation({
     polarSubscriptionId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
-    const user = await ctx.db
-      .query('users')
-      .withIndex('by_clerkId', (q) => q.eq('clerkId', args.clerkId))
-      .unique();
+    const user = await findUserByClerkId(ctx, args.clerkId);
 
     if (!user) {
       console.warn(`User not found for clerkId: ${args.clerkId}`);
       return;
     }
 
-    await ctx.db.patch(user._id, {
+    await patchUserSubscription(ctx, user._id, {
       subscriptionTier: args.tier,
       polarCustomerId: args.polarCustomerId,
       polarSubscriptionId: args.polarSubscriptionId,
-      updatedAt: Date.now(),
     });
   },
 });
