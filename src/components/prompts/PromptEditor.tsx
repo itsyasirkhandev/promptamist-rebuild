@@ -6,7 +6,8 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { VariableConfigModal } from './VariableConfigModal';
 import { cn } from '@/lib/utils';
-import { VARIABLE_REGEX, getVariableColorConfig } from '@/lib/variables';
+import { VARIABLE_REGEX } from '@/lib/variables';
+import { getVariableColorConfig } from '@/lib/variable-styles';
 
 interface Variable {
   id: string;

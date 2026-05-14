@@ -32,13 +32,8 @@ export default function CreatePromptPage() {
       toast.success('Prompt created successfully');
       router.push('/prompts');
     } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : String(error);
-      if (errorMessage.includes('Prompt limit reached')) {
-        setShowUpgradeModal(true);
-      } else {
-        handleError(error);
-      }
+      const { showUpgradeModal: shouldShow } = handleError(error);
+      if (shouldShow) setShowUpgradeModal(true);
     } finally {
       setIsSubmitting(false);
     }

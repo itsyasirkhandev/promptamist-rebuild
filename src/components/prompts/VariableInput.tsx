@@ -12,7 +12,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { getVariableColorConfig } from '@/lib/variables';
+import { getVariableColorConfig } from '@/lib/variable-styles';
 
 export type PromptVariable = {
   id: string;

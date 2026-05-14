@@ -9,7 +9,6 @@ import {
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useState } from 'react';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -302,8 +301,7 @@ export function HomeClient() {
 }
 
 function DashboardStats() {
-  const [oneWeekAgo] = useState(() => Date.now() - 7 * 24 * 60 * 60 * 1000);
-  const stats = useQuery(api.authed.prompts.getPromptStats, { oneWeekAgo });
+  const stats = useQuery(api.authed.prompts.getPromptStats);
 
   if (stats === undefined) {
     return (

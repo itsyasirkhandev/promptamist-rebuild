@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { cn } from '@/lib/utils';
-import { getVariableColorConfig } from '@/lib/variables';
+import { getVariableColorConfig } from '@/lib/variable-styles';
 import { PromptVariable } from './VariableInput';
 
 interface PromptPreviewProps {

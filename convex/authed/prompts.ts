@@ -2,22 +2,66 @@ import { v } from 'convex/values';
 import { authedMutation, authedQuery, getUserId, getUser } from './helpers';
 import { Effect } from 'effect';
 import { runEffect } from '../effect';
-import {
-  generateUniqueSlug,
-  getPromptForUser,
-  updateUserPromptStats,
-  validatePromptArgs,
-} from './promptHelpers';
+import { validatePromptArgs, getPromptForUser } from './promptOwnership';
+import { generateUniqueSlug } from '../slugs';
 import { promptArgsValidator } from '../validators';
 import { toPromptDTO } from '../dto';
+import { LimitExceeded } from '../errors';
 import {
   insertPrompt,
   listPromptsByUser,
-  listRecentPromptsByUser,
-  findLastPromptByUser,
   patchPrompt,
   deletePrompt as dalDeletePrompt,
 } from '../dal/prompts.dal';
+import {
+  findUserById as findUser,
+  patchUserPromptStats,
+} from '../dal/users.dal';
+
+/** Free-tier limit for the total number of prompts a user can create. */
+const FREE_TIER_PROMPT_LIMIT = 50;
+
+// ---------------------------------------------------------------------------
+// Shared: update denormalized stats on the user doc
+// ---------------------------------------------------------------------------
+
+function* updateUserPromptStats(
+  ctx: Parameters<typeof patchUserPromptStats>[0],
+  userId: Parameters<typeof patchUserPromptStats>[1],
+  changes: { total?: number; templates?: number; public?: number },
+) {
+  const user = yield* Effect.promise(() => findUser(ctx, userId));
+  if (!user) return;
+
+  const now = Date.now();
+  const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
+
+  const currentStats = user.promptStats ?? {
+    total: 0,
+    templates: 0,
+    public: 0,
+    newThisWeek: 0,
+    lastActivityAt: now,
+  };
+
+  // Reset weekly counter if the window has rolled over
+  const lastActivityAt = currentStats.lastActivityAt ?? now;
+  const isNewWeek = now - lastActivityAt > ONE_WEEK_MS;
+  const currentNewThisWeek = isNewWeek ? 0 : (currentStats.newThisWeek ?? 0);
+
+  const totalDelta = changes.total ?? 0;
+
+  const nextStats = {
+    total: currentStats.total + (changes.total ?? 0),
+    templates: currentStats.templates + (changes.templates ?? 0),
+    public: currentStats.public + (changes.public ?? 0),
+    // Only increment weekly counter on new prompts (positive total delta)
+    newThisWeek: currentNewThisWeek + (totalDelta > 0 ? totalDelta : 0),
+    lastActivityAt: now,
+  };
+
+  yield* Effect.promise(() => patchUserPromptStats(ctx, userId, nextStats));
+}
 
 // ---------------------------------------------------------------------------
 // Mutations
@@ -38,12 +82,12 @@ export const createPrompt = authedMutation({
         const isPro = user.subscriptionTier === 'pro';
         const totalPrompts = user.promptStats?.total ?? 0;
 
-        if (!isPro && totalPrompts >= 50) {
-          return yield* Effect.fail(
-            new Error(
+        if (!isPro && totalPrompts >= FREE_TIER_PROMPT_LIMIT) {
+          yield* new LimitExceeded({
+            message:
               'Prompt limit reached. Upgrade to Pro to create unlimited prompts.',
-            ),
-          );
+            limit: FREE_TIER_PROMPT_LIMIT,
+          });
         }
 
         const userId = user._id;
@@ -157,9 +201,13 @@ export const getPromptById = authedQuery({
   },
 });
 
+/**
+ * Returns the denormalized prompt stats from the user doc — a single read,
+ * no extra queries. The weekly counter is maintained on writes in updateUserPromptStats.
+ */
 export const getPromptStats = authedQuery({
-  args: { oneWeekAgo: v.number() },
-  handler: async (ctx, args) => {
+  args: {},
+  handler: async (ctx) => {
     return await runEffect(
       Effect.gen(function* () {
         const user = yield* getUser(ctx, ctx.identity.subject);
@@ -174,22 +222,20 @@ export const getPromptStats = authedQuery({
           };
         }
 
-        const stats = user.promptStats ?? { total: 0, templates: 0, public: 0 };
-
-        const recentPrompts = yield* Effect.promise(() =>
-          listRecentPromptsByUser(ctx, user._id, args.oneWeekAgo),
-        );
-
-        const lastPrompt = yield* Effect.promise(() =>
-          findLastPromptByUser(ctx, user._id),
-        );
+        const stats = user.promptStats ?? {
+          total: 0,
+          templates: 0,
+          public: 0,
+          newThisWeek: 0,
+          lastActivityAt: null,
+        };
 
         return {
           total: stats.total,
           templates: stats.templates,
           public: stats.public,
-          newThisWeek: recentPrompts.length,
-          lastActivityAt: lastPrompt?._creationTime ?? null,
+          newThisWeek: stats.newThisWeek ?? 0,
+          lastActivityAt: stats.lastActivityAt ?? null,
         };
       }),
     );

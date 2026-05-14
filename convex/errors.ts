@@ -20,6 +20,14 @@ export class ValidationError extends Schema.TaggedErrorClass<ValidationError>()(
   },
 ) {}
 
+export class LimitExceeded extends Schema.TaggedErrorClass<LimitExceeded>()(
+  'LimitExceeded',
+  {
+    message: Schema.String,
+    limit: Schema.optional(Schema.Number),
+  },
+) {}
+
 export class InternalError extends Schema.TaggedErrorClass<InternalError>()(
   'InternalError',
   {

@@ -4,7 +4,7 @@ import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UpgradeModal } from './UpgradeModal';
-import { useState, useMemo, useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 import { createCustomerPortalSession } from '@/app/actions/polar';
@@ -13,9 +13,7 @@ export function SubscriptionButton() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isPending, startTransition] = useTransition();
   const currentUser = useQuery(api.users.getCurrentUser);
-  // eslint-disable-next-line react-hooks/purity
-  const oneWeekAgo = useMemo(() => Date.now() - 7 * 24 * 60 * 60 * 1000, []);
-  const stats = useQuery(api.authed.prompts.getPromptStats, { oneWeekAgo });
+  const stats = useQuery(api.authed.prompts.getPromptStats);
 
   if (currentUser === undefined || stats === undefined) {
     return <Skeleton className="h-10 w-36 rounded-full" />;

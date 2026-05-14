@@ -25,6 +25,8 @@ export default defineSchema({
         total: v.number(),
         templates: v.number(),
         public: v.number(),
+        newThisWeek: v.optional(v.number()),
+        lastActivityAt: v.optional(v.number()),
       }),
     ),
   })

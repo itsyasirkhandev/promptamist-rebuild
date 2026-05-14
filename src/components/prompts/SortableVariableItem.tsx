@@ -4,7 +4,7 @@ import * as React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { Icon } from '@iconify/react';
-import { getVariableColorConfig } from '@/lib/variables';
+import { getVariableColorConfig } from '@/lib/variable-styles';
 
 interface Variable {
   id: string;

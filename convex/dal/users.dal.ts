@@ -89,7 +89,13 @@ export async function patchUserSubscription(
 export async function patchUserPromptStats(
   ctx: MutationCtx,
   userId: Id<'users'>,
-  stats: { total: number; templates: number; public: number },
+  stats: {
+    total: number;
+    templates: number;
+    public: number;
+    newThisWeek?: number;
+    lastActivityAt?: number;
+  },
 ) {
   return ctx.db.patch(userId, { promptStats: stats });
 }
