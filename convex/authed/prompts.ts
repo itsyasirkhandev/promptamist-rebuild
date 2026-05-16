@@ -133,7 +133,9 @@ export const updatePrompt = authedMutation({
           }
         }
 
-        yield* Effect.promise(() => patchPrompt(ctx, id, { ...updates, publicSlug }));
+        yield* Effect.promise(() =>
+          patchPrompt(ctx, id, { ...updates, publicSlug }),
+        );
 
         const templateChange =
           (updates.isTemplate ? 1 : 0) - (prompt.isTemplate ? 1 : 0);

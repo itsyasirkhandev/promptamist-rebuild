@@ -21,8 +21,7 @@ export function PromptUseLayout({ children }: PromptUseLayoutProps) {
 
   const prompts = useQuery(api.authed.prompts.getPrompts);
 
-  const templatePrompts =
-    prompts?.filter((p: PromptDTO) => p.isTemplate) ?? [];
+  const templatePrompts = prompts?.filter((p: PromptDTO) => p.isTemplate) ?? [];
 
   if (prompts === undefined) {
     return (

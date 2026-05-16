@@ -50,13 +50,13 @@ All raw `ctx.db` calls are strictly isolated here. Business logic and mutations 
 
 Enforced naming convention:
 
-| Prefix | Semantics |
-| :--- | :--- |
-| `find*` | Returns a single `Doc \| null` |
-| `list*` | Returns a `Doc[]` array |
+| Prefix    | Semantics                                |
+| :-------- | :--------------------------------------- |
+| `find*`   | Returns a single `Doc \| null`           |
+| `list*`   | Returns a `Doc[]` array                  |
 | `insert*` | Creates a new document, returns its `Id` |
-| `patch*` | Partial update on existing document |
-| `delete*` | Removes a document by `Id` |
+| `patch*`  | Partial update on existing document      |
+| `delete*` | Removes a document by `Id`               |
 
 ### Effect Logic Engine (`convex/effect.ts`)
 
@@ -98,14 +98,14 @@ export const authedMutation = customMutation(mutation, {
 
 ### Prompts Management (`convex/authed/prompts.ts`)
 
-| Function | Type | Description |
-| :--- | :--- | :--- |
-| `createPrompt` | Mutation | Validates args, enforces 50-prompt free-tier limit, inserts via DAL, updates stats. |
-| `updatePrompt` | Mutation | Patches prompt via DAL, regenerates slug on public transition, diffs stat changes. |
-| `deletePrompt` | Mutation | Ownership-checks prompt, deletes via DAL, decrements stats atomically. |
-| `getPrompts` | Query | Lists all prompts for the caller; maps each result through `toPromptDTO`. |
-| `getPromptById` | Query | Fetches a single prompt with ownership enforcement; returns `toPromptDTO`. |
-| `getPromptStats` | Query | Returns denormalized counts + `newThisWeek` (live count) + `lastActivityAt`. |
+| Function         | Type     | Description                                                                         |
+| :--------------- | :------- | :---------------------------------------------------------------------------------- |
+| `createPrompt`   | Mutation | Validates args, enforces 50-prompt free-tier limit, inserts via DAL, updates stats. |
+| `updatePrompt`   | Mutation | Patches prompt via DAL, regenerates slug on public transition, diffs stat changes.  |
+| `deletePrompt`   | Mutation | Ownership-checks prompt, deletes via DAL, decrements stats atomically.              |
+| `getPrompts`     | Query    | Lists all prompts for the caller; maps each result through `toPromptDTO`.           |
+| `getPromptById`  | Query    | Fetches a single prompt with ownership enforcement; returns `toPromptDTO`.          |
+| `getPromptStats` | Query    | Returns denormalized counts + `newThisWeek` (live count) + `lastActivityAt`.        |
 
 ### Denormalized User Stats
 
@@ -134,14 +134,14 @@ All query return values pass through a DTO mapper before reaching the client. Ke
 
 ## [03] Infrastructure Stack
 
-| Layer | Implementation | Notes |
-| :--- | :--- | :--- |
-| **Interface** | Next.js 16 | App Router, RSC, SSR |
-| **Persistence** | Convex | Document-relational, real-time subscriptions |
-| **Logic Engine** | Effect 4 beta | `Schema.TaggedErrorClass`, `Effect.gen`, `runEffect` |
-| **Identity** | Clerk | JWT validation via `ctx.auth`, SVIX-verified webhooks |
-| **Billing** | Polar (`@polar-sh/sdk`) | Subscription tier stored on user document |
-| **Design** | Tailwind 4 + shadcn/ui | OKLCH palette, Radix primitives |
+| Layer            | Implementation          | Notes                                                 |
+| :--------------- | :---------------------- | :---------------------------------------------------- |
+| **Interface**    | Next.js 16              | App Router, RSC, SSR                                  |
+| **Persistence**  | Convex                  | Document-relational, real-time subscriptions          |
+| **Logic Engine** | Effect 4 beta           | `Schema.TaggedErrorClass`, `Effect.gen`, `runEffect`  |
+| **Identity**     | Clerk                   | JWT validation via `ctx.auth`, SVIX-verified webhooks |
+| **Billing**      | Polar (`@polar-sh/sdk`) | Subscription tier stored on user document             |
+| **Design**       | Tailwind 4 + shadcn/ui  | OKLCH palette, Radix primitives                       |
 
 ---
 

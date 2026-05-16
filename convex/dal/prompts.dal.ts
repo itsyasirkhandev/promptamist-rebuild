@@ -132,9 +132,6 @@ export async function patchPrompt(
 }
 
 /** Delete a prompt by its ID. */
-export async function deletePrompt(
-  ctx: MutationCtx,
-  id: Id<'prompts'>,
-) {
+export async function deletePrompt(ctx: MutationCtx, id: Id<'prompts'>) {
   return ctx.db.delete(id);
 }

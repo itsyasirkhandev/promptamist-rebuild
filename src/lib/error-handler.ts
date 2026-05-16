@@ -49,4 +49,3 @@ export const handleError = (err: unknown): { showUpgradeModal: boolean } => {
   }
   return { showUpgradeModal: false };
 };
-

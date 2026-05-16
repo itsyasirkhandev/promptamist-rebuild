@@ -3,6 +3,8 @@ import {
   extractVariables,
   interpolateVariables,
   isValidVariableName,
+  renameVariableInContent,
+  removeVariableFromContent,
 } from '../variables';
 
 describe('variables utility', () => {
@@ -118,6 +120,59 @@ describe('variables utility', () => {
 
     it('should handle multiple occurrences of the same variable', () => {
       expect(interpolateVariables('{{v}} {{v}}', { v: 'x' })).toBe('x x');
+    });
+  });
+
+  describe('renameVariableInContent', () => {
+    it('should rename all occurrences of a variable', () => {
+      const content =
+        'Hello {{oldName}}, this is {{oldName}} speaking. {{other}} is here too.';
+      expect(renameVariableInContent(content, 'oldName', 'newName')).toBe(
+        'Hello {{newName}}, this is {{newName}} speaking. {{other}} is here too.',
+      );
+    });
+
+    it('should not rename variables that are substrings', () => {
+      const content = '{{var}} {{var2}} {{myvar}}';
+      expect(renameVariableInContent(content, 'var', 'newVar')).toBe(
+        '{{newVar}} {{var2}} {{myvar}}',
+      );
+    });
+
+    it('should handle renaming to an existing name safely', () => {
+      const content = '{{name1}} {{name2}}';
+      expect(renameVariableInContent(content, 'name1', 'name2')).toBe(
+        '{{name2}} {{name2}}',
+      );
+    });
+
+    it('should leave content unchanged if variable not found', () => {
+      const content = '{{name}}';
+      expect(renameVariableInContent(content, 'missing', 'new')).toBe(
+        '{{name}}',
+      );
+    });
+  });
+
+  describe('removeVariableFromContent', () => {
+    it('should remove all occurrences of a variable', () => {
+      const content =
+        'Hello {{name}}, this is {{name}} speaking. {{other}} is here too.';
+      expect(removeVariableFromContent(content, 'name')).toBe(
+        'Hello , this is  speaking. {{other}} is here too.',
+      );
+    });
+
+    it('should not remove variables that are substrings', () => {
+      const content = '{{var}} {{var2}} {{myvar}}';
+      expect(removeVariableFromContent(content, 'var')).toBe(
+        ' {{var2}} {{myvar}}',
+      );
+    });
+
+    it('should leave content unchanged if variable not found', () => {
+      const content = '{{name}}';
+      expect(removeVariableFromContent(content, 'missing')).toBe('{{name}}');
     });
   });
 });

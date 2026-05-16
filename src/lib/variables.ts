@@ -48,3 +48,35 @@ export function interpolateVariables(
   });
 }
 
+/**
+ * Safely renames a variable in the template content.
+ * It strictly matches {{oldName}} and replaces it with {{newName}}.
+ */
+export function renameVariableInContent(
+  content: string,
+  oldName: string,
+  newName: string,
+): string {
+  return content.replace(VARIABLE_REGEX, (match, name) => {
+    if (name === oldName) {
+      return `{{${newName}}}`;
+    }
+    return match;
+  });
+}
+
+/**
+ * Safely removes a variable from the template content.
+ * It strictly matches {{variableName}} and removes it completely.
+ */
+export function removeVariableFromContent(
+  content: string,
+  variableName: string,
+): string {
+  return content.replace(VARIABLE_REGEX, (match, name) => {
+    if (name === variableName) {
+      return '';
+    }
+    return match;
+  });
+}

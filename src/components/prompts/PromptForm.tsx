@@ -27,6 +27,10 @@ import {
 } from '@/components/prompts/VariableConfigModal';
 import { VariableList } from '@/components/prompts/VariableList';
 import { cn } from '@/lib/utils';
+import {
+  removeVariableFromContent,
+  renameVariableInContent,
+} from '@/lib/variables';
 import { TagsSection } from './form/TagsSection';
 import { SettingsSection } from './form/SettingsSection';
 import { Loader } from '@/components/ui/Loader';
@@ -136,7 +140,7 @@ export function PromptForm({
     const variable = variables[index];
     if (!variable) return;
 
-    const updatedContent = content.replaceAll(`{{${variable.name}}}`, '');
+    const updatedContent = removeVariableFromContent(content, variable.name);
     setValue('content', updatedContent);
     remove(index);
     toast.info(`Variable {{${variable.name}}} removed`);
@@ -156,10 +160,7 @@ export function PromptForm({
     toast.success(`Variable {{${updatedVar.name}}} updated`);
 
     if (oldName !== newName) {
-      const updatedContent = content.replaceAll(
-        `{{${oldName}}}`,
-        `{{${newName}}}`,
-      );
+      const updatedContent = renameVariableInContent(content, oldName, newName);
       setValue('content', updatedContent);
     }
 
