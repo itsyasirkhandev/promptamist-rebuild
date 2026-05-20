@@ -60,12 +60,19 @@ export function verifyWebhook<T>(
   encodeB64 = false,
 ): Effect.Effect<T, Response> {
   return Effect.gen(function* () {
-    const svixId = request.headers.get('svix-id');
-    const svixTimestamp = request.headers.get('svix-timestamp');
-    const svixSignature = request.headers.get('svix-signature');
+    const svixId =
+      request.headers.get('svix-id') || request.headers.get('webhook-id');
+    const svixTimestamp =
+      request.headers.get('svix-timestamp') ||
+      request.headers.get('webhook-timestamp');
+    const svixSignature =
+      request.headers.get('svix-signature') ||
+      request.headers.get('webhook-signature');
 
     if (!svixId || !svixTimestamp || !svixSignature) {
-      yield* Effect.fail(new Response('Missing Svix headers', { status: 400 }));
+      yield* Effect.fail(
+        new Response('Missing webhook headers', { status: 400 }),
+      );
     }
 
     const payload = yield* Effect.promise(() => request.text());
