@@ -12,7 +12,7 @@ import { createCustomerPortalSession } from '@/app/actions/polar';
 export function SubscriptionButton() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isPending, startTransition] = useTransition();
-  const currentUser = useQuery(api.users.getCurrentUser);
+  const currentUser = useQuery(api.authed.users.getCurrentUser);
   const stats = useQuery(api.authed.prompts.getPromptStats);
 
   if (currentUser === undefined || stats === undefined) {

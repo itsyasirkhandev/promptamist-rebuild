@@ -25,7 +25,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function PromptsPage() {
-  const user = useQuery(api.users.getCurrentUser);
+  const user = useQuery(api.authed.users.getCurrentUser);
   const prompts = useQuery(api.authed.prompts.getPrompts);
   const [search, setSearch] = React.useState('');
   const [selectedTag, setSelectedTag] = React.useState<string | null>(null);
