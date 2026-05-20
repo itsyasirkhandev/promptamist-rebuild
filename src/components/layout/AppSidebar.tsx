@@ -53,7 +53,12 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {NAVIGATION_ITEMS.map((item) => {
-                const isActive = pathname === item.href;
+                const isActive =
+                  item.href === '/use'
+                    ? pathname === '/use' ||
+                      (pathname.startsWith('/prompts/') &&
+                        pathname.endsWith('/use'))
+                    : pathname === item.href;
                 return (
                   <SidebarMenuItem key={item.href}>
                     <SidebarMenuButton
