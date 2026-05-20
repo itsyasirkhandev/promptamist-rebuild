@@ -19,7 +19,11 @@ export function MobileBottomNav({ className }: { className?: string }) {
       )}
     >
       {NAVIGATION_ITEMS.map((item) => {
-        const isActive = pathname === item.href;
+        const isActive =
+          item.href === '/use'
+            ? pathname === '/use' ||
+              (pathname.startsWith('/prompts/') && pathname.endsWith('/use'))
+            : pathname === item.href;
         return (
           <Link
             key={item.href}
