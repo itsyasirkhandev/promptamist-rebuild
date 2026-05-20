@@ -37,6 +37,6 @@ jobs:
 
       - name: Deploy Preview
         if: github.ref != 'refs/heads/main'
-        run: pnpm convex deploy --preview --yes
+        run: pnpm convex deploy --yes
         env:
           CONVEX_DEPLOY_KEY: ${{ secrets.CONVEX_PREVIEW_KEY }}
