@@ -2,6 +2,7 @@ import { defineSchema, defineTable } from 'convex/server';
 import { v } from 'convex/values';
 
 import { promptVariablesValidator } from './validators';
+import { subscriptionTierValidator } from './subscription';
 
 export default defineSchema({
   users: defineTable({
@@ -11,7 +12,7 @@ export default defineSchema({
     imageUrl: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
-    subscriptionTier: v.optional(v.string()),
+    subscriptionTier: v.optional(subscriptionTierValidator),
     polarCustomerId: v.optional(v.string()),
     polarSubscriptionId: v.optional(v.string()),
     preferences: v.optional(

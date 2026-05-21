@@ -7,61 +7,19 @@ import { generateUniqueSlug } from '../slugs';
 import { promptArgsValidator } from '../validators';
 import { toPromptDTO } from '../dto';
 import { LimitExceeded } from '../errors';
+import { FREE_TIER_PROMPT_LIMIT } from '../limits';
+import {
+  DEFAULT_TIER,
+  type SubscriptionTier,
+  canCreateUnlimitedPrompts,
+} from '../subscription';
 import {
   insertPrompt,
   listPromptsByUser,
   patchPrompt,
   deletePrompt as dalDeletePrompt,
 } from '../dal/prompts.dal';
-import {
-  findUserById as findUser,
-  patchUserPromptStats,
-} from '../dal/users.dal';
-
-/** Free-tier limit for the total number of prompts a user can create. */
-const FREE_TIER_PROMPT_LIMIT = 50;
-
-// ---------------------------------------------------------------------------
-// Shared: update denormalized stats on the user doc
-// ---------------------------------------------------------------------------
-
-function* updateUserPromptStats(
-  ctx: Parameters<typeof patchUserPromptStats>[0],
-  userId: Parameters<typeof patchUserPromptStats>[1],
-  changes: { total?: number; templates?: number; public?: number },
-) {
-  const user = yield* Effect.promise(() => findUser(ctx, userId));
-  if (!user) return;
-
-  const now = Date.now();
-  const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
-
-  const currentStats = user.promptStats ?? {
-    total: 0,
-    templates: 0,
-    public: 0,
-    newThisWeek: 0,
-    lastActivityAt: now,
-  };
-
-  // Reset weekly counter if the window has rolled over
-  const lastActivityAt = currentStats.lastActivityAt ?? now;
-  const isNewWeek = now - lastActivityAt > ONE_WEEK_MS;
-  const currentNewThisWeek = isNewWeek ? 0 : (currentStats.newThisWeek ?? 0);
-
-  const totalDelta = changes.total ?? 0;
-
-  const nextStats = {
-    total: currentStats.total + (changes.total ?? 0),
-    templates: currentStats.templates + (changes.templates ?? 0),
-    public: currentStats.public + (changes.public ?? 0),
-    // Only increment weekly counter on new prompts (positive total delta)
-    newThisWeek: currentNewThisWeek + (totalDelta > 0 ? totalDelta : 0),
-    lastActivityAt: now,
-  };
-
-  yield* Effect.promise(() => patchUserPromptStats(ctx, userId, nextStats));
-}
+import { updateUserPromptStats } from './userStats';
 
 // ---------------------------------------------------------------------------
 // Mutations
@@ -79,10 +37,14 @@ export const createPrompt = authedMutation({
           return yield* Effect.fail(new Error('User not found'));
         }
 
-        const isPro = user.subscriptionTier === 'pro';
+        const tier = (user.subscriptionTier ??
+          DEFAULT_TIER) as SubscriptionTier;
         const totalPrompts = user.promptStats?.total ?? 0;
 
-        if (!isPro && totalPrompts >= FREE_TIER_PROMPT_LIMIT) {
+        if (
+          !canCreateUnlimitedPrompts(tier) &&
+          totalPrompts >= FREE_TIER_PROMPT_LIMIT
+        ) {
           yield* new LimitExceeded({
             message:
               'Prompt limit reached. Upgrade to Pro to create unlimited prompts.',
@@ -182,6 +144,27 @@ export const getPrompts = authedQuery({
         const userId = yield* getUserId(ctx, ctx.identity.subject);
         const prompts = yield* Effect.promise(() =>
           listPromptsByUser(ctx, userId),
+        );
+        // DTO: strip userId and conditionally hide publicSlug
+        return prompts.map(toPromptDTO);
+      }),
+    );
+  },
+});
+
+/**
+ * Returns the N most recent prompts for the authenticated user.
+ * Prefer this over getPrompts + client-side slice when only a preview is needed
+ * (e.g. the home-page dashboard) — the limit is pushed down to the DAL query.
+ */
+export const getRecentPrompts = authedQuery({
+  args: { limit: v.optional(v.number()) },
+  handler: async (ctx, args) => {
+    return await runEffect(
+      Effect.gen(function* () {
+        const userId = yield* getUserId(ctx, ctx.identity.subject);
+        const prompts = yield* Effect.promise(() =>
+          listPromptsByUser(ctx, userId, args.limit ?? 3),
         );
         // DTO: strip userId and conditionally hide publicSlug
         return prompts.map(toPromptDTO);

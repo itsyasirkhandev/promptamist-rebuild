@@ -16,6 +16,7 @@ import { NotFound, ValidationError } from '../errors';
 import { UserIdentity } from 'convex/server';
 import { getUserId } from './helpers';
 import { findPromptById } from '../dal/prompts.dal';
+import { PROMPT_TITLE_MAX_LENGTH, PROMPT_CONTENT_MAX_LENGTH } from '../limits';
 
 export type AuthedQueryCtx = QueryCtx & { identity: UserIdentity };
 export type AuthedMutationCtx = MutationCtx & { identity: UserIdentity };
@@ -25,14 +26,14 @@ export type AuthedMutationCtx = MutationCtx & { identity: UserIdentity };
 // ---------------------------------------------------------------------------
 
 export function* validatePromptArgs(args: { title: string; content: string }) {
-  if (args.title.length > 300) {
+  if (args.title.length > PROMPT_TITLE_MAX_LENGTH) {
     yield* new ValidationError({
-      message: 'Title must be less than 300 characters',
+      message: `Title must be less than ${PROMPT_TITLE_MAX_LENGTH} characters`,
     });
   }
-  if (args.content.length > 50000) {
+  if (args.content.length > PROMPT_CONTENT_MAX_LENGTH) {
     yield* new ValidationError({
-      message: 'Content must be less than 50000 characters',
+      message: `Content must be less than ${PROMPT_CONTENT_MAX_LENGTH} characters`,
     });
   }
 }
