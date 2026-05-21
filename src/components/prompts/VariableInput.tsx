@@ -13,14 +13,10 @@ import {
 } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
 import { getVariableColorConfig } from '@/lib/variable-styles';
+import type { Variable } from '@/lib/variables';
 
-export type PromptVariable = {
-  id: string;
-  name: string;
-  type: 'text' | 'number' | 'textarea' | 'choices' | 'list';
-  options?: string[];
-  defaultValue?: string;
-};
+/** @deprecated Import `Variable` from `@/lib/variables` instead. */
+export type PromptVariable = Variable;
 
 interface VariableInputProps {
   variable: PromptVariable;

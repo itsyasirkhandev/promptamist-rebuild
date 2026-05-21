@@ -30,6 +30,7 @@ import { cn } from '@/lib/utils';
 import {
   removeVariableFromContent,
   renameVariableInContent,
+  reconcileVariables,
 } from '@/lib/variables';
 import { TagsSection } from './form/TagsSection';
 import { SettingsSection } from './form/SettingsSection';
@@ -145,6 +146,23 @@ export function PromptForm({
   const isTemplate = useWatch({ control, name: 'isTemplate' });
   const isPublic = useWatch({ control, name: 'isPublic' });
   const tags = useWatch({ control, name: 'tags' }) as string[];
+
+  // Reconcile variables whenever the user types {{name}} patterns directly in the editor.
+  // This handles the "typed directly" path; the modal (onVariablesChange) handles the "added via modal" path.
+  React.useEffect(() => {
+    if (!isTemplate) return;
+
+    const reconciledVars = reconcileVariables(content ?? '', variables);
+
+    // Only update state when there is a real structural change to avoid infinite loops
+    const hasChanged =
+      reconciledVars.length !== variables.length ||
+      reconciledVars.some((v, i) => v.name !== variables[i]?.name);
+
+    if (hasChanged) {
+      setValue('variables', reconciledVars);
+    }
+  }, [content, isTemplate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const removeVariable = (index: number) => {
     const variable = variables[index];

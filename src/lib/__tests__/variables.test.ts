@@ -5,6 +5,8 @@ import {
   isValidVariableName,
   renameVariableInContent,
   removeVariableFromContent,
+  reconcileVariables,
+  type Variable,
 } from '../variables';
 
 describe('variables utility', () => {
@@ -173,6 +175,108 @@ describe('variables utility', () => {
     it('should leave content unchanged if variable not found', () => {
       const content = '{{name}}';
       expect(removeVariableFromContent(content, 'missing')).toBe('{{name}}');
+    });
+  });
+
+  describe('reconcileVariables', () => {
+    // Helper to build a Variable fixture quickly.
+    const makeVar = (
+      overrides: Partial<Variable> & { name: string },
+    ): Variable => ({
+      id: 'existing-id-' + overrides.name,
+      type: 'text',
+      ...overrides,
+    });
+
+    it('adds a new variable when it appears in content but not in existingConfigs', () => {
+      const result = reconcileVariables('Hello {{name}}', []);
+      expect(result).toHaveLength(1);
+      expect(result[0].name).toBe('name');
+      expect(result[0].type).toBe('text');
+    });
+
+    it('removes a variable config when it is no longer in content', () => {
+      const existing = [makeVar({ name: 'removed' })];
+      const result = reconcileVariables('No variables here', existing);
+      expect(result).toHaveLength(0);
+    });
+
+    it('preserves an existing variable config when still present', () => {
+      const existing = [
+        makeVar({ name: 'city', type: 'choices', options: ['NY', 'LA'] }),
+      ];
+      const result = reconcileVariables('I live in {{city}}', existing);
+      expect(result).toHaveLength(1);
+      expect(result[0]).toEqual(existing[0]);
+    });
+
+    it('preserves the relative order of existing variables that are still present', () => {
+      const existing = [
+        makeVar({ name: 'alpha' }),
+        makeVar({ name: 'beta' }),
+        makeVar({ name: 'gamma' }),
+      ];
+      // Remove 'beta' from content — alpha and gamma should keep their relative order.
+      const result = reconcileVariables('{{alpha}} and {{gamma}}', existing);
+      expect(result.map((v) => v.name)).toEqual(['alpha', 'gamma']);
+    });
+
+    it('appends new variables after existing ones in content order', () => {
+      const existing = [makeVar({ name: 'old' })];
+      // 'new1' appears before 'new2' in content, both should be appended after 'old'.
+      const result = reconcileVariables('{{old}} {{new1}} {{new2}}', existing);
+      expect(result.map((v) => v.name)).toEqual(['old', 'new1', 'new2']);
+    });
+
+    it('returns an empty array for empty content', () => {
+      const existing = [makeVar({ name: 'gone' })];
+      const result = reconcileVariables('', existing);
+      expect(result).toHaveLength(0);
+    });
+
+    it('creates new configs for all variables when existingConfigs is empty', () => {
+      const result = reconcileVariables('{{a}} {{b}} {{c}}', []);
+      expect(result.map((v) => v.name)).toEqual(['a', 'b', 'c']);
+      result.forEach((v) => expect(v.type).toBe('text'));
+    });
+
+    it('returns configs unchanged when content and existingConfigs already match', () => {
+      const existing = [makeVar({ name: 'x' }), makeVar({ name: 'y' })];
+      const result = reconcileVariables('{{x}} {{y}}', existing);
+      expect(result).toEqual(existing);
+    });
+
+    it('handles multiple adds and removes in a single call', () => {
+      const existing = [makeVar({ name: 'keep' }), makeVar({ name: 'remove' })];
+      const result = reconcileVariables('{{keep}} {{added}}', existing);
+      expect(result.map((v) => v.name)).toEqual(['keep', 'added']);
+      // The kept one should be the original object reference.
+      expect(result[0]).toBe(existing[0]);
+    });
+
+    it('deduplicates a variable that appears multiple times in content', () => {
+      const result = reconcileVariables('{{dup}} and {{dup}} again', []);
+      expect(result).toHaveLength(1);
+      expect(result[0].name).toBe('dup');
+    });
+
+    it('handles variable names with spaces', () => {
+      const result = reconcileVariables('{{first name}} and {{last name}}', []);
+      expect(result.map((v) => v.name)).toEqual(['first name', 'last name']);
+    });
+
+    it('assigns a non-empty unique id and type text to a newly created variable', () => {
+      const result = reconcileVariables('{{brand new}}', []);
+      expect(result).toHaveLength(1);
+      expect(result[0].id).toBeTruthy();
+      expect(typeof result[0].id).toBe('string');
+      expect(result[0].id.length).toBeGreaterThan(0);
+      expect(result[0].type).toBe('text');
+    });
+
+    it('assigns distinct ids to different new variables', () => {
+      const result = reconcileVariables('{{a}} {{b}}', []);
+      expect(result[0].id).not.toBe(result[1].id);
     });
   });
 });
