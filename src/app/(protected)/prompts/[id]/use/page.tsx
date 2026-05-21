@@ -74,7 +74,7 @@ const LivePreview = ({
 }) => (
   <div
     className={cn(
-      'bg-background selection:bg-primary/20 rounded-xl border p-8 font-serif text-base leading-relaxed wrap-break-word whitespace-pre-wrap shadow-sm',
+      'bg-background selection:bg-primary/20 rounded-xl border p-8 font-serif text-base leading-relaxed break-words whitespace-pre-wrap shadow-sm',
       className,
     )}
   >
