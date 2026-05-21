@@ -6,16 +6,8 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { VariableConfigModal } from './VariableConfigModal';
 import { cn } from '@/lib/utils';
-import { VARIABLE_REGEX } from '@/lib/variables';
-import { getVariableColorConfig } from '@/lib/variable-styles';
-
-interface Variable {
-  id: string;
-  name: string;
-  type: 'text' | 'number' | 'textarea' | 'choices' | 'list';
-  options?: string[];
-  defaultValue?: string;
-}
+import type { Variable } from '@/lib/variables';
+import { renderEditorHtml } from '@/lib/variable-presentation';
 
 interface PromptEditorProps {
   content: string;
@@ -39,18 +31,8 @@ export function PromptEditor({
 
   const formatContent = React.useCallback(
     (rawContent: string) => {
-      // Convert {{var}} to styled spans using the centralized regex
-      return rawContent.replace(VARIABLE_REGEX, (match, name) => {
-        const variable = variables.find((v) => v.name === name);
-        if (variable) {
-          const colors = getVariableColorConfig(variable.type);
-          return `<span class="${cn(
-            'rounded px-1 font-mono select-all',
-            colors.badge,
-          )}" data-variable-id="${variable.id}" contenteditable="false">${match}</span>`;
-        }
-        return match;
-      });
+      // Delegate to the centralised presentation utility
+      return renderEditorHtml(rawContent, variables);
     },
     [variables],
   );

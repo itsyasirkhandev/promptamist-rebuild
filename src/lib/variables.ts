@@ -1,6 +1,21 @@
 export const VARIABLE_NAME_PATTERN = /^[^{}]{1,64}$/;
 export const VARIABLE_REGEX = /{{([^{}]{1,64})}}/g;
 
+/** Union of all supported variable input types. */
+export type VariableType = 'text' | 'number' | 'textarea' | 'choices' | 'list';
+
+/**
+ * Represents a single prompt variable configuration.
+ * Mirrors the `promptVariableValidator` shape defined in `convex/validators.ts`.
+ */
+export interface Variable {
+  id: string;
+  name: string;
+  type: VariableType;
+  options?: string[];
+  defaultValue?: string;
+}
+
 /**
  * Validates if a string is a valid variable name.
  * A valid variable name is 1-64 characters long and does not contain curly braces.
@@ -79,4 +94,40 @@ export function removeVariableFromContent(
     }
     return match;
   });
+}
+
+/**
+ * Reconciles a list of variable configurations against the current prompt content.
+ *
+ * - Keeps configurations for variables still present in `content` (preserving their
+ *   relative order from `existingConfigs`).
+ * - Prunes configurations for variables no longer referenced in `content`.
+ * - Creates new default `'text'` configurations (with a fresh UUID) for any variable
+ *   names found in `content` that are not yet in `existingConfigs`.
+ * - New variables are appended in the order they appear in `content`.
+ *
+ * @param content The current prompt template string.
+ * @param existingConfigs The current array of variable configurations.
+ * @returns A reconciled array of variable configurations.
+ */
+export function reconcileVariables(
+  content: string,
+  existingConfigs: Variable[],
+): Variable[] {
+  const namesInContent = new Set(extractVariables(content));
+
+  // Keep existing configs whose names are still present, preserving their order.
+  const kept = existingConfigs.filter((v) => namesInContent.has(v.name));
+  const keptNames = new Set(kept.map((v) => v.name));
+
+  // Find new names (in content order) that have no existing config yet.
+  const newVariables: Variable[] = extractVariables(content)
+    .filter((name) => !keptNames.has(name))
+    .map((name) => ({
+      id: crypto.randomUUID(),
+      name,
+      type: 'text' as VariableType,
+    }));
+
+  return [...kept, ...newVariables];
 }

@@ -1,5 +1,11 @@
 import { v } from 'convex/values';
-import { authedMutation, authedQuery, getUserId, getUser } from './helpers';
+import {
+  authedMutation,
+  authedQuery,
+  getUserId,
+  getUser,
+  getRequiredUser,
+} from './helpers';
 import { Effect } from 'effect';
 import { runEffect } from '../effect';
 import { validatePromptArgs, getPromptForUser } from './promptOwnership';
@@ -32,10 +38,7 @@ export const createPrompt = authedMutation({
       Effect.gen(function* () {
         yield* validatePromptArgs(args);
 
-        const user = yield* getUser(ctx, ctx.identity.subject);
-        if (!user) {
-          return yield* Effect.fail(new Error('User not found'));
-        }
+        const user = yield* getRequiredUser(ctx, ctx.identity.subject);
 
         const tier = (user.subscriptionTier ??
           DEFAULT_TIER) as SubscriptionTier;
