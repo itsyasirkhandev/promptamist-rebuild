@@ -34,16 +34,26 @@ import {
 import { TagsSection } from './form/TagsSection';
 import { SettingsSection } from './form/SettingsSection';
 import { Loader } from '@/components/ui/Loader';
+import {
+  PROMPT_TITLE_MAX_LENGTH,
+  PROMPT_CONTENT_MAX_LENGTH,
+} from '../../../convex/limits';
 
 const promptFormSchema = z.object({
   title: z
     .string()
     .min(1, 'Title is required')
-    .max(300, 'Title must be less than 300 characters'),
+    .max(
+      PROMPT_TITLE_MAX_LENGTH,
+      `Title must be less than ${PROMPT_TITLE_MAX_LENGTH} characters`,
+    ),
   content: z
     .string()
     .min(1, 'Content is required')
-    .max(50000, 'Content must be less than 50000 characters'),
+    .max(
+      PROMPT_CONTENT_MAX_LENGTH,
+      `Content must be less than ${PROMPT_CONTENT_MAX_LENGTH} characters`,
+    ),
   tags: z.array(z.string()),
   isTemplate: z.boolean(),
   isPublic: z.boolean().optional(),
@@ -205,12 +215,12 @@ export function PromptForm({
                   <span
                     className={cn(
                       'text-[10px] font-medium tracking-wider uppercase',
-                      (formTitle?.length || 0) > 300
+                      (formTitle?.length || 0) > PROMPT_TITLE_MAX_LENGTH
                         ? 'text-destructive'
                         : 'text-muted-foreground',
                     )}
                   >
-                    {formTitle?.length || 0} / 300
+                    {formTitle?.length || 0} / {PROMPT_TITLE_MAX_LENGTH}
                   </span>
                 </div>
                 <Input
@@ -248,12 +258,12 @@ export function PromptForm({
                   <span
                     className={cn(
                       'text-[10px] font-medium tracking-wider uppercase',
-                      (content?.length || 0) > 50000
+                      (content?.length || 0) > PROMPT_CONTENT_MAX_LENGTH
                         ? 'text-destructive'
                         : 'text-muted-foreground',
                     )}
                   >
-                    {content?.length || 0} / 50000
+                    {content?.length || 0} / {PROMPT_CONTENT_MAX_LENGTH}
                   </span>
                 </div>
               </div>

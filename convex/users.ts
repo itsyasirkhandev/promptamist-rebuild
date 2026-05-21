@@ -7,6 +7,7 @@ import {
   patchUserProfile,
   patchUserSubscription,
 } from './dal/users.dal';
+import { subscriptionTierValidator } from './subscription';
 
 // ---------------------------------------------------------------------------
 // Internal Mutations (called from Clerk webhook / Polar webhook)
@@ -57,7 +58,7 @@ export const upsertFromClerk = internalMutation({
 export const updateSubscriptionTier = internalMutation({
   args: {
     clerkId: v.string(),
-    tier: v.string(),
+    tier: subscriptionTierValidator,
     polarCustomerId: v.optional(v.string()),
     polarSubscriptionId: v.optional(v.string()),
   },

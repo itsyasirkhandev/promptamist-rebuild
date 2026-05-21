@@ -8,6 +8,7 @@ import {
   type ClerkWebhookPayload,
   type PolarWebhookPayload,
 } from './webhooks';
+import { type SubscriptionTier } from './subscription';
 
 const http = httpRouter();
 
@@ -98,7 +99,8 @@ http.route({
             data.customer?.external_id) as string | undefined | null;
 
           if (clerkId) {
-            const tier = data.status === 'active' ? 'pro' : 'hobby';
+            const tier: SubscriptionTier =
+              data.status === 'active' ? 'pro' : 'hobby';
 
             yield* Effect.tryPromise({
               try: () =>

@@ -12,6 +12,7 @@
 
 import { MutationCtx, QueryCtx } from '../_generated/server';
 import { Id } from '../_generated/dataModel';
+import { type SubscriptionTier } from '../subscription';
 
 // ---------------------------------------------------------------------------
 // Reads
@@ -74,7 +75,7 @@ export async function patchUserSubscription(
   ctx: MutationCtx,
   userId: Id<'users'>,
   data: {
-    subscriptionTier: string;
+    subscriptionTier: SubscriptionTier;
     polarCustomerId?: string;
     polarSubscriptionId?: string;
   },
