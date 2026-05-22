@@ -23,7 +23,7 @@ export function MarketplaceSearch() {
 
   return (
     <div className="flex w-full flex-col gap-6">
-      <div className="relative mx-auto w-full max-w-2xl">
+      <div className="relative mx-auto w-full max-w-md md:max-w-2xl">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
         <Input
           type="text"
