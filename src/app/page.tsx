@@ -32,10 +32,11 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/opengraph-image',
+        url: '/og/landing/og.jpg',
         width: 1200,
         height: 630,
         alt: 'Promptamist \u2014 AI Prompt Management Platform',
+        type: 'image/jpeg',
       },
     ],
   },
@@ -44,7 +45,7 @@ export const metadata: Metadata = {
     title: 'Promptamist \u2014 AI Prompt Manager for ChatGPT, Claude & Gemini',
     description:
       'Organize, template, and share your AI prompts. Dynamic variables, public sharing, full prompt library \u2014 built for AI power users.',
-    images: ['/opengraph-image'],
+    images: ['/og/landing/og.jpg'],
   },
 };
 

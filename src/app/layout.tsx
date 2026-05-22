@@ -66,11 +66,11 @@ export const metadata: Metadata = {
       'Promptamist is the intelligent prompt management platform for AI power users. Organize your ChatGPT, Claude, and Gemini prompts, build reusable templates with dynamic variables, and share prompts publicly.',
     images: [
       {
-        url: '/opengraph-image',
+        url: '/og/landing/og.jpg',
         width: 1200,
         height: 630,
         alt: 'Promptamist — AI Prompt Management Platform',
-        type: 'image/png',
+        type: 'image/jpeg',
       },
     ],
   },
@@ -81,7 +81,7 @@ export const metadata: Metadata = {
     title: 'Promptamist — Organize, Test & Share AI Prompts',
     description:
       'The intelligent prompt management platform for AI power users. Organize, template, and share your ChatGPT, Claude & Gemini prompts.',
-    images: ['/opengraph-image'],
+    images: ['/og/landing/og.jpg'],
   },
   robots: {
     index: true,
