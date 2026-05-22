@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { useRouter } from 'next/navigation';
 import { useConvex } from 'convex/react';
-import { Check, ChevronsUpDown, Filter } from 'lucide-react';
+import { Check, ChevronsUpDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -22,14 +22,8 @@ import {
 import { api } from '../../../../convex/_generated/api';
 import { Id } from '../../../../convex/_generated/dataModel';
 import { PromptDTO } from '../../../../convex/dto';
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import { Badge } from '@/components/ui/badge';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 interface PromptSwitcherProps {
   prompts: PromptDTO[];
@@ -101,6 +95,25 @@ export function PromptSwitcher({ prompts, activeId }: PromptSwitcherProps) {
         <PopoverContent className="w-[300px] p-0" align="start">
           <Command>
             <CommandInput placeholder="Search prompts..." />
+            {allTags.length > 0 && (
+              <div className="border-border border-b">
+                <ScrollArea className="w-full whitespace-nowrap">
+                  <div className="flex w-max space-x-1 p-2">
+                    {allTags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant={selectedTags.has(tag) ? 'default' : 'outline'}
+                        className="cursor-pointer"
+                        onClick={() => toggleTag(tag)}
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                  <ScrollBar orientation="horizontal" className="h-2" />
+                </ScrollArea>
+              </div>
+            )}
             <CommandList>
               <CommandEmpty>No prompt found.</CommandEmpty>
               <CommandGroup>
@@ -129,35 +142,6 @@ export function PromptSwitcher({ prompts, activeId }: PromptSwitcherProps) {
           </Command>
         </PopoverContent>
       </Popover>
-
-      {allTags.length > 0 && (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="relative">
-              <Filter className="h-4 w-4" />
-              {selectedTags.size > 0 && (
-                <span className="bg-primary text-primary-foreground absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full text-[10px]">
-                  {selectedTags.size}
-                </span>
-              )}
-              <span className="sr-only">Filter by tags</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[200px]">
-            <DropdownMenuLabel>Filter Tags</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            {allTags.map((tag) => (
-              <DropdownMenuCheckboxItem
-                key={tag}
-                checked={selectedTags.has(tag)}
-                onCheckedChange={() => toggleTag(tag)}
-              >
-                {tag}
-              </DropdownMenuCheckboxItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )}
     </div>
   );
 }
