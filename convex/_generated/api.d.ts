@@ -9,17 +9,23 @@
  */
 
 import type * as authed_helpers from "../authed/helpers.js";
-import type * as authed_promptHelpers from "../authed/promptHelpers.js";
+import type * as authed_promptOwnership from "../authed/promptOwnership.js";
 import type * as authed_prompts from "../authed/prompts.js";
+import type * as authed_userStats from "../authed/userStats.js";
+import type * as authed_users from "../authed/users.js";
 import type * as dto from "../dto.js";
 import type * as effect from "../effect.js";
 import type * as emails from "../emails.js";
 import type * as errors from "../errors.js";
 import type * as http from "../http.js";
+import type * as limits from "../limits.js";
 import type * as private_helpers from "../private/helpers.js";
 import type * as publicPrompts from "../publicPrompts.js";
+import type * as slugs from "../slugs.js";
+import type * as subscription from "../subscription.js";
 import type * as users from "../users.js";
 import type * as validators from "../validators.js";
+import type * as webhooks from "../webhooks.js";
 
 import type {
   ApiFromModules,
@@ -29,17 +35,23 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "authed/helpers": typeof authed_helpers;
-  "authed/promptHelpers": typeof authed_promptHelpers;
+  "authed/promptOwnership": typeof authed_promptOwnership;
   "authed/prompts": typeof authed_prompts;
+  "authed/userStats": typeof authed_userStats;
+  "authed/users": typeof authed_users;
   dto: typeof dto;
   effect: typeof effect;
   emails: typeof emails;
   errors: typeof errors;
   http: typeof http;
+  limits: typeof limits;
   "private/helpers": typeof private_helpers;
   publicPrompts: typeof publicPrompts;
+  slugs: typeof slugs;
+  subscription: typeof subscription;
   users: typeof users;
   validators: typeof validators;
+  webhooks: typeof webhooks;
 }>;
 
 /**
