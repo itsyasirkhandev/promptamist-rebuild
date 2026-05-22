@@ -5,8 +5,7 @@ import { useQuery } from 'convex/react';
 import { api } from '../../../../convex/_generated/api';
 import { PromptDTO } from '../../../../convex/dto';
 import { useParams, useSearchParams } from 'next/navigation';
-import { PromptUseSidebar } from './PromptUseSidebar';
-import { PromptUseMobileSwitcher } from './PromptUseMobileSwitcher';
+import { PromptSwitcher } from './PromptSwitcher';
 import { Skeleton } from '@/components/ui/skeleton';
 
 interface PromptUseLayoutProps {
@@ -26,7 +25,6 @@ export function PromptUseLayout({ children }: PromptUseLayoutProps) {
   if (prompts === undefined) {
     return (
       <div className="flex h-full">
-        {!isFocusedMode && <Skeleton className="hidden h-full w-64 lg:block" />}
         <div className="flex-1 p-4">
           {!isFocusedMode && (
             <Skeleton className="mb-4 h-10 w-full lg:hidden" />
@@ -43,12 +41,10 @@ export function PromptUseLayout({ children }: PromptUseLayoutProps) {
 
   return (
     <div className="flex h-full overflow-hidden">
-      <PromptUseSidebar prompts={templatePrompts} activeId={activeId} />
       <div className="relative flex flex-1 flex-col overflow-hidden">
-        <PromptUseMobileSwitcher
-          prompts={templatePrompts}
-          activeId={activeId}
-        />
+        <header className="bg-background flex h-14 shrink-0 items-center justify-center border-b px-4">
+          <PromptSwitcher prompts={templatePrompts} activeId={activeId} />
+        </header>
         <main className="flex-1 overflow-x-hidden overflow-y-auto">
           {children}
         </main>
