@@ -64,7 +64,7 @@ export function PromptSwitcher({ prompts, activeId }: PromptSwitcherProps) {
     if (selectedTags.size === 0) return prompts;
     return prompts.filter((p) => {
       if (!p.tags) return false;
-      return Array.from(selectedTags).every((t) => p.tags!.includes(t));
+      return Array.from(selectedTags).some((t) => p.tags!.includes(t));
     });
   }, [prompts, selectedTags]);
 
