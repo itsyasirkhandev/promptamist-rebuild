@@ -158,7 +158,10 @@ function CommandItem({
       {...props}
     >
       {children}
-      <Check className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100" strokeWidth={2} />
+      <Check
+        className="ml-auto opacity-0 group-has-data-[slot=command-shortcut]/command-item:hidden group-data-[checked=true]/command-item:opacity-100"
+        strokeWidth={2}
+      />
     </CommandPrimitive.Item>
   );
 }
