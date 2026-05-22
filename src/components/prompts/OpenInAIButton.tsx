@@ -47,12 +47,12 @@ const targetMap: Record<
   },
   cursor: {
     name: 'Cursor',
-    icon: 'lucide:terminal-square', // fallback if simple-icons:cursor is missing
+    icon: 'devicon:cursor',
     getUrl: (c) => `https://cursor.com/link/prompt?text=${c}`,
   },
   zed: {
     name: 'Zed',
-    icon: 'lucide:zap', // fallback
+    icon: 'devicon:zed',
     getUrl: (c) => `zed://agent?prompt=${c}`,
   },
   t3chat: {
@@ -62,7 +62,7 @@ const targetMap: Record<
   },
   grok: {
     name: 'Grok',
-    icon: 'simple-icons:x',
+    icon: 'bxl:grok',
     getUrl: (c) => `https://x.com/i/grok?text=${c}`,
   },
   perplexity: {
