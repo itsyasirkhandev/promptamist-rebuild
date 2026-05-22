@@ -13,6 +13,7 @@ export interface PublicPromptDTO {
   _creationTime: number;
   authorName?: string;
   authorImageUrl?: string;
+  category?: string;
 }
 
 interface MarketplacePromptCardProps {
@@ -44,6 +45,29 @@ export function MarketplacePromptCard({ prompt }: MarketplacePromptCardProps) {
       <TextureCard className="h-full transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-black/50">
         {/* Header */}
         <div className="p-6 pb-4">
+          {prompt.category && (
+            <div className="mb-2.5">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 px-2.5 py-0.5 text-[9px] font-bold tracking-widest text-neutral-600 dark:text-neutral-400 uppercase">
+                <Icon
+                  icon={
+                    prompt.category === 'development'
+                      ? 'lucide:code-2'
+                      : prompt.category === 'productivity'
+                        ? 'lucide:zap'
+                        : prompt.category === 'marketing'
+                          ? 'lucide:trending-up'
+                          : prompt.category === 'creative'
+                            ? 'lucide:palette'
+                            : prompt.category === 'education'
+                              ? 'lucide:graduation-cap'
+                              : 'lucide:box'
+                  }
+                  className="h-3 w-3"
+                />
+                {prompt.category}
+              </span>
+            </div>
+          )}
           <div className="mb-3 flex items-start justify-between gap-4">
             <h3 className="line-clamp-2 text-lg leading-tight font-bold text-neutral-900 dark:text-neutral-50">
               {prompt.title}

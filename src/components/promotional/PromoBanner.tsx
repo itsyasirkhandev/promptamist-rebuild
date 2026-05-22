@@ -10,6 +10,7 @@ export function PromoBanner() {
   const [isDismissed, setIsDismissed] = React.useState(false);
 
   React.useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setHasMounted(true);
     const dismissed = document.cookie
       .split('; ')

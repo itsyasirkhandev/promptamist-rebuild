@@ -58,6 +58,7 @@ const promptFormSchema = z.object({
   tags: z.array(z.string()),
   isTemplate: z.boolean(),
   isPublic: z.boolean().optional(),
+  category: z.string().optional(),
   variables: z.array(
     z.object({
       id: z.string(),
@@ -111,6 +112,7 @@ export function PromptForm({
       tags: [],
       isTemplate: false,
       isPublic: false,
+      category: 'general',
       variables: [],
       ...initialData,
     },
@@ -135,6 +137,7 @@ export function PromptForm({
         tags: initialData.tags || [],
         isTemplate: !!initialData.isTemplate,
         isPublic: !!initialData.isPublic,
+        category: initialData.category || 'general',
         variables:
           (initialData.variables as PromptFormValues['variables']) || [],
       });
@@ -145,6 +148,7 @@ export function PromptForm({
   const content = useWatch({ control, name: 'content' });
   const isTemplate = useWatch({ control, name: 'isTemplate' });
   const isPublic = useWatch({ control, name: 'isPublic' });
+  const category = useWatch({ control, name: 'category' });
   const tags = useWatch({ control, name: 'tags' }) as string[];
 
   // Reconcile variables whenever the user types {{name}} patterns directly in the editor.
@@ -306,6 +310,8 @@ export function PromptForm({
                 isPublic={!!isPublic}
                 setIsPublic={(val) => setValue('isPublic', val)}
                 publicSlug={publicSlug}
+                category={category || 'general'}
+                setCategory={(val) => setValue('category', val)}
               />
 
               <Separator />

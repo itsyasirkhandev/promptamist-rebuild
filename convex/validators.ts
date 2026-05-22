@@ -22,5 +22,6 @@ export const promptArgsValidator = {
   tags: v.array(v.string()),
   isTemplate: v.boolean(),
   isPublic: v.optional(v.boolean()),
+  category: v.optional(v.string()),
   variables: promptVariablesValidator,
 };
