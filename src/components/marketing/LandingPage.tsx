@@ -43,15 +43,11 @@ export function LandingPage() {
             <Link href="/marketplace">
               <div className="group/texture-button rounded-[14px] border-[1px] border-black/20 bg-white/50 p-[1px] hover:bg-gradient-to-t hover:from-neutral-100 active:bg-neutral-200 dark:border-[2px] dark:border-neutral-950 dark:bg-neutral-600/80 dark:hover:from-neutral-600/50 dark:hover:to-neutral-600/70 dark:active:bg-neutral-800">
                 <div className="flex h-14 w-full min-w-[200px] items-center justify-center gap-3 rounded-[12px] bg-gradient-to-b from-white to-neutral-50/50 px-8 text-lg font-semibold text-neutral-700 transition duration-300 ease-in-out group-hover/texture-button:bg-gradient-to-b group-hover/texture-button:from-neutral-50/50 group-hover/texture-button:to-neutral-100/60 group-active/texture-button:bg-gradient-to-b group-active/texture-button:from-neutral-100/60 group-active/texture-button:to-neutral-100/90 dark:from-neutral-800 dark:to-neutral-700/50 dark:text-neutral-200 dark:group-hover/texture-button:from-neutral-700 dark:group-hover/texture-button:to-neutral-700/60 dark:group-active/texture-button:from-neutral-800 dark:group-active/texture-button:to-neutral-700">
-                  <Icon icon="lucide:compass" className="h-5 w-5 text-neutral-600 dark:text-neutral-300" />
+                  <Icon
+                    icon="lucide:compass"
+                    className="h-5 w-5 text-neutral-600 dark:text-neutral-300"
+                  />
                   Explore Marketplace
-                </div>
-              </div>
-            </Link>
-            <Link href="/sign-in">
-              <div className="group/texture-button rounded-[14px] border-[1px] border-black/20 bg-white/50 p-[1px] hover:bg-gradient-to-t hover:from-neutral-100 active:bg-neutral-200 dark:border-[2px] dark:border-neutral-950 dark:bg-neutral-600/80 dark:hover:from-neutral-600/50 dark:hover:to-neutral-600/70 dark:active:bg-neutral-800">
-                <div className="flex h-14 w-full min-w-[160px] items-center justify-center gap-3 rounded-[12px] bg-gradient-to-b from-white to-neutral-50/50 px-8 text-lg font-semibold text-neutral-700 transition duration-300 ease-in-out group-hover/texture-button:bg-gradient-to-b group-hover/texture-button:from-neutral-50/50 group-hover/texture-button:to-neutral-100/60 group-active/texture-button:bg-gradient-to-b group-active/texture-button:from-neutral-100/60 group-active/texture-button:to-neutral-100/90 dark:from-neutral-800 dark:to-neutral-700/50 dark:text-neutral-200 dark:group-hover/texture-button:from-neutral-700 dark:group-hover/texture-button:to-neutral-700/60 dark:group-active/texture-button:from-neutral-800 dark:group-active/texture-button:to-neutral-700">
-                  Sign In
                 </div>
               </div>
             </Link>
