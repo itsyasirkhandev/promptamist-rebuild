@@ -5,16 +5,43 @@ import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
 
 export function PromoBanner() {
-  const [isVisible, setIsVisible] = React.useState(true);
+  const [hasMounted, setHasMounted] = React.useState(false);
+  const [isVisible, setIsVisible] = React.useState(false);
+  const [isDismissed, setIsDismissed] = React.useState(false);
 
-  if (!isVisible) return null;
+  React.useEffect(() => {
+    setHasMounted(true);
+    const dismissed = document.cookie
+      .split('; ')
+      .some((row) => row.startsWith('promo_banner_dismissed='));
+    if (dismissed) {
+      setIsDismissed(true);
+    } else {
+      setIsVisible(true);
+    }
+  }, []);
+
+  const handleDismiss = () => {
+    setIsVisible(false);
+    // Save cookie to expire in 365 days
+    const expires = new Date();
+    expires.setTime(expires.getTime() + 365 * 24 * 60 * 60 * 1000);
+    document.cookie = `promo_banner_dismissed=true;path=/;expires=${expires.toUTCString()};SameSite=Lax`;
+
+    // Wait for the transition to complete before unmounting
+    setTimeout(() => {
+      setIsDismissed(true);
+    }, 500); // matches the transition duration
+  };
+
+  if (!hasMounted || isDismissed) return null;
 
   return (
     <div
       className={cn(
         'relative z-[100] w-full px-4 pt-4 transition-all duration-500 ease-in-out sm:px-6 lg:px-8',
         isVisible
-          ? 'max-h-40 opacity-100'
+          ? 'max-h-64 sm:max-h-40 opacity-100'
           : 'max-h-0 overflow-hidden opacity-0',
       )}
     >
@@ -23,9 +50,9 @@ export function PromoBanner() {
           <div className="rounded-[23px] border border-black/10 dark:border-neutral-900/80">
             <div className="rounded-[22px] border border-white/50 dark:border-neutral-950">
               <div className="rounded-[21px] border border-neutral-950/20 dark:border-neutral-900/70">
-                <div className="flex w-full items-center justify-between rounded-[20px] border border-white/50 bg-white/40 px-4 py-2.5 backdrop-blur-xl sm:px-6 dark:border-neutral-700/50 dark:bg-black/40">
-                  <div className="flex flex-1 flex-wrap items-center justify-center gap-x-6 gap-y-2 text-center sm:justify-start lg:justify-center">
-                    <div className="flex items-center gap-3">
+                <div className="relative flex w-full flex-col gap-3 rounded-[20px] border border-white/50 bg-white/40 p-4 pr-14 backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-2.5 sm:px-6 dark:border-neutral-700/50 dark:bg-black/40">
+                  <div className="flex flex-1 flex-col items-center gap-3 text-center sm:flex-row sm:flex-wrap sm:text-left lg:justify-center lg:gap-x-6">
+                    <div className="flex items-center gap-3 text-left">
                       <div className="bg-primary/10 border-primary/20 dark:bg-primary/20 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl border shadow-sm backdrop-blur-sm">
                         <Icon
                           icon="solar:gift-bold-duotone"
@@ -36,7 +63,8 @@ export function PromoBanner() {
                         <span className="font-bold">
                           Exclusive Launch Offer!
                         </span>{' '}
-                        First 100 users get Pro for{' '}
+                        <span className="hidden min-[380px]:inline">First 100 users get Pro for </span>
+                        <span className="inline min-[380px]:hidden">Pro for </span>
                         <span className="decoration-primary/40 font-bold underline decoration-2 underline-offset-4">
                           FREE
                         </span>
@@ -58,13 +86,13 @@ export function PromoBanner() {
                   </div>
 
                   <button
-                    onClick={() => setIsVisible(false)}
-                    className="ml-4 shrink-0 rounded-xl p-1.5 text-neutral-400 transition-all hover:bg-black/5 hover:text-neutral-900 dark:text-neutral-500 dark:hover:bg-white/10 dark:hover:text-neutral-100"
+                    onClick={handleDismiss}
+                    className="absolute top-3.5 right-3.5 shrink-0 rounded-2xl p-2 text-neutral-400 transition-all hover:bg-black/5 hover:text-neutral-900 dark:text-neutral-500 dark:hover:bg-white/10 dark:hover:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:relative sm:top-auto sm:right-auto sm:ml-4"
                     aria-label="Dismiss banner"
                   >
                     <Icon
                       icon="solar:close-circle-bold-duotone"
-                      className="h-6 w-6"
+                      className="h-8 w-8"
                     />
                   </button>
                 </div>
