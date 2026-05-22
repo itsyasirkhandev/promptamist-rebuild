@@ -29,6 +29,7 @@ import {
   PromptVariable,
 } from '@/components/prompts/VariableInput';
 import { PromptPreview } from '@/components/prompts/PromptPreview';
+import { OpenInAIButton } from '@/components/prompts/OpenInAIButton';
 
 const VariableList = ({
   variables,
@@ -239,14 +240,18 @@ export default function UseTemplatePage({ params }: PageProps) {
               <Icon icon="lucide:eye" width={18} />
               Live Preview
             </h2>
-            <Button
-              onClick={copyToClipboard}
-              size="sm"
-              className="gap-2 shadow-lg"
-            >
-              <Icon icon="lucide:copy" width={16} />
-              Copy Final Prompt
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                onClick={copyToClipboard}
+                size="sm"
+                variant="outline"
+                className="gap-2 shadow-sm"
+              >
+                <Icon icon="lucide:copy" width={16} />
+                Copy
+              </Button>
+              <OpenInAIButton content={interpolatedContent} size="sm" />
+            </div>
           </header>
 
           <ScrollArea className="flex-1">
@@ -284,14 +289,22 @@ export default function UseTemplatePage({ params }: PageProps) {
             className="bg-secondary/10 m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
           >
             <div className="space-y-4">
-              <Button
-                onClick={copyToClipboard}
-                size="lg"
-                className="w-full gap-2 shadow-lg"
-              >
-                <Icon icon="lucide:copy" width={18} />
-                Copy Final Prompt
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={copyToClipboard}
+                  size="lg"
+                  variant="outline"
+                  className="flex-1 gap-2 shadow-sm"
+                >
+                  <Icon icon="lucide:copy" width={18} />
+                  Copy
+                </Button>
+                <OpenInAIButton
+                  content={interpolatedContent}
+                  size="lg"
+                  className="flex-1"
+                />
+              </div>
               <LivePreview
                 content={interpolatedContent}
                 variables={prompt.variables as PromptVariable[]}
