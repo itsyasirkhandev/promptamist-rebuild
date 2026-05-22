@@ -113,11 +113,11 @@ export function OpenInAIButton({
         onClick={() => handleOpen('chatgpt')}
         size={size}
         variant="ghost"
-        className="gap-2 rounded-r-none hover:bg-gray-50 focus-visible:ring-0 dark:hover:bg-gray-800"
+        className="flex-1 justify-center gap-2 rounded-r-none hover:bg-gray-50 focus-visible:ring-0 dark:hover:bg-gray-800"
       >
-        <Icon icon="simple-icons:openai" width={16} />
-        <span className="hidden sm:inline">Open in ChatGPT</span>
-        <span className="sm:hidden">Open in</span>
+        <Icon icon="simple-icons:openai" width={16} className="shrink-0" />
+        <span className="hidden sm:inline truncate">Open in ChatGPT</span>
+        <span className="sm:hidden truncate">Open</span>
       </Button>
       <span aria-hidden="true" className="w-px bg-gray-200 dark:bg-gray-800" />
       <DropdownMenu>
