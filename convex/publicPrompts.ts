@@ -24,3 +24,26 @@ export const getPromptBySlug = query({
     );
   },
 });
+
+export const listPublicPrompts = query({
+  args: { searchQuery: v.optional(v.string()) },
+  handler: async (ctx, args) => {
+    let prompts;
+    if (args.searchQuery) {
+      prompts = await ctx.db
+        .query('prompts')
+        .withSearchIndex('search_all', (q) =>
+          q.search('searchableText', args.searchQuery as string).eq('isPublic', true),
+        )
+        .take(50);
+    } else {
+      prompts = await ctx.db
+        .query('prompts')
+        .filter((q) => q.eq(q.field('isPublic'), true))
+        .order('desc')
+        .take(50);
+    }
+
+    return prompts.map(toPublicPromptDTO);
+  },
+});

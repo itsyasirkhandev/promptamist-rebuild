@@ -62,8 +62,10 @@ export const createPrompt = authedMutation({
           publicSlug = yield* generateUniqueSlug(ctx, args.title);
         }
 
+        const searchableText = `${args.title} ${args.content} ${(args.tags || []).join(' ')}`;
+
         yield* Effect.promise(() =>
-          insertPrompt(ctx, { userId, ...args, publicSlug }),
+          insertPrompt(ctx, { userId, ...args, publicSlug, searchableText }),
         );
 
         yield* updateUserPromptStats(ctx, userId, {
@@ -98,8 +100,16 @@ export const updatePrompt = authedMutation({
           }
         }
 
+        let searchableText = prompt.searchableText;
+        if (updates.title !== undefined || updates.content !== undefined || updates.tags !== undefined) {
+          const newTitle = updates.title ?? prompt.title;
+          const newContent = updates.content ?? prompt.content;
+          const newTags = updates.tags ?? prompt.tags;
+          searchableText = `${newTitle} ${newContent} ${(newTags || []).join(' ')}`;
+        }
+
         yield* Effect.promise(() =>
-          patchPrompt(ctx, id, { ...updates, publicSlug }),
+          patchPrompt(ctx, id, { ...updates, publicSlug, searchableText }),
         );
 
         const templateChange =

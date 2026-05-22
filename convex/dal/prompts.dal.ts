@@ -106,6 +106,7 @@ export async function insertPrompt(
     variables: Doc<'prompts'>['variables'];
     isPublic?: boolean;
     publicSlug?: string;
+    searchableText?: string;
   },
 ) {
   return ctx.db.insert('prompts', data);
@@ -125,6 +126,7 @@ export async function patchPrompt(
       | 'variables'
       | 'isPublic'
       | 'publicSlug'
+      | 'searchableText'
     >
   >,
 ) {
