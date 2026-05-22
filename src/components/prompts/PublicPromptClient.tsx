@@ -97,13 +97,36 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
     <div className="mx-auto max-w-4xl space-y-8 p-4 py-12">
       <div className="space-y-4">
         <div className="flex items-start justify-between gap-4">
-          <div className="space-y-1">
+          <div className="space-y-2">
             <h1 className="text-3xl font-bold">{prompt.title}</h1>
-            <p className="text-muted-foreground flex items-center gap-1.5 text-sm">
-              <Icon icon="lucide:clock" width={14} />
-              Last updated:{' '}
-              {new Date(prompt._creationTime).toLocaleDateString()}
-            </p>
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-neutral-500 dark:text-neutral-400">
+              <div className="flex items-center gap-2">
+                {prompt.authorImageUrl ? (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    src={prompt.authorImageUrl}
+                    alt={prompt.authorName || 'Author'}
+                    className="h-5 w-5 rounded-full border border-neutral-200 object-cover dark:border-neutral-800"
+                  />
+                ) : (
+                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
+                    <Icon
+                      icon="lucide:user"
+                      className="h-3 w-3 text-neutral-500 dark:text-neutral-400"
+                    />
+                  </div>
+                )}
+                <span className="font-medium text-neutral-700 dark:text-neutral-300">
+                  {prompt.authorName || 'Anonymous'}
+                </span>
+              </div>
+              <span className="text-neutral-300 dark:text-neutral-700 hidden sm:inline">•</span>
+              <p className="text-muted-foreground flex items-center gap-1.5 text-sm">
+                <Icon icon="lucide:clock" width={14} />
+                Last updated:{' '}
+                {new Date(prompt._creationTime).toLocaleDateString()}
+              </p>
+            </div>
           </div>
           <Button
             variant="outline"
