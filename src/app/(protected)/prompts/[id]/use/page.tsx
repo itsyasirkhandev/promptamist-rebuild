@@ -268,15 +268,38 @@ export default function UseTemplatePage({ params }: PageProps) {
 
       <div className="flex flex-1 flex-col overflow-hidden lg:hidden">
         <Tabs defaultValue="fill" className="flex h-full flex-col">
-          <div className="bg-background shrink-0 border-b px-4">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="fill">Fill Variables</TabsTrigger>
-              <TabsTrigger value="preview">Preview</TabsTrigger>
+          <div className="sticky top-0 z-10 shrink-0 border-b border-neutral-200/40 bg-neutral-50/70 px-4 py-2.5 backdrop-blur-md dark:border-neutral-800/40 dark:bg-neutral-950/70">
+            <TabsList className="mx-auto grid h-10 w-full max-w-md grid-cols-2 gap-1 rounded-xl bg-neutral-200/50 p-1 dark:bg-neutral-900/60">
+              <TabsTrigger
+                value="fill"
+                className={cn(
+                  'flex items-center justify-center gap-2 rounded-lg text-xs font-semibold tracking-wide transition-all duration-200',
+                  'data-[state=active]:border-neutral-200/30 data-[state=active]:bg-white data-[state=active]:text-neutral-950 data-[state=active]:shadow-[0_2px_8px_rgba(0,0,0,0.06)]',
+                  'dark:data-[state=active]:border-neutral-700/50 dark:data-[state=active]:bg-neutral-800 dark:data-[state=active]:text-neutral-50',
+                )}
+              >
+                <Icon
+                  icon="lucide:sliders-horizontal"
+                  className="h-3.5 w-3.5"
+                />
+                Fill Variables
+              </TabsTrigger>
+              <TabsTrigger
+                value="preview"
+                className={cn(
+                  'flex items-center justify-center gap-2 rounded-lg text-xs font-semibold tracking-wide transition-all duration-200',
+                  'data-[state=active]:border-neutral-200/30 data-[state=active]:bg-white data-[state=active]:text-neutral-950 data-[state=active]:shadow-[0_2px_8px_rgba(0,0,0,0.06)]',
+                  'dark:data-[state=active]:border-neutral-700/50 dark:data-[state=active]:bg-neutral-800 dark:data-[state=active]:text-neutral-50',
+                )}
+              >
+                <Icon icon="lucide:eye" className="h-3.5 w-3.5" />
+                Preview
+              </TabsTrigger>
             </TabsList>
           </div>
           <TabsContent
             value="fill"
-            className="m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
+            className="animate-in fade-in slide-in-from-bottom-2 m-0 flex-1 flex-col overflow-y-auto p-5 duration-300 data-[state=active]:flex"
           >
             <VariableList
               variables={prompt.variables as PromptVariable[]}
@@ -286,29 +309,29 @@ export default function UseTemplatePage({ params }: PageProps) {
           </TabsContent>
           <TabsContent
             value="preview"
-            className="bg-secondary/10 m-0 flex-1 flex-col overflow-y-auto p-4 data-[state=active]:flex"
+            className="bg-secondary/5 animate-in fade-in slide-in-from-bottom-2 m-0 flex-1 flex-col overflow-y-auto p-5 duration-300 data-[state=active]:flex dark:bg-neutral-950/20"
           >
-            <div className="space-y-4">
+            <div className="mx-auto w-full max-w-md space-y-4">
               <div className="flex gap-2">
                 <Button
                   onClick={copyToClipboard}
-                  size="lg"
+                  size="default"
                   variant="outline"
-                  className="flex-1 gap-2 shadow-sm"
+                  className="flex-1 gap-2 rounded-xl"
                 >
-                  <Icon icon="lucide:copy" width={18} />
+                  <Icon icon="lucide:copy" width={16} />
                   Copy
                 </Button>
                 <OpenInAIButton
                   content={interpolatedContent}
-                  size="lg"
-                  className="flex-1"
+                  size="default"
+                  className="border-input flex-1 rounded-xl border shadow-sm"
                 />
               </div>
               <LivePreview
                 content={interpolatedContent}
                 variables={prompt.variables as PromptVariable[]}
-                className="min-h-75 p-6"
+                className="min-h-75 rounded-2xl border border-neutral-200/80 p-5 shadow-sm dark:border-neutral-800/80"
               />
             </div>
           </TabsContent>
