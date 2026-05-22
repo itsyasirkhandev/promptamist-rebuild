@@ -61,7 +61,7 @@ export function MarketplacePromptCard({ prompt }: MarketplacePromptCardProps) {
             </div>
           </div>
 
-          <div className="flex items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+          <div className="flex flex-col gap-2 text-xs text-neutral-500 @xs:flex-row @xs:items-center @xs:justify-between dark:text-neutral-400">
             <div className="flex items-center gap-2">
               {prompt.authorImageUrl ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
@@ -110,10 +110,10 @@ export function MarketplacePromptCard({ prompt }: MarketplacePromptCardProps) {
         </div>
 
         {/* Footer */}
-        <div className="mt-auto flex items-center gap-2 border-t border-neutral-200/60 p-4 pt-4 dark:border-neutral-800/80">
+        <div className="mt-auto flex flex-col gap-2 border-t border-neutral-200/60 p-4 pt-4 @xs:flex-row @xs:items-center dark:border-neutral-800/80">
           <button
             onClick={handleCopy}
-            className="group/btn flex-1 rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-neutral-200 to-neutral-50 p-[1px] shadow-sm transition duration-300 ease-in-out dark:border-[2px] dark:border-neutral-950 dark:from-neutral-700 dark:to-neutral-800"
+            className="group/btn w-full rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-neutral-200 to-neutral-50 p-[1px] shadow-sm transition duration-300 ease-in-out @xs:flex-1 dark:border-[2px] dark:border-neutral-950 dark:from-neutral-700 dark:to-neutral-800"
           >
             <div className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-gradient-to-b from-white to-neutral-50/50 px-4 text-xs font-semibold text-neutral-700 transition duration-300 ease-in-out group-hover/btn:from-neutral-50 group-hover/btn:to-neutral-100/60 dark:from-neutral-800 dark:to-neutral-900 dark:text-neutral-200 dark:group-hover/btn:from-neutral-700 dark:group-hover/btn:to-neutral-800">
               <Icon
@@ -127,7 +127,7 @@ export function MarketplacePromptCard({ prompt }: MarketplacePromptCardProps) {
           {prompt.isTemplate && prompt.publicSlug && (
             <button
               onClick={handleUse}
-              className="group/btn flex-1 rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80"
+              className="group/btn w-full rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out @xs:flex-1 dark:border-[2px] dark:border-black dark:from-white dark:to-white/80"
             >
               <div className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-gradient-to-b from-neutral-800 to-black px-4 text-xs font-semibold text-white/90 transition duration-300 ease-in-out group-hover/btn:from-stone-800 group-hover/btn:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:active:from-stone-300 dark:active:to-neutral-300">
                 <Icon icon="lucide:external-link" className="h-3.5 w-3.5" />

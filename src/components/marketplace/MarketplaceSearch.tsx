@@ -55,10 +55,12 @@ export function MarketplaceSearch() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {prompts.map((prompt: PublicPromptDTO) => (
-              <MarketplacePromptCard key={prompt._id} prompt={prompt} />
-            ))}
+          <div className="@container w-full">
+            <div className="grid grid-cols-1 gap-6 @2xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4">
+              {prompts.map((prompt: PublicPromptDTO) => (
+                <MarketplacePromptCard key={prompt._id} prompt={prompt} />
+              ))}
+            </div>
           </div>
         )}
       </div>
