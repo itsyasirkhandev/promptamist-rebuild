@@ -76,7 +76,10 @@ export type PromptDTO = ReturnType<typeof toPromptDTO>;
  * Strips: userId, content is intentionally included (it's a shared prompt).
  * Does NOT expose any user-linking fields.
  */
-export function toPublicPromptDTO(prompt: Doc<'prompts'>) {
+export function toPublicPromptDTO(
+  prompt: Doc<'prompts'>,
+  author?: Doc<'users'> | null,
+) {
   return {
     _id: prompt._id,
     _creationTime: prompt._creationTime,
@@ -86,6 +89,8 @@ export function toPublicPromptDTO(prompt: Doc<'prompts'>) {
     isTemplate: prompt.isTemplate,
     variables: prompt.variables,
     publicSlug: prompt.publicSlug,
+    authorName: author?.name,
+    authorImageUrl: author?.imageUrl,
   };
 }
 

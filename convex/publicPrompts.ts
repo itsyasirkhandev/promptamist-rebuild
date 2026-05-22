@@ -18,8 +18,10 @@ export const getPromptBySlug = query({
           return null;
         }
 
+        const author = yield* Effect.promise(() => ctx.db.get(prompt.userId));
+
         // DTO: strip userId and any internal fields before sending to unauthenticated clients
-        return toPublicPromptDTO(prompt);
+        return toPublicPromptDTO(prompt, author);
       }),
     );
   },
@@ -33,7 +35,9 @@ export const listPublicPrompts = query({
       prompts = await ctx.db
         .query('prompts')
         .withSearchIndex('search_all', (q) =>
-          q.search('searchableText', args.searchQuery as string).eq('isPublic', true),
+          q
+            .search('searchableText', args.searchQuery as string)
+            .eq('isPublic', true),
         )
         .take(50);
     } else {
@@ -44,6 +48,13 @@ export const listPublicPrompts = query({
         .take(50);
     }
 
-    return prompts.map(toPublicPromptDTO);
+    const promptsWithAuthors = await Promise.all(
+      prompts.map(async (p) => {
+        const author = await ctx.db.get(p.userId);
+        return toPublicPromptDTO(p, author);
+      }),
+    );
+
+    return promptsWithAuthors;
   },
 });

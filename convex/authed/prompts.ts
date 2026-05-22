@@ -101,7 +101,11 @@ export const updatePrompt = authedMutation({
         }
 
         let searchableText = prompt.searchableText;
-        if (updates.title !== undefined || updates.content !== undefined || updates.tags !== undefined) {
+        if (
+          updates.title !== undefined ||
+          updates.content !== undefined ||
+          updates.tags !== undefined
+        ) {
           const newTitle = updates.title ?? prompt.title;
           const newContent = updates.content ?? prompt.content;
           const newTags = updates.tags ?? prompt.tags;

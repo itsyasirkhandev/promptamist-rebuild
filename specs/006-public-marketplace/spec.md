@@ -4,6 +4,7 @@
 Users need a publicly accessible marketplace at `/marketplace` to discover, search, and utilize public prompts. The page must be open to everyone without authentication barriers (bypassing middleware restrictions). Users should be able to view prompt details, copy static prompts, and interact with dynamic prompts directly from the marketplace.
 
 **2. Functional Requirements**
+
 - **Public Access:** The `/marketplace` route must be exempt from authentication middleware, allowing unauthenticated users to view the page.
 - **Prompt Display:** Display public prompts as cards containing:
   - Title
@@ -17,11 +18,12 @@ Users need a publicly accessible marketplace at `/marketplace` to discover, sear
   - Implement real-time filtering as the user types.
   - Apply debouncing to search input to optimize performance.
   - Handle aborting of in-flight API requests if the user continues typing before the previous request resolves.
-- **Dynamic Prompt Execution:** 
+- **Dynamic Prompt Execution:**
   - Clicking the "Use" button on a dynamic prompt must open the prompt in a new tab.
   - The new tab must reuse the existing UI layout/components currently used for displaying public prompts.
 
 **3. Inputs and Outputs: Primary Actions**
+
 - **USER ACTION:** Navigate to `/marketplace`
   - **SYSTEM BEHAVIOR:** Load and display the marketplace page with a list of all public prompts without requiring sign-in.
 - **USER ACTION:** Type in the search bar
@@ -32,11 +34,13 @@ Users need a publicly accessible marketplace at `/marketplace` to discover, sear
   - **SYSTEM BEHAVIOR:** Open a new browser tab navigating to the specific prompt's usage page, rendering the existing public prompt UI.
 
 **4. Constraints**
+
 - The route `/marketplace` must strictly not trigger any auth redirects from Next.js middleware or Clerk.
 - Search must be performant, relying on debouncing and AbortController to prevent race conditions and excessive API calls.
 - The "Use" button flow must maintain UI consistency with existing public prompt pages.
 
 **5. Edge Cases and Error Handling**
+
 - **No Search Results:** Display a clear empty state (e.g., "No public prompts found matching your search.").
 - **Empty Marketplace (No Public Prompts):** Display a placeholder state (e.g., "No public prompts available yet.").
 - **Search API Failure:** Show an error message (e.g., "Unable to load search results. Please try again.") and perhaps a retry mechanism.
@@ -44,6 +48,7 @@ Users need a publicly accessible marketplace at `/marketplace` to discover, sear
 - **Aborted Requests:** Aborted fetch requests should be handled silently without showing error toasts to the user.
 
 **6. Acceptance Criteria**
+
 - Unauthenticated users can successfully visit `/marketplace`.
 - Prompt cards accurately display the title, description, author details, tags, copy button, and (conditionally) the use button.
 - Typing in the search bar filters prompts in real-time by title, description, and tags, with verifiable debouncing and request cancellation.
