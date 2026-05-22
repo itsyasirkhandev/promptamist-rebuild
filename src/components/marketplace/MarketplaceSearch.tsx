@@ -56,7 +56,7 @@ export function MarketplaceSearch() {
           </div>
         ) : (
           <div className="@container w-full">
-            <div className="grid grid-cols-1 gap-6 @2xl:grid-cols-2 @4xl:grid-cols-3 @6xl:grid-cols-4">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))] gap-6">
               {prompts.map((prompt: PublicPromptDTO) => (
                 <MarketplacePromptCard key={prompt._id} prompt={prompt} />
               ))}

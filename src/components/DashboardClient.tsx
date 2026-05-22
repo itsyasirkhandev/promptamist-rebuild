@@ -157,7 +157,7 @@ function RecentPrompts() {
 
   if (prompts === undefined) {
     return (
-      <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-6">
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))] gap-6">
         {[1, 2, 3].map((i) => (
           <Skeleton key={i} className="h-[250px] w-full rounded-[24px]" />
         ))}
@@ -193,7 +193,7 @@ function RecentPrompts() {
   }
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-8">
+    <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,300px),1fr))] gap-8">
       {prompts.map((prompt) => (
         <PromptCard key={prompt._id} prompt={prompt} />
       ))}

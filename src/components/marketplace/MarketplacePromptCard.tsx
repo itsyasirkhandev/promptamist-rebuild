@@ -40,7 +40,7 @@ export function MarketplacePromptCard({ prompt }: MarketplacePromptCardProps) {
   };
 
   return (
-    <div className="group @container h-full">
+    <div className="group @container h-full w-full max-w-md">
       <TextureCard className="h-full transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-black/50">
         {/* Header */}
         <div className="p-6 pb-4">

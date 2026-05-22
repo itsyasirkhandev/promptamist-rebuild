@@ -46,7 +46,7 @@ export const PromptCard = React.memo(function PromptCard({
   };
 
   return (
-    <div className="group @container h-full">
+    <div className="group @container h-full w-full max-w-md">
       <TextureCard className="h-full transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-black/50">
         {/* Header */}
         <div className="p-6 pb-4">
@@ -97,11 +97,11 @@ export const PromptCard = React.memo(function PromptCard({
         </div>
 
         {/* Footer */}
-        <div className="mt-auto flex items-center gap-2 border-t border-neutral-200/60 p-4 pt-4 dark:border-neutral-800/80">
+        <div className="mt-auto flex flex-col gap-2 border-t border-neutral-200/60 p-4 pt-4 @xs:flex-row @xs:items-center dark:border-neutral-800/80">
           {prompt.isTemplate ? (
             <Link
               href={`/prompts/${prompt._id}/use?mode=focused`}
-              className="flex-1"
+              className="w-full @xs:flex-1"
             >
               <div className="group/btn rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80">
                 <div className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-gradient-to-b from-neutral-800 to-black px-4 text-xs font-semibold text-white/90 transition duration-300 ease-in-out group-hover/btn:from-stone-800 group-hover/btn:to-neutral-800/70 dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:active:from-stone-300 dark:active:to-neutral-300">
@@ -113,7 +113,7 @@ export const PromptCard = React.memo(function PromptCard({
           ) : (
             <button
               onClick={copyToClipboard}
-              className="group/btn flex-1 rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-neutral-200 to-neutral-50 p-[1px] shadow-sm transition duration-300 ease-in-out dark:border-[2px] dark:border-neutral-950 dark:from-neutral-700 dark:to-neutral-800"
+              className="group/btn w-full rounded-[10px] border-[1px] border-black/10 bg-gradient-to-b from-neutral-200 to-neutral-50 p-[1px] shadow-sm transition duration-300 ease-in-out @xs:flex-1 dark:border-[2px] dark:border-neutral-950 dark:from-neutral-700 dark:to-neutral-800"
             >
               <div className="flex h-10 w-full items-center justify-center gap-2 rounded-[8px] bg-gradient-to-b from-white to-neutral-50/50 px-4 text-xs font-semibold text-neutral-700 transition duration-300 ease-in-out group-hover/btn:from-neutral-50 group-hover/btn:to-neutral-100/60 dark:from-neutral-800 dark:to-neutral-900 dark:text-neutral-200 dark:group-hover/btn:from-neutral-700 dark:group-hover/btn:to-neutral-800">
                 <Icon icon="lucide:copy" className="h-3.5 w-3.5" />
@@ -122,7 +122,7 @@ export const PromptCard = React.memo(function PromptCard({
             </button>
           )}
 
-          <div className="flex gap-1.5">
+          <div className="flex w-full justify-start gap-1.5 @xs:w-auto @xs:justify-end">
             {prompt.isPublic && prompt.publicSlug && (
               <button
                 onClick={() => {
@@ -130,7 +130,7 @@ export const PromptCard = React.memo(function PromptCard({
                   navigator.clipboard.writeText(url);
                   toast.success('Share link copied to clipboard');
                 }}
-                className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-neutral-200 transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-800"
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-neutral-200 transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-800"
                 title="Copy Share Link"
               >
                 <Icon
@@ -141,7 +141,7 @@ export const PromptCard = React.memo(function PromptCard({
             )}
             <Link
               href={`/prompts/${prompt._id}/edit`}
-              className="flex h-10 w-10 items-center justify-center rounded-[10px] border border-neutral-200 transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-800"
+              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-neutral-200 transition-colors hover:bg-neutral-50 dark:border-neutral-800 dark:hover:bg-neutral-800"
               title="Edit"
             >
               <Icon
@@ -153,7 +153,7 @@ export const PromptCard = React.memo(function PromptCard({
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <button
-                  className="group/del flex h-10 w-10 items-center justify-center rounded-[10px] border border-neutral-200 transition-colors hover:bg-red-50 dark:border-neutral-800 dark:hover:bg-red-950/30"
+                  className="group/del flex h-10 w-10 shrink-0 items-center justify-center rounded-[10px] border border-neutral-200 transition-colors hover:bg-red-50 dark:border-neutral-800 dark:hover:bg-red-950/30"
                   title="Delete"
                 >
                   <Icon
