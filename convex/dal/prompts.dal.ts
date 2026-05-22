@@ -106,6 +106,7 @@ export async function insertPrompt(
     variables: Doc<'prompts'>['variables'];
     isPublic?: boolean;
     publicSlug?: string;
+    category?: string;
     searchableText?: string;
   },
 ) {
@@ -126,6 +127,7 @@ export async function patchPrompt(
       | 'variables'
       | 'isPublic'
       | 'publicSlug'
+      | 'category'
       | 'searchableText'
     >
   >,

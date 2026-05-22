@@ -61,6 +61,7 @@ export function toPromptDTO(prompt: Doc<'prompts'>) {
     isPublic: prompt.isPublic ?? false,
     // Only expose the slug when the prompt is actually public.
     publicSlug: prompt.isPublic === true ? prompt.publicSlug : undefined,
+    category: prompt.category ?? 'general',
   };
 }
 
@@ -89,6 +90,7 @@ export function toPublicPromptDTO(
     isTemplate: prompt.isTemplate,
     variables: prompt.variables,
     publicSlug: prompt.publicSlug,
+    category: prompt.category ?? 'general',
     authorName: author?.name,
     authorImageUrl: author?.imageUrl,
   };

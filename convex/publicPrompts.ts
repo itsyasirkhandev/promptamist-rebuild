@@ -28,7 +28,10 @@ export const getPromptBySlug = query({
 });
 
 export const listPublicPrompts = query({
-  args: { searchQuery: v.optional(v.string()) },
+  args: {
+    searchQuery: v.optional(v.string()),
+    category: v.optional(v.string()),
+  },
   handler: async (ctx, args) => {
     let prompts;
     if (args.searchQuery) {
@@ -40,12 +43,26 @@ export const listPublicPrompts = query({
             .eq('isPublic', true),
         )
         .take(50);
+
+      if (args.category && args.category !== 'all') {
+        prompts = prompts.filter(
+          (p) => (p.category ?? 'general') === args.category,
+        );
+      }
     } else {
-      prompts = await ctx.db
+      const rawPrompts = await ctx.db
         .query('prompts')
-        .filter((q) => q.eq(q.field('isPublic'), true))
+        .withIndex('by_isPublic', (q) => q.eq('isPublic', true))
         .order('desc')
-        .take(50);
+        .take(100);
+
+      if (args.category && args.category !== 'all') {
+        prompts = rawPrompts
+          .filter((p) => (p.category ?? 'general') === args.category)
+          .slice(0, 50);
+      } else {
+        prompts = rawPrompts.slice(0, 50);
+      }
     }
 
     const promptsWithAuthors = await Promise.all(
