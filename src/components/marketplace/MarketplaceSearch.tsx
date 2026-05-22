@@ -34,6 +34,7 @@ export function MarketplaceSearch() {
   });
 
   const isLoading = prompts === undefined;
+  const isSearchPending = inputValue !== debouncedQuery;
 
   return (
     <div className="flex w-full flex-col gap-6 animate-in fade-in duration-500">
@@ -47,7 +48,7 @@ export function MarketplaceSearch() {
           onChange={(e) => setInputValue(e.target.value)}
           className="bg-background focus-visible:border-primary h-12 rounded-full border-2 pl-10 text-lg shadow-sm"
         />
-        {isLoading && (
+        {isSearchPending && (
           <Loader2 className="text-muted-foreground absolute top-1/2 right-4 h-5 w-5 -translate-y-1/2 animate-spin" />
         )}
       </div>
