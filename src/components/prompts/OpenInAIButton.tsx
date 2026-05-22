@@ -17,7 +17,65 @@ interface OpenInAIButtonProps {
   className?: string;
 }
 
-type AITarget = 'chatgpt' | 'claude' | 'gemini' | 'zai';
+type AITarget =
+  | 'chatgpt'
+  | 'claude'
+  | 'cursor'
+  | 'zed'
+  | 't3chat'
+  | 'grok'
+  | 'perplexity'
+  | 'v0';
+
+const targetMap: Record<
+  AITarget,
+  {
+    name: string;
+    icon: string;
+    getUrl: (content: string) => string;
+  }
+> = {
+  chatgpt: {
+    name: 'ChatGPT',
+    icon: 'simple-icons:openai',
+    getUrl: (c) => `https://chatgpt.com/?q=${c}&hints=search`,
+  },
+  claude: {
+    name: 'Claude',
+    icon: 'simple-icons:anthropic',
+    getUrl: (c) => `https://claude.ai/new?q=${c}`,
+  },
+  cursor: {
+    name: 'Cursor',
+    icon: 'lucide:terminal-square', // fallback if simple-icons:cursor is missing
+    getUrl: (c) => `https://cursor.com/link/prompt?text=${c}`,
+  },
+  zed: {
+    name: 'Zed',
+    icon: 'lucide:zap', // fallback
+    getUrl: (c) => `zed://agent?prompt=${c}`,
+  },
+  t3chat: {
+    name: 'T3 Chat',
+    icon: 'lucide:message-circle', // fallback
+    getUrl: (c) => `https://t3.chat/new?q=${c}`,
+  },
+  grok: {
+    name: 'Grok',
+    icon: 'simple-icons:x',
+    getUrl: (c) => `https://x.com/i/grok?text=${c}`,
+  },
+  perplexity: {
+    name: 'Perplexity',
+    icon: 'simple-icons:perplexity',
+    getUrl: (c) => `https://www.perplexity.ai/?q=${c}`,
+  },
+  v0: {
+    name: 'v0',
+    icon: 'simple-icons:v0',
+    getUrl: (c) => `https://v0.app/chat?q=${c}`,
+  },
+};
 
 export function OpenInAIButton({
   content,
@@ -35,22 +93,7 @@ export function OpenInAIButton({
       toast.success('Prompt copied to clipboard!');
 
       const encodedContent = encodeURIComponent(content);
-      let url = '';
-
-      switch (target) {
-        case 'chatgpt':
-          url = `https://chatgpt.com/?q=${encodedContent}`;
-          break;
-        case 'claude':
-          url = `https://claude.ai/new?q=${encodedContent}`;
-          break;
-        case 'gemini':
-          url = `https://gemini.google.com/app`;
-          break;
-        case 'zai':
-          url = `https://chat.z.ai/?q=${encodedContent}`;
-          break;
-      }
+      const url = targetMap[target].getUrl(encodedContent);
 
       window.open(url, '_blank', 'noopener,noreferrer');
     } catch (err) {
@@ -60,42 +103,52 @@ export function OpenInAIButton({
   };
 
   return (
-    <div className={cn('flex items-center rounded-md shadow-lg', className)}>
+    <div
+      className={cn(
+        'inline-flex overflow-clip rounded-md bg-white shadow-sm ring-1 ring-gray-200 dark:bg-gray-900 dark:ring-gray-800',
+        className,
+      )}
+    >
       <Button
         onClick={() => handleOpen('chatgpt')}
         size={size}
-        className="gap-2 rounded-r-none shadow-none"
+        variant="ghost"
+        className="gap-2 rounded-r-none hover:bg-gray-50 focus-visible:ring-0 dark:hover:bg-gray-800"
       >
         <Icon icon="simple-icons:openai" width={16} />
-        <span className="hidden sm:inline">Open in AI</span>
-        <span className="sm:hidden">Open</span>
+        <span className="hidden sm:inline">Open in ChatGPT</span>
+        <span className="sm:hidden">Open in</span>
       </Button>
+      <span aria-hidden="true" className="w-px bg-gray-200 dark:bg-gray-800" />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
             size={size === 'sm' ? 'sm' : size === 'lg' ? 'lg' : 'default'}
-            className="data-[state=open]:bg-primary/90 rounded-l-none border-l border-white/20 px-2 shadow-none"
+            variant="ghost"
+            className="rounded-l-none px-2 hover:bg-gray-50 focus-visible:ring-0 dark:hover:bg-gray-800"
           >
             <Icon icon="lucide:chevron-down" width={16} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={() => handleOpen('chatgpt')}>
-            <Icon icon="simple-icons:openai" width={16} className="mr-2" />
-            ChatGPT
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleOpen('claude')}>
-            <Icon icon="simple-icons:anthropic" width={16} className="mr-2" />
-            Claude
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleOpen('gemini')}>
-            <Icon icon="simple-icons:google" width={16} className="mr-2" />
-            Gemini
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleOpen('zai')}>
-            <Icon icon="lucide:bot" width={16} className="mr-2" />
-            Z.ai
-          </DropdownMenuItem>
+        <DropdownMenuContent align="end" className="min-w-44 p-1">
+          {Object.entries(targetMap).map(([key, item]) => {
+            const target = key as AITarget;
+            return (
+              <DropdownMenuItem
+                key={target}
+                onClick={() => handleOpen(target)}
+                className="group flex cursor-pointer items-center gap-2 rounded-sm p-2 text-xs"
+              >
+                <Icon icon={item.icon} width={16} className="flex-none" />
+                <span className="truncate">Open in {item.name}</span>
+                <Icon
+                  icon="lucide:arrow-up-right"
+                  width={12}
+                  className="text-muted-foreground ml-auto flex-none opacity-0 transition-opacity group-hover:opacity-100"
+                />
+              </DropdownMenuItem>
+            );
+          })}
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
