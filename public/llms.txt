@@ -36,6 +36,7 @@ Promptamist is model-agnostic and supports:
 ## Public URLs
 
 - https://repromptamist.vercel.app — Landing page and dashboard
+- https://repromptamist.vercel.app/marketplace — Public Prompt Marketplace (search & copy community prompts)
 - https://repromptamist.vercel.app/about — Our mission and story
 - https://repromptamist.vercel.app/pricing — Plan options and features
 - https://repromptamist.vercel.app/solutions — Industry-specific AI workflows
