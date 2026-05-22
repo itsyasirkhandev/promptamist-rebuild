@@ -47,6 +47,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center gap-4">
             <ThemeToggle />
             <Unauthenticated>
+              <Button variant="ghost" size="sm" asChild className="rounded-full px-4">
+                <Link href="/marketplace">Explore Marketplace</Link>
+              </Button>
               <Button size="sm" asChild className="rounded-full px-5">
                 <Link href="/sign-in">Sign In</Link>
               </Button>
@@ -92,6 +95,9 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <UserButton />
               </Authenticated>
               <Unauthenticated>
+                <Button variant="ghost" size="sm" asChild className="rounded-full px-4">
+                  <Link href="/marketplace">Explore Marketplace</Link>
+                </Button>
                 <Button size="sm" asChild className="rounded-full px-5">
                   <Link href="/sign-in">Sign In</Link>
                 </Button>

@@ -29,4 +29,9 @@ export const NAVIGATION_ITEMS: NavigationItem[] = [
     icon: 'lucide:plus-circle',
     requireAuth: true,
   },
+  {
+    title: 'Marketplace',
+    href: '/marketplace',
+    icon: 'lucide:compass',
+  },
 ];
