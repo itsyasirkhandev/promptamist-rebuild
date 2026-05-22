@@ -21,6 +21,7 @@ import {
   PromptVariable as Variable,
 } from '@/components/prompts/VariableInput';
 import { PromptPreview } from '@/components/prompts/PromptPreview';
+import { OpenInAIButton } from '@/components/prompts/OpenInAIButton';
 
 interface PublicPromptClientProps {
   slug: string;
@@ -152,10 +153,13 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between pb-2">
           <CardTitle>Generated Prompt</CardTitle>
-          <Button onClick={handleCopy} className="gap-2">
-            <Icon icon="lucide:copy" width={18} />
-            Copy
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button onClick={handleCopy} variant="outline" className="gap-2">
+              <Icon icon="lucide:copy" width={16} />
+              <span className="hidden sm:inline">Copy</span>
+            </Button>
+            <OpenInAIButton content={generatedPrompt} />
+          </div>
         </CardHeader>
         <CardContent>
           <div className="bg-muted relative rounded-md p-4">
