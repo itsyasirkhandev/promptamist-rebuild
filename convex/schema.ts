@@ -43,8 +43,13 @@ export default defineSchema({
     variables: promptVariablesValidator,
     isPublic: v.optional(v.boolean()),
     publicSlug: v.optional(v.string()),
+    searchableText: v.optional(v.string()),
   })
     .index('by_userId', ['userId'])
     .index('by_userId_and_title', ['userId', 'title'])
-    .index('by_publicSlug', ['publicSlug']),
+    .index('by_publicSlug', ['publicSlug'])
+    .searchIndex('search_all', {
+      searchField: 'searchableText',
+      filterFields: ['isPublic'],
+    }),
 });

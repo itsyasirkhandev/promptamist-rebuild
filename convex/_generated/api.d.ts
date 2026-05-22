@@ -19,6 +19,7 @@ import type * as emails from "../emails.js";
 import type * as errors from "../errors.js";
 import type * as http from "../http.js";
 import type * as limits from "../limits.js";
+import type * as migrations from "../migrations.js";
 import type * as private_helpers from "../private/helpers.js";
 import type * as publicPrompts from "../publicPrompts.js";
 import type * as slugs from "../slugs.js";
@@ -45,6 +46,7 @@ declare const fullApi: ApiFromModules<{
   errors: typeof errors;
   http: typeof http;
   limits: typeof limits;
+  migrations: typeof migrations;
   "private/helpers": typeof private_helpers;
   publicPrompts: typeof publicPrompts;
   slugs: typeof slugs;
