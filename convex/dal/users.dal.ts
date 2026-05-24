@@ -101,3 +101,16 @@ export async function patchUserPromptStats(
 ) {
   return ctx.db.patch(userId, { promptStats: stats });
 }
+
+/** Patch polarCustomerId on an existing user. */
+export async function patchUserPolarCustomerId(
+  ctx: MutationCtx,
+  userId: Id<'users'>,
+  polarCustomerId: string,
+) {
+  return ctx.db.patch(userId, {
+    polarCustomerId,
+    updatedAt: Date.now(),
+  });
+}
+

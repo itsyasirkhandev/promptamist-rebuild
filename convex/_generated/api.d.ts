@@ -22,6 +22,7 @@ import type * as limits from "../limits.js";
 import type * as migrations from "../migrations.js";
 import type * as private_emails from "../private/emails.js";
 import type * as private_helpers from "../private/helpers.js";
+import type * as private_polar from "../private/polar.js";
 import type * as private_users from "../private/users.js";
 import type * as publicPrompts from "../publicPrompts.js";
 import type * as slugs from "../slugs.js";
@@ -51,6 +52,7 @@ declare const fullApi: ApiFromModules<{
   migrations: typeof migrations;
   "private/emails": typeof private_emails;
   "private/helpers": typeof private_helpers;
+  "private/polar": typeof private_polar;
   "private/users": typeof private_users;
   publicPrompts: typeof publicPrompts;
   slugs: typeof slugs;
