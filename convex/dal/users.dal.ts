@@ -12,7 +12,7 @@
 
 import { MutationCtx, QueryCtx } from '../_generated/server';
 import { Id } from '../_generated/dataModel';
-import { type SubscriptionTier } from '../subscription';
+import { type SubscriptionTier, DEFAULT_TIER } from '../subscription';
 
 // ---------------------------------------------------------------------------
 // Reads
@@ -53,6 +53,7 @@ export async function insertUser(
 ) {
   return ctx.db.insert('users', {
     ...data,
+    subscriptionTier: DEFAULT_TIER,
     createdAt: Date.now(),
     updatedAt: Date.now(),
   });

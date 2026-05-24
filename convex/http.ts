@@ -123,7 +123,7 @@ http.route({
 
             if (
               userInfo &&
-              userInfo.subscriptionTier === 'hobby' &&
+              userInfo.subscriptionTier !== 'pro' &&
               tier === 'pro'
             ) {
               yield* Effect.tryPromise({
