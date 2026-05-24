@@ -43,6 +43,7 @@ export const createPolarCustomerBackground = internalAction({
       const customer = await polar.customers.create({
         email: args.email,
         name: args.name || undefined,
+        externalId: args.clerkId,
         metadata: {
           clerkId: args.clerkId,
           convexUserId: String(userInfo.userId),

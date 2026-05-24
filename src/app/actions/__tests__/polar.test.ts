@@ -137,6 +137,7 @@ describe('Polar Server Actions Integration', () => {
         expect.objectContaining({
           email: 'test@example.com',
           name: 'Test User',
+          externalId: 'clerk_123',
           metadata: { clerkId: 'clerk_123' },
         })
       );

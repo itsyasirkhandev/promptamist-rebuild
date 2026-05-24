@@ -62,6 +62,7 @@ const getOrCreatePolarCustomerId = (polar: Polar, clerkUser: User): Effect.Effec
         polar.customers.create({
           email: clerkUser.primaryEmailAddress?.emailAddress ?? '',
           name: clerkUser.fullName || undefined,
+          externalId: clerkUser.id,
           metadata: {
             clerkId: clerkUser.id,
           },
