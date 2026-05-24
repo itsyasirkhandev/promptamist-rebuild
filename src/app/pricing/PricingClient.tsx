@@ -1,0 +1,321 @@
+'use client';
+
+import Link from 'next/link';
+import { Icon } from '@iconify/react';
+import { useConvexAuth, useQuery, useAction } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
+import { useTransition } from 'react';
+import { toast } from 'sonner';
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
+
+export function PricingClient() {
+  const { isLoading: isAuthLoading, isAuthenticated } = useConvexAuth();
+
+  // Safely skip authed query if guest user to avoid Unauthorized crashes
+  const currentUser = useQuery(
+    api.authed.users.getCurrentUser,
+    isAuthenticated ? {} : 'skip',
+  );
+
+  const [isCheckoutPending, startCheckoutTransition] = useTransition();
+  const [isPortalPending, startPortalTransition] = useTransition();
+  const generateCheckout = useAction(api.authed.polar.generateCheckoutUrl);
+  const generatePortal = useAction(api.authed.polar.generatePortalUrl);
+
+  const handleUpgrade = () => {
+    const currentOrigin =
+      typeof window !== 'undefined' ? window.location.origin : undefined;
+    startCheckoutTransition(async () => {
+      try {
+        const result = await generateCheckout({ clientOrigin: currentOrigin });
+        if (result?.url) {
+          window.location.href = result.url;
+        } else {
+          toast.error('Failed to generate checkout session URL');
+        }
+      } catch (error) {
+        toast.error((error as Error).message || 'Checkout failed');
+      }
+    });
+  };
+
+  const handleManageSubscription = () => {
+    startPortalTransition(async () => {
+      try {
+        const result = await generatePortal();
+        if (result?.url) {
+          window.open(result.url, '_blank');
+        } else {
+          toast.error('Failed to load customer portal URL');
+        }
+      } catch (error) {
+        toast.error((error as Error).message || 'Portal redirect failed');
+      }
+    });
+  };
+
+  const isDataLoading =
+    isAuthLoading || (isAuthenticated && currentUser === undefined);
+
+  const plans = [
+    {
+      name: 'Free',
+      price: '$0',
+      description: 'Perfect for getting started with prompt engineering.',
+      features: ['Up to 50 Prompts', 'Unlimited Public Shares'],
+      popular: false,
+    },
+    {
+      name: 'Pro',
+      price: '$5',
+      interval: '/mo',
+      description: 'For power users and professional prompt engineers.',
+      features: ['Unlimited Private Prompts', 'Unlimited Dynamic Templates'],
+      popular: true,
+    },
+  ];
+
+  return (
+    <div className="min-h-screen bg-neutral-50 transition-colors duration-500 dark:bg-stone-950">
+      <section className="px-4 py-16 md:py-24">
+        <div className="mx-auto max-w-6xl">
+          {/* Header Section */}
+          <div className="mb-12 text-center md:mb-16">
+            <p className="mb-2 text-xs font-bold tracking-[0.2em] text-neutral-600 uppercase dark:text-neutral-400">
+              Pricing
+            </p>
+            <h1 className="text-3xl font-semibold tracking-tight text-balance text-neutral-900 md:text-5xl dark:text-neutral-50">
+              Simple, <span className="text-neutral-500">Transparent</span>{' '}
+              Pricing
+            </h1>
+            <p className="mx-auto mt-4 max-w-xl text-pretty text-neutral-600 dark:text-neutral-400">
+              Invest in your productivity, not in subscription bloat. Scale your
+              AI workflow without breaking the bank.
+            </p>
+          </div>
+
+          {/* Pricing Grid */}
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:items-stretch md:gap-8 lg:mx-auto lg:max-w-4xl">
+            {plans.map((plan) => (
+              <div
+                key={plan.name}
+                className={cn(
+                  'rounded-[24px] border border-white/60 bg-gradient-to-b transition-all duration-300 md:h-full md:min-h-0 dark:border-stone-950/60',
+                  plan.popular
+                    ? 'from-neutral-50 to-white/90 shadow-2xl ring-1 shadow-neutral-200/50 ring-black/5 md:-mt-1 md:mb-1 dark:from-neutral-800 dark:to-neutral-950 dark:shadow-black/50 dark:ring-white/10'
+                    : 'from-neutral-100 to-white/70 dark:from-neutral-800 dark:to-neutral-900',
+                )}
+              >
+                <div className="flex h-full flex-col rounded-[23px] border border-black/10 dark:border-neutral-900/80">
+                  <div className="flex h-full flex-col rounded-[22px] border border-white/50 dark:border-neutral-950">
+                    <div className="flex h-full flex-col rounded-[21px] border border-neutral-950/20 dark:border-neutral-900/70">
+                      <div className="flex h-full w-full flex-col rounded-[20px] border border-white/50 text-neutral-500 dark:border-neutral-700/50">
+                        {/* Card Header */}
+                        <div className="flex shrink-0 flex-col gap-1 p-6 pb-4 first:pt-6 last:pb-6">
+                          <div className="mb-1 flex items-center justify-between gap-2">
+                            <h3 className="text-lg font-semibold text-neutral-900 dark:text-neutral-100">
+                              {plan.name}
+                            </h3>
+                            {plan.popular && (
+                              <span className="rounded-full border border-neutral-200 px-2 py-0.5 text-xs font-medium text-neutral-600 dark:border-neutral-800 dark:text-neutral-400">
+                                Popular
+                              </span>
+                            )}
+                          </div>
+                          <div className="flex items-baseline gap-1">
+                            <span className="text-3xl font-semibold text-neutral-900 tabular-nums dark:text-neutral-50">
+                              {plan.price}
+                            </span>
+                            {plan.interval && (
+                              <span className="text-sm text-neutral-600 dark:text-neutral-400">
+                                {plan.interval}
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1 text-sm leading-snug text-neutral-600 dark:text-neutral-400">
+                            {plan.description}
+                          </p>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="shrink-0">
+                          <div className="border border-t-neutral-50 border-r-transparent border-b-neutral-300/50 border-l-transparent dark:border-t-neutral-950 dark:border-b-neutral-700/50"></div>
+                        </div>
+
+                        {/* Card Content (Features) */}
+                        <div className="flex min-h-0 flex-1 flex-col px-6 py-5">
+                          <ul className="flex flex-col gap-3">
+                            {plan.features.map((feature) => (
+                              <li
+                                key={feature}
+                                className="flex items-start gap-2 text-sm text-neutral-700 dark:text-neutral-300"
+                              >
+                                <Icon
+                                  icon="lucide:check"
+                                  className="mt-0.5 h-4 w-4 shrink-0 stroke-neutral-900 dark:stroke-neutral-100"
+                                />
+                                <span>{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+
+                        {/* Card Footer (CTA) */}
+                        <div className="flex shrink-0 flex-col items-center justify-between gap-2 border-t border-neutral-200/60 px-6 py-4 pt-2 dark:border-neutral-800/80">
+                          {plan.name === 'Free' ? (
+                            isDataLoading ? (
+                              <Skeleton className="h-11 w-full rounded-[12px]" />
+                            ) : !isAuthenticated || !currentUser ? (
+                              <Link href="/sign-up" className="w-full">
+                                <div className="group/texture-button w-full rounded-[12px] border-[1px] border-black/20 bg-white/50 p-[1px] hover:bg-gradient-to-t hover:from-neutral-100 active:bg-neutral-200 dark:border-[2px] dark:border-neutral-950 dark:bg-neutral-600/80 dark:hover:from-neutral-600/50 dark:hover:to-neutral-600/70 dark:active:bg-neutral-800">
+                                  <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-gradient-to-b from-white to-neutral-50/50 px-4 py-2.5 text-sm font-medium text-neutral-700 transition duration-300 ease-in-out group-hover/texture-button:bg-gradient-to-b group-hover/texture-button:from-neutral-50/50 group-hover/texture-button:to-neutral-100/60 group-active/texture-button:bg-gradient-to-b group-active/texture-button:from-neutral-100/60 group-active/texture-button:to-neutral-100/90 dark:from-neutral-800 dark:to-neutral-700/50 dark:text-neutral-200 dark:group-hover/texture-button:from-neutral-700 dark:group-hover/texture-button:to-neutral-700/60 dark:group-active/texture-button:from-neutral-800 dark:group-active/texture-button:to-neutral-700">
+                                    Start for Free
+                                  </div>
+                                </div>
+                              </Link>
+                            ) : (
+                              <div className="w-full cursor-not-allowed rounded-[12px] border border-neutral-200 bg-neutral-100/50 p-[1px] dark:border-neutral-800/80 dark:bg-neutral-900/40">
+                                <div className="flex h-full w-full items-center justify-center rounded-[10px] px-4 py-2.5 text-sm font-medium text-neutral-400 dark:text-neutral-500">
+                                  {currentUser.subscriptionTier === 'pro'
+                                    ? 'Hobby Plan'
+                                    : 'Current Plan'}
+                                </div>
+                              </div>
+                            )
+                          ) : isDataLoading ? (
+                            <Skeleton className="h-11 w-full rounded-[12px]" />
+                          ) : !isAuthenticated || !currentUser ? (
+                            <Link href="/sign-up" className="w-full">
+                              <div className="group w-full rounded-[12px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80">
+                                <div className="flex h-full w-full items-center justify-center gap-2 rounded-[10px] bg-gradient-to-b from-neutral-800 to-black px-4 py-2.5 text-sm font-medium text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:hover:from-stone-200 dark:hover:to-neutral-200 dark:active:from-stone-300 dark:active:to-neutral-300">
+                                  Get Pro Access
+                                  <Icon
+                                    icon="lucide:arrow-right"
+                                    className="h-4 w-4"
+                                  />
+                                </div>
+                              </div>
+                            </Link>
+                          ) : currentUser.subscriptionTier === 'pro' ? (
+                            <button
+                              onClick={handleManageSubscription}
+                              disabled={isPortalPending}
+                              className={cn(
+                                'group w-full cursor-pointer rounded-[12px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80',
+                                isPortalPending &&
+                                  'pointer-events-none opacity-80',
+                              )}
+                            >
+                              <div className="flex h-full w-full items-center justify-center gap-2 rounded-[10px] bg-gradient-to-b from-neutral-800 to-black px-4 py-2.5 text-sm font-medium text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:hover:from-stone-200 dark:hover:to-neutral-200 dark:active:from-stone-300 dark:active:to-neutral-300">
+                                {isPortalPending ? (
+                                  <>
+                                    <Icon
+                                      icon="lucide:loader-2"
+                                      className="h-4 w-4 animate-spin"
+                                    />
+                                    <span>Loading portal...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>Manage Subscription</span>
+                                    <Icon
+                                      icon="lucide:arrow-right"
+                                      className="h-4 w-4"
+                                    />
+                                  </>
+                                )}
+                              </div>
+                            </button>
+                          ) : (
+                            <button
+                              onClick={handleUpgrade}
+                              disabled={isCheckoutPending}
+                              className={cn(
+                                'group w-full cursor-pointer rounded-[12px] border-[1px] border-black/10 bg-gradient-to-b from-black/70 to-black p-[1px] transition duration-300 ease-in-out dark:border-[2px] dark:border-black dark:from-white dark:to-white/80',
+                                isCheckoutPending &&
+                                  'pointer-events-none opacity-80',
+                              )}
+                            >
+                              <div className="flex h-full w-full items-center justify-center gap-2 rounded-[10px] bg-gradient-to-b from-neutral-800 to-black px-4 py-2.5 text-sm font-medium text-white/90 transition duration-300 ease-in-out group-hover:from-stone-800 group-hover:to-neutral-800/70 active:bg-gradient-to-b active:from-black active:to-black dark:from-neutral-200 dark:to-neutral-50 dark:text-black/80 dark:hover:from-stone-200 dark:hover:to-neutral-200 dark:active:from-stone-300 dark:active:to-neutral-300">
+                                {isCheckoutPending ? (
+                                  <>
+                                    <Icon
+                                      icon="lucide:loader-2"
+                                      className="h-4 w-4 animate-spin"
+                                    />
+                                    <span>Securing checkout...</span>
+                                  </>
+                                ) : (
+                                  <>
+                                    <span>Upgrade to Pro</span>
+                                    <Icon
+                                      icon="lucide:arrow-right"
+                                      className="h-4 w-4"
+                                    />
+                                  </>
+                                )}
+                              </div>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mx-auto mt-40 max-w-4xl">
+            <div className="mb-16 text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50">
+                Frequently Asked Questions
+              </h2>
+              <p className="mt-4 text-neutral-600 dark:text-neutral-400">
+                Everything you need to know about our plans and billing.
+              </p>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+              {[
+                {
+                  q: 'Can I switch plans later?',
+                  a: 'Yes, you can upgrade or downgrade your plan at any time. Changes are reflected instantly in your account.',
+                },
+                {
+                  q: 'Do you offer a student discount?',
+                  a: 'Absolutely. We offer free Pro access for students. Contact our support team with your .edu email to apply.',
+                },
+                {
+                  q: 'Is there a limit on public sharing?',
+                  a: 'No! We believe in open knowledge. Share as many prompts publicly as you like, even on the Free plan.',
+                },
+                {
+                  q: 'What payment methods do you accept?',
+                  a: 'We accept all major credit cards, Apple Pay, and Google Pay through our secure payment processor.',
+                },
+              ].map((faq, i) => (
+                <div
+                  key={i}
+                  className="group relative rounded-[24px] border border-neutral-200 bg-white/50 p-6 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl dark:border-neutral-800 dark:bg-stone-900/50"
+                >
+                  <h3 className="flex items-start gap-3 text-base font-bold text-neutral-900 dark:text-neutral-100">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-100 text-[10px] text-neutral-500 dark:bg-neutral-800">
+                      ?
+                    </span>
+                    {faq.q}
+                  </h3>
+                  <p className="mt-3 pl-9 text-sm leading-relaxed text-neutral-600 dark:text-neutral-400">
+                    {faq.a}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}
