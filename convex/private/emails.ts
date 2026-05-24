@@ -14,7 +14,7 @@ export const sendProWelcome = internalAction({
             'api-key': process.env.BREVO_API_KEY!,
           },
           body: JSON.stringify({
-            sender: { name: 'Promptamist', email: 'hello@promptamist.com' },
+            sender: { name: 'Promptamist Team', email: 'yasirwebio@gmail.com' },
             to: [{ email: args.email }],
             subject: 'Welcome to Promptamist Pro!',
             htmlContent:
