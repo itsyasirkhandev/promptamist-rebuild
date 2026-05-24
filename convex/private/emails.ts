@@ -11,7 +11,7 @@ export const sendProWelcome = internalAction({
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'api-key': process.env.BRAVO_API_KEY!,
+            'api-key': process.env.BREVO_API_KEY!,
           },
           body: JSON.stringify({
             sender: { name: 'Promptamist', email: 'hello@promptamist.com' },
