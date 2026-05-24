@@ -102,6 +102,50 @@ http.route({
             const tier: SubscriptionTier =
               data.status === 'active' ? 'pro' : 'hobby';
 
+            const userInfo = yield* Effect.tryPromise({
+              try: () =>
+                ctx.runQuery(internal.private.users.getUserEmailAndTier, {
+                  clerkId,
+                }),
+              catch: (error) => new Error(`User fetch failed: ${error}`),
+            }).pipe(
+              Effect.match({
+                onFailure: (error) => {
+                  console.error(
+                    'Failed to fetch user info for email dispatch:',
+                    error
+                  );
+                  return null;
+                },
+                onSuccess: (info) => info,
+              })
+            );
+
+            if (
+              userInfo &&
+              userInfo.subscriptionTier === 'hobby' &&
+              tier === 'pro'
+            ) {
+              yield* Effect.tryPromise({
+                try: () =>
+                  ctx.runAction(internal.private.emails.sendProWelcome, {
+                    email: userInfo.email,
+                  }),
+                catch: (error) => new Error(`Email dispatch failed: ${error}`),
+              }).pipe(
+                Effect.match({
+                  onFailure: (error) => {
+                    console.error(
+                      'Failed to dispatch welcome email action:',
+                      error
+                    );
+                    return null;
+                  },
+                  onSuccess: (res) => res,
+                })
+              );
+            }
+
             yield* Effect.tryPromise({
               try: () =>
                 ctx.runMutation(internal.users.updateSubscriptionTier, {
