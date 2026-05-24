@@ -37,7 +37,7 @@ export function MarketplaceSearch() {
   const isSearchPending = inputValue !== debouncedQuery;
 
   return (
-    <div className="flex w-full flex-col gap-6 animate-in fade-in duration-500">
+    <div className="animate-in fade-in flex w-full flex-col gap-6 duration-500">
       {/* Search Input */}
       <div className="relative mx-auto w-full max-w-md md:max-w-2xl">
         <Search className="text-muted-foreground absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2" />
@@ -54,8 +54,8 @@ export function MarketplaceSearch() {
       </div>
 
       {/* Category Tabs */}
-      <div className="w-full overflow-x-auto scrollbar-none py-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        <div className="flex gap-2.5 px-1 min-w-max md:justify-center">
+      <div className="scrollbar-none w-full overflow-x-auto py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex min-w-max gap-2.5 px-1 md:justify-center">
           {CATEGORIES.map((cat) => {
             const isActive = activeCategory === cat.id;
             return (
@@ -63,17 +63,20 @@ export function MarketplaceSearch() {
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
                 className={cn(
-                  "flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-full border transition-all duration-300 transform active:scale-95 cursor-pointer shadow-sm",
+                  'flex transform cursor-pointer items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium shadow-sm transition-all duration-300 active:scale-95',
                   isActive
-                    ? "bg-neutral-900 border-neutral-900 text-white dark:bg-neutral-100 dark:border-neutral-100 dark:text-neutral-900 font-bold scale-102 shadow-md"
-                    : "bg-white hover:bg-neutral-50 border-neutral-200 text-neutral-600 hover:text-neutral-900 hover:scale-101 dark:bg-neutral-900/60 dark:hover:bg-neutral-800 dark:border-neutral-800 dark:text-neutral-400 dark:hover:text-neutral-200"
+                    ? 'scale-102 border-neutral-900 bg-neutral-900 font-bold text-white shadow-md dark:border-neutral-100 dark:bg-neutral-100 dark:text-neutral-900'
+                    : 'border-neutral-200 bg-white text-neutral-600 hover:scale-101 hover:bg-neutral-50 hover:text-neutral-900 dark:border-neutral-800 dark:bg-neutral-900/60 dark:text-neutral-400 dark:hover:bg-neutral-800 dark:hover:text-neutral-200',
                 )}
               >
                 <Icon
                   icon={cat.icon}
                   width={16}
                   height={16}
-                  className={cn("transition-transform duration-300", isActive && "rotate-3 scale-110")}
+                  className={cn(
+                    'transition-transform duration-300',
+                    isActive && 'scale-110 rotate-3',
+                  )}
                 />
                 {cat.label}
               </button>
@@ -91,10 +94,13 @@ export function MarketplaceSearch() {
             </p>
           </div>
         ) : prompts.length === 0 ? (
-          <div className="bg-muted/30 mt-4 rounded-3xl border border-dashed border-neutral-300 dark:border-neutral-800 py-20 text-center animate-in fade-in zoom-in-95 duration-300">
+          <div className="bg-muted/30 animate-in fade-in zoom-in-95 mt-4 rounded-3xl border border-dashed border-neutral-300 py-20 text-center duration-300 dark:border-neutral-800">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-100 dark:bg-neutral-800">
               <Icon
-                icon={CATEGORIES.find((c) => c.id === activeCategory)?.icon || 'lucide:search'}
+                icon={
+                  CATEGORIES.find((c) => c.id === activeCategory)?.icon ||
+                  'lucide:search'
+                }
                 className="text-muted-foreground h-8 w-8 opacity-60"
               />
             </div>
@@ -103,7 +109,7 @@ export function MarketplaceSearch() {
                 ? 'No prompts found'
                 : `No prompts in ${CATEGORIES.find((c) => c.id === activeCategory)?.label} yet`}
             </h3>
-            <p className="text-muted-foreground mt-1 max-w-sm mx-auto text-sm px-4">
+            <p className="text-muted-foreground mx-auto mt-1 max-w-sm px-4 text-sm">
               {activeCategory === 'all'
                 ? 'Try adjusting your search terms or keywords.'
                 : 'Be the first to share a prompt in this category and contribute to the community!'}

@@ -113,12 +113,12 @@ http.route({
                 onFailure: (error) => {
                   console.error(
                     'Failed to fetch user info for email dispatch:',
-                    error
+                    error,
                   );
                   return null;
                 },
                 onSuccess: (info) => info,
-              })
+              }),
             );
 
             if (
@@ -137,12 +137,12 @@ http.route({
                   onFailure: (error) => {
                     console.error(
                       'Failed to dispatch welcome email action:',
-                      error
+                      error,
                     );
                     return null;
                   },
                   onSuccess: (res) => res,
-                })
+                }),
               );
             }
 

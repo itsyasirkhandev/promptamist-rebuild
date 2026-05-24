@@ -28,7 +28,9 @@ export const sendProWelcome = internalAction({
       const response = yield* sendEmail;
       if (!response.ok) {
         return yield* Effect.fail(
-          new Error(`Bravo API Error: ${response.status} ${response.statusText}`)
+          new Error(
+            `Bravo API Error: ${response.status} ${response.statusText}`,
+          ),
         );
       }
       return response;
@@ -39,7 +41,7 @@ export const sendProWelcome = internalAction({
           return null;
         },
         onSuccess: (res) => res,
-      })
+      }),
     );
 
     await Effect.runPromise(program);

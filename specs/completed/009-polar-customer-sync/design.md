@@ -4,26 +4,27 @@ Technical specification for implementing automated and on-demand synchronization
 
 ## 1. Objective
 
-* Asynchronously create native Polar Customers for new users during signup to enable direct, robust customer association on Polar.
-* Persist the returned `polarCustomerId` in the Convex `users` database table.
-* Fallback to dynamically creating the Polar Customer on-demand during checkout and billing portal creation if it's missing (e.g., for legacy users or recovery from past network/API failures).
-* Update `createCheckoutSession` and `createCustomerPortalSession` server actions to use the native `customerId` instead of relying solely on `externalCustomerId`.
-* Ensure that the `polarCustomerId` is kept private and never exposed to the client in standard user DTOs.
+- Asynchronously create native Polar Customers for new users during signup to enable direct, robust customer association on Polar.
+- Persist the returned `polarCustomerId` in the Convex `users` database table.
+- Fallback to dynamically creating the Polar Customer on-demand during checkout and billing portal creation if it's missing (e.g., for legacy users or recovery from past network/API failures).
+- Update `createCheckoutSession` and `createCustomerPortalSession` server actions to use the native `customerId` instead of relying solely on `externalCustomerId`.
+- Ensure that the `polarCustomerId` is kept private and never exposed to the client in standard user DTOs.
 
 ---
 
 ## 2. Tech Stack
 
-* **Frontend/Server Actions**: Next.js 16 (App Router, Server Actions)
-* **Backend**: Convex 1.39 (Queries, Mutations, and Actions)
-* **Identity**: Clerk (Clerk webhook & `@clerk/nextjs/server`)
-* **Billing Service**: Polar.sh SDK (`@polar-sh/sdk` 0.47+)
-* **Data Flow Control**: `Effect.ts` (Functional pipeline & runtime validation)
+- **Frontend/Server Actions**: Next.js 16 (App Router, Server Actions)
+- **Backend**: Convex 1.39 (Queries, Mutations, and Actions)
+- **Identity**: Clerk (Clerk webhook & `@clerk/nextjs/server`)
+- **Billing Service**: Polar.sh SDK (`@polar-sh/sdk` 0.47+)
+- **Data Flow Control**: `Effect.ts` (Functional pipeline & runtime validation)
 
 ### Why this stack?
-* **Effect.ts** is the core functional architecture of this codebase, allowing us to build predictable, error-safe, and typed action pipelines.
-* **Convex Actions** provide a Node.js environment capable of making external HTTP fetch requests to Polar.sh, isolated from V8 mutations.
-* **Clerk webhook routing** in Convex HTTP actions allows seamless, low-overhead reactive integration at the moment of user signup.
+
+- **Effect.ts** is the core functional architecture of this codebase, allowing us to build predictable, error-safe, and typed action pipelines.
+- **Convex Actions** provide a Node.js environment capable of making external HTTP fetch requests to Polar.sh, isolated from V8 mutations.
+- **Clerk webhook routing** in Convex HTTP actions allows seamless, low-overhead reactive integration at the moment of user signup.
 
 ---
 
@@ -32,6 +33,7 @@ Technical specification for implementing automated and on-demand synchronization
 The synchronization is divided into two distinct lifecycle flows:
 
 ### Flow A: Asynchronous Signup Synchronization (Webhook-based)
+
 ```
 [ Clerk Webhook ] --(user.created)--> [ Convex HTTP Action: http.ts ]
                                                    |
@@ -57,6 +59,7 @@ The synchronization is divided into two distinct lifecycle flows:
 ```
 
 ### Flow B: On-Demand Checkout / Portal Synchronization (Server Action-based)
+
 ```
 [ User clicks Upgrade/Portal ] ---> [ Server Action: src/app/actions/polar.ts ]
                                                    |
@@ -77,6 +80,7 @@ The synchronization is divided into two distinct lifecycle flows:
 The Convex `users` table already has the `polarCustomerId` field defined under `convex/schema.ts`, so no structural table additions are needed.
 
 ### DAL (Data Access Layer) Additions
+
 We will add a specific, isolated helper inside `convex/dal/users.dal.ts` to patch only the `polarCustomerId` field on the user document without altering other parameters.
 
 ```typescript
@@ -100,19 +104,23 @@ export async function patchUserPolarCustomerId(
 ## 5. Core Design Decisions
 
 ### Decision 1: Create Polar Customers Asynchronously via Convex Action Scheduler
-* *Why*: If we call the Polar API synchronously inside the Clerk webhook execution context, network delays or transient API downtime from Polar will fail the Clerk webhook request. Clerk will retry, leading to potentially duplicate side-effects. By returning HTTP 200 to Clerk immediately and executing the Polar Customer creation as a scheduled background Convex action, user signup is non-blocking and robust.
+
+- _Why_: If we call the Polar API synchronously inside the Clerk webhook execution context, network delays or transient API downtime from Polar will fail the Clerk webhook request. Clerk will retry, leading to potentially duplicate side-effects. By returning HTTP 200 to Clerk immediately and executing the Polar Customer creation as a scheduled background Convex action, user signup is non-blocking and robust.
 
 ### Decision 2: Implement Dynamic Fallback (On-Demand) Creation in Server Actions
-* *Why*: Legacy users created prior to this implementation will lack a `polarCustomerId`. By checking for `polarCustomerId` when creating checkout or portal sessions and dynamically creating the Polar Customer on the fly if missing, we ensure 100% backward compatibility and automated recovery without needing a manual migration.
+
+- _Why_: Legacy users created prior to this implementation will lack a `polarCustomerId`. By checking for `polarCustomerId` when creating checkout or portal sessions and dynamically creating the Polar Customer on the fly if missing, we ensure 100% backward compatibility and automated recovery without needing a manual migration.
 
 ### Decision 3: Exclude `polarCustomerId` from the User DTO (`toUserDTO`)
-* *Why*: Security-by-design dictates that internal vendor references, customer IDs, and database identifiers should not be leaked to the frontend/browser client unless strictly necessary. The Server Actions run entirely on the server and retrieve the ID via authenticated Convex client calls, keeping this sensitive reference server-bound.
+
+- _Why_: Security-by-design dictates that internal vendor references, customer IDs, and database identifiers should not be leaked to the frontend/browser client unless strictly necessary. The Server Actions run entirely on the server and retrieve the ID via authenticated Convex client calls, keeping this sensitive reference server-bound.
 
 ---
 
 ## 6. Core Functional Flows
 
 ### A. Data Access Layer (DAL) Helper
+
 Add the database write helper in `convex/dal/users.dal.ts`:
 
 ```typescript
@@ -130,6 +138,7 @@ export async function patchUserPolarCustomerId(
 ```
 
 ### B. Convex Queries & Mutations for Polar Customers
+
 We will expose an authenticated query and mutation to the server action, and internal queries/mutations to the background action.
 
 ```typescript
@@ -157,7 +166,7 @@ export const savePolarCustomerIdClient = authedMutation({
       Effect.gen(function* () {
         const userId = yield* getUserId(ctx, ctx.identity.subject);
         yield* Effect.promise(() =>
-          patchUserPolarCustomerId(ctx, userId, args.polarCustomerId)
+          patchUserPolarCustomerId(ctx, userId, args.polarCustomerId),
         );
       }),
     );
@@ -198,6 +207,7 @@ export const getUserInfoForPolar = internalQuery({
 ```
 
 ### C. Background Customer Sync (Convex Action)
+
 Define the background creation in `convex/private/users.ts`:
 
 ```typescript
@@ -215,17 +225,24 @@ export const createPolarCustomerBackground = internalAction({
   },
   handler: async (ctx, args) => {
     // 1. Fetch Convex user info
-    const userInfo = await ctx.runQuery(internal.private.users.getUserInfoForPolar, {
-      clerkId: args.clerkId,
-    });
+    const userInfo = await ctx.runQuery(
+      internal.private.users.getUserInfoForPolar,
+      {
+        clerkId: args.clerkId,
+      },
+    );
 
     if (!userInfo) {
-      console.warn(`Aborting Polar customer creation: Convex user not found for ${args.clerkId}`);
+      console.warn(
+        `Aborting Polar customer creation: Convex user not found for ${args.clerkId}`,
+      );
       return;
     }
 
     if (userInfo.polarCustomerId) {
-      console.log(`User ${args.clerkId} already has Polar customer ID: ${userInfo.polarCustomerId}`);
+      console.log(
+        `User ${args.clerkId} already has Polar customer ID: ${userInfo.polarCustomerId}`,
+      );
       return;
     }
 
@@ -252,37 +269,48 @@ export const createPolarCustomerBackground = internalAction({
         polarCustomerId: customer.id,
       });
 
-      console.log(`Successfully synced Polar customer ${customer.id} for user ${args.clerkId}`);
+      console.log(
+        `Successfully synced Polar customer ${customer.id} for user ${args.clerkId}`,
+      );
     } catch (error) {
-      console.error(`Failed to create background Polar customer for ${args.clerkId}:`, error);
+      console.error(
+        `Failed to create background Polar customer for ${args.clerkId}:`,
+        error,
+      );
     }
   },
 });
 ```
 
 ### D. Triggering Background Sync in Webhook
+
 We update the Clerk webhook upsert handler to schedule the action on successful user insertion.
 
 ```typescript
 // In convex/users.ts -> upsertFromClerk mutation handler:
 
-    // ... (after user creation)
-    const id = await insertUser(ctx, {
-      clerkId: args.clerkId,
-      email: args.email,
-      name: args.name,
-      imageUrl: args.imageUrl,
-    });
+// ... (after user creation)
+const id = await insertUser(ctx, {
+  clerkId: args.clerkId,
+  email: args.email,
+  name: args.name,
+  imageUrl: args.imageUrl,
+});
 
-    // Schedule background Polar customer sync
-    await ctx.scheduler.runAfter(0, internal.private.users.createPolarCustomerBackground, {
-      clerkId: args.clerkId,
-      email: args.email,
-      name: args.name,
-    });
+// Schedule background Polar customer sync
+await ctx.scheduler.runAfter(
+  0,
+  internal.private.users.createPolarCustomerBackground,
+  {
+    clerkId: args.clerkId,
+    email: args.email,
+    name: args.name,
+  },
+);
 ```
 
 ### E. Next.js Server Actions Updates (`src/app/actions/polar.ts`)
+
 We update both Server Actions to query Convex for `polarCustomerId`. If not present, dynamically create it on the fly and save it.
 
 ```typescript
@@ -305,7 +333,7 @@ const getOrCreatePolarCustomerId = (polarClient: Polar, clerkUser: any) =>
 
     // 1. Fetch polarCustomerId from Convex
     const storedCustomerId = yield* Effect.promise(() =>
-      convex.query(api.authed.users.getPolarCustomerId)
+      convex.query(api.authed.users.getPolarCustomerId),
     );
 
     if (storedCustomerId) {
@@ -313,7 +341,9 @@ const getOrCreatePolarCustomerId = (polarClient: Polar, clerkUser: any) =>
     }
 
     // 2. Missing: Create customer dynamically on Polar
-    console.log(`Dynamic fallback: creating Polar customer for user ${clerkUser.id}`);
+    console.log(
+      `Dynamic fallback: creating Polar customer for user ${clerkUser.id}`,
+    );
     const customer = yield* Effect.tryPromise({
       try: () =>
         polarClient.customers.create({
@@ -323,14 +353,15 @@ const getOrCreatePolarCustomerId = (polarClient: Polar, clerkUser: any) =>
             clerkId: clerkUser.id,
           },
         }),
-      catch: (e) => new Error(`Failed to create Polar Customer dynamically: ${e}`),
+      catch: (e) =>
+        new Error(`Failed to create Polar Customer dynamically: ${e}`),
     });
 
     // 3. Save to Convex
     yield* Effect.promise(() =>
       convex.mutation(api.authed.users.savePolarCustomerIdClient, {
         polarCustomerId: customer.id,
-      })
+      }),
     );
 
     return customer.id;
@@ -338,8 +369,9 @@ const getOrCreatePolarCustomerId = (polarClient: Polar, clerkUser: any) =>
 ```
 
 These IDs will then be passed directly into:
-* **Checkout creation**: `polar.checkouts.create({ products: [...], customerId: polarCustomerId })`
-* **Portal creation**: `polar.customerSessions.create({ customerId: polarCustomerId })`
+
+- **Checkout creation**: `polar.checkouts.create({ products: [...], customerId: polarCustomerId })`
+- **Portal creation**: `polar.customerSessions.create({ customerId: polarCustomerId })`
 
 ---
 

@@ -131,7 +131,7 @@ export default function MarketplacePage() {
             <div className="mb-12 text-center">
               <h2
                 id="insights-title"
-                className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-3xl"
+                className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-3xl dark:text-neutral-50"
               >
                 Prompt Engineering Insights & FAQ
               </h2>
@@ -143,7 +143,7 @@ export default function MarketplacePage() {
 
             {/* Statistical Grid */}
             <div className="mb-16 grid gap-6 sm:grid-cols-3">
-              <div className="rounded-2xl border border-neutral-200/60 bg-neutral-50/50 p-6 dark:border-neutral-800 dark:bg-neutral-900/30 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-neutral-100/50 dark:hover:bg-neutral-900/40">
+              <div className="rounded-2xl border border-neutral-200/60 bg-neutral-50/50 p-6 shadow-sm transition-all duration-300 hover:bg-neutral-100/50 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900/30 dark:hover:bg-neutral-900/40">
                 <p className="text-3xl font-extrabold text-neutral-900 dark:text-neutral-50">
                   4.2+ hrs
                 </p>
@@ -155,7 +155,7 @@ export default function MarketplacePage() {
                   reusing templates instead of rewriting static prompts.
                 </p>
               </div>
-              <div className="rounded-2xl border border-neutral-200/60 bg-neutral-50/50 p-6 dark:border-neutral-800 dark:bg-neutral-900/30 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-neutral-100/50 dark:hover:bg-neutral-900/40">
+              <div className="rounded-2xl border border-neutral-200/60 bg-neutral-50/50 p-6 shadow-sm transition-all duration-300 hover:bg-neutral-100/50 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900/30 dark:hover:bg-neutral-900/40">
                 <p className="text-3xl font-extrabold text-neutral-900 dark:text-neutral-50">
                   43% Increase
                 </p>
@@ -167,7 +167,7 @@ export default function MarketplacePage() {
                   examples yield up to 43% better execution consistency in LLMs.
                 </p>
               </div>
-              <div className="rounded-2xl border border-neutral-200/60 bg-neutral-50/50 p-6 dark:border-neutral-800 dark:bg-neutral-900/30 shadow-sm transition-all duration-300 hover:shadow-md hover:bg-neutral-100/50 dark:hover:bg-neutral-900/40">
+              <div className="rounded-2xl border border-neutral-200/60 bg-neutral-50/50 p-6 shadow-sm transition-all duration-300 hover:bg-neutral-100/50 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900/30 dark:hover:bg-neutral-900/40">
                 <p className="text-3xl font-extrabold text-neutral-900 dark:text-neutral-50">
                   100% Agnostic
                 </p>
@@ -175,17 +175,18 @@ export default function MarketplacePage() {
                   Universal Support
                 </h3>
                 <p className="text-muted-foreground mt-2 text-xs leading-relaxed">
-                  All templates are mathematically structured to perform perfectly
-                  on state-of-the-art models like GPT 5.5, Claude 4.7, Gemini 3.1 Pro, and Gemini 3.5 Flash.
+                  All templates are mathematically structured to perform
+                  perfectly on state-of-the-art models like GPT 5.5, Claude 4.7,
+                  Gemini 3.1 Pro, and Gemini 3.5 Flash.
                 </p>
               </div>
             </div>
 
             {/* Expert Citation Block */}
-            <div className="mb-16 rounded-2xl border border-neutral-200 bg-neutral-50/30 p-6 dark:border-neutral-800 dark:bg-neutral-900/10 shadow-sm">
+            <div className="mb-16 rounded-2xl border border-neutral-200 bg-neutral-50/30 p-6 shadow-sm dark:border-neutral-800 dark:bg-neutral-900/10">
               <h3 className="flex items-center gap-2 text-sm font-bold text-neutral-900 dark:text-neutral-200">
                 <svg
-                  className="h-4 w-4 text-primary"
+                  className="text-primary h-4 w-4"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -200,11 +201,15 @@ export default function MarketplacePage() {
                 Expert Prompt Engineering Best Practices
               </h3>
               <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                {"According to Anthropic's developer guidelines, wrapping key prompt inputs in XML tags (e.g., "}
-                <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono dark:bg-neutral-800">
+                {
+                  "According to Anthropic's developer guidelines, wrapping key prompt inputs in XML tags (e.g., "
+                }
+                <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-xs dark:bg-neutral-800">
                   &lt;context&gt;
                 </code>
-                {") increases extraction fidelity. OpenAI's research also indicates that defining clear delimiters and incorporating explicit \"few-shot\" input-output examples helps guide LLMs toward optimal performance."}
+                {
+                  ') increases extraction fidelity. OpenAI\'s research also indicates that defining clear delimiters and incorporating explicit "few-shot" input-output examples helps guide LLMs toward optimal performance.'
+                }
               </p>
             </div>
 
@@ -215,11 +220,12 @@ export default function MarketplacePage() {
                   What is an AI prompt marketplace?
                 </h3>
                 <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                  An AI prompt marketplace is a community-driven repository where
-                  creators and prompt engineers publish pre-tested, highly effective
-                  prompt structures. By accessing high-quality prompts, users can
-                  skip manual trial-and-error, unlocking advanced capabilities in
-                  ChatGPT, Claude, and Gemini with single-click copy features.
+                  An AI prompt marketplace is a community-driven repository
+                  where creators and prompt engineers publish pre-tested, highly
+                  effective prompt structures. By accessing high-quality
+                  prompts, users can skip manual trial-and-error, unlocking
+                  advanced capabilities in ChatGPT, Claude, and Gemini with
+                  single-click copy features.
                 </p>
               </div>
 
@@ -228,19 +234,19 @@ export default function MarketplacePage() {
                   How do dynamic template variables improve efficiency?
                 </h3>
                 <p className="text-muted-foreground mt-2 text-sm leading-relaxed">
-                  Dynamic variables turn static prompts into versatile engines. By
-                  parameterizing segments of your prompt (e.g., using placeholders
-                  like{' '}
-                  <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono dark:bg-neutral-800">
-                    {"{{topic}}"}
+                  Dynamic variables turn static prompts into versatile engines.
+                  By parameterizing segments of your prompt (e.g., using
+                  placeholders like{' '}
+                  <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-xs dark:bg-neutral-800">
+                    {'{{topic}}'}
                   </code>{' '}
                   or{' '}
-                  <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono dark:bg-neutral-800">
-                    {"{{tone}}"}
+                  <code className="bg-muted rounded px-1.5 py-0.5 font-mono text-xs dark:bg-neutral-800">
+                    {'{{tone}}'}
                   </code>
                   ), you write the prompt core once and run it indefinitely with
-                  different parameters. Promptamist handles dynamic variable replacement
-                  on the fly.
+                  different parameters. Promptamist handles dynamic variable
+                  replacement on the fly.
                 </p>
               </div>
 
@@ -253,7 +259,8 @@ export default function MarketplacePage() {
                   globally, they leverage cross-compatible formatting
                   techniques—such as Markdown hierarchy and standard cognitive
                   structuring—that maximize response quality on next-generation
-                  architectures including GPT 5.5, Claude 4.7, Gemini 3.1 Pro, and Gemini 3.5 Flash.
+                  architectures including GPT 5.5, Claude 4.7, Gemini 3.1 Pro,
+                  and Gemini 3.5 Flash.
                 </p>
               </div>
             </div>

@@ -10,7 +10,6 @@ import {
 } from './dal/users.dal';
 import { subscriptionTierValidator } from './subscription';
 
-
 // ---------------------------------------------------------------------------
 // Internal Mutations (called from Clerk webhook / Polar webhook)
 // ---------------------------------------------------------------------------
@@ -64,7 +63,6 @@ export const upsertFromClerk = internalMutation({
     );
 
     return id;
-
   },
 });
 
@@ -102,4 +100,3 @@ export const savePolarCustomerIdInternal = internalMutation({
     await patchUserPolarCustomerId(ctx, user._id, args.polarCustomerId);
   },
 });
-

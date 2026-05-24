@@ -9,8 +9,6 @@ import { z } from 'zod';
 import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../../../convex/_generated/api';
 
-
-
 class UnauthorizedError {
   readonly _tag = 'UnauthorizedError';
 }
@@ -36,7 +34,10 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_URL: z.string().url().optional(),
 });
 
-const getOrCreatePolarCustomerId = (polar: Polar, clerkUser: User): Effect.Effect<string, Error, never> =>
+const getOrCreatePolarCustomerId = (
+  polar: Polar,
+  clerkUser: User,
+): Effect.Effect<string, Error, never> =>
   Effect.gen(function* () {
     const { getToken } = yield* Effect.promise(() => auth());
     const token = yield* Effect.promise(() => getToken({ template: 'convex' }));
@@ -48,7 +49,7 @@ const getOrCreatePolarCustomerId = (polar: Polar, clerkUser: User): Effect.Effec
 
     // 1. Fetch polarCustomerId from Convex
     const storedCustomerId = yield* Effect.promise(() =>
-      convex.query(api.authed.users.getPolarCustomerId)
+      convex.query(api.authed.users.getPolarCustomerId),
     );
 
     if (storedCustomerId) {
@@ -56,7 +57,9 @@ const getOrCreatePolarCustomerId = (polar: Polar, clerkUser: User): Effect.Effec
     }
 
     // 2. Missing: Create customer dynamically on Polar
-    console.log(`Dynamic fallback: creating Polar customer for user ${clerkUser.id}`);
+    console.log(
+      `Dynamic fallback: creating Polar customer for user ${clerkUser.id}`,
+    );
     const customer = yield* Effect.tryPromise({
       try: () =>
         polar.customers.create({
@@ -68,19 +71,19 @@ const getOrCreatePolarCustomerId = (polar: Polar, clerkUser: User): Effect.Effec
           },
         }),
 
-      catch: (e) => new Error(`Failed to create Polar Customer dynamically: ${e}`),
+      catch: (e) =>
+        new Error(`Failed to create Polar Customer dynamically: ${e}`),
     });
 
     // 3. Save to Convex
     yield* Effect.promise(() =>
       convex.mutation(api.authed.users.savePolarCustomerIdClient, {
         polarCustomerId: customer.id,
-      })
+      }),
     );
 
     return customer.id;
   }) as Effect.Effect<string, Error, never>;
-
 
 export async function createCheckoutSession(clientOrigin?: string) {
   const program = Effect.gen(function* () {
@@ -121,14 +124,13 @@ export async function createCheckoutSession(clientOrigin?: string) {
         onFailure: (err) => {
           console.warn(
             `Dynamic Polar customer creation failed, falling back to externalCustomerId:`,
-            err
+            err,
           );
           return null;
         },
         onSuccess: (id) => id,
-      })
+      }),
     );
-
 
     const checkout = yield* Effect.tryPromise({
       try: () => {
@@ -153,7 +155,6 @@ export async function createCheckoutSession(clientOrigin?: string) {
       catch: (error) => new CheckoutError(error),
     });
 
-
     if (!checkout.url) {
       return yield* Effect.fail(
         new CheckoutError('No checkout URL returned by Polar'),
@@ -163,7 +164,11 @@ export async function createCheckoutSession(clientOrigin?: string) {
     return checkout.url;
   }).pipe(
     Effect.match({
-      onFailure: (error: { _tag?: string; message?: string; cause?: unknown }) => {
+      onFailure: (error: {
+        _tag?: string;
+        message?: string;
+        cause?: unknown;
+      }) => {
         console.error('Polar Checkout Error:', error);
         return {
           success: false as const,
@@ -186,7 +191,6 @@ export async function createCheckoutSession(clientOrigin?: string) {
       onSuccess: (url) => ({ success: true as const, url }),
     }),
   );
-
 
   const result = await Effect.runPromise(program);
 
@@ -224,14 +228,13 @@ export async function createCustomerPortalSession(options?: {
         onFailure: (err) => {
           console.warn(
             `Dynamic Polar customer creation for portal failed, falling back to externalCustomerId:`,
-            err
+            err,
           );
           return null;
         },
         onSuccess: (id) => id,
-      })
+      }),
     );
-
 
     const sessionResponse = yield* Effect.tryPromise({
       try: () => {
@@ -248,7 +251,6 @@ export async function createCustomerPortalSession(options?: {
       catch: (error) => new PortalError(error),
     });
 
-
     // Extract URL from the response
     const portalUrl = sessionResponse.customerPortalUrl;
 
@@ -262,7 +264,11 @@ export async function createCustomerPortalSession(options?: {
   }).pipe(
     // Match the existing pattern for consistent UI messaging
     Effect.match({
-      onFailure: (error: { _tag?: string; message?: string; cause?: unknown }) => {
+      onFailure: (error: {
+        _tag?: string;
+        message?: string;
+        cause?: unknown;
+      }) => {
         console.error('Polar Portal Error:', error);
         return {
           success: false as const,
@@ -286,7 +292,6 @@ export async function createCustomerPortalSession(options?: {
       onSuccess: (url) => ({ success: true as const, url }),
     }),
   );
-
 
   const result = await Effect.runPromise(program);
 

@@ -1,4 +1,4 @@
-"use node";
+'use node';
 
 import { v } from 'convex/values';
 import { internalAction } from '../_generated/server';
@@ -13,20 +13,23 @@ export const createPolarCustomerBackground = internalAction({
   },
   handler: async (ctx, args) => {
     // 1. Fetch user info
-    const userInfo = await ctx.runQuery(internal.private.users.getUserInfoForPolar, {
-      clerkId: args.clerkId,
-    });
+    const userInfo = await ctx.runQuery(
+      internal.private.users.getUserInfoForPolar,
+      {
+        clerkId: args.clerkId,
+      },
+    );
 
     if (!userInfo) {
       console.warn(
-        `Aborting Polar customer creation: Convex user not found for ${args.clerkId}`
+        `Aborting Polar customer creation: Convex user not found for ${args.clerkId}`,
       );
       return;
     }
 
     if (userInfo.polarCustomerId) {
       console.log(
-        `User ${args.clerkId} already has Polar customer ID: ${userInfo.polarCustomerId}`
+        `User ${args.clerkId} already has Polar customer ID: ${userInfo.polarCustomerId}`,
       );
       return;
     }
@@ -34,9 +37,10 @@ export const createPolarCustomerBackground = internalAction({
     // 2. Initialize Polar SDK
     const polar = new Polar({
       accessToken: process.env.POLAR_ACCESS_TOKEN!,
-      server: (process.env.POLAR_ENVIRONMENT as 'sandbox' | 'production') || 'sandbox',
+      server:
+        (process.env.POLAR_ENVIRONMENT as 'sandbox' | 'production') ||
+        'sandbox',
     });
-
 
     try {
       // 3. Create native customer
@@ -57,12 +61,12 @@ export const createPolarCustomerBackground = internalAction({
       });
 
       console.log(
-        `Successfully synced Polar customer ${customer.id} for user ${args.clerkId}`
+        `Successfully synced Polar customer ${customer.id} for user ${args.clerkId}`,
       );
     } catch (error) {
       console.error(
         `Failed to create background Polar customer for ${args.clerkId}:`,
-        error
+        error,
       );
     }
   },

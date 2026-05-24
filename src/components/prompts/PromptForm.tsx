@@ -5,7 +5,6 @@ import { useForm, useFieldArray, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Icon } from '@iconify/react';
-import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -21,17 +20,11 @@ import {
 import { PromptEditor } from '@/components/prompts/PromptEditor';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
-import {
-  VariableConfigModal,
-  VariableFormValues,
-} from '@/components/prompts/VariableConfigModal';
+import { VariableConfigModal } from '@/components/prompts/VariableConfigModal';
 import { VariableList } from '@/components/prompts/VariableList';
 import { cn } from '@/lib/utils';
-import {
-  removeVariableFromContent,
-  renameVariableInContent,
-  reconcileVariables,
-} from '@/lib/variables';
+import { usePromptVariables } from '@/hooks/usePromptVariables';
+import { Variable } from '@/lib/variables';
 import { TagsSection } from './form/TagsSection';
 import { SettingsSection } from './form/SettingsSection';
 import { Loader } from '@/components/ui/Loader';
@@ -96,6 +89,11 @@ export function PromptForm({
     id: string;
     index: number;
   } | null>(null);
+  const [isModalOpen, setIsModalOpen] = React.useState(false);
+  const [selectedText, setSelectedText] = React.useState('');
+  const [insertVariableCallback, setInsertVariableCallback] = React.useState<
+    ((varName: string) => void) | null
+  >(null);
 
   const {
     register,
@@ -151,53 +149,22 @@ export function PromptForm({
   const category = useWatch({ control, name: 'category' });
   const tags = useWatch({ control, name: 'tags' }) as string[];
 
-  // Reconcile variables whenever the user types {{name}} patterns directly in the editor.
-  // This handles the "typed directly" path; the modal (onVariablesChange) handles the "added via modal" path.
-  React.useEffect(() => {
-    if (!isTemplate) return;
-
-    const reconciledVars = reconcileVariables(content ?? '', variables);
-
-    // Only update state when there is a real structural change to avoid infinite loops
-    const hasChanged =
-      reconciledVars.length !== variables.length ||
-      reconciledVars.some((v, i) => v.name !== variables[i]?.name);
-
-    if (hasChanged) {
-      setValue('variables', reconciledVars);
-    }
-  }, [content, isTemplate]); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const removeVariable = (index: number) => {
-    const variable = variables[index];
-    if (!variable) return;
-
-    const updatedContent = removeVariableFromContent(content, variable.name);
-    setValue('content', updatedContent);
-    remove(index);
-    toast.info(`Variable {{${variable.name}}} removed`);
-  };
-
-  const handleEditVariable = (updatedVar: VariableFormValues) => {
-    if (editingVariable === null) return;
-
-    const oldName = variables[editingVariable.index].name;
-    const newName = updatedVar.name;
-
-    update(editingVariable.index, {
-      ...variables[editingVariable.index],
-      ...updatedVar,
-    });
-
-    toast.success(`Variable {{${updatedVar.name}}} updated`);
-
-    if (oldName !== newName) {
-      const updatedContent = renameVariableInContent(content, oldName, newName);
-      setValue('content', updatedContent);
-    }
-
-    setEditingVariable(null);
-  };
+  const {
+    handleContentChange,
+    addVariable,
+    removeVariable,
+    updateVariable,
+    reorderVariable,
+  } = usePromptVariables({
+    content: content || '',
+    variables,
+    setValue,
+    append,
+    remove,
+    update,
+    move,
+    isTemplate: !!isTemplate,
+  });
 
   return (
     <div className="space-y-8 px-4 py-8 lg:px-8">
@@ -261,20 +228,14 @@ export function PromptForm({
               <div className="space-y-2">
                 <PromptEditor
                   content={content || ''}
-                  onChange={(val) => setValue('content', val)}
+                  onChange={handleContentChange}
                   variables={variables}
-                  onVariablesChange={(vars) => {
-                    if (vars.length > variables.length) {
-                      const newVar = vars[vars.length - 1];
-                      append(newVar);
-                      if (!isTemplate) {
-                        setValue('isTemplate', true);
-                      }
-                    } else {
-                      setValue('variables', vars);
-                    }
+                  isTemplate={!!isTemplate}
+                  onRequestNewVariable={(text, insertCb) => {
+                    setSelectedText(text);
+                    setInsertVariableCallback(() => insertCb);
+                    setIsModalOpen(true);
                   }}
-                  isTemplate={isTemplate || false}
                 />
                 <div className="flex justify-end">
                   <span
@@ -332,11 +293,11 @@ export function PromptForm({
                 <ScrollArea className="h-[250px]">
                   <VariableList
                     variables={variables}
-                    onReorder={(oldIndex, newIndex) => move(oldIndex, newIndex)}
+                    onReorder={reorderVariable}
                     onEdit={(index) =>
                       setEditingVariable({ id: variables[index].id, index })
                     }
-                    onRemove={(index) => removeVariable(index)}
+                    onRemove={removeVariable}
                   />
                 </ScrollArea>
               </CardContent>
@@ -359,11 +320,39 @@ export function PromptForm({
         <VariableConfigModal
           isOpen={true}
           onClose={() => setEditingVariable(null)}
-          onConfirm={handleEditVariable}
+          onConfirm={(updatedVar) => {
+            updateVariable(editingVariable.index, updatedVar);
+            setEditingVariable(null);
+          }}
           initialData={variables[editingVariable.index]}
           existingVariables={variables.map((v) => v.name)}
         />
       )}
+
+      <VariableConfigModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setInsertVariableCallback(null);
+        }}
+        onConfirm={(data) => {
+          const newVar: Variable = {
+            id: crypto.randomUUID(),
+            name: data.name,
+            type: data.type,
+            options: data.options,
+            defaultValue: data.defaultValue,
+          };
+          addVariable(newVar);
+          if (insertVariableCallback) {
+            insertVariableCallback(newVar.name);
+          }
+          setIsModalOpen(false);
+          setInsertVariableCallback(null);
+        }}
+        initialValue={selectedText}
+        existingVariables={variables.map((v) => v.name)}
+      />
     </div>
   );
 }

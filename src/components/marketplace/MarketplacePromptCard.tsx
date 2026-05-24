@@ -41,13 +41,13 @@ export function MarketplacePromptCard({ prompt }: MarketplacePromptCardProps) {
   };
 
   return (
-    <div className="group @container h-full w-full max-w-md mx-auto">
+    <div className="group @container mx-auto h-full w-full max-w-md">
       <TextureCard className="h-full transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-black/50">
         {/* Header */}
         <div className="p-6 pb-4">
           {prompt.category && (
             <div className="mb-2.5">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 dark:bg-neutral-800 px-2.5 py-0.5 text-[9px] font-bold tracking-widest text-neutral-600 dark:text-neutral-400 uppercase">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-neutral-100 px-2.5 py-0.5 text-[9px] font-bold tracking-widest text-neutral-600 uppercase dark:bg-neutral-800 dark:text-neutral-400">
                 <Icon
                   icon={
                     prompt.category === 'development'

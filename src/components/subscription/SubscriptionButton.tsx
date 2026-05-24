@@ -36,10 +36,7 @@ export function SubscriptionButton() {
           );
         }
       } catch (error) {
-        console.error(
-          'Failed to create customer portal session:',
-          error,
-        );
+        console.error('Failed to create customer portal session:', error);
       }
     });
   };

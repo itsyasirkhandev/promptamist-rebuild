@@ -56,15 +56,21 @@ export function SettingsSection({
       </div>
 
       {isPublic && (
-        <div className="space-y-2 mt-2 animate-in fade-in slide-in-from-top-3 duration-200">
-          <Label htmlFor="category" className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+        <div className="animate-in fade-in slide-in-from-top-3 mt-2 space-y-2 duration-200">
+          <Label
+            htmlFor="category"
+            className="text-muted-foreground text-xs font-semibold tracking-wider uppercase"
+          >
             Marketplace Category
           </Label>
           <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger id="category" className="w-full h-10 border border-neutral-200 dark:border-neutral-800 rounded-xl bg-background/50 hover:bg-background/80 transition-colors shadow-sm">
+            <SelectTrigger
+              id="category"
+              className="bg-background/50 hover:bg-background/80 h-10 w-full rounded-xl border border-neutral-200 shadow-sm transition-colors dark:border-neutral-800"
+            >
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
-            <SelectContent className="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-popover shadow-md">
+            <SelectContent className="bg-popover rounded-xl border border-neutral-200 shadow-md dark:border-neutral-800">
               <SelectItem value="general">General</SelectItem>
               <SelectItem value="productivity">Productivity</SelectItem>
               <SelectItem value="development">Development</SelectItem>

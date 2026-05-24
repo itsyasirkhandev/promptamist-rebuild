@@ -120,7 +120,9 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
                   {prompt.authorName || 'Anonymous'}
                 </span>
               </div>
-              <span className="text-neutral-300 dark:text-neutral-700 hidden sm:inline">•</span>
+              <span className="hidden text-neutral-300 sm:inline dark:text-neutral-700">
+                •
+              </span>
               <p className="text-muted-foreground flex items-center gap-1.5 text-sm">
                 <Icon icon="lucide:clock" width={14} />
                 Last updated:{' '}

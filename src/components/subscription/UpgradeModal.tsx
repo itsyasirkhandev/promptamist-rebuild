@@ -37,10 +37,10 @@ export function UpgradeModal({
         if (result && result.url) {
           window.location.href = result.url;
         } else {
-          toast.error("Failed to generate checkout session URL");
+          toast.error('Failed to generate checkout session URL');
         }
       } catch (error) {
-        toast.error((error as Error).message || "Checkout failed");
+        toast.error((error as Error).message || 'Checkout failed');
       }
     });
   };

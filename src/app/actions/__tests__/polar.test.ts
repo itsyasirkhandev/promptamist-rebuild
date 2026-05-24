@@ -6,8 +6,12 @@ import { currentUser, auth, type User } from '@clerk/nextjs/server';
 const mockQuery = vi.fn().mockResolvedValue(null);
 const mockMutation = vi.fn().mockResolvedValue(undefined);
 const mockCustomersCreate = vi.fn().mockResolvedValue({ id: 'polar_cust_123' });
-const mockCheckoutsCreate = vi.fn().mockResolvedValue({ url: 'https://checkout.polar.sh/sess' });
-const mockCustomerSessionsCreate = vi.fn().mockResolvedValue({ customerPortalUrl: 'https://portal.polar.sh/sess' });
+const mockCheckoutsCreate = vi
+  .fn()
+  .mockResolvedValue({ url: 'https://checkout.polar.sh/sess' });
+const mockCustomerSessionsCreate = vi
+  .fn()
+  .mockResolvedValue({ customerPortalUrl: 'https://portal.polar.sh/sess' });
 
 // Mock Clerk
 vi.mock('@clerk/nextjs/server', () => ({
@@ -105,7 +109,7 @@ describe('Polar Server Actions Integration', () => {
       expect(mockCheckoutsCreate).toHaveBeenCalledWith(
         expect.objectContaining({
           customerId: 'polar_cust_existing',
-        })
+        }),
       );
       expect(redirectUrl).toBe('https://checkout.polar.sh/existing_sess');
     });
@@ -139,18 +143,18 @@ describe('Polar Server Actions Integration', () => {
           name: 'Test User',
           externalId: 'clerk_123',
           metadata: { clerkId: 'clerk_123' },
-        })
+        }),
       );
       expect(mockMutation).toHaveBeenCalledWith(
         expect.anything(),
         expect.objectContaining({
           polarCustomerId: 'polar_cust_created_ondemand',
-        })
+        }),
       );
       expect(mockCheckoutsCreate).toHaveBeenCalledWith(
         expect.objectContaining({
           customerId: 'polar_cust_created_ondemand',
-        })
+        }),
       );
       expect(redirectUrl).toBe('https://checkout.polar.sh/new_sess');
     });
@@ -182,7 +186,7 @@ describe('Polar Server Actions Integration', () => {
         expect.objectContaining({
           externalCustomerId: 'clerk_123',
           customerEmail: 'test@example.com',
-        })
+        }),
       );
       expect(redirectUrl).toBe('https://checkout.polar.sh/fallback_sess');
     });
@@ -213,7 +217,7 @@ describe('Polar Server Actions Integration', () => {
       expect(mockCustomerSessionsCreate).toHaveBeenCalledWith(
         expect.objectContaining({
           customerId: 'polar_cust_existing',
-        })
+        }),
       );
       expect(redirectUrl).toBe('https://portal.polar.sh/existing_portal');
     });

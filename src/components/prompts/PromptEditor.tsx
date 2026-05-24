@@ -2,9 +2,7 @@
 
 import * as React from 'react';
 import { Icon } from '@iconify/react';
-import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { VariableConfigModal } from './VariableConfigModal';
 import { cn } from '@/lib/utils';
 import type { Variable } from '@/lib/variables';
 import { renderEditorHtml } from '@/lib/variable-presentation';
@@ -13,19 +11,21 @@ interface PromptEditorProps {
   content: string;
   onChange: (content: string) => void;
   variables: Variable[];
-  onVariablesChange: (variables: Variable[]) => void;
   isTemplate: boolean;
+  onRequestNewVariable?: (
+    selectedText: string,
+    insertCallback: (varName: string) => void,
+  ) => void;
 }
 
 export function PromptEditor({
   content,
   onChange,
   variables,
-  onVariablesChange,
   isTemplate,
+  onRequestNewVariable,
 }: PromptEditorProps) {
   const editorRef = React.useRef<HTMLDivElement>(null);
-  const [isModalOpen, setIsModalOpen] = React.useState(false);
   const [selectedText, setSelectedText] = React.useState('');
   const [savedRange, setSavedRange] = React.useState<Range | null>(null);
 
@@ -39,21 +39,8 @@ export function PromptEditor({
 
   const getEditorRawContent = React.useCallback(() => {
     if (!editorRef.current) return '';
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = editorRef.current.innerHTML;
-
-    const spans = tempDiv.querySelectorAll('span[data-variable-id]');
-    spans.forEach((span) => {
-      const varId = span.getAttribute('data-variable-id');
-      const variable = variables.find((v) => v.id === varId);
-      if (variable) {
-        span.replaceWith(`{{${variable.name}}}`);
-      } else {
-        span.replaceWith(span.textContent || '');
-      }
-    });
-    return tempDiv.innerText;
-  }, [variables]);
+    return editorRef.current.innerText;
+  }, []);
 
   // Sync initial content or external changes to editor
   React.useEffect(() => {
@@ -82,41 +69,24 @@ export function PromptEditor({
     }
   };
 
-  const openVariableModal = () => {
-    setIsModalOpen(true);
-  };
+  const handleRequestVariable = () => {
+    if (!onRequestNewVariable) return;
 
-  const handleAddVariable = (data: {
-    name: string;
-    type: Variable['type'];
-    options?: string[];
-    defaultValue?: string;
-  }) => {
-    const newVar: Variable = {
-      id: crypto.randomUUID(),
-      name: data.name,
-      type: data.type,
-      options: data.options,
-      defaultValue: data.defaultValue,
-    };
-
-    onVariablesChange([...variables, newVar]);
-    toast.success(`Variable {{${newVar.name}}} added`);
-
-    const insertVariableNode = (range?: Range) => {
+    onRequestNewVariable(selectedText, (varName: string) => {
       const selection = window.getSelection();
       const span = document.createElement('span');
+      // We don't set data-variable-id, just format it correctly so it looks like a variable right away.
+      // Next render of `renderEditorHtml` will stamp the real ID.
       span.className =
         'bg-primary/20 text-primary rounded px-1 font-mono select-all';
-      span.setAttribute('data-variable-id', newVar.id);
       span.setAttribute('contenteditable', 'false');
-      span.textContent = `{{${newVar.name}}}`;
+      span.textContent = `{{${varName}}}`;
 
-      if (range) {
+      if (savedRange && editorRef.current && editorRef.current.contains(savedRange.commonAncestorContainer)) {
         selection?.removeAllRanges();
-        selection?.addRange(range);
-        range.deleteContents();
-        range.insertNode(span);
+        selection?.addRange(savedRange);
+        savedRange.deleteContents();
+        savedRange.insertNode(span);
       } else if (editorRef.current) {
         editorRef.current.appendChild(span);
       } else {
@@ -130,17 +100,7 @@ export function PromptEditor({
       selection?.addRange(nextRange);
 
       handleInput();
-    };
-
-    if (
-      savedRange &&
-      editorRef.current &&
-      editorRef.current.contains(savedRange.commonAncestorContainer)
-    ) {
-      insertVariableNode(savedRange);
-    } else {
-      insertVariableNode();
-    }
+    });
   };
 
   return (
@@ -154,7 +114,7 @@ export function PromptEditor({
             type="button"
             size="sm"
             variant="outline"
-            onClick={openVariableModal}
+            onClick={handleRequestVariable}
             className="hidden h-8 gap-2 @md:flex"
           >
             <Icon icon="lucide:variable" width={16} />
@@ -182,7 +142,7 @@ export function PromptEditor({
             type="button"
             size="lg"
             variant="default"
-            onClick={openVariableModal}
+            onClick={handleRequestVariable}
             className="animate-in fade-in zoom-in slide-in-from-bottom-4 h-12 gap-2 rounded-full px-6 shadow-2xl duration-200"
           >
             <Icon icon="lucide:variable" width={20} />
@@ -190,14 +150,6 @@ export function PromptEditor({
           </Button>
         </div>
       )}
-
-      <VariableConfigModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onConfirm={handleAddVariable}
-        initialValue={selectedText}
-        existingVariables={variables.map((v) => v.name)}
-      />
     </div>
   );
 }

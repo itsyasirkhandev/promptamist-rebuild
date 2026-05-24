@@ -6,10 +6,13 @@ import { Polar } from '@polar-sh/sdk';
 // Helper to initialize Polar SDK in Convex
 const getPolarClient = () => {
   const token = process.env.POLAR_ACCESS_TOKEN;
-  const env = (process.env.POLAR_ENVIRONMENT as 'sandbox' | 'production') || 'sandbox';
+  const env =
+    (process.env.POLAR_ENVIRONMENT as 'sandbox' | 'production') || 'sandbox';
 
   if (!token) {
-    throw new Error('POLAR_ACCESS_TOKEN is not configured in the Convex dashboard settings.');
+    throw new Error(
+      'POLAR_ACCESS_TOKEN is not configured in the Convex dashboard settings.',
+    );
   }
 
   return new Polar({
@@ -26,9 +29,12 @@ export const generateCheckoutUrl = authedAction({
     const clerkId = ctx.identity.subject;
 
     // 1. Fetch user info
-    const userInfo = await ctx.runQuery(internal.private.users.getUserInfoForPolar, {
-      clerkId,
-    });
+    const userInfo = await ctx.runQuery(
+      internal.private.users.getUserInfoForPolar,
+      {
+        clerkId,
+      },
+    );
 
     if (!userInfo) {
       throw new Error(`User not found: ${clerkId}`);
@@ -39,7 +45,9 @@ export const generateCheckoutUrl = authedAction({
 
     // 2. Missing: Create customer dynamically on Polar
     if (!polarCustomerId) {
-      console.log(`Dynamic fallback: creating Polar customer for user ${clerkId}`);
+      console.log(
+        `Dynamic fallback: creating Polar customer for user ${clerkId}`,
+      );
       const customer = await polar.customers.create({
         email: userInfo.email,
         name: userInfo.name || undefined,
@@ -60,7 +68,10 @@ export const generateCheckoutUrl = authedAction({
     }
 
     // Determine application origin
-    const appUrl = args.clientOrigin || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const appUrl =
+      args.clientOrigin ||
+      process.env.NEXT_PUBLIC_APP_URL ||
+      'http://localhost:3000';
 
     // 4. Create checkout session
     const checkout = await polar.checkouts.create({
@@ -83,9 +94,12 @@ export const generatePortalUrl = authedAction({
     const clerkId = ctx.identity.subject;
 
     // 1. Fetch user info
-    const userInfo = await ctx.runQuery(internal.private.users.getUserInfoForPolar, {
-      clerkId,
-    });
+    const userInfo = await ctx.runQuery(
+      internal.private.users.getUserInfoForPolar,
+      {
+        clerkId,
+      },
+    );
 
     if (!userInfo) {
       throw new Error(`User not found: ${clerkId}`);
@@ -96,7 +110,9 @@ export const generatePortalUrl = authedAction({
 
     // 2. Missing: Create customer dynamically on Polar
     if (!polarCustomerId) {
-      console.log(`Dynamic fallback: creating Polar customer for user ${clerkId}`);
+      console.log(
+        `Dynamic fallback: creating Polar customer for user ${clerkId}`,
+      );
       const customer = await polar.customers.create({
         email: userInfo.email,
         name: userInfo.name || undefined,

@@ -4,6 +4,7 @@
 As the Promptamist marketplace grows, users need a way to browse and discover public prompts tailored to specific use cases. Currently, there is only a search bar and tag filtering, but no high-level category organization. Owners sharing prompts need a standard set of categories to classify their contributions, ensuring that the community can easily navigate and find high-quality templates for their specific needs (e.g., programming, creative writing, marketing, productivity).
 
 **2. Functional Requirements**
+
 - **Standardized Categories**:
   - The system will support a fixed list of high-level categories:
     1. **General** (Value: `general`, Label: `General`) - The fallback and default category.
@@ -28,9 +29,10 @@ As the Promptamist marketplace grows, users need a way to browse and discover pu
     - The active category pill is highlighted using premium styling (vibrant accent border/background, smooth scale micro-animation).
     - The marketplace results are filtered to only display prompts belonging to the selected category.
     - If "All" is selected, prompts from all categories are displayed.
-  - **Search Synergy**: The category filter must work seamlessly alongside the existing search input query. Searching while a category is active will search *only* within that active category.
+  - **Search Synergy**: The category filter must work seamlessly alongside the existing search input query. Searching while a category is active will search _only_ within that active category.
 
 **3. Inputs and Outputs: Primary Actions**
+
 - **USER ACTION**: Toggles "Make Public" switch **ON** in Create/Edit Prompt Form.
   - **SYSTEM BEHAVIOR**: Smoothly animates/slides open the Category Select dropdown under the toggle. The dropdown is populated with the 6 standard categories, and **General** is pre-selected.
 - **USER ACTION**: Toggles "Make Public" switch **OFF** in Create/Edit Prompt Form.
@@ -43,6 +45,7 @@ As the Promptamist marketplace grows, users need a way to browse and discover pu
   - **SYSTEM BEHAVIOR**: Sets the active category filter to `development`, fetches/filters prompts belonging to the `development` category, and displays them. The **Development** pill animates to an active visual state.
 
 **4. Constraints**
+
 - **UI & UX Constraints**:
   - Responsive design: The category pills row must support smooth horizontal touch scrolling/swipe on mobile screens without breaking the page layout.
   - Aesthetic excellence: The dropdown and active category pills must feature premium, curated color matching (e.g., harmonious HSL-based styles matching Promptamist's design system) and micro-animations.
@@ -50,14 +53,16 @@ As the Promptamist marketplace grows, users need a way to browse and discover pu
   - Category filtering should load and render rapidly, matching the responsiveness of the existing marketplace search.
 
 **5. Edge Cases and Error Handling**
+
 - **Undefined Categories (Backward Compatibility)**:
   - If a public prompt in the database lacks a category (existing prompts), the server and client will dynamically treat it as belonging to the **General** category. It will appear when the **General** or **All** filters are selected.
 - **No Prompts in Category (Empty State)**:
-  - If a user selects a category (e.g., *Education*) and there are no prompts in that category, display an aesthetically beautiful empty state: "No prompts in this category yet. Be the first to share one!", along with a prominent illustrative icon.
+  - If a user selects a category (e.g., _Education_) and there are no prompts in that category, display an aesthetically beautiful empty state: "No prompts in this category yet. Be the first to share one!", along with a prominent illustrative icon.
 - **Network / Load Failures**:
   - Handle query loading states with custom skeletons matching the grid cards of the marketplace. Show a clean error notification if Convex queries fail.
 
 **6. Acceptance Criteria**
+
 - Users can create a new prompt, toggle it public, select a category, and verify that the category is correctly saved.
 - Users can edit an existing prompt, toggle it public, see the category select dropdown appear defaulted to "General", modify it (e.g. to "Creative"), and successfully save it.
 - The Marketplace displays a horizontal row of category pills (All, General, Productivity, Development, Marketing, Creative, Education).

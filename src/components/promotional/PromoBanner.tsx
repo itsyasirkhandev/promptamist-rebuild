@@ -42,7 +42,7 @@ export function PromoBanner() {
       className={cn(
         'relative z-[100] w-full px-4 pt-4 transition-all duration-500 ease-in-out sm:px-6 lg:px-8',
         isVisible
-          ? 'max-h-64 sm:max-h-40 opacity-100'
+          ? 'max-h-64 opacity-100 sm:max-h-40'
           : 'max-h-0 overflow-hidden opacity-0',
       )}
     >
@@ -64,8 +64,12 @@ export function PromoBanner() {
                         <span className="font-bold">
                           Exclusive Launch Offer!
                         </span>{' '}
-                        <span className="hidden min-[380px]:inline">First 100 users get Pro for </span>
-                        <span className="inline min-[380px]:hidden">Pro for </span>
+                        <span className="hidden min-[380px]:inline">
+                          First 100 users get Pro for{' '}
+                        </span>
+                        <span className="inline min-[380px]:hidden">
+                          Pro for{' '}
+                        </span>
                         <span className="decoration-primary/40 font-bold underline decoration-2 underline-offset-4">
                           FREE
                         </span>
@@ -88,7 +92,7 @@ export function PromoBanner() {
 
                   <button
                     onClick={handleDismiss}
-                    className="absolute top-3.5 right-3.5 shrink-0 rounded-2xl p-2 text-neutral-400 transition-all hover:bg-black/5 hover:text-neutral-900 dark:text-neutral-500 dark:hover:bg-white/10 dark:hover:text-neutral-100 focus:outline-none focus:ring-2 focus:ring-primary/20 sm:relative sm:top-auto sm:right-auto sm:ml-4"
+                    className="focus:ring-primary/20 absolute top-3.5 right-3.5 shrink-0 rounded-2xl p-2 text-neutral-400 transition-all hover:bg-black/5 hover:text-neutral-900 focus:ring-2 focus:outline-none sm:relative sm:top-auto sm:right-auto sm:ml-4 dark:text-neutral-500 dark:hover:bg-white/10 dark:hover:text-neutral-100"
                     aria-label="Dismiss banner"
                   >
                     <Icon
