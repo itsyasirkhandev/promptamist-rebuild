@@ -9,6 +9,7 @@
  */
 
 import type * as authed_helpers from "../authed/helpers.js";
+import type * as authed_polar from "../authed/polar.js";
 import type * as authed_promptOwnership from "../authed/promptOwnership.js";
 import type * as authed_prompts from "../authed/prompts.js";
 import type * as authed_userStats from "../authed/userStats.js";
@@ -39,6 +40,7 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   "authed/helpers": typeof authed_helpers;
+  "authed/polar": typeof authed_polar;
   "authed/promptOwnership": typeof authed_promptOwnership;
   "authed/prompts": typeof authed_prompts;
   "authed/userStats": typeof authed_userStats;

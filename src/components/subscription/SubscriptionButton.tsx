@@ -1,19 +1,19 @@
 'use client';
 
-import { useQuery } from 'convex/react';
+import { useQuery, useAction } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { Skeleton } from '@/components/ui/skeleton';
 import { UpgradeModal } from './UpgradeModal';
 import { useState, useTransition } from 'react';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
-import { createCustomerPortalSession } from '@/app/actions/polar';
 
 export function SubscriptionButton() {
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [isPending, startTransition] = useTransition();
   const currentUser = useQuery(api.authed.users.getCurrentUser);
   const stats = useQuery(api.authed.prompts.getPromptStats);
+  const generatePortal = useAction(api.authed.polar.generatePortalUrl);
 
   if (currentUser === undefined || stats === undefined) {
     return <Skeleton className="h-10 w-36 rounded-full" />;
@@ -26,17 +26,19 @@ export function SubscriptionButton() {
 
   const handleProClick = () => {
     startTransition(async () => {
-      const result = await createCustomerPortalSession({
-        shouldRedirect: false,
-      });
-      if (result.success) {
-        if (result.url) {
+      try {
+        const result = await generatePortal();
+        if (result && result.url) {
           window.open(result.url, '_blank');
+        } else {
+          console.error(
+            'Failed to create customer portal session: No URL returned',
+          );
         }
-      } else {
+      } catch (error) {
         console.error(
           'Failed to create customer portal session:',
-          result.error,
+          error,
         );
       }
     });

@@ -23,6 +23,8 @@ export const getUserInfoForPolar = internalQuery({
     if (!user) return null;
     return {
       userId: user._id,
+      email: user.email,
+      name: user.name ?? null,
       polarCustomerId: user.polarCustomerId ?? null,
     };
   },

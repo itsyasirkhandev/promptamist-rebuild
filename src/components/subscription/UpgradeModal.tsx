@@ -1,7 +1,8 @@
 'use client';
 
 import { useTransition } from 'react';
-import { createCheckoutSession } from '@/app/actions/polar';
+import { useAction } from 'convex/react';
+import { api } from '../../../convex/_generated/api';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -25,14 +26,21 @@ export function UpgradeModal({
   limitReached = false,
 }: UpgradeModalProps) {
   const [isPending, startTransition] = useTransition();
+  const generateCheckout = useAction(api.authed.polar.generateCheckoutUrl);
 
   const handleUpgrade = () => {
     const currentOrigin =
       typeof window !== 'undefined' ? window.location.origin : undefined;
     startTransition(async () => {
-      const result = await createCheckoutSession(currentOrigin);
-      if (result && !result.success) {
-        toast.error(result.error);
+      try {
+        const result = await generateCheckout({ clientOrigin: currentOrigin });
+        if (result && result.url) {
+          window.location.href = result.url;
+        } else {
+          toast.error("Failed to generate checkout session URL");
+        }
+      } catch (error) {
+        toast.error((error as Error).message || "Checkout failed");
       }
     });
   };
