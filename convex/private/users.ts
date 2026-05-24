@@ -15,3 +15,16 @@ export const getUserEmailAndTier = internalQuery({
     };
   },
 });
+
+export const getUserInfoForPolar = internalQuery({
+  args: { clerkId: v.string() },
+  handler: async (ctx, args) => {
+    const user = await findUserByClerkId(ctx, args.clerkId);
+    if (!user) return null;
+    return {
+      userId: user._id,
+      polarCustomerId: user.polarCustomerId ?? null,
+    };
+  },
+});
+

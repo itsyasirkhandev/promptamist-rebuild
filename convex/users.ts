@@ -6,8 +6,10 @@ import {
   insertUser,
   patchUserProfile,
   patchUserSubscription,
+  patchUserPolarCustomerId,
 } from './dal/users.dal';
 import { subscriptionTierValidator } from './subscription';
+
 
 // ---------------------------------------------------------------------------
 // Internal Mutations (called from Clerk webhook / Polar webhook)
@@ -51,7 +53,18 @@ export const upsertFromClerk = internalMutation({
       name: args.name,
     });
 
+    await ctx.scheduler.runAfter(
+      0,
+      internal.private.polar.createPolarCustomerBackground,
+      {
+        clerkId: args.clerkId,
+        email: args.email,
+        name: args.name,
+      },
+    );
+
     return id;
+
   },
 });
 
@@ -77,3 +90,16 @@ export const updateSubscriptionTier = internalMutation({
     });
   },
 });
+
+export const savePolarCustomerIdInternal = internalMutation({
+  args: { clerkId: v.string(), polarCustomerId: v.string() },
+  handler: async (ctx, args) => {
+    const user = await findUserByClerkId(ctx, args.clerkId);
+    if (!user) {
+      console.warn(`User not found to save Polar customer ID: ${args.clerkId}`);
+      return;
+    }
+    await patchUserPolarCustomerId(ctx, user._id, args.polarCustomerId);
+  },
+});
+
