@@ -16,13 +16,12 @@ export function SubscriptionButton() {
   const generatePortal = useAction(api.authed.polar.generatePortalUrl);
 
   if (currentUser === undefined || stats === undefined) {
-    return <Skeleton className="h-10 w-36 rounded-full" />;
+    return <Skeleton className="h-9 w-32 rounded-none" />;
   }
 
   if (!currentUser) return null;
 
   const isPro = currentUser.subscriptionTier === 'pro';
-  const remaining = Math.max(0, 50 - stats.total);
 
   const handleProClick = () => {
     startTransition(async () => {
@@ -53,21 +52,15 @@ export function SubscriptionButton() {
         }}
         disabled={isPending}
         className={cn(
-          'group flex cursor-pointer items-center gap-2.5 rounded-full border px-3.5 py-1.5 transition-all duration-200 active:scale-95',
+          'group flex cursor-pointer items-center gap-2 rounded-none border-2 px-4 py-1.5 font-mono text-[11px] font-bold tracking-wider uppercase transition-colors duration-200 select-none active:translate-y-[1px]',
           isPro
-            ? 'border-amber-200 bg-amber-50 text-amber-700 hover:bg-amber-100 dark:border-amber-900/50 dark:bg-amber-900/20 dark:text-amber-400 dark:hover:bg-amber-900/40'
-            : 'hover:border-primary/50 border-neutral-200 bg-white text-neutral-900 hover:bg-neutral-50 dark:border-neutral-800 dark:bg-neutral-900 dark:text-neutral-100 dark:hover:bg-neutral-800',
-          isPending && 'pointer-events-none opacity-70',
+            ? 'border-neutral-950 bg-neutral-950 text-white hover:bg-transparent hover:text-neutral-950 dark:border-white dark:bg-white dark:text-neutral-950 dark:hover:bg-transparent dark:hover:text-white'
+            : 'border-neutral-900 bg-transparent text-neutral-900 hover:bg-neutral-900 hover:text-white dark:border-neutral-100 dark:text-neutral-100 dark:hover:bg-neutral-100 dark:hover:text-neutral-950',
+          isPending && 'pointer-events-none opacity-55',
         )}
       >
-        <div
-          className={cn(
-            'flex h-5 w-5 items-center justify-center rounded-full transition-transform group-hover:scale-110',
-            isPro
-              ? 'bg-amber-100 text-amber-600 dark:bg-amber-900/40'
-              : 'bg-primary/10 text-primary',
-          )}
-        >
+        {/* Icon */}
+        <div className="flex h-4 w-4 shrink-0 items-center justify-center">
           {isPending ? (
             <Icon icon="lucide:loader-2" className="h-3.5 w-3.5 animate-spin" />
           ) : (
@@ -82,24 +75,13 @@ export function SubscriptionButton() {
           )}
         </div>
 
+        {/* Label and Limits */}
         <div className="flex items-center gap-2">
-          <span className="text-[11px] font-bold tracking-tight uppercase">
-            {isPro ? 'Pro' : 'Free'}
-          </span>
+          <span>{isPro ? 'Pro' : 'Hobby'}</span>
 
           {!isPro && (
-            <div className="flex items-center gap-1.5 sm:gap-2">
-              <div className="h-3 w-px bg-neutral-200 dark:bg-neutral-800" />
-              <span className="text-[10px] font-semibold text-neutral-500 tabular-nums dark:text-neutral-400">
-                <span className="hidden sm:inline">
-                  {stats.total}/50 Prompts
-                </span>
-                <span className="sm:hidden">{remaining} Left</span>
-              </span>
-              <Icon
-                icon="lucide:chevron-right"
-                className="hidden h-3 w-3 text-neutral-400 transition-transform group-hover:translate-x-0.5 sm:block"
-              />
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] opacity-70">({stats.total}/50)</span>
             </div>
           )}
         </div>
