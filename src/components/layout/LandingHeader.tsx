@@ -56,10 +56,9 @@ export function LandingHeader() {
           href="https://github.com/itsyasirkhandev/promptamist-rebuild"
           target="_blank"
           rel="noopener noreferrer"
-          className="after:bg-primary relative flex items-center gap-2 py-1 text-sm font-medium text-neutral-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:transition-all after:duration-300 hover:text-neutral-900 hover:after:w-full hover:after:shadow-[0_0_8px_var(--primary)] dark:text-neutral-400 dark:hover:text-neutral-50"
+          className="after:bg-primary relative py-1 text-sm font-medium text-neutral-600 transition-all duration-300 after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 after:transition-all after:duration-300 hover:text-neutral-900 hover:after:w-full hover:after:shadow-[0_0_8px_var(--primary)] dark:text-neutral-400 dark:hover:text-neutral-50"
         >
-          <Icon icon="lucide:github" className="h-4 w-4" />
-          <span>GitHub</span>
+          GitHub
         </a>
       </nav>
 
@@ -146,10 +145,9 @@ export function LandingHeader() {
                   href="https://github.com/itsyasirkhandev/promptamist-rebuild"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-2 border-b border-neutral-100 py-3 text-base font-medium text-neutral-600 transition-colors hover:text-neutral-900 dark:border-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50"
+                  className="border-b border-neutral-100 py-3 text-base font-medium text-neutral-600 transition-colors hover:text-neutral-900 dark:border-neutral-900 dark:text-neutral-400 dark:hover:text-neutral-50"
                 >
-                  <Icon icon="lucide:github" className="h-5 w-5" />
-                  <span>GitHub</span>
+                  GitHub
                 </a>
               </nav>
 
