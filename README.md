@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img width="1269" height="907" alt="Promptamist Dashboard" src="https://github.com/user-attachments/assets/db96c269-2427-4d69-b719-be36d317525e" />
+  <img width="1269" height="907" alt="Promptamist Dashboard" src="https://github.com/user-attachments/assets/c0c2aa60-b83f-4ca0-89d3-75d141b5675d" />
 </p>
 
 <div align="center">
