@@ -83,7 +83,7 @@ flowchart TD
 
 This diagram maps the horizontal integration pathways—explaining exactly how asynchronous webhooks, email delivery, and customer subscriptions interact across third-party networks:
 
-````mermaid
+```mermaid
 flowchart TD
     subgraph UserSync ["Cycle 1: User Registration & Synchronization"]
         U1["User Registers / Logs in"] -->|Triggers| C1["Clerk Auth Event"]
@@ -138,6 +138,7 @@ flowchart TD
     style Brevo fill:#1e1b4b,stroke:#ea580c,color:#fff
     style PolarPlatform fill:#1e1b4b,stroke:#ec4899,color:#fff
     style PolarPlatform2 fill:#1e1b4b,stroke:#ec4899,color:#fff
+```
 
 ### Technical Stack & Dependencies
 
@@ -179,7 +180,7 @@ pnpm dev
 
 # 4. Verify Code Quality (ESLint + Prettier + TypeScript + Vitest Tests)
 pnpm check
-````
+```
 
 ---
 
