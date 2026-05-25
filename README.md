@@ -1,7 +1,7 @@
 # Promptamist
 
 <p align="center">
-  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=24&duration=3000&pause=1000&color=F8FAFC&center=true&vCenter=true&width=600&lines=Prompt+Engineering+as+Code.;Versioned.+Syncable.+Type-Safe.;Scale+your+LLM+workflows+with+precision." alt="Promptamist Tagline" />
+  <img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=24&duration=3000&pause=1000&color=F8FAFC&background=1A1A2E&center=true&vCenter=true&width=600&lines=save+your+high+quality+prompts;version%2C+manage+and+share+your+prompts;Scale+your+workflows+with+Prompts" alt="Promptamist Tagline" />
 </p>
 
 <p align="center">
