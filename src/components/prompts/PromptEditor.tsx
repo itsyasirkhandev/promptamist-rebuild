@@ -82,7 +82,11 @@ export function PromptEditor({
       span.setAttribute('contenteditable', 'false');
       span.textContent = `{{${varName}}}`;
 
-      if (savedRange && editorRef.current && editorRef.current.contains(savedRange.commonAncestorContainer)) {
+      if (
+        savedRange &&
+        editorRef.current &&
+        editorRef.current.contains(savedRange.commonAncestorContainer)
+      ) {
         selection?.removeAllRanges();
         selection?.addRange(savedRange);
         savedRange.deleteContents();
