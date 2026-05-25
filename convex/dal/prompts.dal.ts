@@ -14,6 +14,7 @@
 
 import { MutationCtx, QueryCtx } from '../_generated/server';
 import { Id, Doc } from '../_generated/dataModel';
+import { findUserById } from './users.dal';
 
 // ---------------------------------------------------------------------------
 // Reads
@@ -138,4 +139,74 @@ export async function patchPrompt(
 /** Delete a prompt by its ID. */
 export async function deletePrompt(ctx: MutationCtx, id: Id<'prompts'>) {
   return ctx.db.delete(id);
+}
+
+// ---------------------------------------------------------------------------
+// Compound / Aggregation Lookups
+// ---------------------------------------------------------------------------
+
+/** Find a public prompt and its author by public slug. Returns null if not found or not public. */
+export async function findPublicPromptWithAuthor(
+  ctx: QueryCtx | MutationCtx,
+  slug: string,
+): Promise<{ prompt: Doc<'prompts'>; author: Doc<'users'> | null } | null> {
+  const prompt = await findPromptBySlug(ctx, slug);
+  if (!prompt || !prompt.isPublic) {
+    return null;
+  }
+  const author = await findUserById(ctx, prompt.userId);
+  return { prompt, author };
+}
+
+/** Fetch a list of public prompts along with their authors, optionally filtering by search query and category. */
+export async function listPublicPromptsWithAuthors(
+  ctx: QueryCtx | MutationCtx,
+  options: {
+    searchQuery?: string;
+    category?: string;
+    limit?: number;
+  },
+): Promise<{ prompt: Doc<'prompts'>; author: Doc<'users'> | null }[]> {
+  let prompts: Doc<'prompts'>[] = [];
+  const limit = options.limit ?? 50;
+
+  if (options.searchQuery) {
+    prompts = await ctx.db
+      .query('prompts')
+      .withSearchIndex('search_all', (q) =>
+        q
+          .search('searchableText', options.searchQuery as string)
+          .eq('isPublic', true),
+      )
+      .take(limit);
+
+    if (options.category && options.category !== 'all') {
+      prompts = prompts.filter(
+        (p) => (p.category ?? 'general') === options.category,
+      );
+    }
+  } else {
+    const rawPrompts = await ctx.db
+      .query('prompts')
+      .withIndex('by_isPublic', (q) => q.eq('isPublic', true))
+      .order('desc')
+      .take(100);
+
+    if (options.category && options.category !== 'all') {
+      prompts = rawPrompts
+        .filter((p) => (p.category ?? 'general') === options.category)
+        .slice(0, limit);
+    } else {
+      prompts = rawPrompts.slice(0, limit);
+    }
+  }
+
+  const results = await Promise.all(
+    prompts.map(async (p) => {
+      const author = await findUserById(ctx, p.userId);
+      return { prompt: p, author };
+    }),
+  );
+
+  return results;
 }
