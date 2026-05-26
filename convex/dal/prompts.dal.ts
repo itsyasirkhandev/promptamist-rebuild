@@ -15,6 +15,7 @@
 import { MutationCtx, QueryCtx } from '../_generated/server';
 import { Id, Doc } from '../_generated/dataModel';
 import { findUserById } from './users.dal';
+import { updateUserPromptStats } from '../authed/userStats';
 
 // ---------------------------------------------------------------------------
 // Reads
@@ -111,7 +112,13 @@ export async function insertPrompt(
     searchableText?: string;
   },
 ) {
-  return ctx.db.insert('prompts', data);
+  const promptId = await ctx.db.insert('prompts', data);
+  await updateUserPromptStats(ctx, data.userId, {
+    total: 1,
+    templates: data.isTemplate ? 1 : 0,
+    public: data.isPublic ? 1 : 0,
+  });
+  return promptId;
 }
 
 /** Patch fields on an existing prompt. */
@@ -133,12 +140,40 @@ export async function patchPrompt(
     >
   >,
 ) {
-  return ctx.db.patch(id, data);
+  const existing = await ctx.db.get(id);
+  if (!existing) {
+    return ctx.db.patch(id, data);
+  }
+
+  await ctx.db.patch(id, data);
+
+  const templateChange =
+    (data.isTemplate !== undefined ? (data.isTemplate ? 1 : 0) : (existing.isTemplate ? 1 : 0)) -
+    (existing.isTemplate ? 1 : 0);
+
+  const publicChange =
+    (data.isPublic !== undefined ? (data.isPublic ? 1 : 0) : (existing.isPublic ? 1 : 0)) -
+    (existing.isPublic ? 1 : 0);
+
+  if (templateChange !== 0 || publicChange !== 0) {
+    await updateUserPromptStats(ctx, existing.userId, {
+      templates: templateChange,
+      public: publicChange,
+    });
+  }
 }
 
 /** Delete a prompt by its ID. */
 export async function deletePrompt(ctx: MutationCtx, id: Id<'prompts'>) {
-  return ctx.db.delete(id);
+  const existing = await ctx.db.get(id);
+  if (existing) {
+    await ctx.db.delete(id);
+    await updateUserPromptStats(ctx, existing.userId, {
+      total: -1,
+      templates: existing.isTemplate ? -1 : 0,
+      public: existing.isPublic ? -1 : 0,
+    });
+  }
 }
 
 // ---------------------------------------------------------------------------

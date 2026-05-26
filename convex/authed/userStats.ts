@@ -13,7 +13,6 @@
  *   - Is a no-op when the user doc cannot be found.
  */
 
-import { Effect } from 'effect';
 import { Id } from '../_generated/dataModel';
 import { MutationCtx } from '../_generated/server';
 import { findUserById, patchUserPromptStats } from '../dal/users.dal';
@@ -26,12 +25,12 @@ const ONE_WEEK_MS = 7 * 24 * 60 * 60 * 1000;
  * Pass positive values when adding (create), negative when removing (delete),
  * and the signed diff when toggling a flag (update).
  */
-export function* updateUserPromptStats(
+export async function updateUserPromptStats(
   ctx: MutationCtx,
   userId: Id<'users'>,
   changes: { total?: number; templates?: number; public?: number },
 ) {
-  const user = yield* Effect.promise(() => findUserById(ctx, userId));
+  const user = await findUserById(ctx, userId);
   if (!user) return;
 
   const now = Date.now();
@@ -60,5 +59,5 @@ export function* updateUserPromptStats(
     lastActivityAt: now,
   };
 
-  yield* Effect.promise(() => patchUserPromptStats(ctx, userId, nextStats));
+  await patchUserPromptStats(ctx, userId, nextStats);
 }
