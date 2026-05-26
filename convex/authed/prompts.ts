@@ -25,7 +25,6 @@ import {
   patchPrompt,
   deletePrompt as dalDeletePrompt,
 } from '../dal/prompts.dal';
-import { updateUserPromptStats } from './userStats';
 
 // ---------------------------------------------------------------------------
 // Mutations
@@ -67,12 +66,6 @@ export const createPrompt = authedMutation({
         yield* Effect.promise(() =>
           insertPrompt(ctx, { userId, ...args, publicSlug, searchableText }),
         );
-
-        yield* updateUserPromptStats(ctx, userId, {
-          total: 1,
-          templates: args.isTemplate ? 1 : 0,
-          public: args.isPublic ? 1 : 0,
-        });
       }),
     );
   },
@@ -115,18 +108,6 @@ export const updatePrompt = authedMutation({
         yield* Effect.promise(() =>
           patchPrompt(ctx, id, { ...updates, publicSlug, searchableText }),
         );
-
-        const templateChange =
-          (updates.isTemplate ? 1 : 0) - (prompt.isTemplate ? 1 : 0);
-        const publicChange =
-          (updates.isPublic ? 1 : 0) - (prompt.isPublic ? 1 : 0);
-
-        if (templateChange !== 0 || publicChange !== 0) {
-          yield* updateUserPromptStats(ctx, prompt.userId, {
-            templates: templateChange,
-            public: publicChange,
-          });
-        }
       }),
     );
   },
@@ -139,11 +120,6 @@ export const deletePrompt = authedMutation({
       Effect.gen(function* () {
         const prompt = yield* getPromptForUser(ctx, args.id);
         yield* Effect.promise(() => dalDeletePrompt(ctx, prompt._id));
-        yield* updateUserPromptStats(ctx, prompt.userId, {
-          total: -1,
-          templates: prompt.isTemplate ? -1 : 0,
-          public: prompt.isPublic ? -1 : 0,
-        });
       }),
     );
   },

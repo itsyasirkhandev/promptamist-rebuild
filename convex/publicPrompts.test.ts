@@ -74,3 +74,90 @@ test('getPromptBySlug and listPublicPrompts integration tests', async () => {
   expect(publicList[0].title).toBe('Public Prompt Title');
   expect(publicList[0].authorName).toBe('Jane Doe');
 }, 30000);
+
+test('user prompt stats maintenance integration tests', async () => {
+  const t = convexTest(schema, modules);
+
+  // 1. Create a user via internal mutation
+  await t.mutation(api.users.upsertFromClerk, {
+    clerkId: 'user_stats_123',
+    email: 'stats@example.com',
+    name: 'Stats User',
+    imageUrl: 'https://example.com/stats.jpg',
+  });
+
+  const authedT = t.withIdentity({
+    subject: 'user_stats_123',
+    email: 'stats@example.com',
+  });
+
+  // 2. Query initial stats (should be all 0)
+  let stats = await authedT.query(api.authed.prompts.getPromptStats, {});
+  expect(stats.total).toBe(0);
+  expect(stats.templates).toBe(0);
+  expect(stats.public).toBe(0);
+
+  // 3. Create a private regular prompt
+  await authedT.mutation(api.authed.prompts.createPrompt, {
+    title: 'Private Prompt',
+    content: 'Regular private content',
+    tags: ['react'],
+    isTemplate: false,
+    isPublic: false,
+    variables: [],
+  });
+
+  stats = await authedT.query(api.authed.prompts.getPromptStats, {});
+  expect(stats.total).toBe(1);
+  expect(stats.templates).toBe(0);
+  expect(stats.public).toBe(0);
+
+  // 4. Create a public template prompt
+  await authedT.mutation(api.authed.prompts.createPrompt, {
+    title: 'Public Template',
+    content: 'Public template content',
+    tags: ['nextjs'],
+    isTemplate: true,
+    isPublic: true,
+    variables: [],
+  });
+
+  stats = await authedT.query(api.authed.prompts.getPromptStats, {});
+  expect(stats.total).toBe(2);
+  expect(stats.templates).toBe(1);
+  expect(stats.public).toBe(1);
+
+  // Get prompts list to retrieve generated IDs for updates/deletes
+  const userPrompts = await authedT.query(api.authed.prompts.getPrompts);
+  expect(userPrompts).toHaveLength(2);
+
+  const regularPrompt = userPrompts.find((p) => p.title === 'Private Prompt');
+  expect(regularPrompt).toBeDefined();
+
+  // 5. Update: Turn the regular prompt into a template and make it public
+  await authedT.mutation(api.authed.prompts.updatePrompt, {
+    id: regularPrompt!._id,
+    title: regularPrompt!.title,
+    content: regularPrompt!.content,
+    tags: regularPrompt!.tags,
+    variables: regularPrompt!.variables,
+    category: regularPrompt!.category,
+    isTemplate: true,
+    isPublic: true,
+  });
+
+  stats = await authedT.query(api.authed.prompts.getPromptStats, {});
+  expect(stats.total).toBe(2);
+  expect(stats.templates).toBe(2);
+  expect(stats.public).toBe(2);
+
+  // 6. Delete: Delete one of the template prompts
+  await authedT.mutation(api.authed.prompts.deletePrompt, {
+    id: regularPrompt!._id,
+  });
+
+  stats = await authedT.query(api.authed.prompts.getPromptStats, {});
+  expect(stats.total).toBe(1);
+  expect(stats.templates).toBe(1);
+  expect(stats.public).toBe(1);
+}, 30000);
