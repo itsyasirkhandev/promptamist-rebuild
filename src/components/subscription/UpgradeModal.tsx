@@ -114,22 +114,6 @@ export function UpgradeModal({
               </ul>
             </div>
 
-            <div className="bg-primary/10 border-primary/20 xs:flex-row xs:gap-0 flex flex-col items-center justify-between gap-2 rounded-xl border px-4 py-2.5 text-sm shadow-sm sm:py-2">
-              <div className="flex items-center gap-2">
-                <Icon
-                  icon="solar:ticket-bold-duotone"
-                  className="text-primary h-4 w-4"
-                />
-                <span className="text-foreground/80 font-medium">Promo:</span>
-                <span className="text-primary font-mono font-bold">
-                  prompt4yasir
-                </span>
-              </div>
-              <span className="text-primary xs:text-muted-foreground xs:font-semibold text-xs font-bold uppercase">
-                100% OFF
-              </span>
-            </div>
-
             <Button
               onClick={handleUpgrade}
               disabled={isPending}
