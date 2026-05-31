@@ -14,6 +14,7 @@ import type * as authed_promptOwnership from "../authed/promptOwnership.js";
 import type * as authed_prompts from "../authed/prompts.js";
 import type * as authed_userStats from "../authed/userStats.js";
 import type * as authed_users from "../authed/users.js";
+import type * as billing_config from "../billing/config.js";
 import type * as billing_provider from "../billing/provider.js";
 import type * as dto from "../dto.js";
 import type * as effect from "../effect.js";
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   "authed/prompts": typeof authed_prompts;
   "authed/userStats": typeof authed_userStats;
   "authed/users": typeof authed_users;
+  "billing/config": typeof billing_config;
   "billing/provider": typeof billing_provider;
   dto: typeof dto;
   effect: typeof effect;

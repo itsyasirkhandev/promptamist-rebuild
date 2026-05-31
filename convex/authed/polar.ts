@@ -1,6 +1,7 @@
 import { authedAction } from './helpers';
 import { v } from 'convex/values';
 import { PolarBillingProvider } from '../billing/provider';
+import { POLAR_CONFIG } from '../billing/config';
 
 const billingProvider = new PolarBillingProvider();
 
@@ -11,7 +12,7 @@ export const generateCheckoutUrl = authedAction({
   handler: async (ctx, args) => {
     const clerkId = ctx.identity.subject;
     return await billingProvider.createCheckoutSession(ctx, clerkId, {
-      productId: 'bdea346d-5096-4cf7-b21c-f355ee41eaa4',
+      productId: POLAR_CONFIG.productId,
       clientOrigin: args.clientOrigin,
     });
   },

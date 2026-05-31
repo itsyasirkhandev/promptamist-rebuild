@@ -43,8 +43,11 @@ The application uses the **`external_customer_id`** parameter within the Polar C
 ## 4. Product Configuration
 
 - **Product Name**: Pro Plan
-- **Product ID**: `bdea346d-5096-4cf7-b21c-f355ee41eaa4`
+- **Product ID**: `39fcc208-1195-45d5-a39a-4bedb5ce08dc`
 - **Pricing**: $5.00 / month
+
+> [!NOTE]
+> The Product ID and Success URL are configured centrally in [config.ts](file:///i:/promptamist/convex/billing/config.ts) for easy future updates.
 
 ## 5. Environment Variables Reference
 

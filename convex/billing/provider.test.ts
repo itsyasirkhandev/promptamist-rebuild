@@ -4,6 +4,7 @@ import { expect, test, vi, beforeEach } from 'vitest';
 import { api } from '../_generated/api';
 import schema from '../schema';
 import { PolarBillingProvider } from './provider';
+import { POLAR_CONFIG } from './config';
 
 // Mock Polar SDK
 const mockCreateCustomer = vi.fn();
@@ -81,7 +82,7 @@ test('PolarBillingProvider ensures customer and handles checkout generation', as
   expect(mockCreateCheckout).toHaveBeenCalledWith(
     expect.objectContaining({
       customerId: 'polar_cust_bob_999',
-      products: ['bdea346d-5096-4cf7-b21c-f355ee41eaa4'],
+      products: [POLAR_CONFIG.productId],
     }),
   );
 

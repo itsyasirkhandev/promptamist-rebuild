@@ -8,6 +8,7 @@ import { Effect } from 'effect';
 import { z } from 'zod';
 import { ConvexHttpClient } from 'convex/browser';
 import { api } from '../../../convex/_generated/api';
+import { POLAR_CONFIG } from '../../../convex/billing/config';
 
 class UnauthorizedError {
   readonly _tag = 'UnauthorizedError';
@@ -136,19 +137,19 @@ export async function createCheckoutSession(clientOrigin?: string) {
       try: () => {
         if (polarCustomerId) {
           return polar.checkouts.create({
-            products: ['bdea346d-5096-4cf7-b21c-f355ee41eaa4'],
+            products: [POLAR_CONFIG.productId],
             customerId: polarCustomerId,
-            successUrl: `${appUrl}/?success=true`,
+            successUrl: `${appUrl}${POLAR_CONFIG.successPath}`,
           });
         } else {
           return polar.checkouts.create({
-            products: ['bdea346d-5096-4cf7-b21c-f355ee41eaa4'],
+            products: [POLAR_CONFIG.productId],
             externalCustomerId: user.id,
             customerEmail: user.primaryEmailAddress?.emailAddress,
             customerName: user.fullName || undefined,
             metadata: { clerkId: user.id },
             customerMetadata: { clerkId: user.id },
-            successUrl: `${appUrl}/?success=true`,
+            successUrl: `${appUrl}${POLAR_CONFIG.successPath}`,
           });
         }
       },
