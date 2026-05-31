@@ -148,12 +148,22 @@ export async function patchPrompt(
   await ctx.db.patch(id, data);
 
   const templateChange =
-    (data.isTemplate !== undefined ? (data.isTemplate ? 1 : 0) : (existing.isTemplate ? 1 : 0)) -
-    (existing.isTemplate ? 1 : 0);
+    (data.isTemplate !== undefined
+      ? data.isTemplate
+        ? 1
+        : 0
+      : existing.isTemplate
+        ? 1
+        : 0) - (existing.isTemplate ? 1 : 0);
 
   const publicChange =
-    (data.isPublic !== undefined ? (data.isPublic ? 1 : 0) : (existing.isPublic ? 1 : 0)) -
-    (existing.isPublic ? 1 : 0);
+    (data.isPublic !== undefined
+      ? data.isPublic
+        ? 1
+        : 0
+      : existing.isPublic
+        ? 1
+        : 0) - (existing.isPublic ? 1 : 0);
 
   if (templateChange !== 0 || publicChange !== 0) {
     await updateUserPromptStats(ctx, existing.userId, {

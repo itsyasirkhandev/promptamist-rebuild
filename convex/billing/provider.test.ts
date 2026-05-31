@@ -22,7 +22,7 @@ vi.mock('@polar-sh/sdk', () => {
       customerSessions = {
         create: mockCreatePortalSession,
       };
-    }
+    },
   };
 });
 
@@ -119,7 +119,10 @@ test('PolarBillingProvider handles portal session generation', async () => {
   });
 
   // 3. Trigger portal action
-  const portalResult = await authedT.action(api.authed.polar.generatePortalUrl, {});
+  const portalResult = await authedT.action(
+    api.authed.polar.generatePortalUrl,
+    {},
+  );
   expect(portalResult.url).toBe('https://billing.polar.sh/alice_portal_link');
 
   // Verify customer create was NOT called because customer ID existed
