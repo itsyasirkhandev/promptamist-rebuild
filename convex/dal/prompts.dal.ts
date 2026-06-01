@@ -210,6 +210,7 @@ export async function listPublicPromptsWithAuthors(
     searchQuery?: string;
     category?: string;
     limit?: number;
+    sortBy?: 'recent' | 'a-z';
   },
 ): Promise<{ prompt: Doc<'prompts'>; author: Doc<'users'> | null }[]> {
   let prompts: Doc<'prompts'>[] = [];
@@ -230,19 +231,43 @@ export async function listPublicPromptsWithAuthors(
         (p) => (p.category ?? 'general') === options.category,
       );
     }
-  } else {
-    const rawPrompts = await ctx.db
-      .query('prompts')
-      .withIndex('by_isPublic', (q) => q.eq('isPublic', true))
-      .order('desc')
-      .take(100);
 
-    if (options.category && options.category !== 'all') {
-      prompts = rawPrompts
-        .filter((p) => (p.category ?? 'general') === options.category)
-        .slice(0, limit);
+    if (options.sortBy === 'a-z') {
+      prompts.sort((a, b) => a.title.localeCompare(b.title));
+    }
+  } else {
+    if (options.sortBy === 'a-z') {
+      const q = ctx.db
+        .query('prompts')
+        .withIndex('by_isPublic_and_title', (q) => q.eq('isPublic', true))
+        .order('asc');
+
+      if (options.category && options.category !== 'all') {
+        for await (const p of q) {
+          if ((p.category ?? 'general') === options.category) {
+            prompts.push(p);
+            if (prompts.length >= limit) break;
+          }
+        }
+      } else {
+        prompts = await q.take(limit);
+      }
     } else {
-      prompts = rawPrompts.slice(0, limit);
+      const q = ctx.db
+        .query('prompts')
+        .withIndex('by_isPublic', (q) => q.eq('isPublic', true))
+        .order('desc');
+
+      if (options.category && options.category !== 'all') {
+        for await (const p of q) {
+          if ((p.category ?? 'general') === options.category) {
+            prompts.push(p);
+            if (prompts.length >= limit) break;
+          }
+        }
+      } else {
+        prompts = await q.take(limit);
+      }
     }
   }
 

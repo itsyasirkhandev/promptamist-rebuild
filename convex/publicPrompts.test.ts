@@ -1,7 +1,12 @@
-/// <reference types="vite/client" />
 import { convexTest } from 'convex-test';
 import { expect, test } from 'vitest';
-import { api } from './_generated/api';
+import { api, internal } from './_generated/api';
+
+declare global {
+  interface ImportMeta {
+    glob(pattern: string): Record<string, unknown>;
+  }
+}
 import schema from './schema';
 
 const modules = import.meta.glob('./**/*.ts');
@@ -10,7 +15,7 @@ test('getPromptBySlug and listPublicPrompts integration tests', async () => {
   const t = convexTest(schema, modules);
 
   // 1. Create a user via internal mutation
-  await t.mutation(api.users.upsertFromClerk, {
+  await t.mutation(internal.users.upsertFromClerk, {
     clerkId: 'user_123',
     email: 'jane@example.com',
     name: 'Jane Doe',
@@ -60,7 +65,7 @@ test('getPromptBySlug and listPublicPrompts integration tests', async () => {
   expect(result?.authorName).toBe('Jane Doe');
   expect(result?.authorImageUrl).toBe('https://example.com/jane.jpg');
   expect(result?.content).toBe('This is public content.');
-  expect((result as any).userId).toBeUndefined(); // Should be stripped by DTO
+  expect((result as Record<string, unknown>).userId).toBeUndefined(); // Should be stripped by DTO
 
   // Query private slug (should return null)
   const privateResult = await t.query(api.publicPrompts.getPromptBySlug, {
@@ -79,7 +84,7 @@ test('user prompt stats maintenance integration tests', async () => {
   const t = convexTest(schema, modules);
 
   // 1. Create a user via internal mutation
-  await t.mutation(api.users.upsertFromClerk, {
+  await t.mutation(internal.users.upsertFromClerk, {
     clerkId: 'user_stats_123',
     email: 'stats@example.com',
     name: 'Stats User',

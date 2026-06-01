@@ -32,11 +32,13 @@ export const listPublicPrompts = query({
   args: {
     searchQuery: v.optional(v.string()),
     category: v.optional(v.string()),
+    sortBy: v.optional(v.union(v.literal('recent'), v.literal('a-z'))),
   },
   handler: async (ctx, args) => {
     const results = await listPublicPromptsWithAuthors(ctx, {
       searchQuery: args.searchQuery,
       category: args.category,
+      sortBy: args.sortBy,
     });
 
     return results.map(({ prompt, author }) =>

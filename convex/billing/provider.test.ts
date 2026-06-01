@@ -1,9 +1,13 @@
-/// <reference types="vite/client" />
 import { convexTest } from 'convex-test';
 import { expect, test, vi, beforeEach } from 'vitest';
-import { api } from '../_generated/api';
+import { api, internal } from '../_generated/api';
+
+declare global {
+  interface ImportMeta {
+    glob(pattern: string): Record<string, unknown>;
+  }
+}
 import schema from '../schema';
-import { PolarBillingProvider } from './provider';
 import { POLAR_CONFIG } from './config';
 
 // Mock Polar SDK
@@ -39,7 +43,7 @@ test('PolarBillingProvider ensures customer and handles checkout generation', as
   const t = convexTest(schema, modules);
 
   // 1. Create a user inside Convex
-  await t.mutation(api.users.upsertFromClerk, {
+  await t.mutation(internal.users.upsertFromClerk, {
     clerkId: 'clerk_456',
     email: 'bob@example.com',
     name: 'Bob Builder',
@@ -87,7 +91,7 @@ test('PolarBillingProvider ensures customer and handles checkout generation', as
   );
 
   // Verify customer ID is correctly persisted back in Convex
-  const userInfo = await t.query(api.private.users.getUserInfoForPolar, {
+  const userInfo = await t.query(internal.private.users.getUserInfoForPolar, {
     clerkId: 'clerk_456',
   });
   expect(userInfo?.polarCustomerId).toBe('polar_cust_bob_999');
@@ -97,13 +101,13 @@ test('PolarBillingProvider handles portal session generation', async () => {
   const t = convexTest(schema, modules);
 
   // 1. Create user and set existing polarCustomerId (skipping customer creation path)
-  await t.mutation(api.users.upsertFromClerk, {
+  await t.mutation(internal.users.upsertFromClerk, {
     clerkId: 'clerk_789',
     email: 'alice@example.com',
     name: 'Alice Wonder',
   });
 
-  await t.mutation(api.users.savePolarCustomerIdInternal, {
+  await t.mutation(internal.users.savePolarCustomerIdInternal, {
     clerkId: 'clerk_789',
     polarCustomerId: 'polar_cust_alice_888',
   });

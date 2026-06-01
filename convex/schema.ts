@@ -50,6 +50,7 @@ export default defineSchema({
     .index('by_userId_and_title', ['userId', 'title'])
     .index('by_publicSlug', ['publicSlug'])
     .index('by_isPublic', ['isPublic'])
+    .index('by_isPublic_and_title', ['isPublic', 'title'])
     .searchIndex('search_all', {
       searchField: 'searchableText',
       filterFields: ['isPublic'],

@@ -8,6 +8,14 @@ import { Input } from '@/components/ui/input';
 import { Search, Loader2 } from 'lucide-react';
 import { Icon } from '@iconify/react';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import {
   MarketplacePromptCard,
   PublicPromptDTO,
@@ -26,12 +34,20 @@ const CATEGORIES = [
 export function MarketplaceSearch() {
   const [inputValue, setInputValue] = useState('');
   const [activeCategory, setActiveCategory] = useState('all');
+  const [sortBy, setSortBy] = useState<'recent' | 'a-z'>('recent');
   const debouncedQuery = useDebounce(inputValue, 300);
 
   const prompts = useQuery(api.publicPrompts.listPublicPrompts, {
     searchQuery: debouncedQuery || undefined,
     category: activeCategory,
+    sortBy,
   });
+
+  const handleResetFilters = () => {
+    setInputValue('');
+    setActiveCategory('all');
+    setSortBy('recent');
+  };
 
   const isLoading = prompts === undefined;
   const isSearchPending = inputValue !== debouncedQuery;
@@ -82,6 +98,41 @@ export function MarketplaceSearch() {
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* Filter Row: Sort By & Reset */}
+      <div className="flex w-full flex-col items-center justify-between gap-4 px-1 sm:flex-row md:justify-end">
+        {(inputValue !== '' ||
+          activeCategory !== 'all' ||
+          sortBy !== 'recent') && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleResetFilters}
+            className="text-muted-foreground hover:text-foreground mr-auto"
+          >
+            <Icon icon="lucide:x" className="mr-2 h-4 w-4" />
+            Reset Filters
+          </Button>
+        )}
+
+        <div className="flex items-center gap-2 self-end sm:self-auto">
+          <span className="text-muted-foreground text-sm font-medium">
+            Sort By:
+          </span>
+          <Select
+            value={sortBy}
+            onValueChange={(val: 'recent' | 'a-z') => setSortBy(val)}
+          >
+            <SelectTrigger className="bg-background w-[180px]">
+              <SelectValue placeholder="Sort order" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="recent">Recently Published</SelectItem>
+              <SelectItem value="a-z">A-Z</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
