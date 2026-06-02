@@ -155,6 +155,88 @@ pnpm dev
 pnpm check
 ```
 
+## 📦 Shared Registry
+
+This project uses a [shadcn GitHub Registry](https://ui.shadcn.com/docs/registry/github) to share reusable components, hooks, AI agent skills, config files, and CI workflows. Install any item directly into your project:
+
+```bash
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/<item-name>
+```
+
+Browse all available items:
+
+```bash
+npx shadcn@latest list itsyasirkhandev/promptamist-rebuild
+```
+
+### 🤖 AI Agent Skills
+
+Pre-built [Gemini Code Assist skills](https://ui.shadcn.com/docs/skills) for Clerk and Convex development:
+
+```bash
+# Clerk skills
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-clerk
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-clerk-backend-api
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-clerk-custom-ui
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-clerk-nextjs-patterns
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-clerk-setup
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-clerk-webhooks
+
+# Convex skills
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-convex
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-convex-create-component
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-convex-migration-helper
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-convex-performance-audit
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-convex-quickstart
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/skill-convex-setup-auth
+```
+
+### 🧩 UI Components
+
+Shadcn UI primitives styled for this project:
+
+```bash
+# Examples
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/button
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/dialog
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/sidebar
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/tabs
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/loader
+```
+
+<details>
+<summary>All available UI components</summary>
+
+`alert` · `alert-dialog` · `avatar` · `badge` · `breadcrumb` · `button` · `card` · `checkbox` · `command` · `dialog` · `dropdown-menu` · `input` · `input-group` · `label` · `loader` · `popover` · `scroll-area` · `select` · `separator` · `sheet` · `sidebar` · `skeleton` · `sonner` · `switch` · `tabs` · `textarea` · `texture-card` · `tooltip`
+
+</details>
+
+### 🧱 Reusable Components
+
+```bash
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/cta-section
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/logo
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/theme-toggle
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/theme-provider
+```
+
+### 🪝 Hooks
+
+```bash
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/use-debounce
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/use-mobile
+```
+
+### ⚙️ Config & CI
+
+```bash
+# Root GEMINI.md AI coding guidelines
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/gemini-config
+
+# Convex deploy GitHub Action (production + preview)
+npx shadcn@latest add itsyasirkhandev/promptamist-rebuild/github-action-convex-deploy
+```
+
 ---
 
 ## ⚙️ Environment Configurations
