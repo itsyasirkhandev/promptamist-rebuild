@@ -1,0 +1,875 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "promptamist",
+  "homepage": "https://github.com/itsyasirkhandev/promptamist-rebuild",
+  "items": [
+    {
+      "name": "skill-clerk",
+      "type": "registry:file",
+      "title": "Clerk Skill",
+      "description": "Clerk authentication router skill — routes to the correct Clerk sub-skill based on the task (sign-in flows, webhooks, Next.js patterns, etc.)",
+      "files": [
+        {
+          "path": ".agents/skills/clerk/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "skill-clerk-backend-api",
+      "type": "registry:file",
+      "title": "Clerk Backend API Skill",
+      "description": "Clerk Backend REST API explorer and executor — browse tags, inspect endpoint schemas, and execute authenticated requests.",
+      "files": [
+        {
+          "path": ".agents/skills/clerk-backend-api/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-backend-api/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/clerk-backend-api/evals/evals.json",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-backend-api/evals/evals.json"
+        },
+        {
+          "path": ".agents/skills/clerk-backend-api/scripts/api-specs-context.sh",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-backend-api/scripts/api-specs-context.sh"
+        },
+        {
+          "path": ".agents/skills/clerk-backend-api/scripts/execute-request.sh",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-backend-api/scripts/execute-request.sh"
+        },
+        {
+          "path": ".agents/skills/clerk-backend-api/scripts/extract-endpoint-detail.sh",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-backend-api/scripts/extract-endpoint-detail.sh"
+        },
+        {
+          "path": ".agents/skills/clerk-backend-api/scripts/extract-tag-endpoints.sh",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-backend-api/scripts/extract-tag-endpoints.sh"
+        },
+        {
+          "path": ".agents/skills/clerk-backend-api/scripts/extract-tags.js",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-backend-api/scripts/extract-tags.js"
+        }
+      ]
+    },
+    {
+      "name": "skill-clerk-custom-ui",
+      "type": "registry:file",
+      "title": "Clerk Custom UI Skill",
+      "description": "Custom authentication flows and component appearance — hooks (useSignIn, useSignUp), themes, colors, fonts, CSS for custom sign-in/sign-up.",
+      "files": [
+        {
+          "path": ".agents/skills/clerk-custom-ui/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-custom-ui/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/clerk-custom-ui/core-2/custom-sign-in.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-custom-ui/core-2/custom-sign-in.md"
+        },
+        {
+          "path": ".agents/skills/clerk-custom-ui/core-2/custom-sign-up.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-custom-ui/core-2/custom-sign-up.md"
+        },
+        {
+          "path": ".agents/skills/clerk-custom-ui/core-3/custom-sign-in.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-custom-ui/core-3/custom-sign-in.md"
+        },
+        {
+          "path": ".agents/skills/clerk-custom-ui/core-3/custom-sign-up.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-custom-ui/core-3/custom-sign-up.md"
+        },
+        {
+          "path": ".agents/skills/clerk-custom-ui/core-3/show-component.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-custom-ui/core-3/show-component.md"
+        }
+      ]
+    },
+    {
+      "name": "skill-clerk-nextjs-patterns",
+      "type": "registry:file",
+      "title": "Clerk Next.js Patterns Skill",
+      "description": "Advanced Next.js patterns — middleware, Server Actions, caching with Clerk. Includes reference docs and template project.",
+      "files": [
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/evals/evals.json",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/evals/evals.json"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/references/api-routes.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/references/api-routes.md"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/references/caching-auth.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/references/caching-auth.md"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/references/middleware-strategies.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/references/middleware-strategies.md"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/references/server-actions.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/references/server-actions.md"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/references/server-vs-client.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/references/server-vs-client.md"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/package.json",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/package.json"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/proxy.ts",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/proxy.ts"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/tsconfig.json",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/tsconfig.json"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/app/layout.tsx",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/app/layout.tsx"
+        },
+        {
+          "path": ".agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/app/page.tsx",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-nextjs-patterns/templates/nextjs-basic-auth/app/page.tsx"
+        }
+      ]
+    },
+    {
+      "name": "skill-clerk-setup",
+      "type": "registry:file",
+      "title": "Clerk Setup Skill",
+      "description": "Add Clerk authentication to any project by following the official quickstart guides.",
+      "files": [
+        {
+          "path": ".agents/skills/clerk-setup/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-setup/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/clerk-setup/evals/evals.json",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-setup/evals/evals.json"
+        }
+      ]
+    },
+    {
+      "name": "skill-clerk-webhooks",
+      "type": "registry:file",
+      "title": "Clerk Webhooks Skill",
+      "description": "Clerk webhooks for real-time events and data syncing — complete webhook handlers with verifyWebhook(req) verification.",
+      "files": [
+        {
+          "path": ".agents/skills/clerk-webhooks/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-webhooks/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/clerk-webhooks/evals/evals.json",
+          "type": "registry:file",
+          "target": "~/.agents/skills/clerk-webhooks/evals/evals.json"
+        }
+      ]
+    },
+    {
+      "name": "skill-convex",
+      "type": "registry:file",
+      "title": "Convex Skill",
+      "description": "Routes general Convex requests to the right project skill — use when the user asks which Convex skill to use.",
+      "files": [
+        {
+          "path": ".agents/skills/convex/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex/SKILL.md"
+        }
+      ]
+    },
+    {
+      "name": "skill-convex-create-component",
+      "type": "registry:file",
+      "title": "Convex Create Component Skill",
+      "description": "Builds reusable Convex components with isolated tables and app-facing APIs — for new components, reusable backend modules, and integrations.",
+      "files": [
+        {
+          "path": ".agents/skills/convex-create-component/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-create-component/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/convex-create-component/agents/openai.yaml",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-create-component/agents/openai.yaml"
+        },
+        {
+          "path": ".agents/skills/convex-create-component/assets/icon.svg",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-create-component/assets/icon.svg"
+        },
+        {
+          "path": ".agents/skills/convex-create-component/references/advanced-patterns.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-create-component/references/advanced-patterns.md"
+        },
+        {
+          "path": ".agents/skills/convex-create-component/references/hybrid-components.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-create-component/references/hybrid-components.md"
+        },
+        {
+          "path": ".agents/skills/convex-create-component/references/local-components.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-create-component/references/local-components.md"
+        },
+        {
+          "path": ".agents/skills/convex-create-component/references/packaged-components.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-create-component/references/packaged-components.md"
+        }
+      ]
+    },
+    {
+      "name": "skill-convex-migration-helper",
+      "type": "registry:file",
+      "title": "Convex Migration Helper Skill",
+      "description": "Plans Convex schema and data migrations with widen-migrate-narrow and @convex-dev/migrations.",
+      "files": [
+        {
+          "path": ".agents/skills/convex-migration-helper/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-migration-helper/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/convex-migration-helper/agents/openai.yaml",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-migration-helper/agents/openai.yaml"
+        },
+        {
+          "path": ".agents/skills/convex-migration-helper/assets/icon.svg",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-migration-helper/assets/icon.svg"
+        },
+        {
+          "path": ".agents/skills/convex-migration-helper/references/migration-patterns.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-migration-helper/references/migration-patterns.md"
+        },
+        {
+          "path": ".agents/skills/convex-migration-helper/references/migrations-component.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-migration-helper/references/migrations-component.md"
+        }
+      ]
+    },
+    {
+      "name": "skill-convex-performance-audit",
+      "type": "registry:file",
+      "title": "Convex Performance Audit Skill",
+      "description": "Audits Convex performance for reads, subscriptions, write contention, and function limits.",
+      "files": [
+        {
+          "path": ".agents/skills/convex-performance-audit/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-performance-audit/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/convex-performance-audit/agents/openai.yaml",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-performance-audit/agents/openai.yaml"
+        },
+        {
+          "path": ".agents/skills/convex-performance-audit/assets/icon.svg",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-performance-audit/assets/icon.svg"
+        },
+        {
+          "path": ".agents/skills/convex-performance-audit/references/function-budget.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-performance-audit/references/function-budget.md"
+        },
+        {
+          "path": ".agents/skills/convex-performance-audit/references/hot-path-rules.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-performance-audit/references/hot-path-rules.md"
+        },
+        {
+          "path": ".agents/skills/convex-performance-audit/references/occ-conflicts.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-performance-audit/references/occ-conflicts.md"
+        },
+        {
+          "path": ".agents/skills/convex-performance-audit/references/subscription-cost.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-performance-audit/references/subscription-cost.md"
+        }
+      ]
+    },
+    {
+      "name": "skill-convex-quickstart",
+      "type": "registry:file",
+      "title": "Convex Quickstart Skill",
+      "description": "Creates or adds Convex to an app — for new Convex projects, frontend setup, env vars, or the first npx convex dev run.",
+      "files": [
+        {
+          "path": ".agents/skills/convex-quickstart/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-quickstart/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/convex-quickstart/agents/openai.yaml",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-quickstart/agents/openai.yaml"
+        },
+        {
+          "path": ".agents/skills/convex-quickstart/assets/icon.svg",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-quickstart/assets/icon.svg"
+        }
+      ]
+    },
+    {
+      "name": "skill-convex-setup-auth",
+      "type": "registry:file",
+      "title": "Convex Setup Auth Skill",
+      "description": "Sets up Convex auth, identity mapping, and access control — for login, auth providers, users tables, protected functions, or roles.",
+      "files": [
+        {
+          "path": ".agents/skills/convex-setup-auth/SKILL.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-setup-auth/SKILL.md"
+        },
+        {
+          "path": ".agents/skills/convex-setup-auth/agents/openai.yaml",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-setup-auth/agents/openai.yaml"
+        },
+        {
+          "path": ".agents/skills/convex-setup-auth/assets/icon.svg",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-setup-auth/assets/icon.svg"
+        },
+        {
+          "path": ".agents/skills/convex-setup-auth/references/auth0.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-setup-auth/references/auth0.md"
+        },
+        {
+          "path": ".agents/skills/convex-setup-auth/references/clerk.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-setup-auth/references/clerk.md"
+        },
+        {
+          "path": ".agents/skills/convex-setup-auth/references/convex-auth.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-setup-auth/references/convex-auth.md"
+        },
+        {
+          "path": ".agents/skills/convex-setup-auth/references/workos-authkit.md",
+          "type": "registry:file",
+          "target": "~/.agents/skills/convex-setup-auth/references/workos-authkit.md"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "A modal dialog that interrupts the user with important content and expects a response.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Displays a callout for user attention.",
+      "dependencies": ["class-variance-authority"],
+      "files": [
+        {
+          "path": "src/components/ui/alert.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "An image element with a fallback for representing the user.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Displays a badge or a component that looks like a badge.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Displays the path to the current resource using a hierarchy of links.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "files": [
+        {
+          "path": "src/components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Displays a button or a component that looks like a button.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Displays a card with header, content, and footer.",
+      "files": [
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "A control that allows the user to toggle between checked and not checked.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "files": [
+        {
+          "path": "src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "Fast, composable, unstyled command menu for React.",
+      "dependencies": ["cmdk", "lucide-react"],
+      "registryDependencies": ["input-group"],
+      "files": [
+        {
+          "path": "src/components/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "A window overlaid on either the primary window or another dialog window.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Displays a menu to the user — such as a set of actions or functions — triggered by a button.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "files": [
+        {
+          "path": "src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Displays a form input field.",
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Groups an input with addons (icons, buttons) for composite form controls.",
+      "dependencies": ["class-variance-authority"],
+      "registryDependencies": ["button", "input", "textarea"],
+      "files": [
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Renders an accessible label associated with controls.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "loader",
+      "type": "registry:ui",
+      "title": "Loader",
+      "description": "Animated loading spinner with CSS animations.",
+      "files": [
+        {
+          "path": "src/components/ui/Loader.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/loader.css",
+          "type": "registry:file",
+          "target": "@ui/loader.css"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Displays rich content in a portal, triggered by a button.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "Augments native scroll functionality for custom, cross-browser styling.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Displays a list of options for the user to pick from — triggered by a button.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "files": [
+        {
+          "path": "src/components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Visually or semantically separates content.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Extends the Dialog component to display content that complements the main content of the screen.",
+      "dependencies": ["radix-ui", "lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "A composable, themeable and customizable sidebar component.",
+      "dependencies": ["class-variance-authority", "radix-ui", "lucide-react"],
+      "registryDependencies": ["button", "input", "separator", "skeleton", "use-mobile"],
+      "files": [
+        {
+          "path": "src/components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Use to show a placeholder while content is loading.",
+      "files": [
+        {
+          "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Sonner",
+      "description": "An opinionated toast component for React.",
+      "dependencies": ["sonner", "next-themes"],
+      "registryDependencies": ["loader"],
+      "files": [
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "A control that allows the user to toggle between a checked and not checked state.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "A set of layered sections of content — known as tab panels — that are displayed one at a time.",
+      "dependencies": ["class-variance-authority", "radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Displays a form textarea.",
+      "files": [
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "texture-card",
+      "type": "registry:ui",
+      "title": "Texture Card",
+      "description": "A card component with a textured background effect.",
+      "files": [
+        {
+          "path": "src/components/ui/TextureCard.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "A popup that displays information related to an element when the element receives keyboard focus or the mouse hovers over it.",
+      "dependencies": ["radix-ui"],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "cta-section",
+      "type": "registry:component",
+      "title": "CTA Section",
+      "description": "A call-to-action section component with icon and link support.",
+      "dependencies": ["@iconify/react"],
+      "files": [
+        {
+          "path": "src/components/CTASection.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "logo",
+      "type": "registry:component",
+      "title": "Logo",
+      "description": "SVG logo component with customizable size.",
+      "files": [
+        {
+          "path": "src/components/Logo.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "theme-toggle",
+      "type": "registry:component",
+      "title": "Theme Toggle",
+      "description": "Dark/light mode toggle button using next-themes.",
+      "dependencies": ["next-themes", "lucide-react"],
+      "registryDependencies": ["button"],
+      "files": [
+        {
+          "path": "src/components/ThemeToggle.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "theme-provider",
+      "type": "registry:component",
+      "title": "Theme Provider",
+      "description": "Next-themes provider wrapper for dark/light mode support.",
+      "dependencies": ["next-themes"],
+      "files": [
+        {
+          "path": "src/components/ThemeProvider.tsx",
+          "type": "registry:component"
+        }
+      ]
+    },
+    {
+      "name": "use-debounce",
+      "type": "registry:hook",
+      "title": "useDebounce",
+      "description": "A hook that debounces a value by a specified delay.",
+      "files": [
+        {
+          "path": "src/hooks/use-debounce.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-mobile",
+      "type": "registry:hook",
+      "title": "useIsMobile",
+      "description": "A hook that detects if the current viewport is mobile-sized.",
+      "files": [
+        {
+          "path": "src/hooks/use-mobile.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "gemini-config",
+      "type": "registry:file",
+      "title": "GEMINI.md Config",
+      "description": "Root-level AI coding guidelines for Gemini Code Assist — project conventions for Convex, Next.js, and TypeScript.",
+      "files": [
+        {
+          "path": "GEMINI.md",
+          "type": "registry:file",
+          "target": "~/GEMINI.md"
+        }
+      ]
+    },
+    {
+      "name": "github-action-convex-deploy",
+      "type": "registry:file",
+      "title": "Convex Deploy GitHub Action",
+      "description": "GitHub Actions workflow for deploying Convex — production on main, preview on all other branches.",
+      "files": [
+        {
+          "path": ".github/workflows/deploy.yml",
+          "type": "registry:file",
+          "target": "~/.github/workflows/deploy.yml"
+        }
+      ]
+    }
+  ]
+}
