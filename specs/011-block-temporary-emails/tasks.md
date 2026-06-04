@@ -7,8 +7,8 @@ This implementation involves configuring the Clerk dashboard to enable native di
 
 ### Phase 1: Clerk Configuration
 
-- [ ] Configure Clerk Dashboard: Go to **User & authentication** -> **Restrictions** -> Enable **Block sign-ups that use a disposable email address**.
-- [ ] Configure Clerk Dashboard: Go to **User & authentication** -> **Restrictions** -> Enable **Block email subaddresses**.
+- [x] Configure Clerk Dashboard: Go to **User & authentication** -> **Restrictions** -> Enable **Block sign-ups that use a disposable email address**.
+- [x] Configure Clerk Dashboard: Go to **User & authentication** -> **Restrictions** -> Enable **Block email subaddresses**.
 
 ### Phase 2: Verification & Testing
 
