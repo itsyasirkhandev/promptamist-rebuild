@@ -23,7 +23,6 @@
 
 Promptamist is a modern, developer-first **AI prompt manager** and **prompt engineering tool** engineered to solve the chaos of losing high-value prompts in cluttered chat logs. Built with rigorous functional type-safety and real-time database sync, it offers a robust platform for creating, versioning, and deploying **reusable Claude prompt templates** and **ChatGPT prompt sharing** flows. Designed for power users, Promptamist provides **type-safe prompt versioning** combined with instant public template sharing under stable, unique slugs.
 
-
 ### Technical Stack & Dependencies
 
 - **Framework**: Next.js `16.2.6` (App Router, RSC, SSR)

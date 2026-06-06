@@ -13,7 +13,7 @@
  */
 
 import { Doc } from './_generated/dataModel';
-import { DEFAULT_TIER, type SubscriptionTier } from './subscription';
+import { DEFAULT_TIER } from './subscription';
 
 // ---------------------------------------------------------------------------
 // User DTO
@@ -30,8 +30,7 @@ export function toUserDTO(user: Doc<'users'>) {
     name: user.name,
     email: user.email,
     imageUrl: user.imageUrl,
-    subscriptionTier: (user.subscriptionTier ??
-      DEFAULT_TIER) as SubscriptionTier,
+    subscriptionTier: user.subscriptionTier ?? DEFAULT_TIER,
     preferences: user.preferences ?? null,
     promptStats: user.promptStats ?? { total: 0, templates: 0, public: 0 },
   };

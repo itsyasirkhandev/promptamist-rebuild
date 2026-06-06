@@ -5,13 +5,21 @@ import { Effect } from 'effect';
 export const sendProWelcome = internalAction({
   args: { email: v.string() },
   handler: async (ctx, args) => {
+    const brevoApiKey = process.env.BREVO_API_KEY;
+    if (!brevoApiKey) {
+      console.warn(
+        'BREVO_API_KEY is not set. Pro Welcome email will not be sent.',
+      );
+      return;
+    }
+
     const sendEmail = Effect.tryPromise({
       try: () =>
         fetch('https://api.brevo.com/v3/smtp/email', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'api-key': process.env.BREVO_API_KEY!,
+            'api-key': brevoApiKey,
           },
           body: JSON.stringify({
             sender: { name: 'Promptamist Team', email: 'yasirwebio@gmail.com' },

@@ -672,7 +672,13 @@
       "title": "Sidebar",
       "description": "A composable, themeable and customizable sidebar component.",
       "dependencies": ["class-variance-authority", "radix-ui", "lucide-react"],
-      "registryDependencies": ["button", "input", "separator", "skeleton", "use-mobile"],
+      "registryDependencies": [
+        "button",
+        "input",
+        "separator",
+        "skeleton",
+        "use-mobile"
+      ],
       "files": [
         {
           "path": "src/components/ui/sidebar.tsx",

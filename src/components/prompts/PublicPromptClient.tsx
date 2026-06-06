@@ -16,10 +16,7 @@ import {
   CardDescription,
 } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
-import {
-  VariableInput,
-  PromptVariable as Variable,
-} from '@/components/prompts/VariableInput';
+import { VariableInput } from '@/components/prompts/VariableInput';
 import { PromptPreview } from '@/components/prompts/PromptPreview';
 import { OpenInAIButton } from '@/components/prompts/OpenInAIButton';
 
@@ -41,7 +38,7 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
     setInitializedPromptId(prompt._id);
     const defaults: Record<string, string> = {};
     if (prompt.variables) {
-      (prompt.variables as Variable[]).forEach((v) => {
+      prompt.variables.forEach((v) => {
         if (v.defaultValue) {
           defaults[v.name] = v.defaultValue;
         }
@@ -163,7 +160,7 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
             <CardTitle>Fill in the details</CardTitle>
           </CardHeader>
           <CardContent className="grid gap-6 sm:grid-cols-2">
-            {(prompt.variables as Variable[]).map((variable) => (
+            {prompt.variables.map((variable) => (
               <VariableInput
                 key={variable.id}
                 variable={variable}
@@ -191,7 +188,7 @@ export function PublicPromptClient({ slug }: PublicPromptClientProps) {
             <div className="text-sm font-medium whitespace-pre-wrap">
               <PromptPreview
                 content={generatedPrompt}
-                variables={prompt.variables as Variable[]}
+                variables={prompt.variables}
               />
             </div>
           </div>

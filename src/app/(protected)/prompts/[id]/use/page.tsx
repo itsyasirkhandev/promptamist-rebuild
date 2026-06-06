@@ -108,7 +108,7 @@ export default function UseTemplatePage({ params }: PageProps) {
   React.useEffect(() => {
     if (prompt?.variables) {
       const defaults: Record<string, string> = {};
-      (prompt.variables as PromptVariable[]).forEach((v) => {
+      prompt.variables.forEach((v) => {
         if (v.defaultValue) {
           defaults[v.name] = v.defaultValue;
         }
@@ -226,7 +226,7 @@ export default function UseTemplatePage({ params }: PageProps) {
           <ScrollArea className="flex-1">
             <div className="p-4 lg:p-6">
               <VariableList
-                variables={prompt.variables as PromptVariable[]}
+                variables={prompt.variables}
                 formValues={formValues as Record<string, string>}
                 onValueChange={setValue}
               />
@@ -258,7 +258,7 @@ export default function UseTemplatePage({ params }: PageProps) {
             <div className="mx-auto max-w-2xl p-8">
               <LivePreview
                 content={interpolatedContent}
-                variables={prompt.variables as PromptVariable[]}
+                variables={prompt.variables}
                 className="min-h-100"
               />
             </div>
@@ -302,7 +302,7 @@ export default function UseTemplatePage({ params }: PageProps) {
             className="animate-in fade-in slide-in-from-bottom-2 m-0 flex-1 flex-col overflow-y-auto p-5 duration-300 data-[state=active]:flex"
           >
             <VariableList
-              variables={prompt.variables as PromptVariable[]}
+              variables={prompt.variables}
               formValues={formValues as Record<string, string>}
               onValueChange={setValue}
             />
@@ -330,7 +330,7 @@ export default function UseTemplatePage({ params }: PageProps) {
               </div>
               <LivePreview
                 content={interpolatedContent}
-                variables={prompt.variables as PromptVariable[]}
+                variables={prompt.variables}
                 className="min-h-75 rounded-2xl border border-neutral-200/80 p-5 shadow-sm dark:border-neutral-800/80"
               />
             </div>

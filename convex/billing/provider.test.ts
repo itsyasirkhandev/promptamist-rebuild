@@ -4,7 +4,7 @@ import { api, internal } from '../_generated/api';
 
 declare global {
   interface ImportMeta {
-    glob(pattern: string): Record<string, unknown>;
+    glob(pattern: string): Record<string, () => Promise<unknown>>;
   }
 }
 import schema from '../schema';

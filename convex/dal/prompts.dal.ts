@@ -217,12 +217,11 @@ export async function listPublicPromptsWithAuthors(
   const limit = options.limit ?? 50;
 
   if (options.searchQuery) {
+    const searchQuery = options.searchQuery;
     prompts = await ctx.db
       .query('prompts')
       .withSearchIndex('search_all', (q) =>
-        q
-          .search('searchableText', options.searchQuery as string)
-          .eq('isPublic', true),
+        q.search('searchableText', searchQuery).eq('isPublic', true),
       )
       .take(limit);
 

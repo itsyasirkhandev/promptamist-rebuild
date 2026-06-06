@@ -94,9 +94,17 @@ http.route({
 
         if (event.type.startsWith('subscription.')) {
           const data = event.data;
-          const clerkId = (data.metadata?.clerkId ||
-            data.customer?.metadata?.clerkId ||
-            data.customer?.external_id) as string | undefined | null;
+          const metadataClerkId =
+            typeof data.metadata?.clerkId === 'string'
+              ? data.metadata.clerkId
+              : undefined;
+          const customerMetadataClerkId =
+            typeof data.customer?.metadata?.clerkId === 'string'
+              ? data.customer.metadata.clerkId
+              : undefined;
+          const customerExternalId = data.customer?.external_id ?? undefined;
+          const clerkId =
+            metadataClerkId || customerMetadataClerkId || customerExternalId;
 
           if (clerkId) {
             const tier: SubscriptionTier =

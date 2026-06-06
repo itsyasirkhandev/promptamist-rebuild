@@ -95,9 +95,16 @@ export function usePromptVariables({
   const updateVariable = React.useCallback(
     (index: number, updatedVarData: Partial<Variable>) => {
       const oldVar = variables[index];
+      if (!oldVar) return;
       const newName = updatedVarData.name;
 
-      update(index, { ...oldVar, ...updatedVarData } as Variable);
+      update(index, {
+        id: oldVar.id,
+        name: updatedVarData.name ?? oldVar.name,
+        type: updatedVarData.type ?? oldVar.type,
+        options: updatedVarData.options ?? oldVar.options,
+        defaultValue: updatedVarData.defaultValue ?? oldVar.defaultValue,
+      });
       toast.success(`Variable {{${newName || oldVar.name}}} updated`);
 
       if (newName && oldVar.name !== newName) {

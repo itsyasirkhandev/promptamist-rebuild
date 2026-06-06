@@ -16,11 +16,8 @@ export function HomeClient() {
           <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
             <div className="relative">
               <div className="bg-primary/10 absolute -inset-6 animate-pulse rounded-full blur-2xl" />
-              <Loader size={64} className="text-primary" />
+              <Loader size={64} className="text-primary" variant="session" />
             </div>
-            <p className="animate-pulse text-sm font-medium tracking-wide text-neutral-500 uppercase">
-              Securing your session
-            </p>
           </div>
         </AuthLoading>
         <Authenticated>
