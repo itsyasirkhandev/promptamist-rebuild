@@ -2,6 +2,7 @@ import * as React from 'react';
 import { toast } from 'sonner';
 import {
   UseFormSetValue,
+  UseFormGetValues,
   UseFieldArrayAppend,
   UseFieldArrayRemove,
   UseFieldArrayUpdate,
@@ -20,6 +21,7 @@ interface UsePromptVariablesProps {
   content: string;
   variables: Variable[];
   setValue: UseFormSetValue<PromptFormValues>;
+  getValues: UseFormGetValues<PromptFormValues>;
   append: UseFieldArrayAppend<PromptFormValues, 'variables'>;
   remove: UseFieldArrayRemove;
   update: UseFieldArrayUpdate<PromptFormValues, 'variables'>;
@@ -31,6 +33,7 @@ export function usePromptVariables({
   content,
   variables,
   setValue,
+  getValues,
   append,
   remove,
   update,
@@ -46,11 +49,12 @@ export function usePromptVariables({
 
       if (!isTemplate) return;
 
-      const reconciledVars = reconcileVariables(newContent, variables);
+      const currentVars = getValues('variables') || [];
+      const reconciledVars = reconcileVariables(newContent, currentVars);
 
       const hasChanged =
-        reconciledVars.length !== variables.length ||
-        reconciledVars.some((v, i) => v.name !== variables[i]?.name);
+        reconciledVars.length !== currentVars.length ||
+        reconciledVars.some((v, i) => v.name !== currentVars[i]?.name);
 
       if (hasChanged) {
         setValue('variables', reconciledVars, {
@@ -59,7 +63,7 @@ export function usePromptVariables({
         });
       }
     },
-    [variables, isTemplate, setValue],
+    [isTemplate, setValue, getValues],
   );
 
   const addVariable = React.useCallback(
