@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { useQuery } from 'convex/react';
 import { api } from '../../../convex/_generated/api';
 import { useDebounce } from '@/hooks/use-debounce';
@@ -20,6 +20,12 @@ import {
   MarketplacePromptCard,
   PublicPromptDTO,
 } from './MarketplacePromptCard';
+import {
+  useQueryState,
+  parseAsString,
+  parseAsStringLiteral,
+  throttle,
+} from 'nuqs';
 
 const CATEGORIES = [
   { id: 'all', label: 'All', icon: 'lucide:layout-grid' },
@@ -31,26 +37,47 @@ const CATEGORIES = [
   { id: 'education', label: 'Education', icon: 'lucide:graduation-cap' },
 ];
 
+const sortValues = ['recent', 'a-z'] as const;
+
 export function MarketplaceSearch() {
-  const [inputValue, setInputValue] = useState('');
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [sortBy, setSortBy] = useState<'recent' | 'a-z'>('recent');
-  const debouncedQuery = useDebounce(inputValue, 300);
+  const [q, setQ] = useQueryState(
+    'q',
+    parseAsString.withDefault('').withOptions({
+      history: 'replace',
+      limitUrlUpdates: throttle(50),
+    }),
+  );
+
+  const [activeCategory, setActiveCategory] = useQueryState(
+    'category',
+    parseAsString.withDefault('all').withOptions({
+      history: 'push',
+    }),
+  );
+
+  const [sortBy, setSortBy] = useQueryState(
+    'sort',
+    parseAsStringLiteral(sortValues).withDefault('recent').withOptions({
+      history: 'push',
+    }),
+  );
+
+  const debouncedQuery = useDebounce(q, 300);
 
   const prompts = useQuery(api.publicPrompts.listPublicPrompts, {
     searchQuery: debouncedQuery || undefined,
     category: activeCategory,
-    sortBy,
+    sortBy: sortBy,
   });
 
   const handleResetFilters = () => {
-    setInputValue('');
-    setActiveCategory('all');
-    setSortBy('recent');
+    void setQ(null);
+    void setActiveCategory(null);
+    void setSortBy(null);
   };
 
   const isLoading = prompts === undefined;
-  const isSearchPending = inputValue !== debouncedQuery;
+  const isSearchPending = q !== debouncedQuery;
 
   return (
     <div className="animate-in fade-in flex w-full flex-col gap-6 duration-500">
@@ -60,8 +87,8 @@ export function MarketplaceSearch() {
         <Input
           type="text"
           placeholder="Search prompts by title, description, or tags..."
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
+          value={q}
+          onChange={(e) => void setQ(e.target.value)}
           className="bg-background focus-visible:border-primary h-12 rounded-full border-2 pl-10 text-lg shadow-sm"
         />
         {isSearchPending && (
@@ -103,9 +130,7 @@ export function MarketplaceSearch() {
 
       {/* Filter Row: Sort By & Reset */}
       <div className="flex w-full flex-col items-center justify-between gap-4 px-1 sm:flex-row md:justify-end">
-        {(inputValue !== '' ||
-          activeCategory !== 'all' ||
-          sortBy !== 'recent') && (
+        {(q !== '' || activeCategory !== 'all' || sortBy !== 'recent') && (
           <Button
             variant="ghost"
             size="sm"

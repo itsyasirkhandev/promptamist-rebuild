@@ -10,6 +10,7 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { clerkAppearance } from '@/lib/clerk-appearance';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 const geistHeading = Geist({ subsets: ['latin'], variable: '--font-heading' });
 
@@ -132,10 +133,12 @@ export default function RootLayout({
             }}
           >
             <ConvexClientProvider>
-              <TooltipProvider>
-                <AppLayout>{children}</AppLayout>
-                <Toaster />
-              </TooltipProvider>
+              <NuqsAdapter>
+                <TooltipProvider>
+                  <AppLayout>{children}</AppLayout>
+                  <Toaster />
+                </TooltipProvider>
+              </NuqsAdapter>
             </ConvexClientProvider>
           </ClerkProvider>
         </ThemeProvider>
